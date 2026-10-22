@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "610545200201",
   "createdAt": 1792712728866,
-  "updatedAt": 1792712728866,
+  "updatedAt": 1792712732502,
   "revision": 0,
   "state": {
     "startDate": null,
@@ -30,6 +30,10 @@
     {
       "hash": "ba3250bc5d76906a397da27e9971f65e9de8274f7698a6ec8c45af7d9170340d",
       "role": "owner"
+    },
+    {
+      "hash": "2ad7efaa8fe64a03d1643309d989c8c76cc97b0797e3ab21fadda0bdc6bdb666",
+      "role": "partner"
     }
   ]
 }
