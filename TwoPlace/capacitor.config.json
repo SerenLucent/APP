@@ -1,5 +1,10 @@
 {
   "appId": "com.twoplace.app",
   "appName": "TwoPlace",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "url": "https://serenlucent.github.io/APP/TwoPlace/",
+    "cleartext": false,
+    "errorPath": "offline.html"
+  }
 }

@@ -1,6 +1,6 @@
 import { cleanState } from '../shared/room-state.js';
 import { DatabaseSync } from 'node:sqlite';
-import { randomBytes, randomInt, createHash } from 'node:crypto';
+import { randomBytes, randomInt, createHash, scryptSync } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { initialPetHome, petSnapshot, changePetHome, CATALOG } from './pets.js';
@@ -28,7 +28,19 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
     CREATE TABLE IF NOT EXISTS rooms (id TEXT PRIMARY KEY, code TEXT UNIQUE NOT NULL, state TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0);
     CREATE TABLE IF NOT EXISTS members (token_hash TEXT PRIMARY KEY, room_id TEXT NOT NULL REFERENCES rooms(id), role TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS pet_homes (room_id TEXT PRIMARY KEY REFERENCES rooms(id), data TEXT NOT NULL);
-    CREATE INDEX IF NOT EXISTS members_room ON members(room_id);`);
+    CREATE INDEX IF NOT EXISTS members_room ON members(room_id);
+    CREATE TABLE IF NOT EXISTS recovery (room_id TEXT PRIMARY KEY REFERENCES rooms(id), salt TEXT NOT NULL, hash TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS recovery_attempts (code TEXT PRIMARY KEY, at INTEGER, count INTEGER);`);
+  function passwordHash(password,salt){
+    if(typeof password!=='string'||password.length<8||password.length>128)throw new ApiError(400,'복구 암호는 8~128자로 입력해 주세요.');
+    return scryptSync(password,salt,32).toString('hex');
+  }
+  function recoveryLimit(code){
+    const old=db.prepare('SELECT * FROM recovery_attempts WHERE code=?').get(code),now=Date.now();
+    const value=old&&now-old.at<900000?old:{at:now,count:0};
+    if(value.count>=10)throw new ApiError(429,'복구 시도가 많아요. 15분 후 다시 시도해 주세요.');
+    db.prepare('INSERT OR REPLACE INTO recovery_attempts VALUES (?,?,?)').run(code,value.at,value.count+1);
+  }
   const limits = new Map();
   function limit(req, action) {
     const key = `${req.socket.remoteAddress}:${action}`, now = Date.now();
@@ -41,7 +53,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
     const {count} = db.prepare('SELECT count(*) AS count FROM members WHERE room_id = ?').get(room.id);
     db.prepare('INSERT OR IGNORE INTO pet_homes (room_id,data) VALUES (?,?)').run(room.id,JSON.stringify(initialPetHome()));
     const petHome = JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data);
-    return {code:room.code, role, memberCount:count, revision:room.revision, state:JSON.parse(room.state),petHome:petSnapshot(petHome),catalog:CATALOG};
+    return {code:room.code, role, recoveryEnabled:!!db.prepare('SELECT 1 FROM recovery WHERE room_id=?').get(room.id),memberCount:count, revision:room.revision, state:JSON.parse(room.state),petHome:petSnapshot(petHome),catalog:CATALOG};
   }
   function member(req) {
     const token = req.headers.authorization?.match(/^Bearer ([a-f0-9]{64})$/)?.[1];
@@ -79,6 +91,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         try {
           db.prepare('INSERT INTO rooms (id,code,state) VALUES (?,?,?)').run(id,code,JSON.stringify(emptyState()));
           db.prepare('INSERT INTO members (token_hash,room_id,role) VALUES (?,?,?)').run(hash(token),id,'owner');
+          if(body.password){const salt=randomBytes(16).toString('hex');db.prepare('INSERT INTO recovery VALUES (?,?,?)').run(id,salt,passwordHash(body.password,salt));}
           db.exec('COMMIT');
         } catch (error) { db.exec('ROLLBACK'); throw error; }
         return reply(201, {token, ...snapshot(db.prepare('SELECT * FROM rooms WHERE id = ?').get(id),'owner')});
@@ -105,6 +118,27 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
           db.exec('COMMIT');
         } catch (error) { db.exec('ROLLBACK'); throw error; }
         return reply(200, {token, ...snapshot(room,'partner')});
+      }
+      if(path==='/api/room/recovery'&&req.method==='PUT'){
+        const room=member(req),body=await readJson(req),r=db.prepare('SELECT * FROM recovery WHERE room_id=?').get(room.id);
+        if(r){recoveryLimit(room.code);if(passwordHash(body.currentPassword,r.salt)!==r.hash)throw new ApiError(403,'현재 복구 암호를 확인해 주세요.');}
+        const salt=randomBytes(16).toString('hex');
+        db.prepare('INSERT OR REPLACE INTO recovery VALUES (?,?,?)').run(room.id,salt,passwordHash(body.password,salt));
+        db.prepare('DELETE FROM recovery_attempts WHERE code=?').run(room.code);
+        return reply(200,snapshot(room,room.role));
+      }
+      if(path==='/api/rooms/recover'&&req.method==='POST'){
+        const body=await readJson(req),code=typeof body.code==='string'?body.code.replace(/[\s-]/g,''):'';
+        if(!/^\d{12}$/.test(code)||!['owner','partner'].includes(body.role)||!/^[a-f0-9]{64}$/.test(body.requestToken||''))throw new ApiError(400,'방 코드와 본인 자리를 확인해 주세요.');
+        const hashed=hash(body.requestToken),existing=db.prepare('SELECT rooms.*,members.role FROM members JOIN rooms ON rooms.id=members.room_id WHERE token_hash=?').get(hashed);
+        if(existing){if(existing.code!==code||existing.role!==body.role)throw new ApiError(409,'다른 연결에 사용한 요청이에요.');return reply(200,{token:body.requestToken,...snapshot(existing,existing.role)});}
+        recoveryLimit(code);
+        const room=db.prepare('SELECT * FROM rooms WHERE code=?').get(code),r=room&&db.prepare('SELECT * FROM recovery WHERE room_id=?').get(room.id);
+        if(!r||passwordHash(body.password,r.salt)!==r.hash)throw new ApiError(403,'방 코드 또는 복구 암호를 확인해 주세요.');
+        const changed=db.prepare('UPDATE members SET token_hash=? WHERE room_id=? AND role=?').run(hashed,room.id,body.role);
+        if(!changed.changes)throw new ApiError(400,'아직 입장한 적 없는 자리예요. 커플방 입장하기를 이용해 주세요.');
+        db.prepare('DELETE FROM recovery_attempts WHERE code=?').run(code);
+        return reply(200,{token:body.requestToken,...snapshot(room,body.role)});
       }
       if (path === '/api/room' && req.method === 'GET') {
         const room = member(req);

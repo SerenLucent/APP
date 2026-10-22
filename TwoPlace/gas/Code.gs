@@ -237,7 +237,20 @@ function writeJson_(path,room,sha,message){
   return result.content.sha;
 }
 function saveRoom_(entry){entry.room.updatedAt=Date.now();entry.sha=writeJson_(entry.path,entry.room,entry.sha);}
-function snapshot_(room,role){return {code:room.code,role,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
+function snapshot_(room,role){return {code:room.code,role,recoveryEnabled:!!room.recovery,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
+function recoveryHash_(code,password,salt){
+  if(typeof password!=='string'||password.length<8||password.length>128)fail_(400,'복구 암호는 8~128자로 입력해 주세요.');
+  let pepper=props_().getProperty('RECOVERY_PEPPER');
+  if(!pepper){pepper=Utilities.getUuid()+Utilities.getUuid();props_().setProperty('RECOVERY_PEPPER',pepper);}
+  return Utilities.computeHmacSha256Signature(JSON.stringify([code,salt,password]),pepper,Utilities.Charset.UTF_8).map(x=>((x+256)%256).toString(16).padStart(2,'0')).join('');
+}
+function recoveryAttempt_(code){
+  const key='recovery-attempt:'+code,now=Date.now();
+  let value=JSON.parse(props_().getProperty(key)||'null');
+  if(!value||now-value.at>900000)value={at:now,count:0};
+  if(value.count>=10)fail_(429,'복구 시도가 많아요. 15분 후 다시 시도해 주세요.');
+  value.count++;props_().setProperty(key,JSON.stringify(value));
+}
 function member_(token){
   if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))fail_(401,'커플방에 다시 입장해 주세요.');
   const hashed=digest_(token),fileId=props_().getProperty('github-member:'+hashed);
@@ -257,7 +270,7 @@ function admin_(token){
   if(!expected||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||digest_(token)!==expected)fail_(403,'관리자 토큰을 확인해 주세요.');
 }
 function json_(data){return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);}
-function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:2});}
+function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:3});}
 function doPost(e){
   const lock=LockService.getScriptLock();let locked=false;
   try {
@@ -274,6 +287,35 @@ function doPost(e){
 function route_(req){
   const body=req.body||{},path=req.path,method=req.method||'GET';
   if(path==='/health')return {ok:true};
+  if(path==='/rooms/recover'&&method==='POST'){
+    const code=typeof body.code==='string'?body.code.replace(/[\s-]/g,''):'';
+    if(!/^\d{12}$/.test(code)||!['owner','partner'].includes(body.role)||!/^[a-f0-9]{64}$/.test(body.requestToken||''))fail_(400,'방 코드와 본인 자리를 확인해 주세요.');
+    const hashed=digest_(body.requestToken),id=props_().getProperty('github-room:'+code);
+    // A committed response can be retried after network loss with the same device token.
+    if(props_().getProperty('github-member:'+hashed)){
+      const e=member_(body.requestToken);
+      if(e.room.code!==code||e.role!==body.role)fail_(409,'다른 연결에 사용한 요청이에요.');
+      return {token:body.requestToken,...snapshot_(e.room,e.role)};
+    }
+    recoveryAttempt_(code);
+    if(!id)fail_(403,'방 코드 또는 복구 암호를 확인해 주세요.');
+    const e=readRoom_(id),r=e.room.recovery;
+    if(!r||recoveryHash_(code,body.password,r.salt)!==r.hash)fail_(403,'방 코드 또는 복구 암호를 확인해 주세요.');
+    const slot=e.room.members.find(m=>m.role===body.role);
+    if(!slot)fail_(400,'아직 입장한 적 없는 자리예요. 커플방 입장하기를 이용해 주세요.');
+    slot.hash=hashed;saveRoom_(e);
+    props_().setProperty('github-member:'+hashed,id);
+    props_().setProperty('recovery-attempt:'+code,JSON.stringify({at:Date.now(),count:0}));
+    return {token:body.requestToken,...snapshot_(e.room,body.role)};
+  }
+  if(path==='/room/recovery'&&method==='PUT'){
+    const e=member_(req.token),r=e.room.recovery;
+    if(r){recoveryAttempt_(e.room.code);if(recoveryHash_(e.room.code,body.currentPassword,r.salt)!==r.hash)fail_(403,'현재 복구 암호를 확인해 주세요.');}
+    const salt=Utilities.getUuid();
+    e.room.recovery={salt,hash:recoveryHash_(e.room.code,body.password,salt)};saveRoom_(e);
+    props_().setProperty('recovery-attempt:'+e.room.code,JSON.stringify({at:Date.now(),count:0}));
+    return snapshot_(e.room,e.role);
+  }
   if((path==='/rooms'||path==='/rooms/join')&&method==='POST'){
     const token=body.requestToken;
     if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))fail_(400,'입장 요청 정보를 확인해 주세요.');
@@ -297,6 +339,7 @@ function route_(req){
     let newCode;
     do{newCode=String(parseInt(Utilities.getUuid().replace(/-/g,'').slice(0,12),16)%1000000000000).padStart(12,'0');}while(props_().getProperty('github-room:'+newCode));
     const now=Date.now(),room={schemaVersion:1,code:newCode,createdAt:now,updatedAt:now,revision:0,state:{startDate:null,events:[],notes:[]},petHome:initialPetHome(now),members:[{hash:hashed,role:'owner'}]};
+    if(body.password){const salt=Utilities.getUuid();room.recovery={salt,hash:recoveryHash_(newCode,body.password,salt)};}
     const filePath=roomPath_(newCode);
     writeJson_(filePath,room,null,'Create TwoPlace couple room');
     props_().setProperties({['github-room:'+newCode]:filePath,['github-member:'+hashed]:filePath});

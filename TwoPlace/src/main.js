@@ -47,7 +47,7 @@ function applyRoom(data) {
     petCatalog = data.catalog || [];
   }
   if (room?.code === data.code && data.revision < room.revision) return;
-  room = {code:data.code, role:data.role, memberCount:data.memberCount, revision:data.revision};
+  room = {code:data.code, role:data.role, recoveryEnabled:data.recoveryEnabled, memberCount:data.memberCount, revision:data.revision};
   state = data.state;
   connected = true;
 }
@@ -79,7 +79,7 @@ async function refreshRoom() {
   refreshing = true;
   try {
     const data = await request('/room',{token:session.token});
-    const changed = data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || data.petHome?.pets.mochi.hunger !== petHome?.pets.mochi.hunger || data.petHome?.pets.kuki.hunger !== petHome?.pets.kuki.hunger || !connected;
+    const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || data.petHome?.pets.mochi.hunger !== petHome?.pets.mochi.hunger || data.petHome?.pets.kuki.hunger !== petHome?.pets.kuki.hunger || !connected;
     applyRoom(data);
     if (changed) render();
   } catch(error) {
@@ -87,7 +87,7 @@ async function refreshRoom() {
     else if (connected) { connected = false; render(); }
   } finally { refreshing = false; }
 }
-async function enterRoom(kind, code, button) {
+async function enterRoom(kind, code, button, password) {
   if (button.disabled) return;
   button.disabled = true;
   const original = button.textContent;
@@ -96,7 +96,7 @@ async function enterRoom(kind, code, button) {
     // Verify storage before consuming one of the room's two membership slots.
     const probe = 'twoplace:storage-check'; localStorage.setItem(probe,'1'); localStorage.removeItem(probe);
     const requestToken = pendingRequest(kind,code);
-    const data = await request(kind === 'create' ? '/rooms' : '/rooms/join',{method:'POST',body:kind === 'create' ? {requestToken} : {code,requestToken}});
+    const data = await request(kind === 'create' ? '/rooms' : '/rooms/join',{method:'POST',body:kind === 'create' ? {requestToken,password} : {code,requestToken}});
     storeSession(data);
     finishRequest();
     session = {token:data.token}; applyRoom(data); view = 'home'; bootError = '';
@@ -117,6 +117,32 @@ function joinDialog() {
     await enterRoom('join',code,e.target.querySelector('button[type="submit"]'));
   };
 }
+function createDialog(){
+  openDialog('커플 등록하기','<p class="muted">두 사람 모두 연결을 잃어도 방 코드와 이 암호로 돌아올 수 있어요. 두 사람이 함께 보관해 주세요.</p><form><label>복구 암호<input name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></label><label>암호 확인<input name="confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></label><p class="muted">8자 이상 · 시작일만 쓰기보다 둘만 아는 문구를 추천해요.</p><p class="form-error" role="alert"></p><button class="primary" type="submit">방 만들기</button></form>');
+  modal.querySelector('form').onsubmit=async e=>{e.preventDefault();const f=e.target;if(f.elements.password.value!==f.elements.confirm.value){f.querySelector('[role="alert"]').textContent='암호가 서로 달라요.';return;}await enterRoom('create',null,f.querySelector('button[type="submit"]'),f.elements.password.value);};
+}
+function recoveryDialog(settings=false){
+  const changing=settings&&room.recoveryEnabled;
+  openDialog(settings?'복구 암호 설정':'연결 복구하기',`<p class="muted">${settings?'방은 접속하지 않아도 폐기되지 않아요. 방 코드와 복구 암호를 두 사람이 함께 보관해 주세요.':'기존 일정·메모·펫은 그대로 두고 내 연결만 새 기기로 옮겨요. 이전 기기의 내 연결은 해제되며 상대방은 유지돼요.'}</p><form>${settings?'':`<label>방 코드<input name="code" inputmode="numeric" maxlength="14" required></label><label>내 자리<select name="role"><option value="owner">처음 방을 만든 사람</option><option value="partner">초대받아 입장한 사람</option></select></label>`}${changing?'<label>현재 복구 암호<input name="currentPassword" type="password" autocomplete="current-password" required></label>':''}<label>${settings?'새 복구 암호':'복구 암호'}<input name="password" type="password" minlength="8" maxlength="128" autocomplete="${settings?'new-password':'current-password'}" required></label>${settings?'<label>새 암호 확인<input name="confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></label><p class="muted">8자 이상 · 시작일만 쓰기보다 둘만 아는 문구를 추천해요.</p>':''}<p class="form-error" role="alert"></p><button class="primary" type="submit">${settings?'암호 저장하기':'내 연결 복구하기'}</button></form>`);
+  modal.querySelector('form').onsubmit=async e=>{
+    e.preventDefault();const f=e.target,b=f.querySelector('button[type="submit"]');
+    if(settings&&f.elements.password.value!==f.elements.confirm.value){f.querySelector('[role="alert"]').textContent='암호가 서로 달라요.';return;}
+    b.disabled=true;
+    try{
+      let data;
+      if(settings)data=await request('/room/recovery',{method:'PUT',token:session.token,body:{password:f.elements.password.value,currentPassword:f.elements.currentPassword?.value}});
+      else{
+        const probe='twoplace:storage-check';localStorage.setItem(probe,'1');localStorage.removeItem(probe);
+        const code=f.elements.code.value.replace(/[\s-]/g,''),role=f.elements.role.value;
+        const requestToken=pendingRequest('recover:'+role,code);
+        data=await request('/rooms/recover',{method:'POST',body:{code,role,password:f.elements.password.value,requestToken}});
+        storeSession(data);session=loadSession();finishRequest();
+      }
+      applyRoom(data);modal.close();view='home';render();toast(settings?'복구 암호를 저장했어요. 상대에게도 알려 주세요.':'기존 커플방 연결을 복구했어요');
+    }catch(error){f.querySelector('[role="alert"]').textContent=error.message;}
+    finally{b.disabled=false;}
+  };
+}
 async function copyCode() {
   if (!room) return;
   try { await navigator.clipboard.writeText(room.code); toast('방 코드를 복사했어요'); }
@@ -128,7 +154,7 @@ async function copyCode() {
 function welcome() {
   if (booting) return '<section class="welcome"><span class="welcome-heart">♡</span><h1>우리 공간을 여는 중…</h1><p>잠시만 기다려 주세요.</p></section>';
   if (bootError) return `<section class="welcome"><span class="welcome-heart">♡</span><h1>우리 방에 연결하지 못했어요</h1><p role="alert">${esc(bootError)}</p><button class="primary" data-action="retry">다시 연결하기</button></section>`;
-  return `<section class="welcome"><span class="eyebrow">TWO OF US, ONE PLACE</span><div class="welcome-mascots"><img src="${import.meta.env.BASE_URL}pets/mochi-standing-v2.png" alt="모모" width="128" height="128"><img src="${import.meta.env.BASE_URL}pets/kuki-standing-v2.png" alt="쿠키" width="128" height="128"><span aria-hidden="true">♡</span></div><h1>우리 둘만의 공간을<br>시작해 볼까요<span class="accent">?</span></h1><p>한 사람이 커플방을 만들고,<br>다른 한 사람이 방 코드로 입장하면 돼요.</p><div class="welcome-actions"><button class="primary" data-action="create">커플 등록하기</button><span aria-hidden="true">|</span><button class="secondary" data-action="join">커플방 입장하기</button></div><span class="welcome-hint">우리의 하루와 약속, 이제 같은 공간에.</span></section>`;
+  return `<section class="welcome"><span class="eyebrow">TWO OF US, ONE PLACE</span><div class="welcome-mascots"><img src="${import.meta.env.BASE_URL}pets/mochi-standing-v2.png" alt="모모" width="128" height="128"><img src="${import.meta.env.BASE_URL}pets/kuki-standing-v2.png" alt="쿠키" width="128" height="128"><span aria-hidden="true">♡</span></div><h1>우리 둘만의 공간을<br>시작해 볼까요<span class="accent">?</span></h1><p>한 사람이 커플방을 만들고,<br>다른 한 사람이 방 코드로 입장하면 돼요.</p><div class="welcome-actions"><button class="primary" data-action="create">커플 등록하기</button><span aria-hidden="true">|</span><button class="secondary" data-action="join">커플방 입장하기</button></div><button class="text-button recovery-entry" data-action="recover">연결 복구하기</button><span class="welcome-hint">우리의 하루와 약속, 이제 같은 공간에.</span></section>`;
 }
 function openDialog(title, body) {
   modal.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button class="close" type="button" aria-label="닫기">×</button></div>${body}`;
@@ -146,7 +172,7 @@ function dateDialog() {
 }
 function home() {
   const todayLabel = new Intl.DateTimeFormat('ko-KR', {month:'long', day:'numeric', weekday:'long'}).format(new Date());
-  return `<section class="greeting"><span class="eyebrow">A LITTLE SPACE FOR TWO</span><h1>우리 둘의 하루가<br>모이는 곳<span class="accent">.</span></h1><p>사소한 순간도, 함께라서 특별하니까.</p></section>
+  return `<div class="recovery-tools"><span>${room.recoveryEnabled ? '복구 암호가 설정되어 있어요' : '휴대폰을 바꾸기 전에 복구 암호를 설정해 주세요'}</span><button class="text-button" data-action="recovery-settings">${room.recoveryEnabled ? '복구 암호 변경' : '복구 암호 설정'}</button></div><section class="greeting"><span class="eyebrow">A LITTLE SPACE FOR TWO</span><h1>우리 둘의 하루가<br>모이는 곳<span class="accent">.</span></h1><p>사소한 순간도, 함께라서 특별하니까.</p></section>
   <section class="spaces"><div class="section-head"><div><span class="eyebrow">OUR SPACE</span><h2>둘이 함께 쓰는 공간</h2></div><span class="little-heart">♡</span></div><div class="menu-grid">
   <button class="menu-card calendar-card" data-view="calendar"><span class="tile-icon">${icon('calendar')}</span><span class="card-title">공유 캘린더</span><span class="card-desc">우리의 다음 약속</span><span class="card-bottom">${state.events.length ? `저장한 일정 ${state.events.length}개` : '함께할 하루를 기록해요'} ${icon('arrow')}</span></button>
   <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${state.notes.length ? `쌓인 이야기 ${state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
@@ -265,7 +291,9 @@ document.addEventListener('click', async e => {
     modal.querySelector('#confirm-delete').onclick = async () => { if (await save({...state, [key]: state[key].filter(item => item.id !== deleteId)})) { modal.close(); render(); } };
   }
   switch (el.dataset.action) {
-    case 'create': await enterRoom('create',null,el); break;
+    case 'create': createDialog(); break;
+    case 'recover': recoveryDialog(); break;
+    case 'recovery-settings': recoveryDialog(true); break;
     case 'join': joinDialog(); break;
     case 'copy': await copyCode(); break;
     case 'retry': await restoreRoom(); break;

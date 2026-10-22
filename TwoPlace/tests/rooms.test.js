@@ -20,6 +20,24 @@ async function setup(dbPath = ':memory:') {
     close: async () => { await new Promise(resolve => server.close(resolve)); api.close(); },
   };
 }
+
+test('local server recovery preserves membership across restarts and revokes the replaced device',async()=>{
+  const dir=mkdtempSync(join(tmpdir(),'twoplace-recovery-')),dbPath=join(dir,'rooms.sqlite');
+  let s=await setup(dbPath);
+  try{
+    const owner=(await s.call('/rooms','POST',{password:'our-secret-password'})).data;
+    const partner=(await s.call('/rooms/join','POST',{code:owner.code})).data;
+    assert.equal(owner.recoveryEnabled,true);
+    await s.close();s=await setup(dbPath);
+    const body={code:owner.code,role:'owner',password:'our-secret-password',requestToken:'9'.repeat(64)};
+    assert.equal((await s.call('/rooms/recover','POST',{...body,password:'wrong-password'})).status,403);
+    const recovered=await s.call('/rooms/recover','POST',body);
+    assert.equal(recovered.status,200);assert.equal(recovered.data.memberCount,2);
+    assert.equal((await s.call('/room','GET',null,owner.token)).status,401);
+    assert.equal((await s.call('/room','GET',null,partner.token)).status,200);
+    assert.equal((await s.call('/rooms/recover','POST',body)).status,200);
+  }finally{await s.close();rmSync(dir,{recursive:true,force:true});}
+});
 test('two independent clients join the same room, share state and reject a third member',async () => {
   const s = await setup();
   try {

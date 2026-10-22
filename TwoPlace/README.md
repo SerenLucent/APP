@@ -1,6 +1,6 @@
 # TwoPlace
 
-Android APK와 iPhone 웹을 함께 사용하는 커플 앱입니다. 웹 화면은 Vite, Android 패키징은 Capacitor, 커플방 서버는 Node.js + SQLite로 구성합니다. Node.js 22.13 이상이 필요합니다.
+Android APK와 iPhone 웹을 함께 사용하는 커플 앱입니다. 웹 화면은 Vite, Android 패키징은 Capacitor, 공개 커플방 서버는 앱스크립트 + GitHub JSON을 사용하며, 로컬 개발에서는 Node.js + SQLite를 사용합니다. Node.js 22.13 이상이 필요합니다.
 
 ## 공개 웹
 
@@ -22,14 +22,15 @@ http://localhost:5173 에서 웹과 방 API를 함께 실행합니다. 첫 화�
 - 입장 후 우측 상단: 숫자 12자리 방 코드, 누르면 복사. 클립보드를 사용할 수 없는 환경에서는 수동 복사 입력란을 엽니다.
 - 코드 입력 시 생성자의 방으로 입장하며, 한 방의 입장은 두 기기까지 허용합니다.
 - 디데이·캘린더·메모는 서버에 저장하고 약 3초 간격으로 공유합니다. 입력창이 열려 있으면 자동 갱신을 미루고, 동시 수정 충돌은 최신 내용을 읽은 뒤 다시 저장하도록 안내합니다.
-- 새로고침해도 같은 기기·브라우저의 입장을 유지합니다. 별도 로그인/기기 교체/입장 복구는 아직 없습니다. 브라우저 저장소 삭제 시 입장 정보를 잃으며, 이미 두 기기가 등록된 방에는 코드만으로 새 기기를 추가할 수 없습니다.
+- 새로고침·앱 재실행 시 같은 기기의 연결을 유지합니다. 기기 교체·저장소 삭제 시 첫 화면의 연결 복구하기에서 방 코드 + 복구 암호 + 본인 자리(방 생성자/초대받은 사람)를 입력합니다. 이전 기기의 해당 자리 토큰은 무효화되며 상대방 연결과 모든 방 데이터는 유지합니다.
+- 새 방은 생성할 때 8자 이상 복구 암호를 설정합니다. 기존 방은 홈 화면의 복구 암호 설정을 이용합니다. 두 사람이 모두 접속하지 않아도 방을 자동 폐기하지 않습니다. 방 코드와 암호를 함께 보관하세요. 암호 변경은 현재 암호를 알아야 합니다.
 - 플레이스메이트는 연동 준비 안내입니다. 외부 앱의 주소/API가 정해지면 연결합니다.
 
 기존 v1 기기 내 데이터는 삭제하지 않습니다. 새 커플방에는 자동으로 옮기지 않으며, 현재 화면은 서버의 방 데이터를 사용합니다. 방 코드는 초대 수단이므로 상대에게만 전달해 주세요.
 
 ## 서버 배포
 
-정적 파일만 올리는 방식으로는 커플방이 동작하지 않습니다. Node 서버를 함께 실행해야 합니다.
+공개 서비스는 GitHub Pages + 앱스크립트를 사용합니다. 아래는 선택적인 로컬 Node 서버 실행 방법입니다.
 
 ```sh
 npm run build
@@ -42,24 +43,15 @@ iPhone은 HTTPS 주소를 Safari로 연 다음 ‘홈 화면에 추가’할 수
 
 ## Android
 
-APK와 웹이 같은 서버를 사용하도록 .env.local에 실제 API 주소를 지정한 후 다시 빌드합니다.
+APK는 https://serenlucent.github.io/APP/TwoPlace/ 를 여는 전용 WebView입니다. 화면·기능 수정은 웹 배포 후 앱을 다시 열면 반영되며 APK를 매번 재설치하지 않습니다. 기기 연결 토큰은 WebView의 영구 저장소에 유지합니다. 앱 삭제·데이터 초기화·기기 변경 때는 연결 복구를 이용합니다. 사파리/크롬과 APK의 저장 공간은 별도이므로 처음 옮길 때 복구가 필요합니다.
 
-```text
-VITE_API_URL=https://your-server.example
-```
+설정은 capacitor.config.json의 server.url입니다. 인터넷 연결 실패 시 내장 offline.html에서 다시 연결합니다. 앱 자체 권한이나 네이티브 기능, 접속 도메인을 변경할 때만 APK 재빌드가 필요합니다.
 
-```sh
-npm run android:sync
-npm run android:open
-```
-
-Android Studio에서 APK를 만들거나 android 폴더에서 ./gradlew.bat assembleDebug를 실행합니다. 개발용 결과는 android/app/build/outputs/apk/debug/app-debug.apk입니다. 배포용 서명은 별도입니다. VITE_API_URL은 빌드 시 반영되며 기존 방의 기기 입장 정보는 API 서버에 종속됩니다.
-
-공개 웹은 위 GitHub Pages 주소와 앱스크립트 GitHub JSON 서버에 연결되어 있습니다. 이전에 만든 APK는 해당 빌드 시점의 연결 설정을 사용하므로 공개 웹 연결 후 다시 빌드해야 최신 설정이 반영됩니다.
+빌드: npm run android:sync 후 android/gradlew.bat -p android assembleDebug. 결과는 releases/TwoPlace-web.apk이며 현재 개발용 서명입니다. 기존 로컬 서버형 APK와 데이터 저장 출처가 달라 자동 이전되지 않습니다. 기존 방에서 복구 암호를 먼저 설정한 뒤 같은 방 코드로 복구하세요.
 
 ## 파일
 
-- releases/TwoPlace-debug.apk: 변경된 화면을 반영한 개발용 APK. 공용 API 주소 미설정.
+- releases/TwoPlace-web.apk: 공개 웹을 여는 자동 웹 업데이트형 APK (개발용 서명).
 - releases/TwoPlace-web.zip: dist 웹 파일 + server 서버 소스 + 실행 안내. 압축을 풀고 Node 22.13 이상에서 npm start로 실행합니다. 서버는 Node 내장 모듈만 사용하므로 이 배포 묶음의 실행에는 npm install이 필요하지 않습니다.
 - docs/welcome-preview.png: 최초 등록·입장 화면
 - docs/room-preview.png: 입장 후 디데이와 방 코드 화면

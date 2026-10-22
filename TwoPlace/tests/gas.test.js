@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
-import {createHash,randomUUID} from 'node:crypto';
+import {createHash,createHmac,randomUUID} from 'node:crypto';
 function harness(){
   let count=0;const properties={GITHUB_TOKEN:'test-token'},files=new Map(),cache=new Map();
   const props={getProperty:k=>properties[k]||null,setProperty:(k,v)=>{properties[k]=v;},setProperties:o=>Object.assign(properties,o),getProperties:()=>({...properties})};
@@ -20,7 +20,7 @@ function harness(){
     const sha='sha'+(++count);files.set(path,{name:path.split('/').at(-1),text:Buffer.from(body.content,'base64').toString('utf8'),sha});
     return response(200,{content:{sha}});
   };
-  const context=vm.createContext({console:{log(){}},Date,Set,Map,PropertiesService:{getScriptProperties:()=>props},UrlFetchApp:{fetch},Utilities:{getUuid:randomUUID,Charset:{UTF_8:'utf8'},DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_alg,value)=>Array.from(createHash('sha256').update(value).digest()),base64Encode:value=>Buffer.from(value).toString('base64'),base64Decode:value=>Buffer.from(value,'base64'),newBlob:value=>({getDataAsString:()=>Buffer.from(value).toString('utf8')})},CacheService:{getScriptCache:()=>({get:k=>cache.get(k),put:(k,v)=>cache.set(k,v)})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})},ContentService:{MimeType:{JSON:'json'},createTextOutput:text=>({setMimeType:()=>text})}});
+  const context=vm.createContext({console:{log(){}},Date,Set,Map,PropertiesService:{getScriptProperties:()=>props},UrlFetchApp:{fetch},Utilities:{getUuid:randomUUID,Charset:{UTF_8:'utf8'},DigestAlgorithm:{SHA_256:'sha256'},computeHmacSha256Signature:(value,key)=>Array.from(createHmac('sha256',key).update(value).digest()),computeDigest:(_alg,value)=>Array.from(createHash('sha256').update(value).digest()),base64Encode:value=>Buffer.from(value).toString('base64'),base64Decode:value=>Buffer.from(value,'base64'),newBlob:value=>({getDataAsString:()=>Buffer.from(value).toString('utf8')})},CacheService:{getScriptCache:()=>({get:k=>cache.get(k),put:(k,v)=>cache.set(k,v)})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})},ContentService:{MimeType:{JSON:'json'},createTextOutput:text=>({setMimeType:()=>text})}});
   vm.runInContext(fs.readFileSync('gas/Code.gs','utf8'),context);
   context.setupTwoPlace();
   return {context,files,properties,call:req=>JSON.parse(context.doPost({postData:{contents:JSON.stringify(req)}}))};
@@ -70,4 +70,41 @@ test('GitHub writes are restricted to TwoPlace and stale Git SHAs cannot overwri
   assert.throws(()=>h.context.saveRoom_(stale),e=>e.status===409);
   delete h.properties.GITHUB_TOKEN;
   assert.throws(()=>h.context.setupTwoPlace(),e=>e.status===503);
+});
+
+test('Both lost devices recover their own slots, preserve all data and revoke old devices',()=>{
+  const h=harness(),owner='1'.repeat(64),partner='2'.repeat(64),freshOwner='3'.repeat(64),freshPartner='4'.repeat(64);
+  const password='our-private-phrase';
+  const room=h.call({path:'/rooms',method:'POST',body:{requestToken:owner,password}}).data;
+  assert.equal(room.recoveryEnabled,true);
+  h.call({path:'/rooms/join',method:'POST',body:{code:room.code,requestToken:partner}});
+  const state={startDate:'2026-10-22',events:[],notes:[{id:'test-note',date:'2026-10-22',body:'keep our memories'}]};
+  assert.equal(h.call({path:'/room/state',method:'PUT',token:owner,body:{state,revision:0}}).status,200);
+  const recover=(token,role,p=password)=>h.call({path:'/rooms/recover',method:'POST',body:{code:room.code,password:p,role,requestToken:token}});
+  assert.equal(recover(freshOwner,'owner','wrong-password').status,403);
+  const recovered=recover(freshOwner,'owner');assert.equal(recovered.status,200);assert.deepEqual(recovered.data.state,state);
+  assert.equal(h.call({path:'/room',token:owner}).status,401);
+  assert.equal(h.call({path:'/room',token:partner}).status,200);
+  assert.equal(recover(freshOwner,'owner').status,200);
+  assert.equal(recover(freshPartner,'partner').status,200);
+  assert.equal(h.call({path:'/room',token:partner}).status,401);
+  const shared=h.call({path:'/room',token:freshPartner}).data;
+  assert.deepEqual(shared.state,state);assert.equal(shared.memberCount,2);assert.deepEqual(shared.petHome.items,room.petHome.items);assert.equal(shared.petHome.hearts,room.petHome.hearts);assert.equal(shared.petHome.snacks,room.petHome.snacks);
+  assert.ok(![...h.files.values()][0].text.includes(password));
+  assert.equal(shared.recovery,undefined);
+});
+
+test('Existing rooms opt into recovery; password changes require the old password and attempts are limited',()=>{
+  const h=harness(),owner='5'.repeat(64),fresh='6'.repeat(64);
+  const room=h.call({path:'/rooms',method:'POST',body:{requestToken:owner}}).data;
+  assert.equal(room.recoveryEnabled,false);
+  const setup=(password,currentPassword)=>h.call({path:'/room/recovery',method:'PUT',token:owner,body:{password,currentPassword}});
+  assert.equal(setup('short').status,400);assert.equal(setup('original-password').status,200);
+  assert.equal(setup('new-password','incorrect').status,403);
+  assert.equal(setup('new-password','original-password').status,200);
+  const recover=p=>h.call({path:'/rooms/recover',method:'POST',body:{code:room.code,role:'owner',requestToken:fresh,password:p}});
+  for(let i=0;i<10;i++)assert.equal(recover('original-password').status,403);
+  assert.equal(recover('new-password').status,429);
+  h.properties['recovery-attempt:'+room.code]=JSON.stringify({at:Date.now()-900001,count:10});
+  assert.equal(recover('new-password').status,200);
 });

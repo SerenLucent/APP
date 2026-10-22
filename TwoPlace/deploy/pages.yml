@@ -34,6 +34,7 @@ jobs:
       - run: |
           mkdir -p _site/TwoPlace
           cp -R TwoPlace/dist/. _site/TwoPlace/
+          if [ -d TwoPlace/downloads ]; then cp -R TwoPlace/downloads _site/TwoPlace/; fi
           if [ -d pages ]; then cp -R pages/. _site/; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
