@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "194074993653",
   "createdAt": 1792649683333,
-  "updatedAt": 1792649701680,
+  "updatedAt": 1792649722143,
   "revision": 1,
   "state": {
     "startDate": "2026-10-22",
@@ -16,8 +16,8 @@
     ]
   },
   "petHome": {
-    "version": 0,
-    "hearts": 120,
+    "version": 1,
+    "hearts": 95,
     "snacks": 4,
     "lastClaim": 1792649683333,
     "pets": {
@@ -30,7 +30,15 @@
         "updatedAt": 1792649683333
       }
     },
-    "items": []
+    "items": [
+      {
+        "id": "07a1bd2f82c042b891f742a3074a4423",
+        "product": "plant",
+        "space": null,
+        "x": 50,
+        "y": 65
+      }
+    ]
   },
   "members": [
     {
