@@ -1,15 +1,27 @@
 {
   "schemaVersion": 1,
-  "revision": 0,
-  "updatedAt": 0,
+  "revision": 1,
+  "updatedAt": 1792655960390,
   "profiles": {
     "owner": {
-      "nickname": "방을 만든 사람"
+      "nickname": "지도 테스트 1"
     },
     "partner": {
       "nickname": "초대받은 사람"
     }
   },
-  "places": [],
+  "places": [
+    {
+      "id": "live-test-cafe",
+      "canonicalId": "live-test-cafe",
+      "owner": "owner",
+      "name": "지도 공유 배포 검증용 카페",
+      "address": "서울 성동구 · 실제 방문 장소 아님",
+      "category": "카페",
+      "lat": 37.5462,
+      "lng": 127.046,
+      "checked": null
+    }
+  ],
   "reviews": []
 }
