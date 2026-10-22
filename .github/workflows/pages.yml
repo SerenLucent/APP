@@ -1,0 +1,51 @@
+name: Publish APP apps
+on:
+  push:
+    branches: [main]
+    paths: ['TwoPlace/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: app-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: TwoPlace/package-lock.json
+      - run: npm ci
+        working-directory: TwoPlace
+      - run: npm test
+        working-directory: TwoPlace
+      - run: npm run build
+        working-directory: TwoPlace
+        env:
+          VITE_BASE_PATH: /APP/TwoPlace/
+          VITE_GAS_URL: ${{ vars.TWOPLACE_GAS_URL }}
+      # Keep other APP folders' static web outputs when more apps are added.
+      - run: |
+          mkdir -p _site/TwoPlace
+          cp -R TwoPlace/dist/. _site/TwoPlace/
+          if [ -d pages ]; then cp -R pages/. _site/; fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

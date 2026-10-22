@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "TwoPlace · 우리 둘의 공간",
+  "short_name": "TwoPlace",
+  "lang": "ko",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fbf8f5",
+  "theme_color": "#fbf8f5",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "scope": "./"
+}
