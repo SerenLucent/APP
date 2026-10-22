@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792659272240,
-  "revision": 0,
+  "updatedAt": 1792659285474,
+  "revision": 1,
   "state": {
-    "startDate": null,
+    "startDate": "2024-08-08",
     "events": [],
     "notes": []
   },
