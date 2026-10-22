@@ -2,12 +2,18 @@
   "schemaVersion": 1,
   "code": "343082199249",
   "createdAt": 1792649582048,
-  "updatedAt": 1792649586387,
-  "revision": 0,
+  "updatedAt": 1792649592890,
+  "revision": 1,
   "state": {
-    "startDate": null,
+    "startDate": "2026-10-22",
     "events": [],
-    "notes": []
+    "notes": [
+      {
+        "id": "deployment-check",
+        "date": "2026-10-22",
+        "body": "배포 연결 확인용 테스트방입니다."
+      }
+    ]
   },
   "petHome": {
     "version": 0,
