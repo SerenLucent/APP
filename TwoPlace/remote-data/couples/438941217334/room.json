@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792664978883,
-  "revision": 3,
+  "updatedAt": 1792665037101,
+  "revision": 4,
   "state": {
     "startDate": "2024-08-08",
     "events": [
@@ -23,6 +23,15 @@
         "kind": "trip",
         "time": "",
         "place": "",
+        "details": ""
+      },
+      {
+        "id": "a8e3af337a7a5616e7e2ba417c2ede87",
+        "date": "2026-11-08",
+        "title": "전주1박2일",
+        "kind": "date",
+        "time": "",
+        "place": "전주",
         "details": ""
       }
     ],
