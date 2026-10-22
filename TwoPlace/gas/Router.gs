@@ -38,7 +38,7 @@ function github_(path,method,payload){
 }
 function roomPath_(code){if(!/^\d{12}$/.test(code))fail_(400,'방 코드를 확인해 주세요.');return ROOM_PREFIX+code+'/room.json';}
 function validPath_(path){
-  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|backups\/[a-zA-Z0-9_-]+\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
+  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|places\.json|backups\/[a-zA-Z0-9_-]+\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
   return path.split('/').map(encodeURIComponent).join('/');
 }
 function readRoom_(path){
@@ -87,7 +87,7 @@ function admin_(token){
   if(!expected||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||digest_(token)!==expected)fail_(403,'관리자 토큰을 확인해 주세요.');
 }
 function json_(data){return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);}
-function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:3});}
+function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:4});}
 function doPost(e){
   const lock=LockService.getScriptLock();let locked=false;
   try {
@@ -104,6 +104,14 @@ function doPost(e){
 function route_(req){
   const body=req.body||{},path=req.path,method=req.method||'GET';
   if(path==='/health')return {ok:true};
+  if(path==='/room/places'&&(method==='GET'||method==='PUT')){
+    const e=member_(req.token),filePath=ROOM_PREFIX+e.room.code+'/places.json';
+    let file;
+    try{file=readRoom_(filePath);}catch(error){if(error.status!==404)throw error;file={path:filePath,sha:null,room:initialPlaces()};}
+    if(method==='PUT')file.room=changePlaces(file.room,body,e.role,Date.now());
+    if(method==='PUT'||!file.sha)file.sha=writeJson_(filePath,file.room,file.sha,'Save TwoPlace couple shared places');
+    return {code:e.room.code,role:e.role,memberCount:e.room.members.length,...file.room};
+  }
   if(path==='/rooms/recover'&&method==='POST'){
     const code=typeof body.code==='string'?body.code.replace(/[\s-]/g,''):'';
     if(!/^\d{12}$/.test(code)||!['owner','partner'].includes(body.role)||!/^[a-f0-9]{64}$/.test(body.requestToken||''))fail_(400,'방 코드와 본인 자리를 확인해 주세요.');

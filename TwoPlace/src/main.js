@@ -88,7 +88,7 @@ async function refreshRoom() {
     const data = await request('/room',{token:session.token});
     const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || data.petHome?.pets.mochi.hunger !== petHome?.pets.mochi.hunger || data.petHome?.pets.kuki.hunger !== petHome?.pets.kuki.hunger || !connected;
     applyRoom(data);
-    if (changed) render();
+    if (changed && view !== 'places') render();
   } catch(error) {
     if (error.status === 401) { clearSession(); session = null; room = null; render(); toast(error.message); }
     else if (connected) { connected = false; render(); }
@@ -183,7 +183,7 @@ function home() {
   <section class="spaces"><div class="section-head"><div><span class="eyebrow">OUR SPACE</span><h2>둘이 함께 쓰는 공간</h2></div><span class="little-heart">♡</span></div><div class="menu-grid">
   <button class="menu-card calendar-card" data-view="calendar"><span class="tile-icon">${icon('calendar')}</span><span class="card-title">공유 캘린더</span><span class="card-desc">우리의 다음 약속</span><span class="card-bottom">${state.events.length ? `저장한 일정 ${state.events.length}개` : '함께할 하루를 기록해요'} ${icon('arrow')}</span></button>
   <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${state.notes.length ? `쌓인 이야기 ${state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
-  <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">연동 준비 중</span> ${icon('arrow')}</span></button>
+  <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">둘만의 공유 플레이스</span> ${icon('arrow')}</span></button>
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
   </div></section><aside class="today"><span class="today-flower">✳</span><div><span>${todayLabel}</span><p>오늘도 서로의 가장 가까운 편이 되어 주세요.</p></div></aside>`;
 }
@@ -256,6 +256,10 @@ function notes() {
 function render() {
   stopPets();
   finishLaunch();
+  if(room&&view==='places'){
+    app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 우리 공간</button><strong>플레이스메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
+    return;
+  }
   const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>ROOM CODE · 복사하기</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status">${connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
   app.innerHTML = `<div class="shell">${header}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 우리 공간으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
   if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
@@ -307,7 +311,7 @@ document.addEventListener('click', async e => {
     case 'retry': await restoreRoom(); break;
     case 'dday': dateDialog(); break;
     case 'note': noteDialog(); break;
-    case 'place': openDialog('플레이스메이트', `${icon('pin', 'dialog-icon')}<p>우리 둘만의 맛집 지도와 연결될 공간이에요.</p><p class="muted">플레이스메이트가 준비되면 이 메뉴에 연결할 예정이에요. 아직 지도 서비스는 연결되지 않았어요.</p>`); break;
+    case 'place': view='places';render();break;
     case 'more': toast('앞으로 추가할 메뉴를 위한 자리예요'); break;
     case 'event': eventDialog(); break;
     case 'day-list': dayDialog(); break;
@@ -317,6 +321,14 @@ window.addEventListener('storage', event => {
   if (event.key === 'twoplace:room-session:v1') { session = loadSession(); room = null; if (session) restoreRoom(); else render(); }
 });
 window.addEventListener('focus', refreshRoom);
+window.addEventListener('message',async event=>{
+  const frame=app.querySelector('.place-frame-shell iframe'),data=event.data;
+  if(event.origin!==location.origin||!frame||event.source!==frame.contentWindow||data?.type!=='twoplace:places:request'||typeof data.id!=='string'||data.id.length>40||!['GET','PUT'].includes(data.method)||!session)return;
+  const response={type:'twoplace:places:response',id:data.id};
+  try{response.data=await request('/room/places',{token:session.token,method:data.method,body:data.method==='PUT'?data.body:undefined});}
+  catch(error){response.error={message:error.message,status:error.status||503};}
+  if(frame.isConnected)event.source.postMessage(response,location.origin);
+});
 document.addEventListener('visibilitychange', refreshRoom);
 setInterval(refreshRoom, pollInterval);
 render();

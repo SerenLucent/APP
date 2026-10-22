@@ -108,3 +108,22 @@ test('Existing rooms opt into recovery; password changes require the old passwor
   h.properties['recovery-attempt:'+room.code]=JSON.stringify({at:Date.now()-900001,count:10});
   assert.equal(recover('new-password').status,200);
 });
+
+test('couple places use a separate per-room JSON and survive recovery without exposing other rooms',()=>{
+  const h=harness(),owner='7'.repeat(64),partner='8'.repeat(64),outsider='9'.repeat(64),fresh='0'.repeat(64);
+  const room=h.call({path:'/rooms',method:'POST',body:{requestToken:owner,password:'places-recovery-password'}}).data;
+  h.call({path:'/rooms/join',method:'POST',body:{requestToken:partner,code:room.code}});
+  h.call({path:'/rooms',method:'POST',body:{requestToken:outsider}});
+  const read=t=>h.call({path:'/room/places',token:t});
+  assert.equal(read(owner).data.revision,0);
+  const place={id:'shared-cafe',canonicalId:'shared-cafe',name:'둘만의 카페',address:'서울 성동구',category:'카페',lat:37.54,lng:127.04,checked:null};
+  const saved=h.call({path:'/room/places',method:'PUT',token:owner,body:{revision:0,nickname:'모모',places:[place],reviews:[]}});
+  assert.equal(saved.status,200);assert.equal(read(partner).data.places[0].name,place.name);
+  assert.equal(read(outsider).data.places.length,0);assert.equal(read('f'.repeat(64)).status,401);
+  assert.equal(h.call({path:'/room/places',method:'PUT',token:partner,body:{revision:0,nickname:'쿠키',places:[],reviews:[]}}).status,409);
+  assert.ok(h.files.has('TwoPlace/remote-data/couples/'+room.code+'/places.json'));
+  const roomJson=JSON.parse(h.files.get('TwoPlace/remote-data/couples/'+room.code+'/room.json').text);
+  assert.equal(roomJson.state.events.length,0);assert.equal(roomJson.places,undefined);assert.equal(roomJson.revision,0);
+  assert.equal(h.call({path:'/rooms/recover',method:'POST',body:{code:room.code,role:'partner',requestToken:fresh,password:'places-recovery-password'}}).status,200);
+  assert.equal(read(partner).status,401);assert.equal(read(fresh).data.places[0].name,place.name);
+});

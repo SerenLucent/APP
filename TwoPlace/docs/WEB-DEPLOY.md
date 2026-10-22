@@ -83,3 +83,15 @@ APK는 capacitor.config.json의 고정 HTTPS server.url을 여는 WebView이며 
 홈 화면 아이콘은 public/momo-icon-master-v1.png를 기준으로 PNG 180(iOS), 192/512(웹), 32(브라우저 탭)를 사용합니다. manifest id/start_url/scope는 그대로 유지합니다. Android는 같은 이미지의 밀도별 런처 아이콘과 원형/적응형 아이콘을 사용합니다. Android 기본 시작 화면은 launch_friends.xml에 모모·쿠키를 함께 표시하고, 웹은 HTML에 포함된 시작 화면을 방 복원 완료 후 닫습니다. 동작 줄이기 설정을 따릅니다.
 
 아이콘은 내장 image_gen으로 기존 모모 캐릭터를 참조해 생성했습니다. 프롬프트: “Momo plush cream rabbit face only, pink floppy ears and heart sprout, glossy brown eyes, rosy cheeks, square pale peach background, no text or body, centered app icon.” scripts/build-icons.ps1로 크기별 PNG를 생성합니다. Android APK 1.2(versionCode 3)는 아이콘 교체를 위해 한 번 업데이트 설치가 필요합니다. 이후 웹 화면 업데이트 방식은 같습니다.
+
+## 플레이스메이트 커플 지도 (앱스크립트 v4)
+
+TwoPlace 메뉴의 플레이스메이트는 기존 PlaceMate UI를 커플 전용 모드로 사용합니다. 별도 개인키 발급이나 메이트방 가입 없이 현재 커플방 토큰으로 연결합니다. 기존 PlaceMate 서비스와 개인 원본은 수정하지 않습니다.
+
+지도 첫 진입 시 TwoPlace/remote-data/couples/방코드/places.json을 별도로 생성합니다. 장소·분류·주소·좌표와 각 사람의 방문·별점·커스텀 평가·후기·닉네임을 보관합니다. 등록한 장소는 자동 공유됩니다. 작성자만 장소를 수정·삭제하고 각자는 자기 방문과 후기를 수정합니다. API는 클라이언트의 방 코드/작성자 값을 신뢰하지 않고 기기 토큰에서 커플방과 자리를 결정합니다. 복구로 기기 토큰이 바뀌어도 owner/partner 자리에 연결된 지도는 유지됩니다.
+
+GET/PUT /room/places. 지도 revision과 GitHub SHA로 동시 수정 손실을 막습니다. 15초 간격으로 상대방 변경을 확인하며 입력 폼이 열리면 자동 갱신을 미룹니다. 폼 저장 실패 시 성공으로 표시하지 않고 기존 화면을 복원한 후 최신 지도를 확인하게 안내합니다. 부모 앱은 같은 출처의 현재 지도 iframe에서 온 GET/PUT 요청만 처리하고 토큰을 URL이나 iframe 메시지에 전달하지 않습니다.
+
+원본 UI 스냅샷은 integrations/placemate/upstream-app.js, 커플 모드 생성기는 scripts/integrate-placemate.mjs, 어댑터는 public/placemate/cloud-store.js입니다. 독립 PlaceMate 서버에는 이 커플 데이터를 쓰지 않습니다. 기존 공개 저장소의 JSON 공개 범위는 동일하며 API 인증이 GitHub 원본의 공개 열람을 막지는 않습니다. 지도는 원본 PlaceMate와 같은 OpenStreetMap 타일과 출처 표기를 유지합니다. 외부 장소 검색/주소 좌표 변환은 원본과 동일하게 미지원이며 저장된 장소 검색과 직접 좌표 입력을 제공합니다.
+
+기존 웹 연결 APK는 새 웹 화면을 열므로 APK 재설치가 필요 없습니다. PlaceMate 독립 앱의 배포를 포함하도록 공용 워크플로 변경을 보존했습니다.

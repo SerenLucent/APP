@@ -1,4 +1,5 @@
 import { cleanState } from '../shared/room-state.js';
+import { initialPlaces, changePlaces } from '../shared/places.js';
 import { DatabaseSync } from 'node:sqlite';
 import { randomBytes, randomInt, createHash, scryptSync } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
@@ -31,6 +32,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
     CREATE INDEX IF NOT EXISTS members_room ON members(room_id);
     CREATE TABLE IF NOT EXISTS recovery (room_id TEXT PRIMARY KEY REFERENCES rooms(id), salt TEXT NOT NULL, hash TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS recovery_attempts (code TEXT PRIMARY KEY, at INTEGER, count INTEGER);`);
+  db.exec('CREATE TABLE IF NOT EXISTS place_maps (room_id TEXT PRIMARY KEY REFERENCES rooms(id), data TEXT NOT NULL)');
   function passwordHash(password,salt){
     if(typeof password!=='string'||password.length<8||password.length>128)throw new ApiError(400,'복구 암호는 8~128자로 입력해 주세요.');
     return scryptSync(password,salt,32).toString('hex');
@@ -139,6 +141,18 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         if(!changed.changes)throw new ApiError(400,'아직 입장한 적 없는 자리예요. 커플방 입장하기를 이용해 주세요.');
         db.prepare('DELETE FROM recovery_attempts WHERE code=?').run(code);
         return reply(200,{token:body.requestToken,...snapshot(room,body.role)});
+      }
+      if(path==='/api/room/places'&&['GET','PUT'].includes(req.method)){
+        const auth=member(req),body=req.method==='PUT'?await readJson(req):null;
+        db.exec('BEGIN IMMEDIATE');
+        try{
+          const stored=db.prepare('SELECT data FROM place_maps WHERE room_id=?').get(auth.id);
+          let data=stored?JSON.parse(stored.data):initialPlaces();
+          if(body)data=changePlaces(data,body,auth.role,Date.now());
+          if(body||!stored)db.prepare('INSERT OR REPLACE INTO place_maps VALUES (?,?)').run(auth.id,JSON.stringify(data));
+          db.exec('COMMIT');
+          return reply(200,{code:auth.code,role:auth.role,memberCount:snapshot(auth,auth.role).memberCount,...data});
+        }catch(error){db.exec('ROLLBACK');throw error;}
       }
       if (path === '/api/room' && req.method === 'GET') {
         const room = member(req);
