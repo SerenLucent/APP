@@ -23,4 +23,4 @@ const shared=await call('/room',{token:partner});assert.equal(shared.data.petHom
 assert.equal((await call('/room/pets',{method:'POST',token:partner,body:{type:'place',item:shared.data.petHome.items[0].id,version:1,space:'momoRoom',x:45,y:64}})).status,200);
 assert.equal((await call('/room',{token:owner})).data.petHome.items[0].space,'momoRoom');
 console.log('PASS: live GAS create/join, private authorization, shared JSON, revision conflict and pet furniture storage.');
-console.log('One labeled deployment test room was retained in the private Drive storage.');
+console.log('One labeled deployment test room was retained in the GitHub storage.');

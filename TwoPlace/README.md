@@ -125,7 +125,7 @@ npm test로 독립 클라이언트의 생성·입장·공유, 방 격리, 잘못
 - 방은 기존 실내 배경을 사용하며, 모든 공간에서 두 펫의 이동과 별도 가구 배치를 지원합니다.
 - 거실 고정 가구 영역은 이동 및 가구 배치에서 제외됩니다. 이전 테라스 가구는 꾸미기 목록에서 다시 배치할 수 있습니다.
 
-## GitHub Pages + GAS 방식
+## GitHub Pages + 앱스크립트 방식
 
-공개 웹 배포와 비공개 Drive JSON 저장, APP 토큰 발급, 모든 커플방 관리 방법은 docs/WEB-DEPLOY.md를 참고하세요. VITE_GAS_URL이 있으면 Node API 대신 GAS를 사용합니다. 관리자 화면은 admin.html입니다.
+공개 웹 배포와 GitHub JSON 저장, APP 토큰 발급, 모든 커플방 관리 방법은 docs/WEB-DEPLOY.md를 참고하세요. VITE_GAS_URL이 있으면 Node API 대신 GAS를 사용합니다. 관리자 화면은 admin.html입니다.
 

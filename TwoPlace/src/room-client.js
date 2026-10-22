@@ -1,4 +1,8 @@
-export const gasUrl = (import.meta.env.VITE_GAS_URL || '').trim();
+let runtimeApiUrl='';
+if(import.meta.env.PROD&&!import.meta.env.VITE_GAS_URL&&!import.meta.env.VITE_API_URL){
+  try{const r=await fetch(import.meta.env.BASE_URL+'web-config.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.ok)runtimeApiUrl=(await r.json()).apiUrl||'';}catch{/* Request shows a configuration error if unavailable. */}
+}
+export const gasUrl = (import.meta.env.VITE_GAS_URL || runtimeApiUrl || '').trim();
 export const pollInterval = gasUrl ? 15000 : 3000;
 const sessionKey = 'twoplace:room-session:v1';
 const pendingKey = 'twoplace:pending-room:v1';

@@ -130,7 +130,7 @@ function petSnapshot(home,now=Date.now()) {
 }
 function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.randomUUID()) {
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
-  const home = structuredClone(current);
+  const home = JSON.parse(JSON.stringify(current));
   switch(action.type) {
     case 'claim': {
       const amount = claimable(home,now);
@@ -182,13 +182,14 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
 }
 
 // Generated Code.gs also includes the same validation, pet economy and geometry as Node.
-function setupTwoPlace() {
-  const props=PropertiesService.getScriptProperties();
-  if(!props.getProperty('ROOT_FOLDER_ID')) {
-    const root=DriveApp.createFolder('TwoPlace Couples');
-    props.setProperty('ROOT_FOLDER_ID',root.getId());
-  }
-  return 'TwoPlace storage is ready.';
+const GITHUB_OWNER='SerenLucent';
+const GITHUB_REPO='APP';
+const GITHUB_BRANCH='main';
+const ROOM_PREFIX='TwoPlace/remote-data/couples/';
+function setupTwoPlace(){
+  const response=github_('', 'GET');
+  if(response.permissions && response.permissions.push===false)fail_(403,'APP 저장소의 Contents 쓰기 권한이 필요해요.');
+  return 'TwoPlace GitHub storage is ready.';
 }
 // Run from the Apps Script editor once. Store the token in a password manager.
 // Running it again rotates the token and invalidates the previous one.
@@ -203,13 +204,43 @@ function digest_(value) {
 }
 function fail_(status,message){const e=new Error(message);e.status=status;throw e;}
 function props_(){return PropertiesService.getScriptProperties();}
-function root_(){const id=props_().getProperty('ROOT_FOLDER_ID');if(!id)fail_(503,'저장소 초기 설정이 필요해요.');return DriveApp.getFolderById(id);}
-function readRoom_(fileId){const file=DriveApp.getFileById(fileId);return {file,room:JSON.parse(file.getBlob().getDataAsString('UTF-8'))};}
-function saveRoom_(entry){entry.room.updatedAt=Date.now();entry.file.setContent(JSON.stringify(entry.room,null,2));}
+function github_(path,method,payload){
+  const token=props_().getProperty('GITHUB_TOKEN');
+  if(!token)fail_(503,'앱스크립트의 GITHUB_TOKEN 설정이 필요해요.');
+  const response=UrlFetchApp.fetch('https://api.github.com/repos/'+GITHUB_OWNER+'/'+GITHUB_REPO+path,{
+    method:method.toLowerCase(),muteHttpExceptions:true,
+    headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},
+    ...(payload?{contentType:'application/json',payload:JSON.stringify(payload)}:{})
+  });
+  const status=response.getResponseCode();
+  if(status===409||status===422)fail_(409,'GitHub 파일이 먼저 바뀌었어요. 다시 불러와 주세요.');
+  if(status===401||status===403)fail_(503,'GitHub 토큰과 APP 저장소 권한을 확인해 주세요.');
+  if(status===404)fail_(404,'GitHub 저장 파일을 찾을 수 없어요.');
+  if(status<200||status>=300)fail_(502,'GitHub 저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+  return JSON.parse(response.getContentText());
+}
+function roomPath_(code){if(!/^\d{12}$/.test(code))fail_(400,'방 코드를 확인해 주세요.');return ROOM_PREFIX+code+'/room.json';}
+function validPath_(path){
+  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|backups\/[a-zA-Z0-9_-]+\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
+  return path.split('/').map(encodeURIComponent).join('/');
+}
+function readRoom_(path){
+  const data=github_('/contents/'+validPath_(path)+'?ref='+GITHUB_BRANCH,'GET');
+  const text=Utilities.newBlob(Utilities.base64Decode(data.content.replace(/\s/g,''))).getDataAsString('UTF-8');
+  return {path,sha:data.sha,room:JSON.parse(text)};
+}
+function writeJson_(path,room,sha,message){
+  const result=github_('/contents/'+validPath_(path),'PUT',{
+    message:message||'Update TwoPlace couple data',branch:GITHUB_BRANCH,
+    content:Utilities.base64Encode(JSON.stringify(room,null,2),Utilities.Charset.UTF_8),...(sha?{sha}:{})
+  });
+  return result.content.sha;
+}
+function saveRoom_(entry){entry.room.updatedAt=Date.now();entry.sha=writeJson_(entry.path,entry.room,entry.sha);}
 function snapshot_(room,role){return {code:room.code,role,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
 function member_(token){
   if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))fail_(401,'커플방에 다시 입장해 주세요.');
-  const hashed=digest_(token),fileId=props_().getProperty('member:'+hashed);
+  const hashed=digest_(token),fileId=props_().getProperty('github-member:'+hashed);
   if(!fileId)fail_(401,'커플방에 다시 입장해 주세요.');
   const entry=readRoom_(fileId),member=entry.room.members.find(m=>m.hash===hashed);
   if(!member)fail_(401,'입장 정보를 확인해 주세요.');
@@ -226,7 +257,7 @@ function admin_(token){
   if(!expected||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||digest_(token)!==expected)fail_(403,'관리자 토큰을 확인해 주세요.');
 }
 function json_(data){return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);}
-function doGet(){return json_({service:'TwoPlace',storage:'private-drive-json',version:1});}
+function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:2});}
 function doPost(e){
   const lock=LockService.getScriptLock();let locked=false;
   try {
@@ -246,7 +277,7 @@ function route_(req){
   if((path==='/rooms'||path==='/rooms/join')&&method==='POST'){
     const token=body.requestToken;
     if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))fail_(400,'입장 요청 정보를 확인해 주세요.');
-    const hashed=digest_(token),existingId=props_().getProperty('member:'+hashed);
+    const hashed=digest_(token),existingId=props_().getProperty('github-member:'+hashed);
     const joining=path==='/rooms/join',code=typeof body.code==='string'?body.code.replace(/[\s-]/g,''):'';
     if(existingId){
       const entry=member_(token);
@@ -256,19 +287,19 @@ function route_(req){
     admissionLimit_(joining?'join':'create');
     if(joining){
       if(!/^\d{12}$/.test(code))fail_(400,'숫자 12자리 방 코드를 입력해 주세요.');
-      const fileId=props_().getProperty('room:'+code);if(!fileId)fail_(404,'방 코드를 찾을 수 없어요.');
+      const fileId=props_().getProperty('github-room:'+code);if(!fileId)fail_(404,'방 코드를 찾을 수 없어요.');
       const entry=readRoom_(fileId);
       if(entry.room.members.length>=2)fail_(409,'이미 두 사람이 입장한 커플방이에요.');
       entry.room.members.push({hash:hashed,role:'partner'});
-      saveRoom_(entry);props_().setProperty('member:'+hashed,fileId);
+      saveRoom_(entry);props_().setProperty('github-member:'+hashed,fileId);
       return {token,...snapshot_(entry.room,'partner')};
     }
     let newCode;
-    do{newCode=String(parseInt(Utilities.getUuid().replace(/-/g,'').slice(0,12),16)%1000000000000).padStart(12,'0');}while(props_().getProperty('room:'+newCode));
+    do{newCode=String(parseInt(Utilities.getUuid().replace(/-/g,'').slice(0,12),16)%1000000000000).padStart(12,'0');}while(props_().getProperty('github-room:'+newCode));
     const now=Date.now(),room={schemaVersion:1,code:newCode,createdAt:now,updatedAt:now,revision:0,state:{startDate:null,events:[],notes:[]},petHome:initialPetHome(now),members:[{hash:hashed,role:'owner'}]};
-    const folder=root_().createFolder('couple_'+newCode);
-    const file=folder.createFile('room.json',JSON.stringify(room,null,2),MimeType.PLAIN_TEXT);
-    props_().setProperties({['room:'+newCode]:file.getId(),['member:'+hashed]:file.getId()});
+    const filePath=roomPath_(newCode);
+    writeJson_(filePath,room,null,'Create TwoPlace couple room');
+    props_().setProperties({['github-room:'+newCode]:filePath,['github-member:'+hashed]:filePath});
     return {token,...snapshot_(room,'owner')};
   }
   if(path==='/room'&&method==='GET'){const e=member_(req.token);return snapshot_(e.room,e.role);}
@@ -285,21 +316,19 @@ function route_(req){
   if(path==='/admin/rooms'&&method==='GET'){
     admin_(req.token);
     // Paginate the property index so listing never returns every room's private contents.
-    const keys=Object.keys(props_().getProperties()).filter(k=>k.indexOf('room:')===0).sort();
+    const keys=Object.keys(props_().getProperties()).filter(k=>k.indexOf('github-room:')===0).sort();
     const offset=Math.max(0,Number(body.offset)||0),selected=keys.slice(offset,offset+50);
-    return {rooms:selected.map(k=>({code:k.slice(5)})),nextOffset:offset+50<keys.length?offset+50:null};
+    return {rooms:selected.map(k=>({code:k.slice(12)})),nextOffset:offset+50<keys.length?offset+50:null};
   }
   if(path==='/admin/room'&&(method==='GET'||method==='PUT')){
     admin_(req.token);
     if(!/^\d{12}$/.test(body.code))fail_(400,'방 코드를 확인해 주세요.');
-    const id=props_().getProperty('room:'+body.code);if(!id)fail_(404,'방이 없어요.');
+    const id=props_().getProperty('github-room:'+body.code);if(!id)fail_(404,'방이 없어요.');
     const e=readRoom_(id);
     if(method==='PUT'){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);
-      const parents=e.file.getParents();
-      if(!parents.hasNext())fail_(500,'백업 폴더를 확인해 주세요.');
-      parents.next().createFile('backup_'+Date.now()+'.json',JSON.stringify(e.room,null,2),MimeType.PLAIN_TEXT);
+      writeJson_(ROOM_PREFIX+e.room.code+'/backups/'+Date.now()+'_'+Utilities.getUuid()+'.json',e.room,null,'Back up TwoPlace couple before administrator edit');
       e.room.state=state;e.room.revision++;e.room.petHome={...pets,version:e.room.petHome.version+1};saveRoom_(e);
     }
     return snapshot_(e.room,'admin');
