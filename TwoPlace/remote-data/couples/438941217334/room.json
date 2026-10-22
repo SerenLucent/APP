@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792677912885,
+  "updatedAt": 1792680146499,
   "revision": 6,
   "state": {
     "startDate": "2024-08-08",
@@ -53,10 +53,10 @@
     ]
   },
   "petHome": {
-    "version": 39,
-    "hearts": 5,
+    "version": 40,
+    "hearts": 15,
     "snacks": 2,
-    "lastClaim": 1792675952455,
+    "lastClaim": 1792679552455,
     "pets": {
       "mochi": {
         "hunger": 100,
