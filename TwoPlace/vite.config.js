@@ -3,7 +3,7 @@ import { createRoomApi } from './server/api.js';
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
-  build: {rollupOptions:{input:{main:'index.html',admin:'admin.html'}}},
+  build: {rollupOptions:{input:{main:'index.html',admin:'admin.html',demo:'demo.html'}}},
   server: { host: '0.0.0.0', port: 5173, strictPort: true, watch: { ignored: ['**/.data/**', '**/android/**', '**/releases/**'] } },
   plugins: [{
     name: 'twoplace-rooms',

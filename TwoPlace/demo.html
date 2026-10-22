@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko" data-mode="demo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbf8f5" />
+    <meta name="description" content="우리 둘의 하루가 모이는 공간, TwoPlace" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%momo-icon-180-v1.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%momo-icon-32-v1.png" />
+    <link rel="stylesheet" href="%BASE_URL%startup.css" />
+    <title>TwoPlace · 모의 테스트</title>
+  </head>
+  <body>
+    <div id="launch-screen" class="launch-screen" role="status" aria-label="모모와 쿠키가 우리 공간을 여는 중">
+      <div class="launch-friends"><img src="%BASE_URL%pets/mochi-standing-v2.png" alt="모모" width="150" height="150"><img src="%BASE_URL%pets/kuki-standing-v2.png" alt="쿠키" width="150" height="150"></div>
+      <strong class="launch-name">two<span>place</span>.</strong><p>모모와 쿠키가 기다리고 있어요</p><span class="launch-dots" aria-hidden="true">● ● ●</span>
+    </div>
+    <div id="app"></div>
+    <dialog id="modal"></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

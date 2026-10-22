@@ -4,7 +4,9 @@ import './calendar.css';
 import { eventLabel, eventsOn, categoryNames, eventKinds } from './calendar-model.js';
 import { petPage, mountPets, stopPets } from './pet-view.js';
 import { dateKey, togetherDays } from './model.js';
-import { loadSession, storeSession, clearSession, request, pendingRequest, finishRequest, pollInterval } from './room-client.js';
+import { loadSession, storeSession, clearSession, request, pendingRequest, finishRequest, pollInterval, demoMode, resetDemo } from './room-client.js';
+
+import './menu-theme.css';
 
 const icons = {
   heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
@@ -31,7 +33,7 @@ let bootError = '';
 let saving = false;
 let refreshing = false;
 let connected = true;
-let view = 'home';
+let view = demoMode ? (new URLSearchParams(location.search).get('view') === 'home' ? 'home' : 'calendar') : 'home';
 let month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let selected = dateKey();
 let timer;
@@ -161,7 +163,7 @@ async function copyCode() {
 function welcome() {
   if (booting) return '<section class="welcome"><span class="welcome-heart">♡</span><h1>우리 공간을 여는 중…</h1><p>잠시만 기다려 주세요.</p></section>';
   if (bootError) return `<section class="welcome"><span class="welcome-heart">♡</span><h1>우리 방에 연결하지 못했어요</h1><p role="alert">${esc(bootError)}</p><button class="primary" data-action="retry">다시 연결하기</button></section>`;
-  return `<section class="welcome"><span class="eyebrow">TWO OF US, ONE PLACE</span><div class="welcome-mascots"><img src="${import.meta.env.BASE_URL}pets/mochi-standing-v2.png" alt="모모" width="128" height="128"><img src="${import.meta.env.BASE_URL}pets/kuki-standing-v2.png" alt="쿠키" width="128" height="128"><span aria-hidden="true">♡</span></div><h1>우리 둘만의 공간을<br>시작해 볼까요<span class="accent">?</span></h1><p>한 사람이 커플방을 만들고,<br>다른 한 사람이 방 코드로 입장하면 돼요.</p><div class="welcome-actions"><button class="primary" data-action="create">커플 등록하기</button><span aria-hidden="true">|</span><button class="secondary" data-action="join">커플방 입장하기</button></div><button class="text-button recovery-entry" data-action="recover">연결 복구하기</button><span class="welcome-hint">우리의 하루와 약속, 이제 같은 공간에.</span></section>`;
+  return `<section class="welcome"><span class="eyebrow">TWO OF US, ONE PLACE</span><div class="welcome-mascots"><img src="${import.meta.env.BASE_URL}pets/mochi-standing-v2.png" alt="모모" width="128" height="128"><img src="${import.meta.env.BASE_URL}pets/kuki-standing-v2.png" alt="쿠키" width="128" height="128"><span aria-hidden="true">♡</span></div><h1>우리 둘만의 공간을<br>시작해 볼까요<span class="accent">?</span></h1><p>한 사람이 커플방을 만들고,<br>다른 한 사람이 방 코드로 입장하면 돼요.</p><div class="welcome-actions"><button class="primary" data-action="create">커플 등록하기</button><span aria-hidden="true">|</span><button class="secondary" data-action="join">커플방 입장하기</button></div><button class="text-button recovery-entry" data-action="recover">연결 복구하기</button><a class="demo-link" href="${import.meta.env.BASE_URL}demo.html">커플 등록 없이 모의 테스트</a><span class="welcome-hint">우리의 하루와 약속, 이제 같은 공간에.</span></section>`;
 }
 function openDialog(title, body) {
   modal.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button class="close" type="button" aria-label="닫기">×</button></div>${body}`;
@@ -260,8 +262,8 @@ function render() {
     app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 우리 공간</button><strong>플레이스메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
     return;
   }
-  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>ROOM CODE · 복사하기</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status">${connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
-  app.innerHTML = `<div class="shell">${header}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 우리 공간으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
+  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status">${connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
+  app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 우리 공간으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
   if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
     if(saving) throw new Error('이전 동작이 끝나면 다시 시도해 주세요.');
     saving=true;
@@ -305,9 +307,10 @@ document.addEventListener('click', async e => {
   switch (el.dataset.action) {
     case 'create': createDialog(); break;
     case 'recover': recoveryDialog(); break;
-    case 'recovery-settings': recoveryDialog(true); break;
+    case 'recovery-settings': if(demoMode)toast('실제 방 연결을 바꾸지 않는 모의 테스트예요.');else recoveryDialog(true); break;
     case 'join': joinDialog(); break;
-    case 'copy': await copyCode(); break;
+    case 'copy': if(demoMode)toast('모의 테스트용 방이에요. 실제 입장 코드는 없어요.');else await copyCode(); break;
+    case 'demo-reset': if(demoMode){room=null;petHome=null;applyRoom(resetDemo());view='calendar';selected=dateKey();month=new Date(new Date().getFullYear(),new Date().getMonth(),1);modal.close();render();toast('샘플 일정을 다시 준비했어요');}break;
     case 'retry': await restoreRoom(); break;
     case 'dday': dateDialog(); break;
     case 'note': noteDialog(); break;
@@ -318,7 +321,7 @@ document.addEventListener('click', async e => {
   }
 });
 window.addEventListener('storage', event => {
-  if (event.key === 'twoplace:room-session:v1') { session = loadSession(); room = null; if (session) restoreRoom(); else render(); }
+  if (!demoMode && event.key === 'twoplace:room-session:v1') { session = loadSession(); room = null; if (session) restoreRoom(); else render(); }
 });
 window.addEventListener('focus', refreshRoom);
 window.addEventListener('message',async event=>{

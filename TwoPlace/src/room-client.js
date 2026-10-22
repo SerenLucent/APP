@@ -1,5 +1,8 @@
+export const demoMode=document.documentElement.dataset.mode==='demo';
+const demoClient=demoMode?(await import('./demo-client.js')).createDemoClient({storage:(()=>{try{return sessionStorage;}catch{return undefined;}})()}):null;
+export function resetDemo(){return demoClient?.reset();}
 let runtimeApiUrl='';
-if(import.meta.env.PROD&&!import.meta.env.VITE_GAS_URL&&!import.meta.env.VITE_API_URL){
+if(!demoMode&&import.meta.env.PROD&&!import.meta.env.VITE_GAS_URL&&!import.meta.env.VITE_API_URL){
   try{const r=await fetch(import.meta.env.BASE_URL+'web-config.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.ok)runtimeApiUrl=(await r.json()).apiUrl||'';}catch{/* Request shows a configuration error if unavailable. */}
 }
 export const gasUrl = (import.meta.env.VITE_GAS_URL || runtimeApiUrl || '').trim();
@@ -8,13 +11,14 @@ const sessionKey = 'twoplace:room-session:v1';
 const pendingKey = 'twoplace:pending-room:v1';
 const apiBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 export function loadSession() {
+  if(demoMode)return {token:'demo-only'};
   try {
     const saved = JSON.parse(localStorage.getItem(sessionKey));
     return /^[a-f0-9]{64}$/.test(saved?.token) ? saved : null;
   } catch { return null; }
 }
-export function storeSession(session) { localStorage.setItem(sessionKey, JSON.stringify({token:session.token})); }
-export function clearSession() { localStorage.removeItem(sessionKey); }
+export function storeSession(session) { if(!demoMode)localStorage.setItem(sessionKey, JSON.stringify({token:session.token})); }
+export function clearSession() { if(!demoMode)localStorage.removeItem(sessionKey); }
 export function pendingRequest(kind, code) {
   let pending;
   try { pending = JSON.parse(localStorage.getItem(pendingKey)); } catch { /* Start a fresh request. */ }
@@ -25,6 +29,7 @@ export function pendingRequest(kind, code) {
 }
 export function finishRequest() { localStorage.removeItem(pendingKey); }
 export async function request(path, {token, method='GET', body} = {}) {
+  if(demoMode)return demoClient.request(path,{method,body});
   if (gasUrl) return gasRequest(path,{token,method,body});
   if (import.meta.env.PROD && location.hostname.endsWith('github.io') && !apiBase) throw new Error('저장 서버 연결 설정이 필요해요. GAS 배포 주소를 설정한 뒤 웹을 다시 배포해 주세요.');
   if (Capacitor.isNativePlatform() && !apiBase) throw new Error('앱에 연결할 서버 주소가 아직 설정되지 않았어요. 웹에서 먼저 이용해 주세요.');

@@ -125,3 +125,7 @@ npm test로 독립 클라이언트의 생성·입장·공유, 방 격리, 잘못
 
 공개 웹 배포와 GitHub JSON 저장, APP 토큰 발급, 모든 커플방 관리 방법은 docs/WEB-DEPLOY.md를 참고하세요. VITE_GAS_URL 또는 public/web-config.json의 apiUrl이 있으면 Node API 대신 앱스크립트를 사용합니다. 관리자 화면은 admin.html입니다.
 
+
+## 등록 없는 모의 테스트
+
+https://serenlucent.github.io/APP/TwoPlace/demo.html 은 샘플 커플방의 캘린더를 바로 엽니다. 퇴근·휴무·데이트·여행과 하루 여러 일정 표시를 확인하고 추가·수정·삭제할 수 있습니다. 데이터는 현재 탭의 별도 sessionStorage 키에만 보관하며 실제 입장 토큰과 커플방 서버에 접근하지 않습니다. 샘플 초기화 버튼으로 복원합니다. ?view=home을 붙이면 포스트잇 색상의 메인 메뉴부터 둘러볼 수 있습니다.
