@@ -2,7 +2,7 @@ name: Publish APP apps
 on:
   push:
     branches: [main]
-    paths: ['TwoPlace/**', '.github/workflows/pages.yml']
+    paths: ['TwoPlace/**', 'pages/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
