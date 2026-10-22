@@ -11,3 +11,5 @@
 .menu-grid .place-card .badge{background:#ffffffa6;color:#4e7a8d}
 .demo-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;margin:18px 0 0;border:1px solid #e6d9a9;border-radius:12px;background:#fff5d7;font-size:11px;line-height:1.7}
 .demo-banner strong{display:block;font-size:12px;color:#725a24}.demo-banner button{background:white;padding:9px 12px;border-radius:8px;white-space:nowrap;font-size:11px}.demo-link{display:block;margin-top:18px;font-size:12px;color:#93725f;text-underline-offset:4px}
+
+[data-mode="demo"] .recovery-tools{display:none}
