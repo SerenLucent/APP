@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "revision": 1,
-  "updatedAt": 1792655960390,
+  "revision": 2,
+  "updatedAt": 1792655965894,
   "profiles": {
     "owner": {
       "nickname": "지도 테스트 1"
     },
     "partner": {
-      "nickname": "초대받은 사람"
+      "nickname": "지도 테스트 2"
     }
   },
   "places": [
@@ -23,5 +23,20 @@
       "checked": null
     }
   ],
-  "reviews": []
+  "reviews": [
+    {
+      "place": "live-test-cafe",
+      "user": "partner",
+      "visited": true,
+      "rating": 5,
+      "custom": [
+        {
+          "label": "분위기",
+          "score": 4
+        }
+      ],
+      "comment": "두 기기 공유 확인용 테스트입니다.",
+      "visitedAt": null
+    }
+  ]
 }
