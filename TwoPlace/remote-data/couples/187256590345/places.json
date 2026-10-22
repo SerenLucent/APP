@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "revision": 0,
+  "updatedAt": 0,
+  "profiles": {
+    "owner": {
+      "nickname": "방을 만든 사람"
+    },
+    "partner": {
+      "nickname": "초대받은 사람"
+    }
+  },
+  "places": [],
+  "reviews": []
+}
