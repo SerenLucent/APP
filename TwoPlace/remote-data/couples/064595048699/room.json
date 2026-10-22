@@ -2,12 +2,18 @@
   "schemaVersion": 1,
   "code": "064595048699",
   "createdAt": 1792650646719,
-  "updatedAt": 1792650653496,
-  "revision": 0,
+  "updatedAt": 1792650656533,
+  "revision": 1,
   "state": {
     "startDate": null,
     "events": [],
-    "notes": []
+    "notes": [
+      {
+        "id": "recovery-smoke",
+        "date": "2026-10-22",
+        "body": "연결 복구 배포 확인용 테스트방입니다."
+      }
+    ]
   },
   "petHome": {
     "version": 0,
