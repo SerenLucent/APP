@@ -22,6 +22,7 @@ export class CloudStore{
     const s=this.snapshot,alias=role=>role===s.role?'me':role;
     return {users:['owner','partner'].map(role=>({id:alias(role),name:s.profiles[role].nickname,color:role==='owner'?'#f5dfd8':'#e6e0ee'})),rooms:[{id:s.code,code:s.code,name:'둘만의 공유 플레이스',description:'함께 가고 싶은 곳과 다녀온 추억을 같은 지도에 모아요.',emoji:'♡',master:alias('owner'),members:(s.memberCount===2?['owner','partner']:['owner']).map(alias),bans:[],pending:[],revision:s.revision}],places:s.places.map(p=>({...p,owner:alias(p.owner),rooms:[s.code]})),reviews:s.reviews.map(r=>({...r,user:alias(r.user)}))};
   }
+  async searchPlaces(query){return bridge('SEARCH',{query});}
   async saveView(db){
     const places=db.places.filter(p=>p.owner==='me').map(p=>({...p,canonicalId:p.canonicalId||p.id})),known=new Set(db.places.map(p=>p.canonicalId||p.id));
     const reviews=db.reviews.filter(r=>r.user==='me'&&r.visited&&known.has(r.place));
@@ -30,3 +31,5 @@ export class CloudStore{
   }
 }
 export const cloudError=error=>error.message||'지도를 불러오지 못했어요. 다시 연결해 주세요.';
+
+export const getMapConfig=()=>bridge('CONFIG');

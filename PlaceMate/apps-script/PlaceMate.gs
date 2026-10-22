@@ -7,9 +7,10 @@
  */
 var PM_ROOT_ = 'PlaceMate/';
 
-function doGet() {
+function doGet(e) {
+  if(e&&e.parameter&&e.parameter.action==='mapConfig')return json_({ok:true,data:pmNaverConfig_()});
   var cfg=config_();
-  return json_({ok:true, service:'PlaceMate', storage:'github-json', repository:cfg.owner+'/'+cfg.repo, branch:cfg.branch, prefix:PM_ROOT_, version:2});
+  return json_({ok:true, service:'PlaceMate', storage:'github-json', repository:cfg.owner+'/'+cfg.repo, branch:cfg.branch, prefix:PM_ROOT_, version:3});
 }
 
 /** Verify the token and branch using the same repository settings as TwoPlace. */
@@ -161,6 +162,7 @@ function dispatch_(tx, uid, action, data) {
   }
   p = personal_(tx, uid);
   switch (action) {
+    case 'searchPlaces': return pmNaverSearch_(data.query,uid);
     case 'getPersonal': return p;
     case 'savePersonal':
       revision_(p, data.expectedRevision);

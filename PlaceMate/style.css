@@ -6,3 +6,4 @@
 
 
 .cloud-busy .modal-overlay,.cloud-busy .app{pointer-events:none}.cloud-busy{cursor:progress}#cloud-status{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);z-index:110;background:#255c47;color:white;border-radius:12px;padding:16px 24px;box-shadow:0 5px 30px #173d3922;font-size:12px;white-space:nowrap}
+.map-provider-note{position:absolute;left:17px;top:65px;z-index:5;background:#ffffffed;border-radius:6px;padding:6px 9px;font-size:9px;color:#68775e;max-width:85%;pointer-events:none}.store-result{display:flex;flex-direction:column;gap:7px;width:100%;text-align:left;border-bottom:1px solid #e8ebe4;padding:16px 0}.store-result strong{font-size:14px}.store-result span{font-size:11px;color:#89918b}.store-result small{font-size:10px;color:#255c47}

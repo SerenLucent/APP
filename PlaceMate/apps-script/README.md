@@ -1,6 +1,6 @@
 # 지도메이트 전용 Google Apps Script
 
-`PlaceMate.gs`를 **지도메이트 전용** Apps Script 프로젝트에 복사합니다. 공개 `SerenLucent/APP` 저장소의 [투플레이스 서버 소스](https://github.com/SerenLucent/APP/blob/main/TwoPlace/gas/Router.gs)를 확인해 같은 저장소·브랜치·스크립트 속성 토큰을 사용하는 GitHub JSON 방식으로 맞췄습니다. 기존 투플레이스 프로젝트를 수정할 필요가 없습니다.
+`npm run build:gas`로 생성한 **`Code.gs` 전체**를 지도메이트 전용 Apps Script 프로젝트에 복사합니다. 네이버 지도·검색을 포함한 최신 통합 배포 파일입니다. `PlaceMate.gs`와 `Naver.gs`는 빌드 원본이므로 `Code.gs`와 중복 등록하지 않습니다. [네이버 키 발급 및 설정 안내](../NAVER_SETUP.md)를 참고하세요. 공개 `SerenLucent/APP` 저장소의 [투플레이스 서버 소스](https://github.com/SerenLucent/APP/blob/main/TwoPlace/gas/Router.gs)를 확인해 같은 저장소·브랜치·스크립트 속성 토큰을 사용하는 GitHub JSON 방식으로 맞췄습니다.
 
 기존 `PRIVATE_REPOSITORY_REQUIRED` 검사는 제거했습니다. 최신 소스로 교체한 뒤 **배포 → 배포 관리 → 기존 배포 수정 → 새 버전 → 배포**를 선택하면 현재 `/exec` 주소를 유지할 수 있습니다. 새 배포를 만들면 달라진 주소를 웹앱에도 반영해야 합니다. 실제 배포 변경과 GitHub 쓰기는 아직 수행하지 않았습니다.
 

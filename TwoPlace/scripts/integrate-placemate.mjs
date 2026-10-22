@@ -1,7 +1,7 @@
 // Snapshot the completed PlaceMate UI; keep standalone PlaceMate accounts and rooms separate.
 import fs from 'node:fs';
 let s=fs.readFileSync('integrations/placemate/upstream-app.js','utf8').split('function setCloudBusy')[0];
-s=s.replace("import {CloudStore,SESSION_KEY,cloudError} from './cloud-store.js';","import {CloudStore,cloudError} from './cloud-store.js';").replace("import {generatePersonalKey} from './cloud-client.js';",'');
+s=s.replace("import {CloudStore,SESSION_KEY,cloudError,getMapConfig} from './cloud-store.js';","import {CloudStore,cloudError,getMapConfig} from './cloud-store.js';").replace("import {generatePersonalKey} from './cloud-client.js';",'');
 s=s.replace(/^const initial=.*$/m,"const initial={users:[{id:'me',name:'나',color:'#e7ecd8'}],rooms:[{id:'couple',name:'둘만의 공유 플레이스',description:'커플방과 지도를 연결하고 있어요.',emoji:'♡',master:'me',members:['me'],bans:[],pending:[]}],places:[],reviews:[]};");
 s=s.replace(/^let db;.*$/m,'let db=structuredClone(initial);').replace("let roomId='friends',selected='p1'","let roomId='couple',selected=null");
 s=s.replace(/^const save=.*$/m,'const save=()=>{};');
@@ -25,6 +25,7 @@ function action(a){
   if(a==='refresh'){if(!cloud?.active){startCloud();return;}setCloudBusy(true);refreshCloud().catch(e=>{cloudUnsure=true;showCloudError(e);}).finally(()=>setCloudBusy(false));return;}
   if(!cloud?.active)return toast('커플방 지도를 연결하고 있어요.');
   if(a==='connection'||a==='about'){modal('TwoPlace와 연결된 지도','<p class="intro">현재 커플방의 두 사람이 같은 장소와 방문 기록을 공유해요. 별도 가입은 필요 없어요.</p><p class="note-box">방 코드: '+esc(cloud.snapshot.code)+'<br>장소를 등록하면 자동 공유되며, 방문과 별점은 각자 기록해요. 약 15초마다 상대방 변경 내용을 확인해요.</p>');return;}
+  if(a==='add'||a==='search-store'){searchPlaceForm();return;}if(a==='manual-place'){placeForm();return;}
   if(['menu','visited','add','edit-place','review','visit','zoom-in','zoom-out','recenter','add-rating','profile','export','delete-place'].includes(a))localAction(a);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});

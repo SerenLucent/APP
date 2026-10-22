@@ -48,6 +48,15 @@ export class CloudStore {
     await this.client.call('savePersonal',{expectedRevision:this.personal.revision,nickname:db.users.find(u=>u.id==='me').name,places,visits:[...seen.values()]});
   }
   async command(action,payload){return this.client.call(action,payload);}
+  async searchPlaces(query){return this.client.call('searchPlaces',{query});}
+}
+
+export async function getMapConfig(){
+  const response=await fetch(CLOUD_ENDPOINT+'?action=mapConfig&v=3',{credentials:'omit'});
+  if(!response.ok)throw new Error('MAP_CONFIG_FAILED');
+  const result=await response.json();
+  if(!result.ok||!result.data)throw new Error('NAVER_BACKEND_UPDATE_REQUIRED');
+  return result.data;
 }
 
 export function cloudError(error){

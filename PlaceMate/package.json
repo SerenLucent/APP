@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check app.js && node --check server.mjs && node --check cloud-client.js && node --check cloud-store.js && node --check sw.js",
-    "test": "node smoke-test.mjs && node apps-script/backend-test.mjs && node cloud-store.test.mjs",
-    "build": "node scripts/build-web.mjs"
+    "check": "node --check app.js && node --check server.mjs && node --check cloud-client.js && node --check cloud-store.js && node --check sw.js && node --check naver-map.js",
+    "test": "node smoke-test.mjs && node apps-script/backend-test.mjs && node cloud-store.test.mjs && node naver.test.mjs",
+    "build": "node scripts/build-web.mjs",
+    "build:gas": "node scripts/build-gas.mjs"
   }
 }

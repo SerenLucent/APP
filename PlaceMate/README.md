@@ -2,6 +2,8 @@
 
 신뢰하는 메이트들과 개인 장소와 경험을 선택적으로 나누는 모바일 대응 웹앱입니다.
 
+네이버 지도 SDK와 NAVER API HUB의 실제 가게 검색 연결 코드를 추가했습니다. [키 발급·설정·요금 안내](NAVER_SETUP.md)를 참고하고, `npm run build:gas`로 생성한 `apps-script/Code.gs`를 배포합니다. 키 설정 전에는 임시 OpenStreetMap이 표시되며 실서비스 호출은 아직 검증되지 않았습니다.
+
 GitHub `APP/PlaceMate`에 개인 원본과 방별 JSON을 저장하는 전용 서버 코드는 [apps-script/PlaceMate.gs](apps-script/PlaceMate.gs), 설정 안내는 [apps-script/README.md](apps-script/README.md)에 있습니다. 토큰은 Apps Script 스크립트 속성에 설정합니다. 사용자가 제공한 배포 주소는 `cloud-store.js`에 연결했습니다. 상단 ‘개인 저장소 연결’에서 새 개인키를 발급하거나 기존 키로 접속합니다. 미접속 상태의 메이트와 장소는 체험 예시이며 저장 작업에는 접속이 필요합니다.
 
 ## 실행

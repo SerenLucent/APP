@@ -104,6 +104,8 @@ function doPost(e){
 function route_(req){
   const body=req.body||{},path=req.path,method=req.method||'GET';
   if(path==='/health')return {ok:true};
+  if(path==='/room/places/map-config'&&method==='GET'){member_(req.token);return pmNaverConfig_();}
+  if(path==='/room/places/search'&&method==='POST'){const e=member_(req.token);return pmNaverSearch_(body.query,e.room.code+':'+e.role);}
   if(path==='/room/places'&&(method==='GET'||method==='PUT')){
     const e=member_(req.token),filePath=ROOM_PREFIX+e.room.code+'/places.json';
     let file;
