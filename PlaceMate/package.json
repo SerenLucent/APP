@@ -1,0 +1,13 @@
+{
+  "name": "jido-mate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "check": "node --check app.js && node --check server.mjs && node --check cloud-client.js && node --check cloud-store.js && node --check sw.js",
+    "test": "node smoke-test.mjs && node apps-script/backend-test.mjs && node cloud-store.test.mjs",
+    "build": "node scripts/build-web.mjs"
+  }
+}

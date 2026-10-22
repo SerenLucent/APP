@@ -2,7 +2,7 @@ name: Publish APP apps
 on:
   push:
     branches: [main]
-    paths: ['TwoPlace/**', '!TwoPlace/remote-data/**', 'pages/**', '.github/workflows/pages.yml']
+    paths: ['TwoPlace/**', '!TwoPlace/remote-data/**', 'PlaceMate/**', '!PlaceMate/users/**', '!PlaceMate/rooms/**', 'pages/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,12 +30,16 @@ jobs:
         env:
           VITE_BASE_PATH: /APP/TwoPlace/
           VITE_GAS_URL: ${{ vars.TWOPLACE_GAS_URL }}
+      - run: npm run check && npm test && npm run build
+        working-directory: PlaceMate
       # Keep other APP folders' static web outputs when more apps are added.
       - run: |
           mkdir -p _site/TwoPlace
           cp -R TwoPlace/dist/. _site/TwoPlace/
           if [ -d TwoPlace/downloads ]; then cp -R TwoPlace/downloads _site/TwoPlace/; fi
           if [ -d pages ]; then cp -R pages/. _site/; fi
+          mkdir -p _site/PlaceMate
+          cp -R PlaceMate/dist/. _site/PlaceMate/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
