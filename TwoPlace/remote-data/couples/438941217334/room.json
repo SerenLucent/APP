@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792677787687,
-  "revision": 5,
+  "updatedAt": 1792677912885,
+  "revision": 6,
   "state": {
     "startDate": "2024-08-08",
     "events": [
@@ -44,7 +44,13 @@
         "details": ""
       }
     ],
-    "notes": []
+    "notes": [
+      {
+        "id": "9a8e2d1a84837d0c7bdf6ab09a0ae472",
+        "date": "2026-10-22",
+        "body": "경식이 숙제  \n일요일까지 성히한테 메모편지써주기"
+      }
+    ]
   },
   "petHome": {
     "version": 39,
