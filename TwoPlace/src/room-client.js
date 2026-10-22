@@ -49,7 +49,9 @@ export async function gasRequest(path,{token,method='GET',body}={}){
   if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(gasUrl))throw new Error('GAS 웹 앱 배포 주소를 확인해 주세요.');
   let response,data;
   try {
-    response=await fetch(gasUrl,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({path,method,token,body}),signal:AbortSignal.timeout(45000)});
+    // A fresh URL also prevents intermediary caches from reusing a redirected
+    // health/previous-response body for a different Apps Script POST request.
+    response=await fetch(gasUrl+'?request='+crypto.randomUUID(),{method:'POST',cache:'no-store',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({path,method,token,body}),signal:AbortSignal.timeout(45000)});
     data=await response.json();
   }catch {throw new Error('저장 서버에 연결하지 못했어요. 인터넷 연결과 GAS 배포 설정을 확인해 주세요.');}
   if(!response.ok||!data||!Number.isInteger(data.status))throw new Error('GAS 서버 응답을 확인해 주세요.');
