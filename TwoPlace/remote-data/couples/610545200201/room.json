@@ -2,11 +2,45 @@
   "schemaVersion": 1,
   "code": "610545200201",
   "createdAt": 1792712728866,
-  "updatedAt": 1792712732502,
-  "revision": 0,
+  "updatedAt": 1792712735398,
+  "revision": 1,
   "state": {
     "startDate": null,
-    "events": [],
+    "characters": {
+      "owner": "momo"
+    },
+    "events": [
+      {
+        "id": "a9b3501f-1599-4325-883e-23f583cc21f2",
+        "date": "2026-10-23",
+        "title": "근무",
+        "kind": "work",
+        "details": "캘린더 배포 검증용 일정",
+        "endTime": "19:00",
+        "authorRole": "owner",
+        "workType": "shift"
+      },
+      {
+        "id": "6f872d32-a032-4ca3-8a3e-a979e976b908",
+        "date": "2026-10-24",
+        "title": "근무",
+        "kind": "work",
+        "details": "캘린더 배포 검증용 일정",
+        "endTime": "19:00",
+        "authorRole": "owner",
+        "workType": "shift"
+      },
+      {
+        "id": "aa02d941-2f13-4bbc-8e3a-15f7e4df8a7d",
+        "date": "2026-10-25",
+        "title": "근무",
+        "kind": "work",
+        "details": "캘린더 배포 검증용 일정",
+        "endTime": "19:00",
+        "authorRole": "owner",
+        "workType": "shift"
+      }
+    ],
     "notes": []
   },
   "petHome": {
