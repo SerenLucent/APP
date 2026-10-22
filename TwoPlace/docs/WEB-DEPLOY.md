@@ -84,9 +84,9 @@ APK는 capacitor.config.json의 고정 HTTPS server.url을 여는 WebView이며 
 
 아이콘은 내장 image_gen으로 기존 모모 캐릭터를 참조해 생성했습니다. 프롬프트: “Momo plush cream rabbit face only, pink floppy ears and heart sprout, glossy brown eyes, rosy cheeks, square pale peach background, no text or body, centered app icon.” scripts/build-icons.ps1로 크기별 PNG를 생성합니다. Android APK 1.2(versionCode 3)는 아이콘 교체를 위해 한 번 업데이트 설치가 필요합니다. 이후 웹 화면 업데이트 방식은 같습니다.
 
-## 플레이스메이트 커플 지도 (앱스크립트 v4)
+## 플레이스 메이트 커플 지도 (앱스크립트 v4)
 
-TwoPlace 메뉴의 플레이스메이트는 기존 PlaceMate UI를 커플 전용 모드로 사용합니다. 별도 개인키 발급이나 메이트방 가입 없이 현재 커플방 토큰으로 연결합니다. 기존 PlaceMate 서비스와 개인 원본은 수정하지 않습니다.
+TwoPlace 메뉴의 플레이스 메이트는 기존 PlaceMate UI를 커플 전용 모드로 사용합니다. 별도 개인키 발급이나 메이트방 가입 없이 현재 커플방 토큰으로 연결합니다. 기존 PlaceMate 서비스와 개인 원본은 수정하지 않습니다.
 
 지도 첫 진입 시 TwoPlace/remote-data/couples/방코드/places.json을 별도로 생성합니다. 장소·분류·주소·좌표와 각 사람의 방문·별점·커스텀 평가·후기·닉네임을 보관합니다. 등록한 장소는 자동 공유됩니다. 작성자만 장소를 수정·삭제하고 각자는 자기 방문과 후기를 수정합니다. API는 클라이언트의 방 코드/작성자 값을 신뢰하지 않고 기기 토큰에서 커플방과 자리를 결정합니다. 복구로 기기 토큰이 바뀌어도 owner/partner 자리에 연결된 지도는 유지됩니다.
 
