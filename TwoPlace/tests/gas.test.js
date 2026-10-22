@@ -127,3 +127,17 @@ test('couple places use a separate per-room JSON and survive recovery without ex
   assert.equal(h.call({path:'/rooms/recover',method:'POST',body:{code:room.code,role:'partner',requestToken:fresh,password:'places-recovery-password'}}).status,200);
   assert.equal(read(partner).status,401);assert.equal(read(fresh).data.places[0].name,place.name);
 });
+test('Apps Script shares character preferences and preserves schedule authors across partner edits',()=>{
+  const h=harness(),owner='a'.repeat(64),partner='b'.repeat(64);
+  const room=h.call({path:'/rooms',method:'POST',body:{requestToken:owner}}).data;
+  h.call({path:'/rooms/join',method:'POST',body:{code:room.code,requestToken:partner}});
+  const save=(token,revision,state)=>h.call({path:'/room/state',method:'PUT',token,body:{revision,state}});
+  let state={...room.state,characters:{owner:'momo'}};
+  assert.equal(save(owner,0,state).status,200);
+  state={...state,characters:{owner:'kuki',partner:'kuki'}};
+  let response=save(partner,1,state);assert.equal(response.status,200);assert.deepEqual(response.data.state.characters,{owner:'momo',partner:'kuki'});
+  state={...response.data.state,events:[{id:'shift',date:'2026-10-23',title:'근무',kind:'work',workType:'shift',startTime:'09:00',endTime:'19:00',authorRole:'partner'}]};
+  response=save(owner,2,state);assert.equal(response.data.state.events[0].authorRole,'owner');
+  state=response.data.state;state.events[0].authorRole='partner';state.events[0].endTime='20:00';
+  response=save(partner,3,state);assert.equal(response.status,200);assert.equal(response.data.state.events[0].authorRole,'owner');assert.equal(response.data.state.events[0].endTime,'20:00');
+});

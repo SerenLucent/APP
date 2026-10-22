@@ -1,4 +1,4 @@
-import { cleanState } from '../shared/room-state.js';
+import { cleanState, memberState } from '../shared/room-state.js';
 import { initialPlaces, changePlaces } from '../shared/places.js';
 import { DatabaseSync } from 'node:sqlite';
 import { randomBytes, randomInt, createHash, scryptSync } from 'node:crypto';
@@ -175,7 +175,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
       if (path === '/api/room/state' && req.method === 'PUT') {
         const auth = member(req);
         const body = await readJson(req);
-        const data = cleanState(body.state);
+        const data = memberState(JSON.parse(auth.state),body.state,auth.role);
         if (!Number.isSafeInteger(body.revision) || body.revision < 0) throw new ApiError(400,'변경 정보를 확인해 주세요.');
         const result = db.prepare('UPDATE rooms SET state = ?, revision = revision + 1 WHERE id = ? AND revision = ?').run(JSON.stringify(data), auth.id, body.revision);
         if (!result.changes) throw new ApiError(409,'상대가 먼저 내용을 수정했어요. 최신 내용을 확인한 뒤 다시 저장해 주세요.');

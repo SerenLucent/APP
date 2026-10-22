@@ -7,6 +7,7 @@ import { dateKey, togetherDays } from './model.js';
 import { loadSession, storeSession, clearSession, request, pendingRequest, finishRequest, pollInterval, demoMode, resetDemo } from './room-client.js';
 
 import './menu-theme.css';
+import {mountEventEditor} from './calendar-form.js';
 
 const icons = {
   heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
@@ -189,6 +190,19 @@ function home() {
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
   </div></section><aside class="today"><span class="today-flower">✳</span><div><span>${todayLabel}</span><p>오늘도 서로의 가장 가까운 편이 되어 주세요.</p></div></aside>`;
 }
+function eventDot(event){
+  const character=state.characters?.[event.authorRole],name=character==='momo'?'모모':character==='kuki'?'쿠키':'작성자 미설정';
+  return `<span class="author-dot author-${character||'unknown'}" role="img" aria-label="${name}" title="${name}"></span>`;
+}
+function characterDialog(){
+  const current=state.characters?.[room.role];
+  openDialog('내 캐릭터',`<p class="muted">일정 앞의 점이 내 캐릭터 색으로 표시돼요.</p><div class="character-options">${[['momo','모모','기본 여성 · 연핑크','mochi-standing-v2.png'],['kuki','쿠키','기본 남성 · 연파랑','kuki-standing-v2.png']].map(([id,name,hint,image])=>`<button class="character-choice ${current===id?'selected':''}" data-choose-character="${id}" aria-pressed="${current===id}"><img src="${import.meta.env.BASE_URL}pets/${image}" alt="${name}"><strong>${name}</strong><small>${hint}</small></button>`).join('')}</div>`);
+  modal.querySelectorAll('[data-choose-character]').forEach(button=>button.onclick=async()=>{
+    button.disabled=true;
+    if(await save({...state,characters:{...state.characters,[room.role]:button.dataset.chooseCharacter}})){modal.close();render();toast('내 캐릭터를 설정했어요');}
+    button.disabled=false;
+  });
+}
 function calendar() {
   const year = month.getFullYear(), m = month.getMonth();
   const offset = new Date(year, m, 1).getDay();
@@ -197,61 +211,30 @@ function calendar() {
   for (let d = 1; d <= count; d++) {
     const key = dateKey(new Date(year, m, d));
     const events = eventsOn(state.events,key);
-    days.push(`<button class="day ${key === selected ? 'selected' : ''} ${key === dateKey() ? 'is-today' : ''}" data-date="${key}" aria-label="${key} ${esc(events.length ? events.map(eventLabel).join(', ') : '일정 없음')}" ${key === dateKey() ? 'aria-current="date"' : ''}><span class="day-number">${d}</span><span class="day-labels">${events.slice(0,3).map(event => `<span class="event-chip kind-${eventKinds.includes(event.kind) ? event.kind : 'general'}">${esc(eventLabel(event))}</span>`).join('')}${events.length > 3 ? `<span class="more-events">+${events.length - 3}개</span>` : ''}</span></button>`);
+    days.push(`<button class="day ${key === selected ? 'selected' : ''} ${key === dateKey() ? 'is-today' : ''}" data-date="${key}" aria-label="${key} ${esc(events.length ? events.map(eventLabel).join(', ') : '일정 없음')}" ${key === dateKey() ? 'aria-current="date"' : ''}><span class="day-number">${d}</span><span class="day-labels">${events.slice(0,3).map(event => `<span class="event-chip kind-${eventKinds.includes(event.kind) ? event.kind : 'general'}">${eventDot(event)}${esc(eventLabel(event))}</span>`).join('')}${events.length > 3 ? `<span class="more-events">+${events.length - 3}개</span>` : ''}</span></button>`);
   }
   while (days.length % 7) days.push('<span class="blank-day" aria-hidden="true"></span>');
   const events = eventsOn(state.events,selected);
-  return `<section class="page-heading calendar-heading"><h1>공유 캘린더</h1><p>퇴근과 휴무, 둘이 함께할 약속까지.</p></section><div class="calendar-legend"><span><i class="legend-dot kind-work"></i>일 · 퇴근 / 휴무</span><span><i class="legend-dot kind-trip"></i>여행</span><span><i class="legend-dot kind-date"></i>데이트</span></div><section class="calendar-panel"><div class="month-head"><button data-month="-1" aria-label="이전 달">‹</button><h2>${year}년 ${m + 1}월</h2><button data-month="1" aria-label="다음 달">›</button></div><div class="week">${['일','월','화','수','목','금','토'].map(w => `<span>${w}</span>`).join('')}</div><div class="days">${days.join('')}</div></section><p class="calendar-tip">날짜를 누르면 그날의 일정과 상세 내용을 볼 수 있어요.</p><div class="section-head"><h2>${selected.replaceAll('-', '. ')} 일정</h2><button class="text-button" data-action="event">+ 일정 추가</button></div><div class="entries">${events.length ? events.map(event => `<article class="entry"><button class="event-summary-button" data-detail-event="${esc(event.id)}"><h3>${esc(eventLabel(event))}</h3><p>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</p><span class="detail-link">상세보기 ↗</span></button></article>`).join('') : '<div class="empty">아직 약속이 없는 날이에요.<br>우리의 다음 약속을 남겨 볼까요?</div>'}</div>`;
+  return `<section class="page-heading calendar-heading"><h1>공유 캘린더</h1><p>퇴근과 휴무, 둘이 함께할 약속까지.</p></section><div class="calendar-legend"><span><i class="legend-dot kind-work"></i>일 · 퇴근 / 휴무</span><span><i class="legend-dot kind-trip"></i>여행</span><span><i class="legend-dot kind-date"></i>데이트</span></div><section class="calendar-panel"><div class="month-head"><button data-month="-1" aria-label="이전 달">‹</button><h2>${year}년 ${m + 1}월</h2><button data-month="1" aria-label="다음 달">›</button></div><div class="week">${['일','월','화','수','목','금','토'].map(w => `<span>${w}</span>`).join('')}</div><div class="days">${days.join('')}</div></section><p class="calendar-tip">날짜를 누르면 그날의 일정과 상세 내용을 볼 수 있어요.</p><div class="section-head"><h2>${selected.replaceAll('-', '. ')} 일정</h2><button class="text-button" data-action="event">+ 일정 추가</button></div><div class="entries">${events.length ? events.map(event => `<article class="entry"><button class="event-summary-button" data-detail-event="${esc(event.id)}"><h3>${eventDot(event)}${esc(eventLabel(event))}</h3><p>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</p><span class="detail-link">상세보기 ↗</span></button></article>`).join('') : '<div class="empty">아직 약속이 없는 날이에요.<br>우리의 다음 약속을 남겨 볼까요?</div>'}</div>`;
 }
 function dayDialog() {
   const events = eventsOn(state.events,selected);
-  openDialog(`${selected.replaceAll('-', '. ')} 일정`, `<div class="day-events">${events.length ? events.map(event => `<button class="day-event" data-detail-event="${esc(event.id)}"><span class="day-event-copy"><strong>${esc(eventLabel(event))}</strong><small>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</small></span><span class="detail-link">상세보기 ↗</span></button>`).join('') : '<p class="muted">아직 등록한 일정이 없어요.</p>'}</div><button class="primary" data-action="event">+ 이 날짜에 일정 추가</button>`);
+  openDialog(`${selected.replaceAll('-', '. ')} 일정`, `<div class="day-events">${events.length ? events.map(event => `<button class="day-event" data-detail-event="${esc(event.id)}"><span class="day-event-copy"><strong>${eventDot(event)}${esc(eventLabel(event))}</strong><small>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</small></span><span class="detail-link">상세보기 ↗</span></button>`).join('') : '<p class="muted">아직 등록한 일정이 없어요.</p>'}</div><button class="primary" data-action="event">+ 이 날짜에 일정 추가</button>`);
 }
 function eventDetail(id) {
-  const event = state.events.find(item => item.id === id);
-  if (!event) return toast('이 일정은 더 이상 존재하지 않아요.');
-  openDialog(eventLabel(event), `<button class="dialog-back" data-action="day-list">‹ 그날의 일정으로</button><div class="event-detail-body"><dl><dt>날짜</dt><dd>${esc(event.date.replaceAll('-', '. '))}</dd><dt>분류</dt><dd>${esc(categoryNames[event.kind] || '일반')}${event.kind === 'work' ? ` · ${event.workType === 'off' ? '휴무' : '퇴근'}` : ''}</dd>${event.time ? `<dt>시간</dt><dd>${esc(event.time)}</dd>` : ''}${event.place ? `<dt>갈 곳</dt><dd>${esc(event.place)}</dd>` : ''}<dt>계획</dt><dd>${esc(event.details || '아직 적어 둔 내용이 없어요.')}</dd></dl></div><div class="event-detail-actions"><button data-edit-event="${esc(event.id)}">수정하기</button><button class="danger" data-delete-event="${esc(event.id)}">삭제하기</button></div>`);
+  const event=state.events.find(e=>e.id===id);if(!event)return toast('이 일정은 더 이상 존재하지 않아요.');
+  const work=event.kind==='work',start=event.startTime||(!work?event.time:''),end=event.endTime||(work?event.time:'');
+  openDialog(esc(eventLabel(event)),`<button class="dialog-back" data-action="day-list">‹ 그날의 일정으로</button><div class="event-detail-body"><dl><dt>날짜</dt><dd>${esc(event.date.replaceAll('-', '. '))}</dd><dt>작성</dt><dd>${eventDot(event)}${state.characters?.[event.authorRole]==='momo'?'모모':state.characters?.[event.authorRole]==='kuki'?'쿠키':'캐릭터 미설정'}</dd><dt>분류</dt><dd>${esc(categoryNames[event.kind]||'일반')}${work?` · ${event.workType==='off'?'휴무':'근무'}`:''}</dd>${start?`<dt>${work?'출근':'시작'}</dt><dd>${esc(start)}</dd>`:''}${end?`<dt>${work?'퇴근':'종료'}</dt><dd>${esc(end)}</dd>`:''}${event.place?`<dt>갈 곳</dt><dd>${esc(event.place)}</dd>`:''}<dt>계획</dt><dd>${esc(event.details||'아직 적어 둔 내용이 없어요.')}</dd></dl></div><div class="event-detail-actions"><button data-edit-event="${esc(event.id)}">수정하기</button><button class="danger" data-delete-event="${esc(event.id)}">삭제하기</button></div>`);
 }
+
 function eventDialog(id) {
-  const existing = state.events.find(event => event.id === id);
-  const kind = existing?.kind || 'general';
-  const option = (name,value,label,checked) => `<label class="category-option"><input type="radio" name="${name}" value="${value}" ${checked ? 'checked' : ''}><span>${label}</span></label>`;
-  openDialog(existing ? '일정 수정하기' : '우리의 새 일정', `<form class="event-form"><label for="event-date">날짜</label><input id="event-date" name="date" type="date" value="${existing?.date || selected}" required><fieldset class="category-picker"><legend>카테고리</legend>${eventKinds.map(value => option('kind',value,categoryNames[value],value === kind)).join('')}</fieldset><div class="event-fields work-fields" ${kind !== 'work' ? 'hidden' : ''}><fieldset class="work-picker"><legend>일정 종류</legend>${option('workType','leave','퇴근',existing?.workType !== 'off')}${option('workType','off','휴무',existing?.workType === 'off')}</fieldset></div><div class="event-fields title-fields"><label for="title">일정 이름</label><input id="title" name="title" maxlength="100" value="${esc(existing?.title || '')}" placeholder="예: 저녁 약속"></div><div class="event-fields time-fields"><label for="event-time">시간</label><input id="event-time" name="time" type="time" value="${esc(existing?.time || '')}"></div><div class="event-fields place-fields" ${kind !== 'date' ? 'hidden' : ''}><label for="event-place">갈 곳 (선택)</label><input id="event-place" name="place" maxlength="200" placeholder="예: 성수동 카페, 한강 산책" value="${esc(existing?.place || '')}"></div><div class="event-fields trip-fields" ${kind !== 'trip' ? 'hidden' : ''}><p class="muted">여행 지역 선택은 플레이스 메이트와 연결될 예정이에요.</p></div><div class="event-fields"><label for="event-details">메모 / 계획 (선택)</label><textarea id="event-details" name="details" rows="4" maxlength="5000" placeholder="함께할 계획이나 기억할 내용을 적어 주세요.">${esc(existing?.details || '')}</textarea></div><p class="form-error" role="alert"></p><button class="primary" type="submit">일정 저장하기</button></form>`);
-  const form = modal.querySelector('form');
-  function updateFields() {
-    const selectedKind = form.elements.kind.value;
-    const isWork = selectedKind === 'work', off = isWork && form.elements.workType.value === 'off';
-    form.querySelector('.work-fields').hidden = !isWork;
-    form.querySelector('.title-fields').hidden = isWork;
-    form.elements.title.disabled = isWork;
-    form.elements.title.required = selectedKind === 'general';
-    form.querySelector('label[for="title"]').textContent = selectedKind === 'trip' ? '여행 이름 (선택)' : selectedKind === 'date' ? '데이트 이름 (선택)' : '일정 이름';
-    form.elements.title.placeholder = selectedKind === 'trip' ? '예: 주말 여행 · 비우면 여행' : selectedKind === 'date' ? '예: 주말 데이트 · 비우면 데이트' : '예: 저녁 약속';
-    form.querySelector('.time-fields').hidden = off;
-    form.elements.time.disabled = off;
-    form.elements.time.required = isWork && !off;
-    form.querySelector('label[for="event-time"]').textContent = isWork ? '퇴근 시간' : '시간 (선택)';
-    form.querySelector('.place-fields').hidden = selectedKind !== 'date';
-    form.elements.place.disabled = selectedKind !== 'date';
-    form.querySelector('.trip-fields').hidden = selectedKind !== 'trip';
-  }
-  form.onchange = updateFields;
-  updateFields();
-  form.onsubmit = async e => {
-    e.preventDefault();
-    const data = new FormData(form), kind = data.get('kind');
-    const workType = kind === 'work' ? data.get('workType') : undefined;
-    const title = kind === 'work' ? (workType === 'off' ? '휴무' : '퇴근') : (data.get('title') || '').trim() || (kind === 'trip' ? '여행' : kind === 'date' ? '데이트' : '');
-    if (!title) { form.querySelector('[role="alert"]').textContent = '일정 이름을 적어 주세요.'; return; }
-    const event = {id:existing?.id || newId(), date:data.get('date'), title, kind, time:data.get('time') || '', place:kind === 'date' ? data.get('place').trim() : '', details:data.get('details').trim(), ...(workType ? {workType} : {})};
-    const button = form.querySelector('button[type="submit"]');
-    button.disabled = true;
-    try {
-      const events = existing ? state.events.map(item => item.id === existing.id ? event : item) : [...state.events,event];
-      if (await save({...state,events})) { selected = event.date; const [y,m] = event.date.split('-').map(Number); month = new Date(y,m-1,1); render(); dayDialog(); toast(demoMode?'모의 일정을 현재 탭에 저장했어요.':'일정을 저장했어요. 둘이 함께 볼 수 있어요.'); }
-    } finally { button.disabled = false; }
-  };
+  const existing=state.events.find(e=>e.id===id);
+  mountEventEditor({modal,openDialog,event:existing,selected,role:room.role,newId,
+    onSave:entries=>save({...state,events:[...state.events.filter(e=>e.id!==existing?.id),...entries]}),
+    onDone:entries=>{selected=entries[0].date;const [y,m]=selected.split('-').map(Number);month=new Date(y,m-1,1);render();dayDialog();toast(demoMode?'모의 일정을 현재 탭에 저장했어요.':'일정을 저장했어요. 둘이 함께 볼 수 있어요.');}
+  });
 }
+
 function notes() {
   return `<section class="page-heading"><span class="eyebrow">LITTLE NOTES, BIG LOVE</span><h1>커플 메모장</h1><p>장보기 목록부터, 문득 전하고 싶은 마음까지.</p></section><button class="new-note" data-action="note">${icon('plus')} 새로운 메모 남기기</button><section class="notes-list">${state.notes.length ? state.notes.map(n => `<article class="note-paper"><span class="eyebrow">${esc(n.date || '')}</span><p>${esc(n.body)}</p><div class="note-actions"><button data-edit-note="${esc(n.id)}">수정</button><button data-delete-note="${esc(n.id)}">삭제</button></div></article>`).join('') : `<div class="empty">${icon('note')}<h2>첫 번째 이야기를 기다려요</h2><p>둘이 함께 기억하고 싶은 내용을 남겨 보세요.</p></div>`}</section>`;
 }
@@ -259,11 +242,11 @@ function render() {
   stopPets();
   finishLaunch();
   if(room&&view==='places'){
-    app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 우리 공간</button><strong>플레이스 메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스 메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
+    app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 메인화면으로</button><strong>플레이스 메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스 메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
     return;
   }
-  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status">${demoMode ? '모의 커플방 · 실제 연결 없이 둘러보기' : connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
-  app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 우리 공간으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
+  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status"><span>${demoMode ? '모의 커플방 · 실제 연결 없이 둘러보기' : connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</span><button class="my-character" data-action="character">${state.characters?.[room.role]?`<span class="author-dot author-${state.characters[room.role]}"></span>내 캐릭터 · ${state.characters[room.role]==='momo'?'모모':'쿠키'}`:'내 캐릭터 설정'}</button></div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
+  app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 메인화면으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
   if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
     if(saving) throw new Error('이전 동작이 끝나면 다시 시도해 주세요.');
     saving=true;
@@ -313,6 +296,7 @@ document.addEventListener('click', async e => {
     case 'demo-reset': if(demoMode){room=null;petHome=null;applyRoom(resetDemo());view='calendar';selected=dateKey();month=new Date(new Date().getFullYear(),new Date().getMonth(),1);modal.close();render();toast('샘플 일정을 다시 준비했어요');}break;
     case 'retry': await restoreRoom(); break;
     case 'dday': dateDialog(); break;
+    case 'character': characterDialog();break;
     case 'note': noteDialog(); break;
     case 'place': view='places';render();break;
     case 'more': toast('앞으로 추가할 메뉴를 위한 자리예요'); break;

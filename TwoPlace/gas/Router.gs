@@ -87,7 +87,7 @@ function admin_(token){
   if(!expected||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||digest_(token)!==expected)fail_(403,'관리자 토큰을 확인해 주세요.');
 }
 function json_(data){return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);}
-function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:4});}
+function doGet(){return json_({service:'TwoPlace',storage:'github-json',repository:'SerenLucent/APP',prefix:ROOM_PREFIX,version:5});}
 function doPost(e){
   const lock=LockService.getScriptLock();let locked=false;
   try {
@@ -172,7 +172,7 @@ function route_(req){
   }
   if(path==='/room'&&method==='GET'){const e=member_(req.token);return snapshot_(e.room,e.role);}
   if(path==='/room/state'&&method==='PUT'){
-    const e=member_(req.token),state=cleanState(body.state);
+    const e=member_(req.token),state=memberState(e.room.state,body.state,e.role);
     if(!Number.isSafeInteger(body.revision)||body.revision!==e.room.revision)fail_(409,'상대가 먼저 수정했어요. 최신 내용을 확인해 주세요.');
     e.room.state=state;e.room.revision++;saveRoom_(e);return snapshot_(e.room,e.role);
   }
