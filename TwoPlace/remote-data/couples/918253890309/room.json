@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1792680364510,
-  "revision": 0,
+  "updatedAt": 1792680560559,
+  "revision": 1,
   "state": {
-    "startDate": null,
+    "startDate": "2025-06-14",
     "events": [],
     "notes": []
   },
