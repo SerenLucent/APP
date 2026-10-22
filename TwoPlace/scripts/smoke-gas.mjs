@@ -5,7 +5,10 @@ const endpoint=process.env.TWOPLACE_GAS_URL;
 if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint||''))throw new Error('Set TWOPLACE_GAS_URL to the deployed /exec URL.');
 async function call(path,{token,method='GET',body}={}){
   const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({path,method,token,body}),signal:AbortSignal.timeout(45000)});
-  return response.json();
+  const text=await response.text();
+  let data;try{data=JSON.parse(text);}catch{const title=text.match(/<title>([^<]*)<\/title>/i)?.[1]||'non-JSON response';throw new Error(method+' '+path+': HTTP '+response.status+' '+title);}
+  console.log(method+' '+path+': '+data.status);
+  return data;
 }
 const owner=randomBytes(32).toString('hex'),partner=randomBytes(32).toString('hex'),third=randomBytes(32).toString('hex');
 const created=await call('/rooms',{method:'POST',body:{requestToken:owner}});

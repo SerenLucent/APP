@@ -2,6 +2,10 @@
 
 Android APK와 iPhone 웹을 함께 사용하는 커플 앱입니다. 웹 화면은 Vite, Android 패키징은 Capacitor, 커플방 서버는 Node.js + SQLite로 구성합니다. Node.js 22.13 이상이 필요합니다.
 
+## 공개 웹
+
+https://serenlucent.github.io/APP/TwoPlace/ 에서 사용합니다. AST와 같은 앱스크립트→GitHub JSON 방식으로 연결했습니다. 방 생성 시 APP/TwoPlace/remote-data/couples/방코드/room.json을 자동 생성합니다. 상세 설정은 docs/WEB-DEPLOY.md에 있습니다.
+
 ## 실행
 
 ```sh
@@ -51,7 +55,7 @@ npm run android:open
 
 Android Studio에서 APK를 만들거나 android 폴더에서 ./gradlew.bat assembleDebug를 실행합니다. 개발용 결과는 android/app/build/outputs/apk/debug/app-debug.apk입니다. 배포용 서명은 별도입니다. VITE_API_URL은 빌드 시 반영되며 기존 방의 기기 입장 정보는 API 서버에 종속됩니다.
 
-**아직 공개 서버를 배포하지 않았습니다. 현재 제공하는 APK는 화면 확인용 빌드로, 서버 주소 미설정 시 등록·입장이 불가능하다는 안내를 표시합니다.** APK 설치만으로 휴대폰 두 대가 인터넷에서 연결되는 상태는 아닙니다.
+공개 웹은 위 GitHub Pages 주소와 앱스크립트 GitHub JSON 서버에 연결되어 있습니다. 이전에 만든 APK는 해당 빌드 시점의 연결 설정을 사용하므로 공개 웹 연결 후 다시 빌드해야 최신 설정이 반영됩니다.
 
 ## 파일
 
@@ -127,5 +131,5 @@ npm test로 독립 클라이언트의 생성·입장·공유, 방 격리, 잘못
 
 ## GitHub Pages + 앱스크립트 방식
 
-공개 웹 배포와 GitHub JSON 저장, APP 토큰 발급, 모든 커플방 관리 방법은 docs/WEB-DEPLOY.md를 참고하세요. VITE_GAS_URL이 있으면 Node API 대신 GAS를 사용합니다. 관리자 화면은 admin.html입니다.
+공개 웹 배포와 GitHub JSON 저장, APP 토큰 발급, 모든 커플방 관리 방법은 docs/WEB-DEPLOY.md를 참고하세요. VITE_GAS_URL 또는 public/web-config.json의 apiUrl이 있으면 Node API 대신 앱스크립트를 사용합니다. 관리자 화면은 admin.html입니다.
 
