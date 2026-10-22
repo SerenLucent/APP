@@ -77,3 +77,9 @@ GITHUB_TOKEN을 설정하면 앱스크립트가 이 앱의 모든 커플 JSON을
 공개 JSON에는 암호 원문을 저장하지 않습니다. 서버 전용 RECOVERY_PEPPER와 방별 salt로 HMAC-SHA256을 계산하며 pepper는 스크립트 속성에만 저장합니다. 이 속성을 삭제하거나 바꾸지 마세요. 잘못된 복구는 방별 15분간 10회로 제한합니다. 현재 암호를 알아야 암호를 변경할 수 있습니다. 로컬 SQLite 개발 서버는 scrypt를 사용합니다.
 
 APK는 capacitor.config.json의 고정 HTTPS server.url을 여는 WebView이며 웹 교체가 다음 실행에 반영됩니다. DOM 저장소는 유지됩니다. 브라우저/홈 화면 웹앱/APK의 연결 정보는 별도이므로 이동 시 복구를 사용합니다. 네이티브 기능이나 URL 변경 외에는 재빌드하지 않습니다.
+
+## 모모 아이콘과 시작 화면
+
+홈 화면 아이콘은 public/momo-icon-master-v1.png를 기준으로 PNG 180(iOS), 192/512(웹), 32(브라우저 탭)를 사용합니다. manifest id/start_url/scope는 그대로 유지합니다. Android는 같은 이미지의 밀도별 런처 아이콘과 원형/적응형 아이콘을 사용합니다. Android 기본 시작 화면은 launch_friends.xml에 모모·쿠키를 함께 표시하고, 웹은 HTML에 포함된 시작 화면을 방 복원 완료 후 닫습니다. 동작 줄이기 설정을 따릅니다.
+
+아이콘은 내장 image_gen으로 기존 모모 캐릭터를 참조해 생성했습니다. 프롬프트: “Momo plush cream rabbit face only, pink floppy ears and heart sprout, glossy brown eyes, rosy cheeks, square pale peach background, no text or body, centered app icon.” scripts/build-icons.ps1로 크기별 PNG를 생성합니다. Android APK 1.2(versionCode 3)는 아이콘 교체를 위해 한 번 업데이트 설치가 필요합니다. 이후 웹 화면 업데이트 방식은 같습니다.

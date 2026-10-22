@@ -35,6 +35,13 @@ let view = 'home';
 let month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let selected = dateKey();
 let timer;
+let launchTimer;
+const launchStarted=performance.now();
+function finishLaunch(){
+  const screen=document.querySelector('#launch-screen');
+  if(!screen||booting||launchTimer)return;
+  launchTimer=setTimeout(()=>{screen.classList.add('is-done');setTimeout(()=>screen.remove(),320);},Math.max(0,900-(performance.now()-launchStarted)));
+}
 function toast(message) {
   document.querySelector('#toast').textContent = message;
   document.querySelector('#toast').classList.add('visible');
@@ -248,6 +255,7 @@ function notes() {
 }
 function render() {
   stopPets();
+  finishLaunch();
   const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>ROOM CODE · 복사하기</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status">${connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
   app.innerHTML = `<div class="shell">${header}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 우리 공간으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
   if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
