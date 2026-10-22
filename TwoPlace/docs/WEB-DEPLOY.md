@@ -62,3 +62,8 @@ GITHUB_TOKEN을 설정하면 앱스크립트가 이 앱의 모든 커플 JSON을
 - 웹은 약 15초 간격으로 갱신하며, 기기 동작·API 저장은 Google/GitHub 서비스 제한을 받습니다.
 - 기존 PC SQLite 방과 이전 Drive 시험 데이터는 자동으로 옮기거나 삭제하지 않습니다.
 - APP 저장소의 다른 앱 소스는 수정하지 않습니다. 공용 Pages 워크플로는 TwoPlace 빌드와 pages/에 있는 다른 앱 정적 파일을 함께 배포합니다.
+
+## 배포 기록
+
+2026-10-22: TwoPlace GitHub JSON storage v2 배포. 웹 연결 주소는 기존 /exec를 유지하며 GitHub APP/TwoPlace/remote-data/couples 경로를 사용합니다. Drive 저장 코드는 사용하지 않습니다.
+
