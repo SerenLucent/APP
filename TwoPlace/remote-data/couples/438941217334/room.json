@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792754773695,
-  "revision": 13,
+  "updatedAt": 1792754813778,
+  "revision": 14,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -89,6 +89,45 @@
       {
         "id": "e9a877d7044b6da20490ddb1b6b9caa8",
         "date": "2026-10-28",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "94edeacb7a59e03308377cef477bca5b",
+        "date": "2026-10-29",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "da7cd34bdd42bd8d375766b6813ccc6a",
+        "date": "2026-10-30",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "5e66881acaff0206da17429e1c616956",
+        "date": "2026-10-31",
         "title": "근무",
         "kind": "work",
         "time": "",
