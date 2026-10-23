@@ -1,11 +1,18 @@
+import {petImage,PET_POSES} from './pet-sprites.js';
+import {isTabletop} from '../shared/household-catalog.js';
+import {TABLE_SURFACES,tableSlot,availableTableSlot} from '../shared/tabletop.js';
+import {furnishingModel} from './furnishing-model.js';
+import {furnitureLayout} from '../shared/furniture-layout.js';
+import {furnitureSprites} from './furniture-assets.js';
+import {PRODUCT_ACTIONS,usableInSpace} from '../shared/pet-products.js';
+import {mountPetCamera} from './pet-camera.js';
 import './pets.css';
 import './pets-iso.css';
 import {isoScenery,isoFurniture} from './pet-art.js';
-import {project,unproject,insideFloor,cellCenter,cellAt,snap,placementAllowed,walkable,findPath,petStepClear,facingForVector,fromWorld} from '../shared/pet-space.js';
+import {project,unproject,insideFloor,cellCenter,cellAt,snap,placementAllowed,walkable,findPath,petStepClear,facingForVector,fromWorld,GRID_SIZE,footprint} from '../shared/pet-space.js';
 
 const esc = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {mochi:'모모',kuki:'쿠키'};
-const petImage = (id,pose='front') => pose==='front' ? `${import.meta.env.BASE_URL}pets/${id}-standing-v2.png` : `${import.meta.env.BASE_URL}pets/${id}-${pose}-v3.png`;
 const spaces = {yard:'앞마당',home:'거실',momoRoom:'모모네방',kukiRoom:'쿠키네방'};
 function sceneDoors(){
   if(ui.space==='yard')return '<button class="scene-door house-entry" data-pet-space="home" aria-label="집 문 열고 거실로 들어가기" title="거실로 들어가기"></button>';
@@ -17,6 +24,9 @@ const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:'mochi',placing:nu
 const facings={mochi:{pose:'front',flip:1},kuki:{pose:'front',flip:1}};
 const walkTokens={mochi:0,kuki:0};
 const motions={};
+const furnitureUses={};
+const furnitureReservations={};
+const litFurniture=new Set();
 function otherPetSegments(id){return petIds.filter(other=>other!==id).map(other=>{
   const moving=motions[other];
   return moving && moving.until>Date.now()?moving:{from:positions[other],to:positions[other]};
@@ -34,7 +44,16 @@ function countdown(home) {
   return `${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;
 }
 function furnitureArt(product,rotation=0) { return isoFurniture(product,rotation); }
+function settleMotion(id){
+ const motion=motions[id];if(!motion)return;
+ const t=Math.min(1,Math.max(0,(Date.now()-motion.startedAt)/motion.duration));
+ positions[id]={x:motion.from.x+(motion.to.x-motion.from.x)*t,y:motion.from.y+(motion.to.y-motion.from.y)*t};
+ const actor=document.querySelector(`.actor-${id}`);if(actor){const point=project(positions[id]);actor.style.transition='none';actor.style.left=point.x+'%';actor.style.top=point.y+'%';actor.getBoundingClientRect();actor.style.transition='';}
+ delete motions[id];
+}
 function setSelection(id){
+  if(id)delete furnitureReservations[id];
+  if(id&&furnitureUses[id])releaseFurniture(id);
   ui.selectedPet=id;
   if(id)ui.pet=id;
   document.querySelectorAll('.pet-actor').forEach(actor=>{
@@ -43,6 +62,7 @@ function setSelection(id){
     actor.setAttribute('aria-pressed',String(selected));
     if(selected){
       walkTokens[id]++;
+      settleMotion(id);
       actor.classList.remove('walking');
       actor.dataset.mood='';
       actor.querySelector('.pet-speech').textContent='';
@@ -60,7 +80,7 @@ function flashFloorCell(scene,world,blocked=false){
   scene.querySelectorAll('.move-cell-feedback').forEach(marker=>marker.remove());
   const {c,r}=cellAt(world);
   const vertices=[[c,r],[c+1,r],[c+1,r+1],[c,r+1]].map(([x,y])=>{
-    const point=project(fromWorld(x/8,y/8));return `${point.x},${point.y}`;
+    const point=project(fromWorld(x/GRID_SIZE,y/GRID_SIZE));return `${point.x},${point.y}`;
   }).join(' ');
   const marker=document.createElementNS('http://www.w3.org/2000/svg','svg');
   marker.setAttribute('viewBox','0 0 100 100');
@@ -76,15 +96,18 @@ function actor(id) {
   const point=project(positions[id]),face=facings[id];
   return `<button class="pet-actor actor-${id} ${ui.selectedPet===id ? 'is-selected' : ''}" data-pet="${id}" aria-pressed="${ui.selectedPet===id}" data-facing="${face.pose}" aria-label="${names[id]} 선택" style="left:${point.x}%;top:${point.y}%;z-index:${Math.round(point.y*10)+10};--depth:${.8+(point.y-42)/44*.25};--facing-flip:${face.flip}"><span class="pet-shadow"></span><span class="pet-body"><span class="pet-sprite"><img src="${petImage(id,face.pose)}" alt="${names[id]}" draggable="false"></span></span><span class="pet-speech" aria-hidden="true"></span><span class="pet-name">${names[id]}</span></button>`;
 }
-function placedFurniture(item,catalog){
-  const point=project(item),size={rug:112,table:88,plant:65,cushion:67,lamp:73,fence:82}[item.product]||75;
-  return `<button class="placed-furniture" data-product="${item.product}" data-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 위치 바꾸기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:Math.round(point.y*10)+9};--item-size:${size}px">${furnitureArt(item.product,item.rotation)}</button>`;
+function placedFurniture(item,catalog,items=[]){
+  const parent=items.find(i=>i.id===item.parentId),surface=parent?tableSlot(parent,item.slot):null,rotation=surface?((parent.rotation||0)+(item.rotation||0))%360:(item.rotation||0);
+  const point=surface?.screen||project(item),layout=furnitureLayout(item),frame=furnitureSprites[item.product]?.frames[layout.rotation/90];
+ const model=furnishingModel(item.product,rotation),width=model?model.width*44*(1000/12)/100/20:layout.widthPercent*GRID_SIZE*(1000/12)/100,ratio=model?model.width/model.height:frame?frame.w/frame.h:1;
+ return `<button class="placed-furniture" data-product="${item.product}" data-use-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 사용하기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:surface?Math.round(project(parent).y*10)+20:Math.round(point.y*10)+9};--item-size:${width}px;--sprite-height:${width/ratio}px;--ground-depth:${width/4}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureArt(item.product,rotation)}</button>`;
 }
 function placementGrid(home){
   const item=home.items.find(item=>item.id===ui.placing);
   if(!item)return '';
+  if(isTabletop(item.product)){const tables=home.items.filter(i=>i.space===ui.space&&TABLE_SURFACES[i.product]);return `<div class="placement-hint">${tables.length?'식탁 상판의 빈 자리를 골라 주세요':'먼저 이 공간에 식탁을 배치해 주세요'} <button data-pet-action="rotate-place">회전</button><button data-pet-action="cancel-place">취소</button></div><div class="placement-grid">${tables.map(parent=>{const s=TABLE_SURFACES[parent.product];return Array.from({length:s.columns*s.rows},(_,slot)=>{const p=tableSlot(parent,slot).screen,free=availableTableSlot(home.items,parent.id,slot,item.id);return `<button class="tabletop-slot" data-table-parent="${esc(parent.id)}" data-table-slot="${slot}" style="left:${p.x}%;top:${p.y}%" aria-label="식탁 상판 ${slot+1}번 자리" ${free?'':'disabled'}>＋</button>`;}).join('');}).join('')}</div>`;}
   let cells='';
-  for(let c=0;c<8;c++)for(let r=0;r<8;r++){
+  for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
     const world=cellCenter(c,r),point=project(world),allowed=placementAllowed(home.items,item,ui.space,world,ui.rotation);
     cells+=`<button class="floor-slot ${allowed?'allowed':'blocked'}" data-slot="${world.x},${world.y}" style="left:${point.x}%;top:${point.y}%" aria-label="바닥 ${c+1}열 ${r+1}행에 배치${allowed?'':' · 배치 불가'}" ${allowed?'':'disabled'}></button>`;
   }
@@ -94,11 +117,11 @@ function carePanel(home) {
   return `<div class="pet-profiles">${petIds.map(id=>`<button class="pet-profile ${ui.pet === id ? 'chosen' : ''}" data-select-pet="${id}" aria-pressed="${ui.pet === id}"><img src="${petImage(id)}" alt=""><span><strong>${names[id]}</strong><small>${id === 'mochi' ? '하트처럼 포근한 친구' : '별빛처럼 다정한 친구'}</small><span class="hunger-track" role="progressbar" aria-label="${names[id]} 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${home.pets[id].hunger}"><i style="width:${home.pets[id].hunger}%"></i></span><small>배부름 ${home.pets[id].hunger}%</small></span></button>`).join('')}</div><div class="care-actions"><button data-pet-action="feed"><span>✦</span><strong>${names[ui.pet]} 먹이 주기</strong><small>보유 먹이 ${home.snacks}개</small></button><button data-pet-action="pat"><span>♡</span><strong>쓰다듬기</strong><small>사랑을 전해 주세요</small></button><button data-pet-action="sleep"><span>☾</span><strong>잠깐 쉬기</strong><small>포근한 낮잠 시간</small></button></div>`;
 }
 function shopPanel(home,catalog) {
-  return `<div class="pet-shop-note">하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">✦</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
+  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.filter(product=>usableInSpace(product.id,ui.space)).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">✦</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
 }
 function decoratePanel(home,catalog) {
   if (!home.items.length) return '<div class="pet-empty"><span>⌂</span><strong>우리만의 공간을 꾸며 봐요</strong><p>상점에서 가구를 구매하면 여기에 모여요.<br>가구를 고른 뒤 원하는 위치를 눌러 배치하세요.</p><button data-pet-panel="shop">상점 구경하기 ↗</button></div>';
-  return `<p class="decorate-guide">가구를 골라 바닥의 초록색 자리에 놓아 주세요.<br>회전해서 방향을 바꾸거나 키보드로 자리를 골라도 돼요.</p><div class="inventory-list">${home.items.map(item=>{const product=catalog.find(p=>p.id===item.product);return `<div class="inventory-item ${ui.placing === item.id ? 'picked' : ''}">${furnitureArt(item.product,item.rotation)}<span><strong>${esc(product?.name || '가구')}</strong><small>${item.space ? (spaces[item.space]||'이전 테라스')+'에 배치됨' : '보관함에 있어요'}</small></span><button data-place="${item.id}">${ui.placing === item.id ? '선택됨' : '배치'}</button>${item.space ? `<button class="store-item" data-store="${item.id}">보관</button>` : ''}</div>`;}).join('')}</div>`;
+  return `<p class="decorate-guide">가구를 골라 바닥의 초록색 자리에 놓아 주세요.<br>회전해서 방향을 바꾸거나 키보드로 자리를 골라도 돼요.</p><div class="inventory-list">${home.items.filter(item=>usableInSpace(item.product,ui.space)).map(item=>{const product=catalog.find(p=>p.id===item.product);return `<div class="inventory-item ${ui.placing === item.id ? 'picked' : ''}">${furnitureArt(item.product,item.rotation)}<span><strong>${esc(product?.name || '가구')}</strong><small>${item.space ? (spaces[item.space]||'이전 테라스')+'에 배치됨' : '보관함에 있어요'}</small></span><button data-place="${item.id}">${ui.placing === item.id ? '선택됨' : '배치'}</button>${item.space ? `<button class="store-item" data-store="${item.id}">보관</button>` : ''}</div>`;}).join('')}</div>`;
 }
 export function petPage(home,catalog) {
   if (!home) return '<div class="empty">모모와 쿠키의 집을 준비하고 있어요.</div>';
@@ -108,7 +131,7 @@ export function petPage(home,catalog) {
     const safe=point=>petStepClear(point,point,settled.map(other=>({from:positions[other],to:positions[other]})));
     if(!walkable(home.items,ui.space,current.c,current.r)||!safe(positions[id])){
       const candidates=[];
-      for(let c=0;c<8;c++)for(let r=0;r<8;r++){
+      for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
         const point=cellCenter(c,r);
         if(walkable(home.items,ui.space,c,r)&&safe(point))candidates.push({point,d:(c-current.c)**2+(r-current.r)**2});
       }
@@ -119,11 +142,12 @@ export function petPage(home,catalog) {
   }
   clockOffset = home.serverNow-Date.now();
   const placed=home.items.filter(item=>item.space===ui.space);
-  return `<section class="pet-heading"><div><span class="eyebrow">MOMO & KUKI'S LITTLE HOME</span><h1>모모와 쿠키의 집<span>♡</span></h1><p>둘이 돌보는, 두 친구의 작은 세상.</p></div><div class="heart-wallet" aria-label="보유 하트 ${home.hearts}"><span>♡</span><strong>${home.hearts}</strong><small>우리의 하트</small></div></section><div class="space-tabs" aria-label="펫 공간">${Object.entries(spaces).filter(([id])=>id==='yard'||id==='home').map(([id,label])=>`<button data-pet-space="${id}" aria-pressed="${(ui.space===id || id==='home'&&ui.space.endsWith('Room'))}" class="${(ui.space===id || id==='home'&&ui.space.endsWith('Room')) ? 'active' : ''}">${label}</button>`).join('')}</div><section class="pet-scene iso-scene scene-${ui.space} ${ui.placing ? 'placing' : ''}" aria-label="${spaces[ui.space]} · 모모와 쿠키가 함께 지내는 공간">${isoScenery(ui.space)}${sceneDoors()}<span class="scene-location">${spaces[ui.space]} · ${ui.space==='yard'?'문을 눌러 집으로 들어가요':ui.space==='home'?'우리의 포근한 거실과 작은 주방':'우리만의 방을 꾸며요'}</span>${placed.map(item=>placedFurniture(item,catalog)).join('')}${petIds.map(actor).join('')}${ui.placing ? placementGrid(home) : ''}<span class="scene-tip">${ui.placing ? '구매한 가구로 우리 공간을 채워요' : '친구를 고르고 바닥을 누르면 따라와요'}</span></section><button class="claim-hearts" data-pet-action="claim"><span class="claim-heart">♡</span><span><strong>시간당 하트 받기</strong><small>한 번에 10하트 · 받은 뒤 1시간 대기</small></span><span class="claim-value" id="claim-value">${reward(home) ? `+${reward(home)} 받기` : countdown(home)}</span></button><div class="pet-panel-tabs" aria-label="펫 활동">${[['care','돌보기'],['shop','상점'],['decorate','꾸미기']].map(([id,label])=>`<button data-pet-panel="${id}" class="${ui.panel===id ? 'active' : ''}" aria-pressed="${ui.panel===id}">${label}</button>`).join('')}</div><section class="pet-panel">${ui.panel === 'care' ? carePanel(home) : ui.panel === 'shop' ? shopPanel(home,catalog) : decoratePanel(home,catalog)}</section><p class="pet-shared-note">♡ 하트, 먹이, 가구와 배치는 같은 커플방에서 함께 사용해요.</p>`;
+  return `<section class="pet-heading"><div><span class="eyebrow">MOMO & KUKI'S LITTLE HOME</span><h1>모모와 쿠키의 집<span>♡</span></h1><p>둘이 돌보는, 두 친구의 작은 세상.</p></div><div class="heart-wallet" aria-label="보유 하트 ${home.hearts}"><span>♡</span><strong>${home.hearts}</strong><small>우리의 하트</small></div></section><div class="space-tabs" aria-label="펫 공간">${Object.entries(spaces).filter(([id])=>id==='yard'||id==='home').map(([id,label])=>`<button data-pet-space="${id}" aria-pressed="${(ui.space===id || id==='home'&&ui.space.endsWith('Room'))}" class="${(ui.space===id || id==='home'&&ui.space.endsWith('Room')) ? 'active' : ''}">${label}</button>`).join('')}</div><div class="pet-viewport"><div class="camera-controls" aria-label="공간 확대 축소"><button data-camera="out" aria-label="축소">−</button><button data-camera="reset" class="camera-level" aria-label="전체 공간 보기">100%</button><button data-camera="in" aria-label="확대">＋</button></div><span class="camera-help">20 × 20 셀 · 두 손가락 확대 · 드래그로 둘러보기</span><section class="pet-world pet-scene iso-scene scene-${ui.space} ${ui.placing ? 'placing' : ''}" aria-label="${spaces[ui.space]} · 모모와 쿠키가 함께 지내는 공간">${isoScenery(ui.space)}${sceneDoors()}<span class="scene-location">${spaces[ui.space]} · ${ui.space==='yard'?'문을 눌러 집으로 들어가요':ui.space==='home'?'우리의 포근한 거실과 작은 주방':'우리만의 방을 꾸며요'}</span>${placed.map(item=>placedFurniture(item,catalog,home.items)).join('')}${petIds.map(actor).join('')}${ui.placing ? placementGrid(home) : ''}<span class="scene-tip">${ui.placing ? '구매한 가구로 우리 공간을 채워요' : '친구를 고르고 바닥을 누르면 따라와요'}</span></section></div><button class="claim-hearts" data-pet-action="claim"><span class="claim-heart">♡</span><span><strong>시간당 하트 받기</strong><small>한 번에 10하트 · 받은 뒤 1시간 대기</small></span><span class="claim-value" id="claim-value">${reward(home) ? `+${reward(home)} 받기` : countdown(home)}</span></button><div class="pet-panel-tabs" aria-label="펫 활동">${[['care','돌보기'],['shop','상점'],['decorate','꾸미기']].map(([id,label])=>`<button data-pet-panel="${id}" class="${ui.panel===id ? 'active' : ''}" aria-pressed="${ui.panel===id}">${label}</button>`).join('')}</div><section class="pet-panel">${ui.panel === 'care' ? carePanel(home) : ui.panel === 'shop' ? shopPanel(home,catalog) : decoratePanel(home,catalog)}</section><p class="pet-shared-note">♡ 하트, 먹이, 가구와 배치는 같은 커플방에서 함께 사용해요.</p>`;
 }
 export function stopPets() {
+  for(const id of petIds){releaseFurniture(id);delete furnitureReservations[id];}
   controller?.abort(); controller=null;
-  for(const id of petIds){walkTokens[id]++;delete motions[id];}
+  for(const id of petIds){walkTokens[id]++;settleMotion(id);}
   timers.forEach(clearTimeout); timers=[];
   clearInterval(clock);
 }
@@ -147,7 +171,9 @@ function faceActor(id,face){
   const img=actor.querySelector('.pet-body img');
   if(img.getAttribute('src')!==petImage(id,face.pose))img.src=petImage(id,face.pose);
 }
-function movePet(id,target){
+function movePet(id,target,onArrive){
+  if(!onArrive)delete furnitureReservations[id];
+  if(furnitureUses[id])releaseFurniture(id);
   const home=hooks.home(),actor=document.querySelector(`.actor-${id}`);
   if(!actor || actor.dataset.mood || ui.placing || motions[id]?.until>Date.now())return false;
   const canStep=(a,b)=>petStepClear(cellCenter(a.c,a.r),cellCenter(b.c,b.r),otherPetSegments(id));
@@ -158,27 +184,75 @@ function movePet(id,target){
     // Re-plan at every step; the other pet may have started moving in the meantime.
     const current=cellAt(positions[id]);
     const path=findPath(hooks.home().items,ui.space,current,target,canStep);
-    if(!path.length){actor.classList.remove('walking');return;}
+    if(!path.length){actor.classList.remove('walking');if(current.c===target.c&&current.r===target.r)onArrive?.();else delete furnitureReservations[id];return;}
     const point=cellCenter(path[0].c,path[0].r),old=project(positions[id]),next=project(point);
-    if(!petStepClear(positions[id],point,otherPetSegments(id))){actor.classList.remove('walking');return;}
-    motions[id]={from:{...positions[id]},to:point,until:Date.now()+640};
+    if(!petStepClear(positions[id],point,otherPetSegments(id))){delete furnitureReservations[id];actor.classList.remove('walking');return;}
+    const distance=Math.hypot((next.x-old.x)*scene.clientWidth/100,(next.y-old.y)*scene.clientHeight/100),duration=Math.max(160,Math.round(distance/85*1000));
+    actor.style.setProperty('--move-duration',duration+'ms');
+    motions[id]={from:{...positions[id]},to:point,startedAt:Date.now(),duration,until:Date.now()+duration};
     faceActor(id,facingForVector((next.x-old.x)*scene.clientWidth,(next.y-old.y)*scene.clientHeight));
     actor.classList.add('walking');
     actor.style.left=`${next.x}%`;actor.style.top=`${next.y}%`;
     actor.style.zIndex=String(Math.round(next.y*10)+10);
     actor.style.setProperty('--depth',.8+(next.y-42)/44*.25);
     positions[id]=point;
-    later(step,660);
+    later(step,duration+20);
   }
   step();return true;
 }
 
+function releaseFurniture(id){
+  const use=furnitureUses[id];if(!use)return;
+  positions[id]=use.exit;delete furnitureUses[id];
+  const actor=document.querySelector(`.actor-${id}`);
+  if(actor){actor.dataset.using='';actor.dataset.mood='';actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;}
+}
+function useFurniture(itemId){
+  const home=hooks.home(),item=home.items.find(i=>i.id===itemId&&i.space===ui.space);
+  if(!item)return;
+  const action=PRODUCT_ACTIONS[item.product];
+  if(action==='light'){
+    if(litFurniture.has(itemId))litFurniture.delete(itemId);else litFurniture.add(itemId);
+    document.querySelector(`[data-use-furniture="${itemId}"]`)?.classList.toggle('is-lit',litFurniture.has(itemId));
+    hooks.toast(litFurniture.has(itemId)?'따뜻한 불빛을 켰어요':'불을 껐어요');return;
+  }
+  if(!action){hooks.toast('위치를 바꾸려면 꾸미기에서 가구를 골라 주세요.');return;}
+  if(Object.values(furnitureUses).some(use=>use.item===itemId)||Object.values(furnitureReservations).includes(itemId)){hooks.toast('다른 친구가 사용 중이거나 가고 있어요.');return;}
+  const id=ui.pet;setSelection(id);
+  const actor=document.querySelector(`.actor-${id}`);if(!actor)return;
+  actor.dataset.mood='';
+  const target=cellAt(item),[w,h]=footprint(item),candidates=[];
+  for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
+    if(Math.abs(c-target.c)>Math.ceil(w/2)+1||Math.abs(r-target.r)>Math.ceil(h/2)+1)continue;
+    const point=cellCenter(c,r);if(!walkable(home.items,ui.space,c,r)||!petStepClear(point,point,otherPetSegments(id)))continue;
+    const current=cellAt(positions[id]),path=findPath(home.items,ui.space,current,{c,r},(a,b)=>petStepClear(cellCenter(a.c,a.r),cellCenter(b.c,b.r),otherPetSegments(id)));
+    if(path.length||current.c===c&&current.r===r)candidates.push({c,r,d:Math.abs(c-target.c)+Math.abs(r-target.r),length:path.length});
+  }
+  candidates.sort((a,b)=>a.d-b.d||a.length-b.length);
+  if(!candidates.length){hooks.toast('가구 옆으로 갈 길이 없어요. 주변 셀을 비워 주세요.');return;}
+  const arrive=()=>{
+    if(!actor.isConnected||furnitureReservations[id]!==itemId)return;
+    delete furnitureReservations[id];
+    const exit={...positions[id]};furnitureUses[id]={item:itemId,exit};
+    actor.dataset.mood='using';actor.dataset.using=action;actor.classList.remove('walking');faceActor(id,{pose:action==='sleep'?'side':'front',flip:1});
+    if(['sleep','rest'].includes(action)){
+      positions[id]={x:item.x,y:item.y};const p=project(item);actor.style.left=`${p.x}%`;actor.style.top=`${p.y-2}%`;actor.style.zIndex=String(Math.round(p.y*10)+11);
+    }
+    const messages={sleep:'z z z…',rest:'폭신폭신 ♡',read:'한 장 더…',study:'끄적끄적 ✎',tea:'따뜻한 차 한 잔',play:'통통! 재밌어',drink:'꿀꺽꿀꺽',water:'쑥쑥 자라라',watch:'물고기다!',dress:'오늘도 단정하게 ♡',tidy:'차곡차곡'};
+    actor.querySelector('.pet-speech').textContent=messages[action]||'♡';
+    hooks.toast(`${names[id]} · ${messages[action]||'가구를 사용해요'}`);
+    later(()=>releaseFurniture(id),action==='sleep'?16000:9000);
+  };
+  const next=candidates[0],current=cellAt(positions[id]);
+  furnitureReservations[id]=itemId;
+  if(current.c===next.c&&current.r===next.r)arrive();else if(!movePet(id,next,arrive)){delete furnitureReservations[id];hooks.toast('친구가 움직이는 중이에요. 잠시 후 눌러 주세요.');}
+}
 function wander(id) {
   if (controller?.signal.aborted) return;
   const actor=document.querySelector(`.actor-${id}`);
   if (!actor) return;
   if (!actor.dataset.mood && !ui.placing && ui.selectedPet!==id) {
-    for(let i=0;i<12;i++)if(movePet(id,{c:Math.floor(Math.random()*8),r:Math.floor(Math.random()*8)}))break;
+    for(let i=0;i<12;i++)if(movePet(id,{c:Math.floor(Math.random()*GRID_SIZE),r:Math.floor(Math.random()*GRID_SIZE)}))break;
   }
   later(()=>wander(id),6500+Math.random()*3500);
 }
@@ -193,6 +267,7 @@ export function mountPets(options) {
   stopPets(); hooks=options;
   controller=new AbortController();
   const root=document.querySelector('#app');
+  const viewport=root.querySelector('.pet-viewport');if(viewport)mountPetCamera(viewport,ui.space,controller.signal);
   document.addEventListener('click',e=>{
     if(!ui.selectedPet || !(e.target instanceof Element))return;
     if(e.target.closest('[data-pet], [data-select-pet]'))return;
@@ -213,6 +288,7 @@ export function mountPets(options) {
       if(!insideFloor(world)){if(ui.placing)hooks.toast('바닥의 초록색 자리를 골라 주세요.');return;}
       if(ui.placing){
         const point=snap(world),item=hooks.home().items.find(item=>item.id===ui.placing);
+        if(item&&isTabletop(item.product)){hooks.toast('음식은 식탁 상판의 빈 자리를 눌러 올려 주세요.');return;}
         if(!item||!placementAllowed(hooks.home().items,item,ui.space,point,ui.rotation)){hooks.toast('다른 가구와 겹치는 자리예요. 초록색 자리를 골라 주세요.');return;}
         if(await act({type:'place',item:ui.placing,space:ui.space,...point,rotation:ui.rotation},'여기에 놓았어요')){ui.placing=null;hooks.render();}
       }else if(ui.selectedPet){
@@ -227,6 +303,8 @@ export function mountPets(options) {
     if(button.dataset.petPanel){ui.panel=button.dataset.petPanel; ui.placing=null; hooks.render();return;}
     if(button.dataset.selectPet){setSelection(button.dataset.selectPet);return;}
     if(button.dataset.pet){setSelection(button.dataset.pet);return;}
+    if(button.dataset.tableParent){if(await act({type:'placeOnTable',item:ui.placing,parentId:button.dataset.tableParent,slot:Number(button.dataset.tableSlot),rotation:ui.rotation},'식탁 위에 올렸어요')){ui.placing=null;hooks.render();}return;}
+    if(button.dataset.useFurniture){useFurniture(button.dataset.useFurniture);return;}
     if(button.dataset.buy){await act({type:'buy',product:button.dataset.buy},'우리 집에 작은 선물이 생겼어요');return;}
     if(button.dataset.place || button.dataset.furniture){ui.placing=button.dataset.place || button.dataset.furniture;ui.rotation=hooks.home().items.find(item=>item.id===ui.placing)?.rotation||0;ui.panel='decorate';hooks.render();return;}
     if(button.dataset.store){await act({type:'store',item:button.dataset.store},'가구를 보관함에 넣었어요');return;}
@@ -237,12 +315,12 @@ export function mountPets(options) {
       case 'pat': react(ui.pet,'happy');break;
       case 'sleep': react(ui.pet,'sleep');break;
       case 'cancel-place': ui.placing=null;hooks.render();break;
-      case 'rotate-place': ui.rotation=ui.rotation===90?0:90;hooks.render();break;
+      case 'rotate-place': ui.rotation=(ui.rotation+90)%360;hooks.render();break;
     }
   },{signal:controller.signal});
   // Movement is a local visual effect; shared care and furniture are server state.
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  for(const id of petIds)for(const pose of ['front','side','back']){const img=new Image();img.src=petImage(id,pose);}
+  for(const id of petIds)for(const pose of PET_POSES){const img=new Image();img.src=petImage(id,pose);}
   if(!reduced){later(()=>wander('mochi'),1200);later(()=>wander('kuki'),2500);}
   clock=setInterval(()=>{
     const target=document.querySelector('#claim-value'),home=hooks.home();

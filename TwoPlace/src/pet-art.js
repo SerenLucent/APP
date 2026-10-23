@@ -1,10 +1,14 @@
-import {project,fromWorld} from '../shared/pet-space.js';
+import {furnishingImage} from './furniture-rasterizer.js';
+import {furnishingModel} from './furnishing-model.js';
+import {bedModel} from './bed-model.js';
+import {furnitureSprites} from './furniture-assets.js';
+import {project,fromWorld,GRID_SIZE} from '../shared/pet-space.js';
 function floorPoint(u,v){const p=project(fromWorld(u,v));return `${p.x},${p.y}`;}
 function tiles(space){
   let result='';
-  for(let u=0;u<8;u++)for(let v=0;v<8;v++){
-    const fill=space==='yard' ? ((u+v)%2?'#d7dfb9':'#dce4c1') : space==='terrace' ? ((u+v)%2?'#dec8a5':'#e5d2b4') : ((u+v)%2?'#e9d7b9':'#efdfc7');
-    result+=`<polygon points="${floorPoint(u/8,v/8)} ${floorPoint((u+1)/8,v/8)} ${floorPoint((u+1)/8,(v+1)/8)} ${floorPoint(u/8,(v+1)/8)}" fill="${fill}" stroke="${space==='yard'?'#bfc99c':'#cbb38f'}" stroke-width=".11"/>`;
+  for(let u=0;u<GRID_SIZE;u++)for(let v=0;v<GRID_SIZE;v++){
+    const fill=space==='yard' ? ((u+v)%2?'#d7dfb9':'#dce4c1') : space==='terrace' ? ((u+v)%2?'#dec8a5':'#e5d2b4') : 'url(#oak-floor)';
+    result+=`<polygon points="${floorPoint(u/GRID_SIZE,v/GRID_SIZE)} ${floorPoint((u+1)/GRID_SIZE,v/GRID_SIZE)} ${floorPoint((u+1)/GRID_SIZE,(v+1)/GRID_SIZE)} ${floorPoint(u/GRID_SIZE,(v+1)/GRID_SIZE)}" fill="${fill}" stroke="${space==='yard'?'#bfc99c':'#cbb38f'}" stroke-width=".11"/>`;
   }
   return result;
 }
@@ -35,7 +39,7 @@ function livingRoom(){
     <rect x="-.5" y="-4.5" width="8" height="2.8" rx=".5" fill="#fff2dd"/>
     <text x="3.5" y="-2.5" text-anchor="middle" font-size="1.8" fill="#82708c">쿠키네방</text>
   </g>
-  <g class="built-in-kitchen">
+  <g class="built-in-kitchen" transform="translate(94 64) scale(${8/GRID_SIZE}) translate(-94 -64)">
     <g transform="matrix(1 .5 0 1 72 29)">
       <rect width="22" height="15" fill="#e4d4ba"/>
       <path d="M0 5h22M0 10h22M5 0v15M11 0v15M17 0v15" stroke="#f8eddb" stroke-width=".35"/>
@@ -58,15 +62,7 @@ function livingRoom(){
     </g>
     <path d="M77.5 46v-3q0-2-1.4-1.3l-.8.4v1.2" fill="none" stroke="#879d97" stroke-width=".7" stroke-linecap="round"/>
   </g>
-  <g class="built-in-sofa">
-    <path d="M6 53 28 42 39 47.5 17 58.5Z" fill="#b69482"/>
-    <path d="M6 53v9l11 5.5v-9Z" fill="#c49f8f"/>
-    <path d="M17 58.5 39 47.5v9L17 67.5Z" fill="#d9b4a3"/>
-    <path d="M6 53 28 42v6L6 59Z" fill="#e7cab7"/>
-    <path d="M6 59 28 48 38 53 16 64Z" fill="#efd8c3"/>
-    <path d="M6 56 12 59v6l-6-3ZM28 45l11 5.5v6L33 59.5v-6L28 51Z" fill="#d6b09c"/>
-    <path d="M12 56 18 53l4 2-6 3Z" fill="#bbc9aa"/>
-  </g>`;
+  `;
 }
 function walls(space){
   if(space==='home')return livingRoom();
@@ -114,7 +110,7 @@ function walls(space){
   return `<path d="M5 37 50 14 95 37 94 39 50 17 6 39Z" fill="#fdf4e7"/><path d="M6 38 50 16V42L6 64Z" fill="${left}" stroke="#d6c1a7" stroke-width=".35"/>${true ? `<path d="M50 16 94 38V64L50 42Z" fill="${right}" stroke="#decbb2" stroke-width=".35"/>` : `<path d="M50 32 94 54v10L50 42Z" fill="#f3e8d5" opacity=".22"/><path d="M50 42V32M55.5 44.75v-10M61 47.5v-10M66.5 50.25v-10M72 53v-10M77.5 55.75v-10M83 58.5v-10M88.5 61.25v-10M94 64V38" fill="none" stroke="#eee0c7" stroke-width="1.3"/><path d="M50 32 94 54M50 40 94 62" fill="none" stroke="#fcf4e1" stroke-width="1.5"/>`}<path d="M6 61 50 39 94 61v3L50 42 6 64Z" fill="#cbb18d"/>${windowArt()}${bedroomExit()}${true ? '<g transform="matrix(1 .5 0 1 68 30)"><rect width="12" height="12" rx=".6" fill="#bfa381"/><rect x="1" y="1" width="10" height="10" fill="#fbf1de"/><path d="M6 9 3.5 5.8C1.8 3 5 2 6 4c1-2 4.2-1 2.5 1.8Z" fill="#d7aba0"/></g><path d="M9 59 43 43 56 49 22 66Z" fill="#fff0ca" opacity=".3"/>' : '<path d="M49 13 96 36v5L49 18Z" fill="#d6aa92"/><path d="M50 14 94 36v2L50 16Z" fill="#f5ddbc"/><g transform="matrix(1 .5 0 1 72 34)"><rect width="13" height="10" rx="1" fill="#d1bda1"/><path d="M6 8V0M6 4C0 4 1-2 6 2M6 2c5-5 8 1 0 3" stroke="#94aa7b" stroke-width="1.4" fill="none"/></g>'}`;
 }
 export function isoScenery(space){
-  return `<svg class="iso-scenery" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="iso-shadow"><feGaussianBlur stdDeviation="1.4"/></filter></defs><ellipse cx="50" cy="85" rx="42" ry="6" fill="#92795f" opacity=".13" filter="url(#iso-shadow)"/><path d="M6 64 50 86 94 64v5L50 91 6 69Z" fill="${space==='yard'?'#adba8f':'#bca17c'}"/><path d="M50 86 94 64v5L50 91Z" fill="${space==='yard'?'#99a97f':'#aa8c68'}"/>${tiles(space)}${walls(space)}</svg>`;
+  return `<svg class="iso-scenery" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="oak-floor" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="matrix(1 .5 -1 .5 50 42)"><image href="${import.meta.env.BASE_URL}furniture/oak-floor-v1.png" width="12" height="12"/></pattern><filter id="iso-shadow"><feGaussianBlur stdDeviation="1.4"/></filter></defs><ellipse cx="50" cy="85" rx="42" ry="6" fill="#92795f" opacity=".13" filter="url(#iso-shadow)"/><path d="M6 64 50 86 94 64v5L50 91 6 69Z" fill="${space==='yard'?'#adba8f':'#bca17c'}"/><path d="M50 86 94 64v5L50 91Z" fill="${space==='yard'?'#99a97f':'#aa8c68'}"/>${tiles(space)}${walls(space)}</svg>`;
 }
 const shadows='<ellipse cx="51" cy="85" rx="31" ry="8" fill="#80694c" opacity=".13"/>';
 const shapes={
@@ -125,4 +121,28 @@ const shapes={
   lamp:'<ellipse cx="50" cy="84" rx="22" ry="10" fill="#b79971"/><ellipse cx="50" cy="81" rx="22" ry="9" fill="#d3b78d"/><path d="M48 80V31h4v49Z" fill="#bc9b71"/><path d="m28 12-9 27q31 18 62 0l-9-27Z" fill="#ead09a"/><path d="M50 13v38q19 0 31-12l-9-27Z" fill="#d8ba80"/><ellipse cx="50" cy="12" rx="22" ry="10" fill="#fae9bd"/><ellipse cx="50" cy="40" rx="30" ry="10" fill="#f6dfa7"/>',
   fence:'<path d="M17 35v40l7 4 4-3V37l-7-5ZM47 50v40l7 4 4-3V52l-7-5ZM76 35v40l7 4 4-3V37l-7-5Z" fill="#d7c8af"/><path d="M16 34v39l7 4V36l-3-4ZM46 49v39l7 4V51l-3-4ZM75 34v39l7 4V36l-3-4Z" fill="#fff5df"/><path d="m18 46 32 16 31-16v7L50 69 18 53ZM18 61l32 16 31-16v6L50 84 18 67Z" fill="#f0e3ca"/>'
 };
-export function isoFurniture(product,rotation=0){return `<span class="furniture-art iso-furniture" style="--furniture-flip:${rotation===90?-1:1}" aria-hidden="true"><svg viewBox="0 0 100 100">${product==='rug' ? '<ellipse cx="50" cy="55" rx="44" ry="20" fill="#80694c" opacity=".08"/>' : shadows}${shapes[product]||shapes.cushion}</svg></span>`;}
+Object.assign(shapes,{
+  bed:'<path d="M10 39 47 20 91 43v39L54 99 10 76Z" fill="#ba9379"/><path d="M10 28 47 9v29L10 57Z" fill="#d7b392" stroke="#ac846a"/><path d="M15 32 44 17v15L15 47Z" fill="#f2dcc2"/><path d="m12 53 35-18 43 23-35 19Z" fill="#fff5e9"/><path d="m12 58 43 23 35-18v13L55 95 12 72Z" fill="#e8b4c6"/><path d="m30 45 17-9 43 23-17 9Z" fill="#f8d7e1"/><path d="m16 52 13-7 19 10-13 7Z" fill="#fff" stroke="#ead9c5"/><path d="m59 67 14-7 14 8-14 7Z" fill="#f4c7d6"/><path d="M17 74v10M83 80v9" stroke="#a88269" stroke-width="5"/>',
+  sofa:'<path d="M9 43 51 21 92 42v29L50 94 9 73Z" fill="#bb8a9f"/><path d="m10 29 41-21 41 21v28L51 78 10 57Z" fill="#e5b4ca"/><path d="m17 48 34-17 34 17-34 19Z" fill="#f4cfdd" stroke="#d5a2b9"/><path d="m51 31 1 35" stroke="#d49db6"/><path d="M9 45 20 51v24L9 69ZM81 50 92 44v26l-11 6Z" fill="#e7b6ce"/><path d="m26 38 10-6 12 7-11 6Z" fill="#fff0c7"/><path d="M20 77v8M80 77v8" stroke="#a88772" stroke-width="4"/>',
+  bookshelf:'<path d="M20 16 61 2 84 14v70L43 99 20 87Z" fill="#b69070"/><path d="m25 20 34-12v70L25 90Z" fill="#6e5746"/><path d="M25 42 59 30M25 66 59 54M25 88 59 76" stroke="#dfbf96" stroke-width="4"/><path d="M30 22v17M37 20v16M46 17v16M53 15v16" stroke="#e6a9b5" stroke-width="5"/><path d="M30 47v14M38 44v15M47 41v15M54 38v15" stroke="#a9c7b9" stroke-width="5"/><path d="M30 71v13M39 68v13M48 65v13" stroke="#e9cf8c" stroke-width="6"/>',
+  desk:'<path d="M15 48v38M47 65v30M86 46v39" stroke="#ad886b" stroke-width="6"/><path d="m7 43 42-22 46 24-43 23Z" fill="#e2bd91" stroke="#bc9572"/><path d="m12 43 37-19 39 21-36 18Z" fill="#f0d5b3"/><path d="m43 35 15-8 15 8-15 8Z" fill="#c6d9cf"/><path d="M22 33v-8m-5 1 5-8 6 8Z" fill="#f3d793" stroke="#b99b6e"/><path d="m31 49 13-7 14 7-13 7Z" fill="#fff7e9"/><path d="m38 48 9-3" stroke="#aa9c83"/>',
+  wardrobe:'<path d="M19 15 59 1 85 15v72L44 100 19 87Z" fill="#b98e71"/><path d="m24 20 35-12v72L24 92Z" fill="#e5c29c" stroke="#a98065"/><path d="M42 14v72" stroke="#b38b6f"/><path d="M36 48v8M47 44v8" stroke="#987456" stroke-width="3"/><path d="m60 9 19 10v62L60 71Z" fill="#cda782"/>',
+  nightstand:'<path d="m15 38 35-18 35 18v42L50 98 15 80Z" fill="#bf9778"/><path d="m15 38 35-18 35 18-35 18Z" fill="#ebcaa5"/><path d="M20 48 47 62v20L20 68ZM54 62 80 48v20L54 82Z" fill="#d9b18c"/><circle cx="33" cy="65" r="2" fill="#a57a5b"/><path d="M50 41V20" stroke="#bba47b" stroke-width="3"/><path d="m35 15-5 15q20 13 40 0l-5-15Z" fill="#ffe6ad"/><ellipse cx="50" cy="15" rx="15" ry="6" fill="#fff2cc"/>',
+  toybox:'<path d="m15 50 34-17 37 18-35 20Z" fill="#bd9b7c"/><path d="M15 50v25l36 19 35-19V51L51 71Z" fill="#dfbb91"/><path d="M22 60v17M32 65v17M43 71v17M61 68v19M73 61v19" stroke="#c19e7b" stroke-width="2"/><circle cx="36" cy="43" r="13" fill="#eaa6ba"/><path d="m56 49 5-23 17 5-4 25Z" fill="#b1c6d9"/><path d="m27 48 15 7" stroke="#fff0da" stroke-width="3"/><circle cx="64" cy="43" r="3" fill="#fff3c9"/>',
+  bowl:'<ellipse cx="50" cy="73" rx="35" ry="17" fill="#c2a9a3"/><path d="M15 57q5 30 35 30t35-30Z" fill="#e9c8d4"/><ellipse cx="50" cy="57" rx="35" ry="17" fill="#fff0e8"/><ellipse cx="50" cy="57" rx="27" ry="11" fill="#a9d9e0"/><path d="M34 56q15-7 29 0" fill="none" stroke="#e5f6f4" stroke-width="2"/>',
+  bench:'<path d="M16 53v30M45 69v26M84 52v31" stroke="#8c9a86" stroke-width="5"/><path d="m9 46 44-23 39 21-44 24Z" fill="#dfbf8c" stroke="#b08c64"/><path d="m17 18 37-19 34 18v25L51 62 17 44Z" fill="#d8b384"/><path d="m23 20 31-16 28 14M23 29 54 13l28 14M23 38l31-16 28 14" fill="none" stroke="#f1d6a9" stroke-width="3"/>',
+  flowerbed:'<path d="m7 58 42-22 44 23-42 24Z" fill="#9e8468"/><path d="M7 58v14l44 24 42-24V59L51 83Z" fill="#d7b293"/><path d="M23 62V37M48 70V29M73 58V38" stroke="#8ca67e" stroke-width="3"/><g fill="#edb0c8"><circle cx="23" cy="32" r="10"/><circle cx="48" cy="24" r="11"/></g><circle cx="73" cy="33" r="11" fill="#f4da92"/><g fill="#ffe8aa"><circle cx="23" cy="32" r="4"/><circle cx="48" cy="24" r="4"/></g><circle cx="73" cy="33" r="4" fill="#d5ad68"/>',
+  pond:'<ellipse cx="50" cy="62" rx="46" ry="27" fill="#c3b59d"/><ellipse cx="50" cy="58" rx="39" ry="21" fill="#a1cdd0"/><ellipse cx="50" cy="58" rx="33" ry="16" fill="#b7dfe0"/><path d="M23 58q17-8 34-1M43 66q14-6 27-3" fill="none" stroke="#e7f7ef" stroke-width="2"/><ellipse cx="62" cy="56" rx="7" ry="3" fill="#e6a484"/><path d="m69 56 5-4v8Z" fill="#e6a484"/><ellipse cx="31" cy="49" rx="9" ry="5" fill="#94b58c"/><g fill="#e3d5bd"><ellipse cx="15" cy="53" rx="8" ry="5"/><ellipse cx="47" cy="35" rx="8" ry="5"/><ellipse cx="79" cy="76" rx="8" ry="5"/></g>',
+  lantern:'<ellipse cx="50" cy="87" rx="18" ry="7" fill="#7d9185"/><path d="M50 82V33" stroke="#81958a" stroke-width="5"/><path d="m33 22 17-9 17 9v27l-17 9-17-9Z" fill="#fff0bb" stroke="#91a295" stroke-width="3"/><path d="m27 20 23-15 23 15-23 12Z" fill="#a8baaa"/><path d="M50 32v24" stroke="#91a295" stroke-width="2"/>'
+});
+export function isoFurniture(product,rotation=0){
+ const model=furnishingModel(product,rotation);if(model){
+  furnishingImage(model);
+  return `<span class="furniture-art iso-furniture projected-furniture" data-model="${product}" data-direction="${((rotation/90)%4+4)%4}" aria-hidden="true"><img src="${model.image}" alt="" draggable="false" decoding="async" loading="lazy"/></span>`;
+ }
+ const sprite=furnitureSprites[product];
+ if(sprite){const direction=((rotation/90)%4+4)%4,frame=sprite.frames[direction];
+ return `<span class="furniture-art iso-furniture sprite-furniture" data-direction="${direction}" aria-hidden="true"><svg viewBox="${frame.x} ${frame.y} ${frame.w} ${frame.h}" preserveAspectRatio="xMidYMax meet"><image href="${import.meta.env.BASE_URL}${sprite.url}" width="${sprite.width}" height="${sprite.height}"/></svg></span>`;}
+ return `<span class="furniture-art iso-furniture" aria-hidden="true"><svg viewBox="0 0 100 100">${shadows}${shapes[product]||shapes.cushion}</svg></span>`;
+}
+

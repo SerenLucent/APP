@@ -1,3 +1,6 @@
+import {availableTableSlot,syncTabletopItems,tableSlot} from '../shared/tabletop.js';
+import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS,isTabletop} from '../shared/household-catalog.js';
+import {PRODUCT_SPACES,usableInSpace} from '../shared/pet-products.js';
 import {placementAllowed} from '../shared/pet-space.js';
 
 export const HOUR = 3600000;
@@ -10,13 +13,25 @@ export const CATALOG = [
   {id:'table',name:'동그란 테이블',price:50,type:'furniture',symbol:'◒',description:'둘이 마주 앉는 작은 테이블'},
   {id:'rug',name:'햇살 러그',price:40,type:'furniture',symbol:'◉',description:'발끝까지 따뜻해지는 햇살 한 조각'},
   {id:'lamp',name:'달빛 조명',price:45,type:'furniture',symbol:'☾',description:'우리 집에 내려앉은 작은 달빛'},
-  {id:'fence',name:'하얀 울타리',price:35,type:'furniture',symbol:'▥',description:'앞마당에 둘러 주는 아담한 울타리'},
-];
+  {id:'bed',name:'포근한 구름 침대',price:90,type:'furniture',symbol:'☾',description:'누르면 선택한 친구가 침대에 누워 쉬어요'},
+  {id:'sofa',name:'둘이 앉는 소파',price:80,type:'furniture',symbol:'♡',description:'폭신한 자리에 앉아 잠깐 쉬어요'},
+  {id:'bookshelf',name:'이야기 책장',price:65,type:'furniture',symbol:'▤',description:'마음에 드는 책을 꺼내 읽어요'},
+  {id:'desk',name:'작은 작업 책상',price:75,type:'furniture',symbol:'✎',description:'오늘의 이야기를 끄적이는 자리'},
+  {id:'wardrobe',name:'원목 옷장',price:85,type:'furniture',symbol:'▥',description:'친구가 옷장 앞에서 단장해요'},
+  {id:'nightstand',name:'달빛 협탁',price:35,type:'furniture',symbol:'☾',description:'잠들기 전 작은 소지품을 정리해요'},
+  {id:'toybox',name:'장난감 바구니',price:40,type:'furniture',symbol:'✦',description:'모모와 쿠키가 장난감을 가지고 놀아요'},
+  {id:'bowl',name:'도자기 물그릇',price:20,type:'furniture',symbol:'◡',description:'산책 후 시원한 물을 마셔요'},
+  {id:'bench',name:'햇살 정원 벤치',price:60,type:'furniture',symbol:'⌑',description:'앞마당에 앉아 햇볕을 쬐어요'},
+  {id:'flowerbed',name:'작은 꽃밭',price:45,type:'furniture',symbol:'❀',description:'꽃에 물을 주며 정원을 돌봐요'},
+  {id:'pond',name:'조약돌 연못',price:100,type:'furniture',symbol:'≈',description:'잔물결과 작은 물고기를 구경해요'},
+  {id:'lantern',name:'정원 랜턴',price:30,type:'furniture',symbol:'☼',description:'누르면 따뜻한 불빛이 켜져요'},
+  ...HOUSEHOLD_PRODUCTS,...TABLETOP_PRODUCTS,
+].map(product=>({...product,spaces:PRODUCT_SPACES[product.id]}));
 export class PetError extends Error {
   constructor(message,status=400) { super(message); this.status=status; }
 }
 export function initialPetHome(now=Date.now()) {
-  return {version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
+  return {layoutVersion:1,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
 export function hunger(pet,now=Date.now()) { return Math.max(0,pet.hunger - Math.max(0,Math.floor((now-pet.updatedAt)/HOUR))*4); }
 export function claimable(home,now=Date.now()) { return now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
@@ -39,7 +54,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       if (!product) throw new PetError('이 상품은 찾을 수 없어요.');
       if (home.hearts < product.price) throw new PetError('하트가 부족해요. 하트를 더 모아 주세요.');
       if (product.type === 'food' && home.snacks >= 100) throw new PetError('먹이는 최대 100개까지 보관할 수 있어요.');
-      if (product.type === 'furniture' && home.items.length >= 40) throw new PetError('가구는 최대 40개까지 보관할 수 있어요.');
+      if (product.type === 'furniture' && home.items.length >= 120) throw new PetError('가구는 최대 120개까지 보관할 수 있어요.');
       home.hearts -= product.price;
       if (product.type === 'food') home.snacks++;
       else home.items.push({id:idFactory(),product:product.id,space:null,x:50,y:65});
@@ -54,24 +69,42 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       home.pets[action.pet] = {hunger:Math.min(100,level+25),updatedAt:now};
       break;
     }
+    case 'placeOnTable': {
+      const item=home.items.find(i=>i.id===action.item);
+      if(!item||!isTabletop(item.product))throw new PetError('식탁에 올릴 음식을 골라 주세요.');
+      if(![0,90,180,270].includes(action.rotation??0))throw new PetError('방향을 확인해 주세요.');
+      if(!availableTableSlot(home.items,action.parentId,action.slot,item.id))throw new PetError('빈 식탁 상판 자리를 골라 주세요.');
+      Object.assign(item,{parentId:action.parentId,slot:action.slot,rotation:action.rotation??0});syncTabletopItems(home.items);
+      break;
+    }
     case 'place': {
       const item = home.items.find(item=>item.id === action.item);
       if (!item) throw new PetError('보유한 가구만 배치할 수 있어요.');
+      if(isTabletop(item.product))throw new PetError('음식은 식탁 위에만 배치할 수 있어요.');
       if (!SPACES.includes(action.space) || !Number.isFinite(action.x) || !Number.isFinite(action.y) || action.x<10 || action.x>90 || action.y<45 || action.y>88) throw new PetError('공간 안의 배치할 위치를 골라 주세요.');
+      if(!usableInSpace(item.product,action.space))throw new PetError('이 가구는 해당 공간에 배치할 수 없어요.');
       const rotation=action.rotation ?? item.rotation ?? 0;
-      if(![0,90].includes(rotation))throw new PetError('가구 방향을 확인해 주세요.');
+      if(![0,90,180,270].includes(rotation))throw new PetError('가구 방향을 확인해 주세요.');
       if(!placementAllowed(home.items,item,action.space,{x:action.x,y:action.y},rotation))throw new PetError('다른 가구와 겹치거나 바닥을 벗어나는 자리예요. 초록색 자리를 골라 주세요.');
-      Object.assign(item,{space:action.space,x:action.x,y:action.y,rotation});
+      Object.assign(item,{space:action.space,x:action.x,y:action.y,rotation});syncTabletopItems(home.items);
       break;
     }
     case 'store': {
       const item = home.items.find(item=>item.id === action.item);
       if (!item) throw new PetError('가구를 찾을 수 없어요.');
-      item.space = null;
+      item.space = null;delete item.parentId;delete item.slot;syncTabletopItems(home.items);
       break;
     }
     default: throw new PetError('할 수 없는 동작이에요.');
   }
   home.version++;
   return home;
+}
+
+// Keep ownership and currency; retire only placements invalid in the remodel.
+export function remodelPetHome(current){
+ if(current.layoutVersion>=1)return current;
+ const home=JSON.parse(JSON.stringify(current)),placed=[];let stored=0;
+ for(const item of home.items){if(!item.space||item.parentId)continue;if(!usableInSpace(item.product,item.space)||!placementAllowed(placed,item,item.space,item,item.rotation||0)){item.space=null;delete item.parentId;delete item.slot;stored++;}else placed.push(item);}
+ syncTabletopItems(home.items);home.layoutVersion=1;home.version++;home.remodel={version:1,stored};return home;
 }

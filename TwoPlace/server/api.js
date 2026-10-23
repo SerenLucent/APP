@@ -4,7 +4,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { randomBytes, randomInt, createHash, scryptSync } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { initialPetHome, petSnapshot, changePetHome, CATALOG } from './pets.js';
+import { initialPetHome, petSnapshot, changePetHome, remodelPetHome, CATALOG } from './pets.js';
 
 const emptyState = () => ({startDate: null, events: [], notes: []});
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -54,7 +54,8 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
   function snapshot(room, role) {
     const {count} = db.prepare('SELECT count(*) AS count FROM members WHERE room_id = ?').get(room.id);
     db.prepare('INSERT OR IGNORE INTO pet_homes (room_id,data) VALUES (?,?)').run(room.id,JSON.stringify(initialPetHome()));
-    const petHome = JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data);
+    const previous=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data),petHome=remodelPetHome(previous);
+    if(petHome!==previous)db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(petHome),room.id);
     return {code:room.code, role, recoveryEnabled:!!db.prepare('SELECT 1 FROM recovery WHERE room_id=?').get(room.id),memberCount:count, revision:room.revision, state:JSON.parse(room.state),petHome:petSnapshot(petHome),catalog:CATALOG};
   }
   function member(req) {

@@ -167,3 +167,14 @@ test('Apps Script shares character preferences and preserves schedule authors ac
   state=response.data.state;state.events[0].authorRole='partner';state.events[0].endTime='20:00';
   response=save(partner,3,state);assert.equal(response.status,200);assert.equal(response.data.state.events[0].authorRole,'owner');assert.equal(response.data.state.events[0].endTime,'20:00');
 });
+test('GAS admin backup preserves tabletop parent links regardless of item ordering and rejects orphans',()=>{
+ const h=harness();let home=h.context.initialPetHome(0);home.hearts=1000;
+ const act=action=>home=h.context.changePetHome(home,{...action,version:home.version},0,()=>action.product);
+ for(const product of ['diningtable','cakePlate'])act({type:'buy',product});
+ act({type:'place',item:'diningtable',space:'home',x:52,y:67.575,rotation:90});act({type:'placeOnTable',item:'cakePlate',parentId:'diningtable',slot:2});
+ home.items.reverse();const clean=h.context.cleanAdminPets_(home),food=clean.items.find(i=>i.product==='cakePlate');assert.equal(food.parentId,'diningtable');assert.equal(food.slot,2);
+ const invalid=JSON.parse(JSON.stringify(home));invalid.items.find(i=>i.product==='cakePlate').parentId='missing';assert.throws(()=>h.context.cleanAdminPets_(invalid));
+});
+test('GAS admin restore rejects an indoor refrigerator placed in the yard',()=>{
+ const h=harness(),home=h.context.initialPetHome(0);home.items=[{id:'bad-fridge',product:'fridge',space:'yard',x:52,y:67.575,rotation:0}];assert.throws(()=>h.context.cleanAdminPets_(home));
+});

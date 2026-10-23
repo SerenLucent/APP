@@ -1,7 +1,23 @@
 import {cleanState,memberState} from '../shared/room-state.js';
 import {initialPetHome,petSnapshot,changePetHome,CATALOG} from '../server/pets.js';
 import {initialPlaces,changePlaces} from '../shared/places.js';
-const KEY='twoplace:demo:v2';
+const KEY='twoplace:demo:v3';
+function demoPetHome(now){
+  return {...initialPetHome(now),hearts:450,lastClaim:now-3600000,items:[
+    {id:'demo-bed',product:'bed',space:'momoRoom',x:53,y:68,rotation:0},
+    {id:'demo-books',product:'bookshelf',space:'momoRoom',x:78,y:57,rotation:0},
+    {id:'demo-lamp',product:'lamp',space:'momoRoom',x:72,y:76,rotation:0},
+    {id:'demo-kuki-bed',product:'bed',space:'kukiRoom',x:53,y:68,rotation:90},
+    {id:'demo-desk',product:'desk',space:'kukiRoom',x:76,y:58,rotation:0},
+    {id:'demo-bench',product:'bench',space:'yard',x:34,y:60,rotation:0},
+    {id:'demo-flowers',product:'flowerbed',space:'yard',x:76,y:62,rotation:0},
+    {id:'demo-pond',product:'pond',space:'yard',x:69,y:77,rotation:0},
+    {id:'demo-sofa',product:'sofa',space:'home',x:32,y:69,rotation:0},
+    {id:'demo-dining',product:'diningtable',space:'home',x:58,y:62,rotation:0},
+    ...['mealPlate','toastPlate','fruitPlate','cakePlate','teaSet','soupBowl'].map(product=>({id:'demo-'+product,product,space:null,x:50,y:65,rotation:0})),
+    {id:'demo-bowl',product:'bowl',space:'home',x:49,y:68,rotation:0}
+  ]};
+}
 function day(date){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');}
 export function createDemoClient({storage,now=()=>Date.now()}={}){
   function seed(){
@@ -14,7 +30,7 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
       {id:'demo-anniversary',date:on(0),title:'우리 기념일',kind:'general',time:'',place:'',details:'한 날짜에 일정이 여러 개 있을 때의 예시예요.'},
       {authorRole:'partner',id:'demo-trip',date:on(1),title:'주말 여행',kind:'trip',time:'10:00',place:'',details:'함께 근교 여행 가기 · 준비물과 계획을 적어보세요.'},
       {id:'demo-off-next',date:on(3),title:'휴무',kind:'work',workType:'off',time:'',place:'',details:''}
-    ],notes:[{id:'demo-memo',date:on(0),body:'모의 테스트 메모예요. 자유롭게 바꾸어 보세요.'}]},petHome:{...initialPetHome(now()),lastClaim:now()-3600000},places:initialPlaces()};
+    ],notes:[{id:'demo-memo',date:on(0),body:'모의 테스트 메모예요. 자유롭게 바꾸어 보세요.'}]},petHome:demoPetHome(now()),places:initialPlaces()};
   }
   let data=seed();
   try{const saved=JSON.parse(storage?.getItem(KEY)||'null');if(saved?.seedDay===data.seedDay){cleanState(saved.state);if(Number.isSafeInteger(saved.revision)&&saved.petHome&&saved.places)data=saved;}}catch{/* Invalid demo storage starts from the samples. */}

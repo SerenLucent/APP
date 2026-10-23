@@ -1,7 +1,20 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {initialPetHome,changePetHome,petSnapshot,claimable,hunger,HOUR} from '../server/pets.js';
+import {initialPetHome,changePetHome,petSnapshot,claimable,hunger,HOUR,CATALOG} from '../server/pets.js';
+import {usableInSpace} from '../shared/pet-products.js';
 import {cellCenter} from '../shared/pet-space.js';
+
+test('expanded furniture catalog is space-specific and fences cannot be purchased',()=>{
+  assert.ok(CATALOG.length>=18);assert.equal(CATALOG.some(p=>p.id==='fence'),false);
+  assert.equal(usableInSpace('bed','yard'),false);assert.equal(usableInSpace('bed','momoRoom'),true);
+  assert.equal(usableInSpace('bench','home'),false);assert.equal(usableInSpace('bench','yard'),true);
+  const home={...initialPetHome(0),hearts:500};
+  assert.throws(()=>changePetHome(home,{type:'buy',product:'fence',version:0},0));
+  const bought=changePetHome(home,{type:'buy',product:'bed',version:0},0,()=> 'bed');
+  assert.throws(()=>changePetHome(bought,{type:'place',item:'bed',space:'yard',...cellCenter(5,5),version:1},0));
+  const placed=changePetHome(bought,{type:'place',item:'bed',space:'momoRoom',...cellCenter(5,5),version:1},0);
+  assert.equal(placed.items[0].space,'momoRoom');assert.equal(placed.hearts,410);
+});
 
 test('claims pay only ten hearts after any wait and restart a full hour without duplicates',()=>{
   const t=1000000,home=initialPetHome(t);
@@ -63,6 +76,7 @@ test('bedrooms save separate furniture layouts and retain them when visiting ano
   home=changePetHome(home,{type:'place',version:3,item:'kuki-plant',space:'kukiRoom',...cellCenter(3,3)},0);
   assert.deepEqual(petSnapshot(home,0).items.map(item=>item.space),['momoRoom','kukiRoom']);
   assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'momoRoom',...cellCenter(3,3)},0));
-  assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'home',...cellCenter(7,0)},0));
+  assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'home',...cellCenter(19,0)},0));
   assert.equal(home.items[1].space,'kukiRoom');
 });
+

@@ -1,9 +1,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {project,unproject,cellCenter,cellAt,placementAllowed,findPath,walkable,facingForVector,fromWorld,petStepClear} from '../shared/pet-space.js';
+import {project,unproject,cellCenter,cellAt,placementAllowed,findPath,walkable,facingForVector,fromWorld,petStepClear,GRID_SIZE} from '../shared/pet-space.js';
 
 test('isometric projection round-trips persisted floor coordinates and cell centers',()=>{
-  for(let c=0;c<8;c++)for(let r=0;r<8;r++){
+  for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
     const world=cellCenter(c,r),screen=project(world),result=unproject(screen.x,screen.y);
     assert.ok(Math.abs(world.x-result.x)<1e-8);assert.ok(Math.abs(world.y-result.y)<1e-8);
     assert.deepEqual(cellAt(result),{c,r});
@@ -25,7 +25,7 @@ test('furniture stays inside floor, avoids occupied cells and allows rugs undern
   assert.equal(placementAllowed([],table,'home',cellCenter(0,0)),false);
   assert.equal(placementAllowed([plant],{id:'rug',product:'rug'},'home',cellCenter(3,3)),true);
   const fence={id:'fence',product:'fence'};
-  const edge=fromWorld(.12,.5);
+  const edge=fromWorld(.045,.5);
   assert.equal(placementAllowed([],fence,'momoRoom',edge,0),false);
   assert.equal(placementAllowed([],fence,'momoRoom',edge,90),true);
   assert.equal(walkable([],'yard',0,0),true);
@@ -42,7 +42,7 @@ test('pets find a route around furniture and never step into blocked cells',()=>
 });
 
 test('living-room fixtures block furniture and walking while bedrooms stay open',()=>{
-  for(const [c,r] of [[0,4],[1,7],[4,0],[7,0]]){
+  for(const [c,r] of [[GRID_SIZE-4,0],[GRID_SIZE-1,0]]){
     const point=cellCenter(c,r);
     assert.equal(walkable([],'home',c,r),false);
     assert.equal(placementAllowed([],{id:'plant',product:'plant'},'home',point),false);
@@ -74,4 +74,9 @@ test('pets allow neighboring cells while reserving occupied cells and crossing p
   let previous={c:0,r:0};
   for(const next of route){assert.equal(canStep(previous,next),true);previous=next;}
   assert.ok(findPath([],'yard',{c:0,r:0},{c:4,r:4},canStep).length);
+});
+test('movement resolves all eight screen directions including projected diagonal axes',()=>{
+ const expected=[['side',1],['diagonal-front',1],['front',1],['diagonal-front',-1],['side',-1],['diagonal-back',-1],['back',1],['diagonal-back',1]];
+ for(let i=0;i<8;i++){const angle=i*Math.PI/4;assert.deepEqual(facingForVector(Math.cos(angle)*10,Math.sin(angle)*10),{pose:expected[i][0],flip:expected[i][1]});}
+ assert.deepEqual(facingForVector(44,22),{pose:'diagonal-front',flip:1});assert.deepEqual(facingForVector(44,-22),{pose:'diagonal-back',flip:1});
 });
