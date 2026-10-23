@@ -1,4 +1,4 @@
-import {gasRequest,gasUrl} from './room-client.js';
+import {gasRequest,gasUrl,initializeClient} from './room-client.js';
 import './admin.css';
 const root=document.querySelector('#admin');
 let token='',selected=null,offset=0,busy=false;
@@ -28,4 +28,4 @@ $('save').onclick=()=>run(async()=>{
   selected=data;$('state').value=JSON.stringify(data.state,null,2);$('pets').value=JSON.stringify(data.petHome,null,2);status('원본을 백업하고 변경 내용을 저장했어요.');
 });
 $('download').onclick=()=>{if(!selected)return;const blob=new Blob([JSON.stringify(selected,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`TwoPlace-${selected.code}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-if(!gasUrl)status('앱스크립트 주소 설정 후 이용할 수 있어요.');
+initializeClient().then(()=>{if(!gasUrl)status('앱스크립트 주소 설정 후 이용할 수 있어요.');});

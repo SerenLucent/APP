@@ -1,12 +1,20 @@
 export const demoMode=document.documentElement.dataset.mode==='demo';
-const demoClient=demoMode?(await import('./demo-client.js')).createDemoClient({storage:(()=>{try{return sessionStorage;}catch{return undefined;}})()}):null;
+let demoClient=null,initialization;
+export let gasUrl=(import.meta.env.VITE_GAS_URL||'').trim();
+// Initialize exports synchronously; WebKit must never read a suspended module binding.
+export const pollInterval=15000;
 export function resetDemo(){return demoClient?.reset();}
-let runtimeApiUrl='';
-if(!demoMode&&import.meta.env.PROD&&!import.meta.env.VITE_GAS_URL&&!import.meta.env.VITE_API_URL){
-  try{const r=await fetch(import.meta.env.BASE_URL+'web-config.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.ok)runtimeApiUrl=(await r.json()).apiUrl||'';}catch{/* Request shows a configuration error if unavailable. */}
+export function initializeClient(){
+  if(!initialization)initialization=(async()=>{
+    if(demoMode){
+      const module=await import('./demo-client.js');
+      demoClient=module.createDemoClient({storage:(()=>{try{return sessionStorage;}catch{return undefined;}})()});
+    }else if(import.meta.env.PROD&&!gasUrl&&!import.meta.env.VITE_API_URL){
+      try{const r=await fetch(import.meta.env.BASE_URL+'web-config.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.ok)gasUrl=((await r.json()).apiUrl||'').trim();}catch{/* Request shows a configuration error if unavailable. */}
+    }
+  })();
+  return initialization;
 }
-export const gasUrl = (import.meta.env.VITE_GAS_URL || runtimeApiUrl || '').trim();
-export const pollInterval = gasUrl ? 15000 : 3000;
 const sessionKey = 'twoplace:room-session:v1';
 const pendingKey = 'twoplace:pending-room:v1';
 const apiBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
@@ -29,6 +37,7 @@ export function pendingRequest(kind, code) {
 }
 export function finishRequest() { localStorage.removeItem(pendingKey); }
 export async function request(path, {token, method='GET', body} = {}) {
+  await initializeClient();
   if(demoMode)return demoClient.request(path,{method,body});
   if (gasUrl) return gasRequest(path,{token,method,body});
   if (import.meta.env.PROD && location.hostname.endsWith('github.io') && !apiBase) throw new Error('저장 서버 연결 설정이 필요해요. GAS 배포 주소를 설정한 뒤 웹을 다시 배포해 주세요.');
@@ -51,6 +60,7 @@ import { Capacitor } from '@capacitor/core';
 
 
 export async function gasRequest(path,{token,method='GET',body}={}){
+  await initializeClient();
   if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(gasUrl))throw new Error('GAS 웹 앱 배포 주소를 확인해 주세요.');
   let response,data;
   try {
