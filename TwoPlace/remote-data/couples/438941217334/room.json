@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792750980277,
+  "updatedAt": 1792751018701,
   "revision": 12,
   "state": {
     "startDate": "2024-08-08",
@@ -106,8 +106,8 @@
     ]
   },
   "petHome": {
-    "version": 73,
-    "hearts": 60,
+    "version": 74,
+    "hearts": 40,
     "snacks": 0,
     "lastClaim": 1792747778789,
     "pets": {
@@ -168,6 +168,13 @@
         "x": 16,
         "y": 86.925,
         "rotation": 0
+      },
+      {
+        "id": "272c5fab68674f29b77ffd9d83d3c3da",
+        "product": "mealPlate",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
