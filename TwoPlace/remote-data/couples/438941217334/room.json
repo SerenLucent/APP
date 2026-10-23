@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792724871820,
+  "updatedAt": 1792724886563,
   "revision": 9,
   "state": {
     "startDate": "2024-08-08",
@@ -105,7 +105,7 @@
     ]
   },
   "petHome": {
-    "version": 56,
+    "version": 57,
     "hearts": 20,
     "snacks": 1,
     "lastClaim": 1792724757577,
@@ -163,9 +163,10 @@
       {
         "id": "a46958196e67471c9fd6aeaebee1ac32",
         "product": "lamp",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "kukiRoom",
+        "x": 15,
+        "y": 79.9375,
+        "rotation": 0
       }
     ]
   },
