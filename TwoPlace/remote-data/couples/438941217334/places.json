@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 5,
-  "updatedAt": 1792731297466,
+  "revision": 6,
+  "updatedAt": 1792732801263,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -21,9 +21,29 @@
       "lat": 37.6572886,
       "lng": 126.7718416,
       "checked": null
+    },
+    {
+      "id": "2433c079-1b85-4f83-9680-1dadc38eacd9",
+      "canonicalId": "naver_cde8b939f2cd307ccb51e0fa1840570e194632974185614c167ac485cc72d6a4",
+      "owner": "owner",
+      "name": "파르코니도",
+      "address": "경기도 고양시 일산동구 월드고양로 102-65 2층 카페 파르코니도",
+      "category": "카페",
+      "lat": 37.6560873,
+      "lng": 126.757537,
+      "checked": "2026-10-23"
     }
   ],
   "reviews": [
+    {
+      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
+      "user": "partner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
+      "comment": "",
+      "visitedAt": null
+    },
     {
       "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
       "user": "owner",
@@ -40,15 +60,6 @@
         }
       ],
       "comment": "주차장 지하2층까지 있으나 간혹 붐비면 자리가 아슬아슬",
-      "visitedAt": null
-    },
-    {
-      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
-      "user": "partner",
-      "visited": true,
-      "rating": 0,
-      "custom": [],
-      "comment": "",
       "visitedAt": null
     }
   ]
