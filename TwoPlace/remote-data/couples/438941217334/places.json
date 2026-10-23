@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
-  "updatedAt": 1792732801263,
+  "revision": 7,
+  "updatedAt": 1792732815010,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -20,7 +20,7 @@
       "category": "맛집",
       "lat": 37.6572886,
       "lng": 126.7718416,
-      "checked": null
+      "checked": "2026-10-23"
     },
     {
       "id": "2433c079-1b85-4f83-9680-1dadc38eacd9",
