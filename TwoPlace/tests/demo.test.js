@@ -18,3 +18,19 @@ test('demo edits persist only in their separate session key and reset without to
   await assert.rejects(()=>client.request('/room/state',{method:'PUT',body:{revision:0,state:next}}),e=>e.status===409);
   const reset=client.reset();assert.equal(reset.revision,0);assert.deepEqual(reset.state,original.state);
 });
+
+test('shared claim restarts a full hour and simultaneous stale claims cannot double credit',async()=>{
+  let now=Date.parse('2026-10-23T00:00:00Z');
+  const client=createDemoClient({now:()=>now});
+  const before=await client.request('/room');
+  const results=await Promise.allSettled([0,1].map(()=>client.request('/room/pets',{method:'POST',body:{type:'claim',version:before.petHome.version}})));
+  assert.equal(results.filter(r=>r.status==='fulfilled').length,1);
+  const after=await client.request('/room');
+  assert.equal(after.petHome.hearts,before.petHome.hearts+10);
+  assert.equal(after.petHome.nextClaimAt-now,3600000);
+  now+=3599999;
+  await assert.rejects(()=>client.request('/room/pets',{method:'POST',body:{type:'claim',version:after.petHome.version}}));
+  now++;
+  const next=await client.request('/room/pets',{method:'POST',body:{type:'claim',version:after.petHome.version}});
+  assert.equal(next.petHome.hearts,after.petHome.hearts+10);
+});

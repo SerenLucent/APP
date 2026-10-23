@@ -26,6 +26,32 @@ function harness(){
   return {context,files,properties,call:req=>JSON.parse(context.doPost({postData:{contents:JSON.stringify(req)}}))};
 }
 
+test('merged PlaceMate NAVER routes authenticate members and never return search credentials',()=>{
+  const h=harness(),owner='9'.repeat(64);
+  assert.equal(h.call({path:'/room/places/map-config'}).status,401);
+  assert.equal(h.call({path:'/room/places/search',method:'POST',body:{query:'서울 카페'}}).status,401);
+  h.call({path:'/rooms',method:'POST',body:{requestToken:owner}});
+  Object.assign(h.properties,{NAVER_MAP_CLIENT_ID:'browser-map-id',NAVER_SEARCH_CLIENT_ID:'test-search-id',NAVER_SEARCH_CLIENT_SECRET:'test-search-secret'});
+  const config=h.call({path:'/room/places/map-config',token:owner});
+  assert.deepEqual(config.data,{provider:'naver',mapClientId:'browser-map-id',searchReady:true});
+  const invalid=h.call({path:'/room/places/search',method:'POST',token:owner,body:{query:'x'}});
+  assert.equal(invalid.data.code,'INVALID_SEARCH_QUERY');
+  h.context.Utilities.formatDate=()=> '2026-10-23';
+  const original=h.context.UrlFetchApp.fetch;
+  h.context.UrlFetchApp.fetch=(url,options)=>{
+    if(!url.startsWith('https://naverapihub.apigw.ntruss.com/'))return original(url,options);
+    assert.equal(options.headers['X-NCP-APIGW-API-KEY'],'test-search-secret');
+    return {getResponseCode:()=>200,getContentText:()=>JSON.stringify({items:[{title:'<b>테스트</b> 카페',roadAddress:'서울 테스트 주소',category:'카페',mapx:'1270000000',mapy:'375000000'}]})};
+  };
+  const result=h.call({path:'/room/places/search',method:'POST',token:owner,body:{query:'서울 카페'}});
+  assert.equal(result.status,200);assert.equal(result.data.items[0].name,'테스트 카페');
+  assert.equal(result.data.items[0].lat,37.5);assert.equal(result.data.items[0].lng,127);
+  assert.equal(JSON.stringify(result).includes('test-search-secret'),false);
+  h.properties.NAVER_SEARCH_DAILY_LIMIT='1';
+  const limited=h.call({path:'/room/places/search',method:'POST',token:owner,body:{query:'서울 카페'}});
+  assert.equal(limited.data.code,'NAVER_SEARCH_DAILY_LIMIT');
+});
+
 test('Apps Script creates GitHub per-couple JSON, retries safely and shares only the authenticated room',()=>{
   const h=harness(),owner='a'.repeat(64),partner='b'.repeat(64),third='c'.repeat(64);
   const create=h.call({path:'/rooms',method:'POST',body:{requestToken:owner}});

@@ -65,20 +65,15 @@ function facingForVector(dx,dy){
   return {pose:'side',flip:dx<0?-1:1};
 }
 
-// Reserve the whole swept body area, including the segment still being animated.
+// Reserve occupied cells and crossing steps, while allowing every neighboring cell.
 function petStepClear(from,to,others){
-  const normalized=p=>{const q=project(p);return {x:q.x/21,y:q.y/23};};
-  const a=normalized(from),b=normalized(to);
-  const pointDistance=(p,a,b)=>{
-    const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;
-    const t=length?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/length)):0;
-    return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);
-  };
-  const cross=(a,b,c)=>(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);
+  const a=cellAt(from),b=cellAt(to);
+  const same=(p,q)=>p.c===q.c&&p.r===q.r;
+  const cross=(p,q,r)=>(q.c-p.c)*(r.r-p.r)-(q.r-p.r)*(r.c-p.c);
   return others.every(segment=>{
-    const c=normalized(segment.from),d=normalized(segment.to);
-    const intersects=cross(a,b,c)*cross(a,b,d)<0 && cross(c,d,a)*cross(c,d,b)<0;
-    return !intersects && Math.min(pointDistance(a,c,d),pointDistance(b,c,d),pointDistance(c,a,b),pointDistance(d,a,b))>=1;
+    const c=cellAt(segment.from),d=cellAt(segment.to);
+    if(same(b,c)||same(b,d))return false;
+    return !(cross(a,b,c)*cross(a,b,d)<0 && cross(c,d,a)*cross(c,d,b)<0);
   });
 }
 
@@ -168,7 +163,7 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');
       home.hearts += amount;
-      home.lastClaim = now-((now-home.lastClaim)%HOUR);
+      home.lastClaim = now;
       break;
     }
     case 'buy': {
@@ -313,7 +308,7 @@ function doPost(e){
     locked=lock.tryLock(20000);if(!locked)fail_(503,'다른 저장을 처리 중이에요. 잠시 후 다시 시도해 주세요.');
     const data=route_(req);
     return json_({status:200,data});
-  }catch(error){return json_({status:error.status||500,data:{error:error.status?error.message:'서버에서 처리하지 못했어요. 잠시 후 다시 시도해 주세요.'}});}
+  }catch(error){return json_({status:error.status||500,data:{error:error.status?error.message:'서버에서 처리하지 못했어요. 잠시 후 다시 시도해 주세요.',...(error.pmCode?{code:error.pmCode}:{})}});}
   finally{if(locked)lock.releaseLock();}
 }
 function route_(req){

@@ -218,7 +218,7 @@ export function mountPets(options) {
       }else if(ui.selectedPet){
         const target=cellAt(world);
         flashFloorCell(scene,world,!walkable(hooks.home().items,ui.space,target.c,target.r)||!petStepClear(cellCenter(target.c,target.r),cellCenter(target.c,target.r),otherPetSegments(ui.selectedPet)));
-        if(!movePet(ui.selectedPet,target))hooks.toast('친구나 가구와 너무 가까워요. 조금 떨어진 곳을 골라 주세요.');
+        if(!movePet(ui.selectedPet,target))hooks.toast('친구나 가구가 있는 셀은 피해서 골라 주세요.');
       }
       return;
     }

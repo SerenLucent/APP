@@ -10,9 +10,11 @@ test('hearts accrue on server time with hourly boundaries, a cap and no duplicat
   assert.equal(claimable(home,t+99*HOUR),240);
   assert.equal(claimable(home,t-HOUR),0);
   const claimed=changePetHome(home,{type:'claim',version:0},t+2.5*HOUR);
-  assert.equal(claimed.hearts,140);assert.equal(claimed.lastClaim,t+2*HOUR);
+  assert.equal(claimed.hearts,140);assert.equal(claimed.lastClaim,t+2.5*HOUR);
   assert.throws(()=>changePetHome(claimed,{type:'claim',version:1},t+2.5*HOUR));
-  assert.equal(claimable(claimed,t+3*HOUR),10);
+  assert.equal(claimable(claimed,t+3.5*HOUR-1),0);
+  assert.equal(claimable(claimed,t+3.5*HOUR),10);
+  assert.throws(()=>changePetHome(claimed,{type:'claim',version:0},t+2.5*HOUR),e=>e.status===409);
   assert.equal(home.hearts,120);
 });
 test('buying furniture and food costs hearts; placement must be owned and inside the scene',()=>{

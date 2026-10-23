@@ -98,7 +98,7 @@ function doPost(e){
     locked=lock.tryLock(20000);if(!locked)fail_(503,'다른 저장을 처리 중이에요. 잠시 후 다시 시도해 주세요.');
     const data=route_(req);
     return json_({status:200,data});
-  }catch(error){return json_({status:error.status||500,data:{error:error.status?error.message:'서버에서 처리하지 못했어요. 잠시 후 다시 시도해 주세요.'}});}
+  }catch(error){return json_({status:error.status||500,data:{error:error.status?error.message:'서버에서 처리하지 못했어요. 잠시 후 다시 시도해 주세요.',...(error.pmCode?{code:error.pmCode}:{})}});}
   finally{if(locked)lock.releaseLock();}
 }
 function route_(req){

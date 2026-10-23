@@ -8,6 +8,7 @@ import { loadSession, storeSession, clearSession, request, pendingRequest, finis
 
 import './menu-theme.css';
 import {mountEventEditor} from './calendar-form.js';
+import {heartCard,updateHeartCard,flyHearts} from './heart-reward.js';
 
 const icons = {
   heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
@@ -26,6 +27,8 @@ const newId = () => Array.from(crypto.getRandomValues(new Uint8Array(16)), b => 
 const modal = document.querySelector('#modal');
 let state = {startDate:null, events:[], notes:[]};
 let petHome = null;
+let heartClock=0,heartClockAt=performance.now(),claimingHearts=false;
+const heartNow=()=>heartClock+performance.now()-heartClockAt;
 let petCatalog = [];
 let session = loadSession();
 let room = null;
@@ -54,6 +57,7 @@ function toast(message) {
 function applyRoom(data) {
   if (data.petHome && (!petHome || data.code !== room?.code || data.petHome.version >= petHome.version)) {
     petHome = data.petHome;
+    heartClock=data.petHome.serverNow||Date.now();heartClockAt=performance.now();
     petCatalog = data.catalog || [];
   }
   if (room?.code === data.code && data.revision < room.revision) return;
@@ -182,7 +186,7 @@ function dateDialog() {
 }
 function home() {
   const todayLabel = new Intl.DateTimeFormat('ko-KR', {month:'long', day:'numeric', weekday:'long'}).format(new Date());
-  return `<div class="recovery-tools"><span>${room.recoveryEnabled ? '복구 암호가 설정되어 있어요' : '휴대폰을 바꾸기 전에 복구 암호를 설정해 주세요'}</span><button class="text-button" data-action="recovery-settings">${room.recoveryEnabled ? '복구 암호 변경' : '복구 암호 설정'}</button></div><section class="greeting"><span class="eyebrow">A LITTLE SPACE FOR TWO</span><h1>우리 둘의 하루가<br>모이는 곳<span class="accent">.</span></h1><p>사소한 순간도, 함께라서 특별하니까.</p></section>
+  return `<div class="recovery-tools"><span>${room.recoveryEnabled ? '복구 암호가 설정되어 있어요' : '휴대폰을 바꾸기 전에 복구 암호를 설정해 주세요'}</span><button class="text-button" data-action="recovery-settings">${room.recoveryEnabled ? '복구 암호 변경' : '복구 암호 설정'}</button></div>${heartCard()}
   <section class="spaces"><div class="section-head"><div><span class="eyebrow">OUR SPACE</span><h2>둘이 함께 쓰는 공간</h2></div><span class="little-heart">♡</span></div><div class="menu-grid">
   <button class="menu-card calendar-card" data-view="calendar"><span class="tile-icon">${icon('calendar')}</span><span class="card-title">공유 캘린더</span><span class="card-desc">우리의 다음 약속</span><span class="card-bottom">${state.events.length ? `저장한 일정 ${state.events.length}개` : '함께할 하루를 기록해요'} ${icon('arrow')}</span></button>
   <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${state.notes.length ? `쌓인 이야기 ${state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
@@ -245,8 +249,9 @@ function render() {
     app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 메인화면으로</button><strong>플레이스 메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스 메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
     return;
   }
-  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status"><span>${demoMode ? '모의 커플방 · 실제 연결 없이 둘러보기' : connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</span><button class="my-character" data-action="character">${state.characters?.[room.role]?`<span class="author-dot author-${state.characters[room.role]}"></span>내 캐릭터 · ${state.characters[room.role]==='momo'?'모모':'쿠키'}`:'내 캐릭터 설정'}</button></div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
+  const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><div class="main-heart-wallet" aria-label="보유 하트 ${petHome?.hearts||0}"><span aria-hidden="true">♥</span><strong>${petHome?.hearts||0}</strong><small>우리의 하트</small></div><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status"><span>${demoMode ? '모의 커플방 · 실제 연결 없이 둘러보기' : connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</span><button class="my-character" data-action="character">${state.characters?.[room.role]?`<span class="author-dot author-${state.characters[room.role]}"></span>내 캐릭터 · ${state.characters[room.role]==='momo'?'모모':'쿠키'}`:'내 캐릭터 설정'}</button></div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
   app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 메인화면으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
+  updateHeartCard(petHome,heartNow(),claimingHearts);
   if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
     if(saving) throw new Error('이전 동작이 끝나면 다시 시도해 주세요.');
     saving=true;
@@ -258,6 +263,23 @@ function render() {
       throw error;
     } finally {saving=false;}
   }});
+}
+async function claimMainHearts(button){
+  if(claimingHearts||saving||!room||!petHome)return;
+  const origin=(document.querySelector('.hero-heart')||button).getBoundingClientRect(),before=petHome.hearts;
+  claimingHearts=true;saving=true;updateHeartCard(petHome,heartNow(),true);
+  try{
+    const data=await request('/room/pets',{token:session.token,method:'POST',body:{type:'claim',version:petHome.version}});
+    const amount=Math.max(0,data.petHome.hearts-before);
+    applyRoom(data);updateHeartCard(petHome,heartNow(),true);
+    await flyHearts(origin,amount);
+    render();
+    toast(`${amount}하트를 받았어요 ♡`);
+  }catch(error){
+    // Credit only confirmed server responses; duplicate claims never add money locally.
+    try{applyRoom(await request('/room',{token:session.token}));render();}catch{/* Keep the claim error. */}
+    toast(error.status===409?'상대가 먼저 받았거나 잔액이 바뀌었어요. 최신 하트로 불러왔어요.':error.message);
+  }finally{claimingHearts=false;saving=false;updateHeartCard(petHome,heartNow(),false);}
 }
 function noteDialog(id) {
   const existing = state.notes.find(n => n.id === id);
@@ -288,6 +310,7 @@ document.addEventListener('click', async e => {
     modal.querySelector('#confirm-delete').onclick = async () => { if (await save({...state, [key]: state[key].filter(item => item.id !== deleteId)})) { modal.close(); render(); } };
   }
   switch (el.dataset.action) {
+    case 'claim-hearts': await claimMainHearts(el);break;
     case 'create': createDialog(); break;
     case 'recover': recoveryDialog(); break;
     case 'recovery-settings': if(demoMode)toast('실제 방 연결을 바꾸지 않는 모의 테스트예요.');else recoveryDialog(true); break;
@@ -318,5 +341,6 @@ window.addEventListener('message',async event=>{
 });
 document.addEventListener('visibilitychange', refreshRoom);
 setInterval(refreshRoom, pollInterval);
+setInterval(()=>updateHeartCard(petHome,heartNow(),claimingHearts),1000);
 render();
 if (session) restoreRoom();

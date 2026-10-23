@@ -32,7 +32,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');
       home.hearts += amount;
-      home.lastClaim = now-((now-home.lastClaim)%HOUR);
+      home.lastClaim = now;
       break;
     }
     case 'buy': {

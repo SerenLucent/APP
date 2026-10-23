@@ -14,7 +14,7 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
       {id:'demo-anniversary',date:on(0),title:'우리 기념일',kind:'general',time:'',place:'',details:'한 날짜에 일정이 여러 개 있을 때의 예시예요.'},
       {authorRole:'partner',id:'demo-trip',date:on(1),title:'주말 여행',kind:'trip',time:'10:00',place:'',details:'함께 근교 여행 가기 · 준비물과 계획을 적어보세요.'},
       {id:'demo-off-next',date:on(3),title:'휴무',kind:'work',workType:'off',time:'',place:'',details:''}
-    ],notes:[{id:'demo-memo',date:on(0),body:'모의 테스트 메모예요. 자유롭게 바꾸어 보세요.'}]},petHome:initialPetHome(now()),places:initialPlaces()};
+    ],notes:[{id:'demo-memo',date:on(0),body:'모의 테스트 메모예요. 자유롭게 바꾸어 보세요.'}]},petHome:{...initialPetHome(now()),lastClaim:now()-3600000},places:initialPlaces()};
   }
   let data=seed();
   try{const saved=JSON.parse(storage?.getItem(KEY)||'null');if(saved?.seedDay===data.seedDay){cleanState(saved.state);if(Number.isSafeInteger(saved.revision)&&saved.petHome&&saved.places)data=saved;}}catch{/* Invalid demo storage starts from the samples. */}

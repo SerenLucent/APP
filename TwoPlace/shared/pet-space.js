@@ -64,19 +64,14 @@ export function facingForVector(dx,dy){
   return {pose:'side',flip:dx<0?-1:1};
 }
 
-// Reserve the whole swept body area, including the segment still being animated.
+// Reserve occupied cells and crossing steps, while allowing every neighboring cell.
 export function petStepClear(from,to,others){
-  const normalized=p=>{const q=project(p);return {x:q.x/21,y:q.y/23};};
-  const a=normalized(from),b=normalized(to);
-  const pointDistance=(p,a,b)=>{
-    const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;
-    const t=length?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/length)):0;
-    return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);
-  };
-  const cross=(a,b,c)=>(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);
+  const a=cellAt(from),b=cellAt(to);
+  const same=(p,q)=>p.c===q.c&&p.r===q.r;
+  const cross=(p,q,r)=>(q.c-p.c)*(r.r-p.r)-(q.r-p.r)*(r.c-p.c);
   return others.every(segment=>{
-    const c=normalized(segment.from),d=normalized(segment.to);
-    const intersects=cross(a,b,c)*cross(a,b,d)<0 && cross(c,d,a)*cross(c,d,b)<0;
-    return !intersects && Math.min(pointDistance(a,c,d),pointDistance(b,c,d),pointDistance(c,a,b),pointDistance(d,a,b))>=1;
+    const c=cellAt(segment.from),d=cellAt(segment.to);
+    if(same(b,c)||same(b,d))return false;
+    return !(cross(a,b,c)*cross(a,b,d)<0 && cross(c,d,a)*cross(c,d,b)<0);
   });
 }

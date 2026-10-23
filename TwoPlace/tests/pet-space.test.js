@@ -55,16 +55,23 @@ test('living-room fixtures block furniture and walking while bedrooms stay open'
 });
 
 
-test('pet bodies keep clearance from standing friends and swept crossing paths',()=>{
+test('pets allow neighboring cells while reserving occupied cells and crossing paths',()=>{
   const p=(c,r)=>cellCenter(c,r);
   assert.equal(petStepClear(p(3,3),p(3,3),[{from:p(3,3),to:p(3,3)}]),false);
   assert.equal(petStepClear(p(3,2),p(3,4),[{from:p(2,3),to:p(4,3)}]),false);
   assert.equal(petStepClear(p(0,0),p(1,0),[{from:p(7,7),to:p(7,7)}]),true);
   const friend={from:p(5,5),to:p(6,5)};
+  for(const [dc,dr] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){
+    const neighbor=p(3+dc,3+dr);
+    assert.equal(petStepClear(neighbor,neighbor,[{from:p(3,3),to:p(3,3)}]),true);
+    assert.ok(findPath([],'yard',{c:0,r:0},{c:3+dc,r:3+dr},(a,b)=>petStepClear(p(a.c,a.r),p(b.c,b.r),[{from:p(3,3),to:p(3,3)}])).length);
+  }
+  assert.equal(petStepClear(p(5,4),p(5,5),[friend]),false);
+  assert.equal(petStepClear(p(6,4),p(6,5),[friend]),false);
   const canStep=(a,b)=>petStepClear(p(a.c,a.r),p(b.c,b.r),[friend]);
   const route=findPath([],'yard',{c:0,r:0},{c:7,r:0},canStep);
   assert.ok(route.length);
   let previous={c:0,r:0};
   for(const next of route){assert.equal(canStep(previous,next),true);previous=next;}
-  assert.deepEqual(findPath([],'yard',{c:0,r:0},{c:4,r:4},canStep),[]);
+  assert.ok(findPath([],'yard',{c:0,r:0},{c:4,r:4},canStep).length);
 });
