@@ -2,10 +2,13 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792716488135,
-  "revision": 6,
+  "updatedAt": 1792716661172,
+  "revision": 7,
   "state": {
     "startDate": "2024-08-08",
+    "characters": {
+      "owner": "kuki"
+    },
     "events": [
       {
         "id": "35629cf43efc27d4c4c503ca1718b833",
