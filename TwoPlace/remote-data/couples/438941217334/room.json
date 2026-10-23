@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792724828147,
+  "updatedAt": 1792724848377,
   "revision": 9,
   "state": {
     "startDate": "2024-08-08",
@@ -105,7 +105,7 @@
     ]
   },
   "petHome": {
-    "version": 54,
+    "version": 55,
     "hearts": 65,
     "snacks": 1,
     "lastClaim": 1792724757577,
@@ -155,9 +155,10 @@
       {
         "id": "06ccfb9f31864f41a0c4f188d9624c0c",
         "product": "table",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "kukiRoom",
+        "x": 65,
+        "y": 74.5625,
+        "rotation": 0
       }
     ]
   },
