@@ -1,7 +1,7 @@
 import './heart-reward.css';
 const HOUR=3600000;
 export function rewardStatus(home,now){
-  const elapsed=Math.max(0,now-home.lastClaim),amount=Math.min(24,Math.floor(elapsed/HOUR))*10;
+  const elapsed=Math.max(0,now-home.lastClaim),amount=elapsed>=HOUR?10:0;
   const seconds=Math.max(0,Math.ceil((HOUR-elapsed)/1000));
   return {amount,progress:Math.min(100,elapsed/HOUR*100),remaining:`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
 }

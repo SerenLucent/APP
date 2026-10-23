@@ -133,7 +133,6 @@ function changePlaces(current,body,role,now){
 
 const HOUR = 3600000;
 const HEARTS_PER_HOUR = 10;
-const MAX_CLAIM_HOURS = 24;
 const SPACES = ['yard','terrace','home','momoRoom','kukiRoom'];
 const CATALOG = [
   {id:'snack',name:'별사탕 먹이',price:10,type:'food',symbol:'✦',description:'한 마리의 배고픔을 25 채워 줘요'},
@@ -151,7 +150,7 @@ function initialPetHome(now=Date.now()) {
   return {version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
 function hunger(pet,now=Date.now()) { return Math.max(0,pet.hunger - Math.max(0,Math.floor((now-pet.updatedAt)/HOUR))*4); }
-function claimable(home,now=Date.now()) { return Math.min(MAX_CLAIM_HOURS,Math.max(0,Math.floor((now-home.lastClaim)/HOUR)))*HEARTS_PER_HOUR; }
+function claimable(home,now=Date.now()) { return now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
 function petSnapshot(home,now=Date.now()) {
   return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now)}]))};
 }

@@ -3,14 +3,15 @@ import assert from 'node:assert/strict';
 import {initialPetHome,changePetHome,petSnapshot,claimable,hunger,HOUR} from '../server/pets.js';
 import {cellCenter} from '../shared/pet-space.js';
 
-test('hearts accrue on server time with hourly boundaries, a cap and no duplicate claims',()=>{
+test('claims pay only ten hearts after any wait and restart a full hour without duplicates',()=>{
   const t=1000000,home=initialPetHome(t);
   assert.equal(claimable(home,t+HOUR-1),0);
   assert.equal(claimable(home,t+HOUR),10);
-  assert.equal(claimable(home,t+99*HOUR),240);
+  assert.equal(claimable(home,t+2*HOUR),10);
+  assert.equal(claimable(home,t+99*HOUR),10);
   assert.equal(claimable(home,t-HOUR),0);
   const claimed=changePetHome(home,{type:'claim',version:0},t+2.5*HOUR);
-  assert.equal(claimed.hearts,140);assert.equal(claimed.lastClaim,t+2.5*HOUR);
+  assert.equal(claimed.hearts,130);assert.equal(claimed.lastClaim,t+2.5*HOUR);
   assert.throws(()=>changePetHome(claimed,{type:'claim',version:1},t+2.5*HOUR));
   assert.equal(claimable(claimed,t+3.5*HOUR-1),0);
   assert.equal(claimable(claimed,t+3.5*HOUR),10);

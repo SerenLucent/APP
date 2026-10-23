@@ -2,7 +2,6 @@ import {placementAllowed} from '../shared/pet-space.js';
 
 export const HOUR = 3600000;
 export const HEARTS_PER_HOUR = 10;
-export const MAX_CLAIM_HOURS = 24;
 export const SPACES = ['yard','terrace','home','momoRoom','kukiRoom'];
 export const CATALOG = [
   {id:'snack',name:'별사탕 먹이',price:10,type:'food',symbol:'✦',description:'한 마리의 배고픔을 25 채워 줘요'},
@@ -20,7 +19,7 @@ export function initialPetHome(now=Date.now()) {
   return {version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
 export function hunger(pet,now=Date.now()) { return Math.max(0,pet.hunger - Math.max(0,Math.floor((now-pet.updatedAt)/HOUR))*4); }
-export function claimable(home,now=Date.now()) { return Math.min(MAX_CLAIM_HOURS,Math.max(0,Math.floor((now-home.lastClaim)/HOUR)))*HEARTS_PER_HOUR; }
+export function claimable(home,now=Date.now()) { return now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
 export function petSnapshot(home,now=Date.now()) {
   return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now)}]))};
 }
