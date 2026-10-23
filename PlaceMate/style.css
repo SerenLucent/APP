@@ -15,3 +15,14 @@ body:has(.modal-overlay) .main,body:has(.modal-overlay) .workspace{overflow:hidd
 .modal-overlay{overscroll-behavior:none;touch-action:pan-y}
 .modal{overscroll-behavior:contain;touch-action:pan-y;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .cloud-busy .modal-overlay{pointer-events:auto}
+
+/* Leave a page-scroll gutter outside the interactive map on phones. */
+@media(max-width:760px){.map-shell{margin-inline:12px;width:calc(100% - 24px)}}
+
+/* Map first, regional filters and compact place rows below; details open on selection. */
+.map-layout{display:flex;flex-direction:column;gap:18px}.map-shell{flex:none;height:430px;min-height:350px}.detail[hidden]{display:none}.detail{flex:none;width:100%;scroll-margin-top:18px}.detail-close{display:block;margin:14px 18px 0 auto;font-size:12px;color:var(--muted)}
+.places-below{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}.region-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--line)}.region-controls label{display:flex;flex-direction:column;gap:7px;font-size:11px;color:var(--muted)}.region-controls select{min-width:130px;max-width:100%;padding:10px 30px 10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink)}.region-tag{padding:10px 12px;background:var(--lime);border:1px solid #d4dfb5;border-radius:8px;font-size:12px}.region-tag span{margin-left:10px;font-size:18px}.place-list-heading{display:flex;justify-content:space-between;align-items:center;padding:20px 0 8px}.place-list-heading h2{font-size:15px}.place-list-heading>span{font-size:12px;color:var(--muted)}.place-row{display:block;width:100%;text-align:left;padding:17px 0;border-bottom:1px solid var(--line)}.place-row:last-child{border-bottom:0}.place-row-top{display:flex;align-items:baseline;gap:12px}.place-row-top strong{font-size:14px}.place-row-rating{color:#aa8544;font-size:12px;white-space:nowrap}.place-row small{display:block;margin-top:7px;font-size:11px;color:var(--muted);line-height:1.6}
+@media(max-width:760px){.map-shell{height:380px;min-height:380px}.places-below{padding:16px}.region-controls select{min-width:110px}.detail .place-art{height:180px}}
+
+.main{overflow-y:auto}.topbar{flex-shrink:0}.workspace{flex:none}.map-layout{flex:none}.places-below{flex:none}.footer{margin-top:8px}
+@media(max-width:760px){.main{overflow:visible}.workspace{flex:none}}
