@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792720167307,
-  "revision": 8,
+  "updatedAt": 1792720238664,
+  "revision": 9,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -46,6 +46,54 @@
         "time": "",
         "place": "",
         "details": ""
+      },
+      {
+        "id": "a87c5469eaa8cd2cf6e81b2df43036d5",
+        "date": "2026-10-24",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "83d2010610c62e3e2d48e4a9e293e79e",
+        "date": "2026-10-25",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "c315c70ddff156ad1f1b293e30e50c56",
+        "date": "2026-10-26",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "15cfc24036a21b670ff0e84b51a9b783",
+        "date": "2026-10-27",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": [
