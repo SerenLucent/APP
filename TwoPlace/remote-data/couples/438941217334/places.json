@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 0,
-  "updatedAt": 0,
+  "revision": 1,
+  "updatedAt": 1792716826200,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -10,6 +10,18 @@
       "nickname": "초대받은 사람"
     }
   },
-  "places": [],
+  "places": [
+    {
+      "id": "c898fb40-9aef-4cc8-a8f3-a6ae12b0132c",
+      "canonicalId": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
+      "owner": "owner",
+      "name": "어랑생선구이",
+      "address": "경기도 고양시 일산동구 정발산로 31-9 레이크프라자-2",
+      "category": "맛집",
+      "lat": 37.6572886,
+      "lng": 126.7718416,
+      "checked": null
+    }
+  ],
   "reviews": []
 }
