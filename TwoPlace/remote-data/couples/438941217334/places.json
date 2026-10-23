@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 2,
-  "updatedAt": 1792716846084,
+  "revision": 3,
+  "updatedAt": 1792720603823,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -28,8 +28,17 @@
       "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
       "user": "owner",
       "visited": true,
-      "rating": 0,
-      "custom": [],
+      "rating": 5,
+      "custom": [
+        {
+          "label": "맛",
+          "score": 5
+        },
+        {
+          "label": "주차",
+          "score": 2
+        }
+      ],
       "comment": "",
       "visitedAt": null
     }
