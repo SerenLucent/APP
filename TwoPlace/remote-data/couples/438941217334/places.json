@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 3,
-  "updatedAt": 1792720603823,
+  "revision": 4,
+  "updatedAt": 1792731092173,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -39,7 +39,7 @@
           "score": 2
         }
       ],
-      "comment": "",
+      "comment": "주차장 지하2층까지 있으나 간혹 붐비면 자리가 아슬아슬",
       "visitedAt": null
     }
   ]
