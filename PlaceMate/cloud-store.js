@@ -52,7 +52,7 @@ export class CloudStore {
 }
 
 export async function getMapConfig(){
-  const response=await fetch(CLOUD_ENDPOINT+'?action=mapConfig&v=3',{credentials:'omit'});
+  const response=await fetch(CLOUD_ENDPOINT+'?action=mapConfig&v=3&t='+Date.now(),{credentials:'omit',cache:'no-store'});
   if(!response.ok)throw new Error('MAP_CONFIG_FAILED');
   const result=await response.json();
   if(!result.ok||!result.data)throw new Error('NAVER_BACKEND_UPDATE_REQUIRED');
