@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792729644293,
-  "revision": 9,
+  "updatedAt": 1792730814891,
+  "revision": 10,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -97,6 +97,11 @@
       }
     ],
     "notes": [
+      {
+        "id": "8efc05b82072230a689947f4e505827b",
+        "date": "2026-10-23",
+        "body": "케케 성희에게 쓰는 편지\n하트 내가 다 써부러야쥐 낄낄"
+      },
       {
         "id": "9a8e2d1a84837d0c7bdf6ab09a0ae472",
         "date": "2026-10-22",
