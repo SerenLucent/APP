@@ -5,7 +5,11 @@ export async function loadNaverSDK(key){
   if(!sdk)sdk=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
     const timer=setTimeout(()=>reject(new Error('NAVER_MAP_LOAD_FAILED')),20000);
-    window.pmNaverReady=()=>{clearTimeout(timer);resolve(window.naver.maps);};
+    window.pmNaverReady=()=>setTimeout(()=>{
+      clearTimeout(timer);
+      if(window.naver?.maps)resolve(window.naver.maps);
+      else reject(new Error('NAVER_MAP_LOAD_FAILED'));
+    },0);
     window.navermap_authFailure=()=>{clearTimeout(timer);reject(new Error('NAVER_MAP_AUTH_FAILED'));};
     script.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId='+encodeURIComponent(key)+'&callback=pmNaverReady';
     script.onerror=()=>{clearTimeout(timer);reject(new Error('NAVER_MAP_LOAD_FAILED'));};
