@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792724848377,
+  "updatedAt": 1792724871820,
   "revision": 9,
   "state": {
     "startDate": "2024-08-08",
@@ -105,8 +105,8 @@
     ]
   },
   "petHome": {
-    "version": 55,
-    "hearts": 65,
+    "version": 56,
+    "hearts": 20,
     "snacks": 1,
     "lastClaim": 1792724757577,
     "pets": {
@@ -159,6 +159,13 @@
         "x": 65,
         "y": 74.5625,
         "rotation": 0
+      },
+      {
+        "id": "a46958196e67471c9fd6aeaebee1ac32",
+        "product": "lamp",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ]
   },
