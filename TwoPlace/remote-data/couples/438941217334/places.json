@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 7,
-  "updatedAt": 1792732815010,
+  "revision": 8,
+  "updatedAt": 1792732957121,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -60,6 +60,28 @@
         }
       ],
       "comment": "주차장 지하2층까지 있으나 간혹 붐비면 자리가 아슬아슬",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_cde8b939f2cd307ccb51e0fa1840570e194632974185614c167ac485cc72d6a4",
+      "user": "owner",
+      "visited": true,
+      "rating": 5,
+      "custom": [
+        {
+          "label": "분위기",
+          "score": 5
+        },
+        {
+          "label": "의자",
+          "score": 3
+        },
+        {
+          "label": "주차",
+          "score": 5
+        }
+      ],
+      "comment": "",
       "visitedAt": null
     }
   ]
