@@ -13,7 +13,7 @@ function sceneDoors(){
   return '<button class="scene-door bedroom-exit-door" data-pet-space="home" aria-label="방 문 열고 거실로 나가기" title="거실로 나가기"></button><button class="scene-exit" data-pet-space="home">← 거실로</button>';
 }
 const petIds = ['mochi','kuki'];
-const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:null,placing:null,rotation:0};
+const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:'mochi',placing:null,rotation:0};
 const facings={mochi:{pose:'front',flip:1},kuki:{pose:'front',flip:1}};
 const walkTokens={mochi:0,kuki:0};
 const motions={};
@@ -49,7 +49,7 @@ function setSelection(id){
     }
   });
   document.querySelectorAll('[data-select-pet]').forEach(profile=>{
-    const selected=profile.dataset.selectPet===id;
+    const selected=profile.dataset.selectPet===ui.pet;
     profile.classList.toggle('chosen',selected);
     profile.setAttribute('aria-pressed',String(selected));
   });
@@ -91,10 +91,10 @@ function placementGrid(home){
   return `<div class="placement-hint" role="status">초록색 자리에 놓아 주세요 <button data-pet-action="rotate-place">회전</button><button data-pet-action="cancel-place">취소</button></div><div class="placement-grid" aria-label="가구 배치 위치">${cells}</div>`;
 }
 function carePanel(home) {
-  return `<div class="pet-profiles">${petIds.map(id=>`<button class="pet-profile ${ui.selectedPet === id ? 'chosen' : ''}" data-select-pet="${id}" aria-pressed="${ui.selectedPet === id}"><img src="${petImage(id)}" alt=""><span><strong>${names[id]}</strong><small>${id === 'mochi' ? '하트처럼 포근한 친구' : '별빛처럼 다정한 친구'}</small><span class="hunger-track" role="progressbar" aria-label="${names[id]} 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${home.pets[id].hunger}"><i style="width:${home.pets[id].hunger}%"></i></span><small>배부름 ${home.pets[id].hunger}%</small></span></button>`).join('')}</div><div class="care-actions"><button data-pet-action="feed"><span>✦</span><strong>${names[ui.pet]} 먹이 주기</strong><small>보유 먹이 ${home.snacks}개</small></button><button data-pet-action="pat"><span>♡</span><strong>쓰다듬기</strong><small>사랑을 전해 주세요</small></button><button data-pet-action="sleep"><span>☾</span><strong>잠깐 쉬기</strong><small>포근한 낮잠 시간</small></button></div>`;
+  return `<div class="pet-profiles">${petIds.map(id=>`<button class="pet-profile ${ui.pet === id ? 'chosen' : ''}" data-select-pet="${id}" aria-pressed="${ui.pet === id}"><img src="${petImage(id)}" alt=""><span><strong>${names[id]}</strong><small>${id === 'mochi' ? '하트처럼 포근한 친구' : '별빛처럼 다정한 친구'}</small><span class="hunger-track" role="progressbar" aria-label="${names[id]} 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${home.pets[id].hunger}"><i style="width:${home.pets[id].hunger}%"></i></span><small>배부름 ${home.pets[id].hunger}%</small></span></button>`).join('')}</div><div class="care-actions"><button data-pet-action="feed"><span>✦</span><strong>${names[ui.pet]} 먹이 주기</strong><small>보유 먹이 ${home.snacks}개</small></button><button data-pet-action="pat"><span>♡</span><strong>쓰다듬기</strong><small>사랑을 전해 주세요</small></button><button data-pet-action="sleep"><span>☾</span><strong>잠깐 쉬기</strong><small>포근한 낮잠 시간</small></button></div>`;
 }
 function shopPanel(home,catalog) {
-  return `<div class="pet-shop-note">하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">✦</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>구매</span></button></article>`).join('')}</div>`;
+  return `<div class="pet-shop-note">하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">✦</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
 }
 function decoratePanel(home,catalog) {
   if (!home.items.length) return '<div class="pet-empty"><span>⌂</span><strong>우리만의 공간을 꾸며 봐요</strong><p>상점에서 가구를 구매하면 여기에 모여요.<br>가구를 고른 뒤 원하는 위치를 눌러 배치하세요.</p><button data-pet-panel="shop">상점 구경하기 ↗</button></div>';
