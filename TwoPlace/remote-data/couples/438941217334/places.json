@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 8,
-  "updatedAt": 1792732957121,
+  "revision": 9,
+  "updatedAt": 1792733528834,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -32,18 +32,20 @@
       "lat": 37.6560873,
       "lng": 126.757537,
       "checked": "2026-10-23"
+    },
+    {
+      "id": "778abda0-0dfb-4390-a4ac-6389489b843f",
+      "canonicalId": "naver_473556237a6d0223a784ea7296dd554a669a746be075f51cec1a62cbceac080f",
+      "owner": "partner",
+      "name": "삼거리반점",
+      "address": "경기도 포천시 내촌면 내촌로 63",
+      "category": "맛집",
+      "lat": 37.7859059,
+      "lng": 127.227072,
+      "checked": "2026-10-23"
     }
   ],
   "reviews": [
-    {
-      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
-      "user": "partner",
-      "visited": true,
-      "rating": 0,
-      "custom": [],
-      "comment": "",
-      "visitedAt": null
-    },
     {
       "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
       "user": "owner",
@@ -81,6 +83,15 @@
           "score": 5
         }
       ],
+      "comment": "",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
+      "user": "partner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
       "comment": "",
       "visitedAt": null
     }
