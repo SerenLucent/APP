@@ -23,9 +23,28 @@
   recovery.appendChild(message);
   recovery.appendChild(button);
   recovery.appendChild(hint);
+  var details = document.createElement('details');
+  var summary = document.createElement('summary');
+  summary.textContent = '오류 정보 보기';
+  var diagnostic = document.createElement('p');
+  diagnostic.className = 'launch-diagnostic';
+  details.appendChild(summary);
+  details.appendChild(diagnostic);
+  recovery.appendChild(details);
   screen.appendChild(recovery);
-  function show() {
+  function show(event) {
     if (!screen.isConnected || screen.classList.contains('is-done')) return;
+    var target = event && event.target;
+    // A missing image does not prevent the app from starting.
+    if (target && target !== window && target.tagName !== 'SCRIPT' && target.tagName !== 'LINK') return;
+    var reason = event && event.reason;
+    var text = event && event.message || reason && (reason.message || reason.name);
+    if (!text && target && target.tagName) text = target.tagName + ' 파일 로딩 실패';
+    if (!text) text = '시작 대기 시간 초과';
+    // No tokens, URL queries or saved room contents are included in this diagnostic.
+    text = String(text).replace(/https?:\/\/[^\s"']+/g, '[파일 주소]').slice(0, 240);
+    if (event && event.lineno) text += ' · 줄 ' + event.lineno;
+    diagnostic.textContent = text + ' · ' + navigator.userAgent;
     recovery.hidden = false;
     var dots = screen.querySelector('.launch-dots');
     if (dots) dots.hidden = true;
