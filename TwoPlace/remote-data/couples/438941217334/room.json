@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792736958197,
-  "revision": 11,
+  "updatedAt": 1792736978771,
+  "revision": 12,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -17,15 +17,6 @@
         "title": "성희 공항",
         "kind": "general",
         "time": "21:00",
-        "place": "",
-        "details": ""
-      },
-      {
-        "id": "ab7291c0a05eb1a670682935ac35ff03",
-        "date": "2026-10-24",
-        "title": "성히다낭",
-        "kind": "trip",
-        "time": "",
         "place": "",
         "details": ""
       },
