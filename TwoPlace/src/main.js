@@ -46,7 +46,7 @@ const launchStarted=performance.now();
 function finishLaunch(){
   const screen=document.querySelector('#launch-screen');
   if(!screen||booting||launchTimer)return;
-  launchTimer=setTimeout(()=>{screen.classList.add('is-done');setTimeout(()=>screen.remove(),320);},Math.max(0,900-(performance.now()-launchStarted)));
+  launchTimer=setTimeout(()=>{screen.classList.add('is-done');window.dispatchEvent(new Event('twoplace:ready'));setTimeout(()=>screen.remove(),320);},Math.max(0,900-(performance.now()-launchStarted)));
 }
 function toast(message) {
   document.querySelector('#toast').textContent = message;

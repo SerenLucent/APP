@@ -25,11 +25,23 @@ jobs:
         working-directory: TwoPlace
       - run: npm test
         working-directory: TwoPlace
+      - uses: actions/cache@v4
+        with:
+          path: TwoPlace/.asset-history
+          key: twoplace-assets-${{ github.run_id }}
+          restore-keys: twoplace-assets-
+      - run: node scripts/preserve-web-assets.mjs
+        working-directory: TwoPlace
       - run: npm run build
         working-directory: TwoPlace
         env:
           VITE_BASE_PATH: /APP/TwoPlace/
           VITE_GAS_URL: ${{ vars.TWOPLACE_GAS_URL }}
+      - run: |
+          mkdir -p dist/assets .asset-history
+          cp -Rn .asset-history/. dist/assets/
+          cp -R dist/assets/. .asset-history/
+        working-directory: TwoPlace
       - run: npm run check && npm test && npm run build
         working-directory: PlaceMate
       # Keep other APP folders' static web outputs when more apps are added.
