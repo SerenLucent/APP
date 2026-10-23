@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792765044666,
-  "revision": 16,
+  "updatedAt": 1792766482886,
+  "revision": 17,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -166,6 +166,11 @@
       }
     ],
     "notes": [
+      {
+        "id": "7b18e89c7343208f6aa3132e2f06280d",
+        "date": "2026-10-23",
+        "body": "성히떠나요  \n\n잘지내구있어  😘"
+      },
       {
         "id": "bbb89e3c1f63d8fd065f492a60115256",
         "date": "2026-10-23",
