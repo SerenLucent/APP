@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 12,
-  "updatedAt": 1792739174903,
+  "revision": 13,
+  "updatedAt": 1792846155041,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -43,6 +43,17 @@
       "lat": 37.6560873,
       "lng": 126.757537,
       "checked": "2026-10-23"
+    },
+    {
+      "id": "b77346e7-f4d8-4de4-bd4a-4658a4b759af",
+      "canonicalId": "naver_192b7f75baa9e2a6990db2c8e81d011a92a98a8db297f9622bf2d5354cc776f8",
+      "owner": "owner",
+      "name": "미아리우동집 미아리본점",
+      "address": "서울특별시 성북구 종암로 176",
+      "category": "맛집",
+      "lat": 37.6056027,
+      "lng": 127.0317231,
+      "checked": "2026-10-24"
     }
   ],
   "reviews": [
