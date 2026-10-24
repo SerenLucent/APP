@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792802204494,
+  "updatedAt": 1792802225282,
   "revision": 17,
   "state": {
     "startDate": "2024-08-08",
@@ -189,7 +189,7 @@
     ]
   },
   "petHome": {
-    "version": 90,
+    "version": 91,
     "hearts": 0,
     "snacks": 0,
     "lastClaim": 1792802137426,
@@ -265,9 +265,10 @@
       {
         "id": "13b0671999614706848d8ee89fa9fde3",
         "product": "bed",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "momoRoom",
+        "x": 20,
+        "y": 71.875,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
