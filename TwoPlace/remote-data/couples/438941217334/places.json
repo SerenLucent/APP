@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 13,
-  "updatedAt": 1792846155041,
+  "revision": 14,
+  "updatedAt": 1792846184397,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -135,6 +135,15 @@
         }
       ],
       "comment": "맛이 최상급. 다만 가게는 매우 작음",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_192b7f75baa9e2a6990db2c8e81d011a92a98a8db297f9622bf2d5354cc776f8",
+      "user": "owner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
+      "comment": "",
       "visitedAt": null
     }
   ]
