@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 14,
-  "updatedAt": 1792846184397,
+  "revision": 15,
+  "updatedAt": 1792846269913,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -141,9 +141,22 @@
       "place": "naver_192b7f75baa9e2a6990db2c8e81d011a92a98a8db297f9622bf2d5354cc776f8",
       "user": "owner",
       "visited": true,
-      "rating": 0,
-      "custom": [],
-      "comment": "",
+      "rating": 4,
+      "custom": [
+        {
+          "label": "맛",
+          "score": 4
+        },
+        {
+          "label": "주차",
+          "score": 1
+        },
+        {
+          "label": "영업시간",
+          "score": 5
+        }
+      ],
+      "comment": "맛은 쏘쏘. 24시간영업 매리트. 주차가 어려움",
       "visitedAt": null
     }
   ]
