@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792802137426,
+  "updatedAt": 1792802204494,
   "revision": 17,
   "state": {
     "startDate": "2024-08-08",
@@ -189,8 +189,8 @@
     ]
   },
   "petHome": {
-    "version": 89,
-    "hearts": 90,
+    "version": 90,
+    "hearts": 0,
     "snacks": 0,
     "lastClaim": 1792802137426,
     "pets": {
@@ -261,6 +261,13 @@
         "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
         "slot": 3,
         "rotation": 0
+      },
+      {
+        "id": "13b0671999614706848d8ee89fa9fde3",
+        "product": "bed",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
