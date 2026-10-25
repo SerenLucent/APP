@@ -138,10 +138,11 @@ function petStepClear(from,to,others){
   });
 }
 
-const TABLE_SURFACES={table:{columns:2,rows:2,width:1.6,depth:1.5,height:1.47},diningtable:{columns:3,rows:2,width:2.55,depth:1.55,height:1.58},picnicTable:{columns:3,rows:2,width:2.55,depth:1.55,height:1.58}};
+const TABLE_SURFACES={table:{columns:2,rows:2,width:1.6,depth:1.5,height:1.47},diningtable:{columns:2,rows:2,width:2.55,depth:1.55,height:1.58},picnicTable:{columns:2,rows:2,width:2.55,depth:1.55,height:1.58}};
 function tableSlot(parent,slot){
  const surface=TABLE_SURFACES[parent?.product];if(!surface||!parent.space||!Number.isInteger(slot)||slot<0||slot>=surface.columns*surface.rows)return null;
- let u=((slot%surface.columns+.5)/surface.columns-.5)*surface.width,v=((Math.floor(slot/surface.columns)+.5)/surface.rows-.5)*surface.depth;
+ // One place setting faces each edge of the table, in table-local floor axes.
+ let [u,v]=[[0,-surface.depth*.32],[surface.width*.32,0],[0,surface.depth*.32],[-surface.width*.32,0]][slot];
  const turn=((parent.rotation||0)/90)%4;[u,v]=turn===0?[u,v]:turn===1?[-v,u]:turn===2?[-u,-v]:[v,-u];
  const position=toWorld(parent),world=fromWorld(position.u+u/GRID_SIZE,position.v+v/GRID_SIZE),point=project(world);
  return {...world,space:parent.space,screen:{x:point.x,y:point.y-surface.height*FLOOR.halfWidth/GRID_SIZE},height:surface.height};
@@ -150,6 +151,8 @@ function availableTableSlot(items,parentId,slot,exceptId){const parent=items.fin
 function syncTabletopItems(items){
  for(const item of items.filter(i=>i.parentId)){const parent=items.find(i=>i.id===item.parentId),point=tableSlot(parent,item.slot);if(!point){item.space=null;delete item.parentId;delete item.slot;}else Object.assign(item,{x:point.x,y:point.y,space:point.space});}
 }
+
+function foodPlacementAvailability(items,space,exceptId){const tables=items.filter(item=>item.space===space&&TABLE_SURFACES[item.product]);return {hasTable:tables.length>0,hasSpace:tables.some(table=>Array.from({length:4},(_,slot)=>availableTableSlot(items,table.id,slot,exceptId)).some(Boolean))};}
 
 // Rewards are recorded in the server-owned pet wallet, never in editable calendar state.
 function calendarRewards(home,previous,next,now=Date.now(),{retroactive=false,readRole=null,eventId=null}={}){
@@ -255,7 +258,8 @@ function initialPetHome(now=Date.now()) {
 function hunger(pet,now=Date.now()) { return petLevel(pet,'hunger',now); }
 function claimable(home,now=Date.now()) { return !starving(home,now)&&now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
 function petSnapshot(home,now=Date.now()) {
-  return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
+  const items=JSON.parse(JSON.stringify(home.items));syncTabletopItems(items);
+  return {...home,items, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
 }
 function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.randomUUID()) {
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
@@ -323,7 +327,7 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
     }
     default: throw new PetError('할 수 없는 동작이에요.');
   }
-  home.version++;
+  syncTabletopItems(home.items);home.version++;
   return home;
 }
 

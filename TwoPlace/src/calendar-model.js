@@ -21,3 +21,6 @@ export function dateSpan(start,end){
   if(count>366)throw new Error('한 번에 최대 366일을 등록할 수 있어요.');
   return Array.from({length:count},(_,i)=>new Date(Date.parse(start)+i*86400000).toISOString().slice(0,10));
 }
+export function readRewardAvailable(event,role,rewards){
+ return !!event?.authorRole&&!!role&&event.authorRole!==role&&!rewards?.reads?.[event.date]&&!rewards?.seen?.includes(role+':'+event.date+':'+event.id);
+}

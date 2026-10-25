@@ -37,7 +37,8 @@ export function initialPetHome(now=Date.now()) {
 export function hunger(pet,now=Date.now()) { return petLevel(pet,'hunger',now); }
 export function claimable(home,now=Date.now()) { return !starving(home,now)&&now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
 export function petSnapshot(home,now=Date.now()) {
-  return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
+  const items=JSON.parse(JSON.stringify(home.items));syncTabletopItems(items);
+  return {...home,items, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
 }
 export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.randomUUID()) {
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
@@ -105,7 +106,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
     }
     default: throw new PetError('할 수 없는 동작이에요.');
   }
-  home.version++;
+  syncTabletopItems(home.items);home.version++;
   return home;
 }
 

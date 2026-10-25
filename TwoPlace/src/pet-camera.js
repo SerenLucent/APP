@@ -19,4 +19,5 @@ export function mountPetCamera(viewport,space,signal){
  viewport.addEventListener('click',e=>{if(performance.now()<suppressUntil){e.preventDefault();e.stopImmediatePropagation();}},{capture:true,signal});
  viewport.parentElement.querySelectorAll('[data-camera]').forEach(button=>button.addEventListener('click',e=>{e.stopPropagation();if(button.dataset.camera==='reset')camera={level:1,x:0,y:-height*.14*base};else camera.level=Math.round((camera.level+(button.dataset.camera==='in'?.1:-.1))*100)/100;paint();},{signal}));
  const resize=new ResizeObserver(schedule);resize.observe(viewport);signal.addEventListener('abort',()=>{cancelAnimationFrame(frame);resize.disconnect();},{once:true});paint();
+ return {focus(point){const zoom=base*camera.level;camera.x=(.5-point.x/100)*width*zoom;camera.y=(.5-point.y/100)*height*zoom;paint();}};
 }
