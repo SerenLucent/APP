@@ -74,3 +74,5 @@ run("statusVisited=false;extraCategories.push('전시')");assert.ok(run("categor
 run("placeForm(false,{name:'테스트 장소',category:'기타',address:'서울 성동구',lat:37.5,lng:127,canonicalId:'test'})");
 assert.match(element('#modal-root').innerHTML,/가보고 싶은 곳/);assert.match(element('#modal-root').innerHTML,/overallRating/);assert.match(element('#modal-root').innerHTML,/data-add-place-rating/);
 console.log('PASS: wishlist/visited union filters, custom category and one-screen optional registration ratings');
+
+run('statusWanted=false;statusVisited=false');assert.match(run('regionHTML()'),/data-status="all" aria-pressed="true"/);run('statusWanted=true');assert.match(run('regionHTML()'),/data-status="all" aria-pressed="false"/);run('statusVisited=true');assert.match(run('regionHTML()'),/data-status="wanted" aria-pressed="true"/);assert.match(run('regionHTML()'),/data-status="visited" aria-pressed="true"/);console.log('PASS: all status button exclusivity and independent multi-select button states');
