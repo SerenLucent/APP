@@ -24,6 +24,7 @@ export class CloudStore{
   }
   async searchPlaces(query){return bridge('SEARCH',{query});}
   async saveView(db){
+    if(this.snapshot.mapFeatures!==2&&db.places.some(p=>p.owner==='me'&&(p.wanted||!['맛집','카페','기타','쇼핑','산책'].includes(p.category))))throw new Error('새 카테고리와 가보고 싶은 곳을 저장하려면 투플레이스 Apps Script를 최신 Code.gs로 업데이트해주세요.');
     const places=db.places.filter(p=>p.owner==='me').map(p=>({...p,canonicalId:p.canonicalId||p.id})),known=new Set(db.places.map(p=>p.canonicalId||p.id));
     const reviews=db.reviews.filter(r=>r.user==='me'&&r.visited&&known.has(r.place));
     const saved=await bridge('PUT',{revision:this.snapshot.revision,nickname:db.users.find(u=>u.id==='me').name,places,reviews});

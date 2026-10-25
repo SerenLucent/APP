@@ -163,7 +163,7 @@ function dispatch_(tx, uid, action, data) {
   p = personal_(tx, uid);
   switch (action) {
     case 'searchPlaces': return pmNaverSearch_(data.query,uid);
-    case 'getPersonal': return p;
+    case 'getPersonal': return Object.assign({},p,{mapFeatures:2});
     case 'savePersonal':
       revision_(p, data.expectedRevision);
       p.nickname = text_(data.nickname, 20, true);
@@ -243,7 +243,7 @@ function validatePlaces_(input) {
   return input.map(function(p) {
     var id = id_(p.id); assert_(!ids[id], 'DUPLICATE_PLACE'); ids[id]=true;
     assert_(Number.isFinite(p.lat) && p.lat >= -85 && p.lat <= 85 && Number.isFinite(p.lng) && p.lng >= -180 && p.lng <= 180, 'INVALID_COORDINATES');
-    return {id:id, canonicalId:id_(p.canonicalId), name:text_(p.name, 100, true), address:text_(p.address, 250), category:text_(p.category, 30, true), lat:p.lat, lng:p.lng, checkedAt:date_(p.checkedAt)};
+    return {id:id, canonicalId:id_(p.canonicalId), name:text_(p.name, 100, true), address:text_(p.address, 250), category:text_(p.category, 30, true), lat:p.lat, lng:p.lng, checkedAt:date_(p.checkedAt), wanted:p.wanted===true};
   });
 }
 

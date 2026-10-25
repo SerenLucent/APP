@@ -50,3 +50,27 @@ search.value='';element('#app').handlers.input({target:search,isComposing:false}
 assert.equal(run('query'),'');assert.equal(element('#app').innerHTML,mountedApp);
 console.log('PASS: Korean composition/commit, trailing input, normal input and clearing preserve the mounted search field');
 console.log('PASS: rendering, search/filter, room isolation, visits, custom ratings, shared originals, ban visibility, ownership and persistence');
+
+// Region filters intersect categories and preserve room visibility.
+run("roomId='friends';filter='전체';query='';onlyVisited=false;regionCity='서울';regionDistrict='성동구'");
+assert.ok(run('visiblePlaces().length')>0);
+assert.ok(run("visiblePlaces().every(p=>placeRegion(p).city==='서울'&&placeRegion(p).district==='성동구')"));
+run("filter='맛집'");
+assert.ok(run("visiblePlaces().every(p=>p.category==='맛집')"));
+run("regionDistrict='마포구'");
+assert.equal(run('visiblePlaces().length'),0);
+run("regionCity='';regionDistrict='';filter='전체'");
+assert.ok(run('visiblePlaces().length')>0);
+assert.match(run('placeListHTML()'),/place-row-rating/);
+assert.match(run('placeListHTML()'),/<small>/);
+assert.equal(run("placeRegion({address:'경기도 성남시 분당구 판교로 1'}).district"),'성남시 분당구');
+console.log('PASS: regional and category filtering, region clear, compact rows and compound city/district addresses');
+
+run("roomId='friends';filter='전체';query='';regionCity='';regionDistrict='';onlyVisited=false;statusVisited=false;statusWanted=false;db.places.find(p=>p.id==='p5').wanted=true;db.reviews=db.reviews.filter(r=>!(r.user==='me'&&r.place==='p5'))");
+run('statusWanted=true');assert.equal(run("visiblePlaces().map(p=>p.id).join(',')"),'p5');
+run('statusVisited=true');assert.ok(run("visiblePlaces().some(p=>p.id==='p2')"));
+run('statusWanted=false');assert.ok(run("visiblePlaces().every(visitedPlace)"));
+run("statusVisited=false;extraCategories.push('전시')");assert.ok(run("categories().includes('전시')"));
+run("placeForm(false,{name:'테스트 장소',category:'기타',address:'서울 성동구',lat:37.5,lng:127,canonicalId:'test'})");
+assert.match(element('#modal-root').innerHTML,/가보고 싶은 곳/);assert.match(element('#modal-root').innerHTML,/overallRating/);assert.match(element('#modal-root').innerHTML,/data-add-place-rating/);
+console.log('PASS: wishlist/visited union filters, custom category and one-screen optional registration ratings');

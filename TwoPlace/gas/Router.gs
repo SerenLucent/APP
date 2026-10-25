@@ -114,7 +114,7 @@ function route_(req){
     try{file=readRoom_(filePath);}catch(error){if(error.status!==404)throw error;file={path:filePath,sha:null,room:initialPlaces()};}
     if(method==='PUT')file.room=changePlaces(file.room,body,e.role,Date.now());
     if(method==='PUT'||!file.sha)file.sha=writeJson_(filePath,file.room,file.sha,'Save TwoPlace couple shared places');
-    return {code:e.room.code,role:e.role,memberCount:e.room.members.length,...file.room};
+    return {code:e.room.code,role:e.role,memberCount:e.room.members.length,...file.room,mapFeatures:2};
   }
   if(path==='/rooms/recover'&&method==='POST'){
     const code=typeof body.code==='string'?body.code.replace(/[\s-]/g,''):'';

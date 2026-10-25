@@ -20,3 +20,5 @@ test('map validates coordinates, review targets, text and ratings before saving'
   assert.throws(()=>changePlaces(map,body(1,[],[{place:'missing',visited:true,rating:5,custom:[],comment:''}]),'partner',2));
   assert.throws(()=>changePlaces(map,body(1,[],[{place:'p1',visited:true,rating:6,custom:[],comment:''}]),'partner',2));
 });
+
+test('custom category and wishlist survive couple round trips and registration can include a rating',()=>{let map=changePlaces(initialPlaces(),body(0,[{...place,category:'전시',wanted:true}]),'owner',1);assert.equal(map.places[0].wanted,true);assert.equal(map.places[0].category,'전시');map=changePlaces(map,body(1,[]),'partner',2);assert.equal(map.places[0].wanted,true);map=changePlaces(map,body(2,[{...place,category:'전시',wanted:false}],[{place:'p1',visited:true,rating:5,custom:[{label:'편안함',score:4}],comment:'바로 남긴 평가'}]),'owner',3);assert.equal(map.places[0].wanted,false);assert.equal(map.reviews[0].rating,5);assert.throws(()=>changePlaces(initialPlaces(),body(0,[{...place,category:''}]),'owner',1));});

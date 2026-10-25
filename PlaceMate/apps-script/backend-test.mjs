@@ -104,3 +104,5 @@ assert.equal(calls.filter(c=>c.path==='/git/refs/heads/main').length,1);
 context.PropertiesService={getScriptProperties:()=>({getProperty:name=>({GITHUB_TOKEN:'test-token',GITHUB_OWNER:'another-owner',GITHUB_REPO:'another-app',GITHUB_BRANCH:'data'}[name]||null)})};
 const overridden=context.config_();assert.equal(overridden.owner,'another-owner');assert.equal(overridden.repo,'another-app');assert.equal(overridden.branch,'data');
 console.log('PASS: public APP registration, TwoPlace-compatible token-only defaults, configured branch, lock release and PlaceMate-only generated paths');
+
+const wish=context.validatePlaces_([{id:'wish1',canonicalId:'wish1',name:'전시장',address:'서울',category:'전시',lat:37.5,lng:127,wanted:true}]);assert.equal(wish[0].wanted,true);assert.equal(wish[0].category,'전시');assert.equal(context.validatePlaces_([{...wish[0],wanted:undefined}])[0].wanted,false);console.log('PASS: wishlist/custom category persistence and legacy default');

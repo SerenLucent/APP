@@ -34,7 +34,7 @@ function pmNaverSearch_(input,identity){
     if(Math.abs(lng)>180)lng/=10000000;if(Math.abs(lat)>90)lat/=10000000;
     if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>85||Math.abs(lng)>180||(!lat&&!lng))return null;
     var name=pmNaverText_(item.title),address=pmNaverText_(item.roadAddress||item.address),raw=pmNaverText_(item.category);
-    var category=/카페|커피|디저트|베이커리/.test(raw)?'카페':/음식|식당|요리|한식|양식|중식|일식|술집/.test(raw)?'맛집':/쇼핑|판매|상점/.test(raw)?'쇼핑':/공원|산책/.test(raw)?'산책':'기타';
+    var category=/카페|커피|디저트|베이커리/.test(raw)?'카페':/음식|식당|요리|한식|양식|중식|일식|술집/.test(raw)?'맛집':'기타';
     var identityText=JSON.stringify([name,address,lat,lng]);
     var digest=Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,identityText,Utilities.Charset.UTF_8).map(function(b){return ('0'+((b+256)%256).toString(16)).slice(-2);}).join('');
     return {canonicalId:'naver_'+digest,name:name,address:address,category:category,lat:lat,lng:lng};

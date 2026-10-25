@@ -164,7 +164,7 @@ function dispatch_(tx, uid, action, data) {
   p = personal_(tx, uid);
   switch (action) {
     case 'searchPlaces': return pmNaverSearch_(data.query,uid);
-    case 'getPersonal': return p;
+    case 'getPersonal': return Object.assign({},p,{mapFeatures:2});
     case 'savePersonal':
       revision_(p, data.expectedRevision);
       p.nickname = text_(data.nickname, 20, true);
@@ -244,7 +244,7 @@ function validatePlaces_(input) {
   return input.map(function(p) {
     var id = id_(p.id); assert_(!ids[id], 'DUPLICATE_PLACE'); ids[id]=true;
     assert_(Number.isFinite(p.lat) && p.lat >= -85 && p.lat <= 85 && Number.isFinite(p.lng) && p.lng >= -180 && p.lng <= 180, 'INVALID_COORDINATES');
-    return {id:id, canonicalId:id_(p.canonicalId), name:text_(p.name, 100, true), address:text_(p.address, 250), category:text_(p.category, 30, true), lat:p.lat, lng:p.lng, checkedAt:date_(p.checkedAt)};
+    return {id:id, canonicalId:id_(p.canonicalId), name:text_(p.name, 100, true), address:text_(p.address, 250), category:text_(p.category, 30, true), lat:p.lat, lng:p.lng, checkedAt:date_(p.checkedAt), wanted:p.wanted===true};
   });
 }
 
@@ -310,7 +310,7 @@ function pmNaverSearch_(input,identity){
     if(Math.abs(lng)>180)lng/=10000000;if(Math.abs(lat)>90)lat/=10000000;
     if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>85||Math.abs(lng)>180||(!lat&&!lng))return null;
     var name=pmNaverText_(item.title),address=pmNaverText_(item.roadAddress||item.address),raw=pmNaverText_(item.category);
-    var category=/카페|커피|디저트|베이커리/.test(raw)?'카페':/음식|식당|요리|한식|양식|중식|일식|술집/.test(raw)?'맛집':/쇼핑|판매|상점/.test(raw)?'쇼핑':/공원|산책/.test(raw)?'산책':'기타';
+    var category=/카페|커피|디저트|베이커리/.test(raw)?'카페':/음식|식당|요리|한식|양식|중식|일식|술집/.test(raw)?'맛집':'기타';
     var identityText=JSON.stringify([name,address,lat,lng]);
     var digest=Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,identityText,Utilities.Charset.UTF_8).map(function(b){return ('0'+((b+256)%256).toString(16)).slice(-2);}).join('');
     return {canonicalId:'naver_'+digest,name:name,address:address,category:category,lat:lat,lng:lng};

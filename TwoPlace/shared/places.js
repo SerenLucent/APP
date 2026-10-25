@@ -8,9 +8,9 @@ export function changePlaces(current,body,role,now){
   if(!Array.isArray(body.places)||body.places.length>200||!Array.isArray(body.reviews)||body.reviews.length>400)placesError(400,'장소는 한 사람당 200개까지 저장할 수 있어요.');
   const nickname=placeText(body.nickname,15,true),other=current.places.filter(p=>p.owner!==role),ids=new Set(other.map(p=>p.id));
   const places=body.places.map(p=>{
-    if(!p||!placeId(p.id)||!placeId(p.canonicalId)||ids.has(p.id)||!['카페','맛집','쇼핑','산책','기타'].includes(p.category)||!Number.isFinite(p.lat)||Math.abs(p.lat)>85||!Number.isFinite(p.lng)||Math.abs(p.lng)>180)placesError(400,'장소 이름·분류·좌표를 확인해 주세요.');
+    if(!p||!placeId(p.id)||!placeId(p.canonicalId)||ids.has(p.id)||(typeof p.category!=='string'||!p.category.trim()||p.category.length>30)||!Number.isFinite(p.lat)||Math.abs(p.lat)>85||!Number.isFinite(p.lng)||Math.abs(p.lng)>180)placesError(400,'장소 이름·분류·좌표를 확인해 주세요.');
     ids.add(p.id);
-    return {id:p.id,canonicalId:p.canonicalId,owner:role,name:placeText(p.name,60,true),address:placeText(p.address,150,true),category:p.category,lat:p.lat,lng:p.lng,checked:p.checked&&/^\d{4}-\d{2}-\d{2}$/.test(p.checked)?p.checked:null};
+    return {id:p.id,canonicalId:p.canonicalId,owner:role,name:placeText(p.name,60,true),address:placeText(p.address,150,true),category:p.category.trim(),wanted:p.wanted===true,lat:p.lat,lng:p.lng,checked:p.checked&&/^\d{4}-\d{2}-\d{2}$/.test(p.checked)?p.checked:null};
   });
   const all=[...other,...places],canonical=new Set(all.map(p=>p.canonicalId)),seen=new Set();
   const reviews=body.reviews.filter(r=>r?.visited).map(r=>{
