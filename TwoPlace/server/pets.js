@@ -1,3 +1,4 @@
+import {CARE_PERIOD,petLevel,starving,careRewardReady} from '../shared/pet-care.js';
 import {availableTableSlot,syncTabletopItems,tableSlot} from '../shared/tabletop.js';
 import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS,isTabletop} from '../shared/household-catalog.js';
 import {PRODUCT_SPACES,usableInSpace} from '../shared/pet-products.js';
@@ -31,18 +32,19 @@ export class PetError extends Error {
   constructor(message,status=400) { super(message); this.status=status; }
 }
 export function initialPetHome(now=Date.now()) {
-  return {layoutVersion:1,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
+  return {calendarRewards:{registration:{},reads:{},seen:[],backfilled:true},layoutVersion:1,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
-export function hunger(pet,now=Date.now()) { return Math.max(0,pet.hunger - Math.max(0,Math.floor((now-pet.updatedAt)/HOUR))*4); }
-export function claimable(home,now=Date.now()) { return now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
+export function hunger(pet,now=Date.now()) { return petLevel(pet,'hunger',now); }
+export function claimable(home,now=Date.now()) { return !starving(home,now)&&now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
 export function petSnapshot(home,now=Date.now()) {
-  return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now)}]))};
+  return {...home, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
 }
 export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.randomUUID()) {
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
   const home = structuredClone(current);
   switch(action.type) {
     case 'claim': {
+      if(starving(home,now))throw new PetError('모모와 쿠키 모두 배부름이 0%예요. 먹이를 준 뒤 하트를 받아 주세요.');
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');
       home.hearts += amount;
@@ -66,8 +68,14 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       const level = hunger(home.pets[action.pet],now);
       if (level >= 100) throw new PetError('이미 배가 든든해요. 나중에 먹이를 주세요.');
       home.snacks--;
-      home.pets[action.pet] = {hunger:Math.min(100,level+25),updatedAt:now};
+      const pet=home.pets[action.pet];home.pets[action.pet] = {...pet,affinityAt:pet.affinityAt??pet.updatedAt,energyAt:pet.energyAt??pet.updatedAt,hunger:Math.min(100,level+25),updatedAt:now};
       break;
+    }
+    case 'pat':
+    case 'sleep':{
+      if(!['mochi','kuki'].includes(action.pet))throw new PetError('돌볼 친구를 골라 주세요.');
+      const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
+      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.type]:now};}break;
     }
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);

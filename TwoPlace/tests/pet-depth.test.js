@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {actorDepth,motionPoint} from '../src/pet-depth.js';
+test('moving actors sort by current feet, never their destination, in both directions',()=>{const motion={from:{x:30,y:55},to:{x:70,y:85},startedAt:1000,duration:1000};assert.deepEqual(motionPoint(motion,1000),motion.from);assert.deepEqual(motionPoint(motion,2000),motion.to);const mid=motionPoint(motion,1500);assert.equal(mid.y,70);assert.equal(actorDepth(mid),actorDepth({x:50,y:70}));const back={...motion,from:motion.to,to:motion.from};assert.equal(actorDepth(motionPoint(back,1500)),actorDepth(mid));assert.deepEqual(motionPoint(motion,3000),motion.to);});

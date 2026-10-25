@@ -1,3 +1,4 @@
+import {calendarRewards,backfillCalendarRewards} from '../shared/calendar-rewards.js';
 import { cleanState, memberState } from '../shared/room-state.js';
 import { initialPlaces, changePlaces } from '../shared/places.js';
 import { DatabaseSync } from 'node:sqlite';
@@ -54,7 +55,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
   function snapshot(room, role) {
     const {count} = db.prepare('SELECT count(*) AS count FROM members WHERE room_id = ?').get(room.id);
     db.prepare('INSERT OR IGNORE INTO pet_homes (room_id,data) VALUES (?,?)').run(room.id,JSON.stringify(initialPetHome()));
-    const previous=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data),petHome=remodelPetHome(previous);
+    const previous=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data),petHome=backfillCalendarRewards(remodelPetHome(previous),JSON.parse(room.state));
     if(petHome!==previous)db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(petHome),room.id);
     return {code:room.code, role, recoveryEnabled:!!db.prepare('SELECT 1 FROM recovery WHERE room_id=?').get(room.id),memberCount:count, revision:room.revision, state:JSON.parse(room.state),petHome:petSnapshot(petHome),catalog:CATALOG};
   }
@@ -159,6 +160,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         const room = member(req);
         return reply(200, snapshot(room, room.role));
       }
+      if(path==='/api/room/calendar/read'&&req.method==='POST'){const auth=member(req),body=await readJson(req);snapshot(auth,auth.role);const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data);const updated=calendarRewards(current,JSON.parse(auth.state),JSON.parse(auth.state),Date.now(),{readRole:auth.role,eventId:body.eventId});db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);return reply(200,snapshot(auth,auth.role));}
       if (path === '/api/room/pets' && req.method === 'POST') {
         const auth = member(req);
         const action = await readJson(req);
@@ -178,10 +180,13 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         const body = await readJson(req);
         const data = memberState(JSON.parse(auth.state),body.state,auth.role);
         if (!Number.isSafeInteger(body.revision) || body.revision < 0) throw new ApiError(400,'변경 정보를 확인해 주세요.');
+        snapshot(auth,auth.role);db.exec('BEGIN IMMEDIATE');
+        try {
         const result = db.prepare('UPDATE rooms SET state = ?, revision = revision + 1 WHERE id = ? AND revision = ?').run(JSON.stringify(data), auth.id, body.revision);
         if (!result.changes) throw new ApiError(409,'상대가 먼저 내용을 수정했어요. 최신 내용을 확인한 뒤 다시 저장해 주세요.');
-        const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(auth.id);
-        return reply(200,snapshot(room,auth.role));
+        const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data),updated=calendarRewards(current,JSON.parse(auth.state),data);db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);db.exec('COMMIT');
+        }catch(error){db.exec('ROLLBACK');throw error;}
+        const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(auth.id);return reply(200,snapshot(room,auth.role));
       }
       reply(404,{error:'요청한 기능을 찾을 수 없어요.'});
     } catch(error) {

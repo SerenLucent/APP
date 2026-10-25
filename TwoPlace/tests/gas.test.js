@@ -178,3 +178,10 @@ test('GAS admin backup preserves tabletop parent links regardless of item orderi
 test('GAS admin restore rejects an indoor refrigerator placed in the yard',()=>{
  const h=harness(),home=h.context.initialPetHome(0);home.items=[{id:'bad-fridge',product:'fridge',space:'yard',x:52,y:67.575,rotation:0}];assert.throws(()=>h.context.cleanAdminPets_(home));
 });
+test('calendar rewards persist with the GAS wallet and repeated confirmations never double credit',()=>{
+ const h=harness(),owner='a'.repeat(64),partner='b'.repeat(64);const created=h.call({path:'/rooms',method:'POST',body:{requestToken:owner}}).data;h.call({path:'/rooms/join',method:'POST',body:{code:created.code,requestToken:partner}});
+ const state={startDate:null,notes:[],events:[{id:'reward-event',date:'2026-11-01',title:'데이트',authorRole:'owner'}]};
+ const saved=h.call({path:'/room/state',method:'PUT',token:owner,body:{revision:0,state}});assert.equal(saved.status,200);assert.equal(saved.data.petHome.hearts,125);
+ const read=()=>h.call({path:'/room/calendar/read',method:'POST',token:partner,body:{eventId:'reward-event'}});
+ assert.equal(read().data.petHome.hearts,126);assert.equal(read().data.petHome.hearts,126);assert.equal(h.call({path:'/room/calendar/read',method:'POST',token:owner,body:{eventId:'reward-event'}}).status,400);
+});

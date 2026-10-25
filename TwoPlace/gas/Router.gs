@@ -75,6 +75,7 @@ function member_(token){
   const entry=readRoom_(fileId),member=entry.room.members.find(m=>m.hash===hashed);
   if(!member)fail_(401,'입장 정보를 확인해 주세요.');
   const remodeled=remodelPetHome(entry.room.petHome);if(remodeled!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/remodel-v1_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before home remodel');entry.room.petHome=remodeled;saveRoom_(entry);}
+  const credited=backfillCalendarRewards(entry.room.petHome,entry.room.state);if(credited!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/calendar-rewards_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before calendar reward backfill');entry.room.petHome=credited;saveRoom_(entry);}
   return {...entry,role:member.role};
 }
 function admissionLimit_(kind){
@@ -177,8 +178,9 @@ function route_(req){
   if(path==='/room/state'&&method==='PUT'){
     const e=member_(req.token),state=memberState(e.room.state,body.state,e.role);
     if(!Number.isSafeInteger(body.revision)||body.revision!==e.room.revision)fail_(409,'상대가 먼저 수정했어요. 최신 내용을 확인해 주세요.');
-    e.room.state=state;e.room.revision++;saveRoom_(e);return snapshot_(e.room,e.role);
+    e.room.petHome=calendarRewards(e.room.petHome,e.room.state,state);e.room.state=state;e.room.revision++;saveRoom_(e);return snapshot_(e.room,e.role);
   }
+  if(path==='/room/calendar/read'&&method==='POST'){const e=member_(req.token);e.room.petHome=calendarRewards(e.room.petHome,e.room.state,e.room.state,Date.now(),{readRole:e.role,eventId:body.eventId});saveRoom_(e);return snapshot_(e.room,e.role);}
   if(path==='/room/pets'&&method==='POST'){
     const e=member_(req.token);
     e.room.petHome=changePetHome(e.room.petHome,body,Date.now(),()=>Utilities.getUuid().replace(/-/g,''));
@@ -200,7 +202,7 @@ function route_(req){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);
       writeJson_(ROOM_PREFIX+e.room.code+'/backups/'+Date.now()+'_'+Utilities.getUuid()+'.json',e.room,null,'Back up TwoPlace couple before administrator edit');
-      e.room.state=state;e.room.revision++;e.room.petHome={...pets,version:e.room.petHome.version+1};saveRoom_(e);
+      e.room.state=state;e.room.revision++;e.room.petHome={...pets,layoutVersion:e.room.petHome.layoutVersion,calendarRewards:e.room.petHome.calendarRewards,careRewards:e.room.petHome.careRewards,version:e.room.petHome.version+1};saveRoom_(e);
     }
     return snapshot_(e.room,'admin');
   }
@@ -212,7 +214,7 @@ function cleanAdminPets_(data){
   for(const id of ['mochi','kuki']){
     const pet=data.pets&&data.pets[id];
     if(!pet||!Number.isFinite(pet.hunger)||pet.hunger<0||pet.hunger>100)fail_(400,'펫 배부름 값을 확인해 주세요.');
-    pets[id]={hunger:pet.hunger,updatedAt:now};
+    for(const key of ['affinity','energy'])if(pet[key]!==undefined&&(!Number.isFinite(pet[key])||pet[key]<0||pet[key]>100))fail_(400,'친밀도·체력 수치를 확인해 주세요.');pets[id]={hunger:pet.hunger,updatedAt:now,affinity:pet.affinity??100,affinityAt:now,energy:pet.energy??100,energyAt:now};
   }
   const ids=new Set(),items=[];
   for(const item of data.items){

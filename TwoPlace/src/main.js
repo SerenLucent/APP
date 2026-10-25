@@ -89,11 +89,11 @@ async function restoreRoom() {
   } finally { booting = false; render(); }
 }
 async function refreshRoom() {
-  if (!session || !room || saving || refreshing || modal.open || document.hidden) return;
+  if (!session || !room || saving || refreshing || modal.open || document.querySelector('.pet-status-dialog[open]') || document.hidden) return;
   refreshing = true;
   try {
     const data = await request('/room',{token:session.token});
-    const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || data.petHome?.pets.mochi.hunger !== petHome?.pets.mochi.hunger || data.petHome?.pets.kuki.hunger !== petHome?.pets.kuki.hunger || !connected;
+    const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || !connected;
     applyRoom(data);
     if (changed && view !== 'places') render();
   } catch(error) {
@@ -219,7 +219,7 @@ function calendar() {
   }
   while (days.length % 7) days.push('<span class="blank-day" aria-hidden="true"></span>');
   const events = eventsOn(state.events,selected);
-  return `<section class="page-heading calendar-heading"><h1>공유 캘린더</h1><p>퇴근과 휴무, 둘이 함께할 약속까지.</p></section><div class="calendar-legend"><span><i class="legend-dot kind-work"></i>일 · 퇴근 / 휴무</span><span><i class="legend-dot kind-trip"></i>여행</span><span><i class="legend-dot kind-date"></i>데이트</span></div><section class="calendar-panel"><div class="month-head"><button data-month="-1" aria-label="이전 달">‹</button><h2>${year}년 ${m + 1}월</h2><button data-month="1" aria-label="다음 달">›</button></div><div class="week">${['일','월','화','수','목','금','토'].map(w => `<span>${w}</span>`).join('')}</div><div class="days">${days.join('')}</div></section><p class="calendar-tip">날짜를 누르면 그날의 일정과 상세 내용을 볼 수 있어요.</p><div class="section-head"><h2>${selected.replaceAll('-', '. ')} 일정</h2><button class="text-button" data-action="event">+ 일정 추가</button></div><div class="entries">${events.length ? events.map(event => `<article class="entry"><button class="event-summary-button" data-detail-event="${esc(event.id)}"><h3>${eventDot(event)}${esc(eventLabel(event))}</h3><p>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</p><span class="detail-link">상세보기 ↗</span></button></article>`).join('') : '<div class="empty">아직 약속이 없는 날이에요.<br>우리의 다음 약속을 남겨 볼까요?</div>'}</div>`;
+  return `<section class="page-heading calendar-heading"><h1>공유 캘린더</h1><p>일정이 있는 날짜마다 +5하트 · 커플방 날짜별 한 번</p></section><div class="calendar-legend"><span><i class="legend-dot kind-work"></i>일 · 퇴근 / 휴무</span><span><i class="legend-dot kind-trip"></i>여행</span><span><i class="legend-dot kind-date"></i>데이트</span></div><section class="calendar-panel"><div class="month-head"><button data-month="-1" aria-label="이전 달">‹</button><h2>${year}년 ${m + 1}월</h2><button data-month="1" aria-label="다음 달">›</button></div><div class="week">${['일','월','화','수','목','금','토'].map(w => `<span>${w}</span>`).join('')}</div><div class="days">${days.join('')}</div></section><p class="calendar-tip">날짜를 누르면 그날의 일정과 상세 내용을 볼 수 있어요.</p><div class="section-head"><h2>${selected.replaceAll('-', '. ')} 일정</h2><button class="text-button" data-action="event">+ 일정 추가</button></div><div class="entries">${events.length ? events.map(event => `<article class="entry"><button class="event-summary-button" data-detail-event="${esc(event.id)}"><h3>${eventDot(event)}${esc(eventLabel(event))}</h3><p>${esc(categoryNames[event.kind] || '일반')}${event.place ? ` · ${esc(event.place)}` : ''}</p><span class="detail-link">상세보기 ↗</span></button></article>`).join('') : '<div class="empty">아직 약속이 없는 날이에요.<br>우리의 다음 약속을 남겨 볼까요?</div>'}</div>`;
 }
 function dayDialog() {
   const events = eventsOn(state.events,selected);
@@ -228,7 +228,7 @@ function dayDialog() {
 function eventDetail(id) {
   const event=state.events.find(e=>e.id===id);if(!event)return toast('이 일정은 더 이상 존재하지 않아요.');
   const work=event.kind==='work',start=event.startTime||(!work?event.time:''),end=event.endTime||(work?event.time:'');
-  openDialog(esc(eventLabel(event)),`<button class="dialog-back" data-action="day-list">‹ 그날의 일정으로</button><div class="event-detail-body"><dl><dt>날짜</dt><dd>${esc(event.date.replaceAll('-', '. '))}</dd><dt>작성</dt><dd>${eventDot(event)}${state.characters?.[event.authorRole]==='momo'?'모모':state.characters?.[event.authorRole]==='kuki'?'쿠키':'캐릭터 미설정'}</dd><dt>분류</dt><dd>${esc(categoryNames[event.kind]||'일반')}${work?` · ${event.workType==='off'?'휴무':'근무'}`:''}</dd>${start?`<dt>${work?'출근':'시작'}</dt><dd>${esc(start)}</dd>`:''}${end?`<dt>${work?'퇴근':'종료'}</dt><dd>${esc(end)}</dd>`:''}${event.place?`<dt>갈 곳</dt><dd>${esc(event.place)}</dd>`:''}<dt>계획</dt><dd>${esc(event.details||'아직 적어 둔 내용이 없어요.')}</dd></dl></div><div class="event-detail-actions"><button data-edit-event="${esc(event.id)}">수정하기</button><button class="danger" data-delete-event="${esc(event.id)}">삭제하기</button></div>`);
+  openDialog(esc(eventLabel(event)),`<button class="dialog-back" data-action="day-list">‹ 그날의 일정으로</button><div class="event-detail-body"><dl><dt>날짜</dt><dd>${esc(event.date.replaceAll('-', '. '))}</dd><dt>작성</dt><dd>${eventDot(event)}${state.characters?.[event.authorRole]==='momo'?'모모':state.characters?.[event.authorRole]==='kuki'?'쿠키':'캐릭터 미설정'}</dd><dt>분류</dt><dd>${esc(categoryNames[event.kind]||'일반')}${work?` · ${event.workType==='off'?'휴무':'근무'}`:''}</dd>${start?`<dt>${work?'출근':'시작'}</dt><dd>${esc(start)}</dd>`:''}${end?`<dt>${work?'퇴근':'종료'}</dt><dd>${esc(end)}</dd>`:''}${event.place?`<dt>갈 곳</dt><dd>${esc(event.place)}</dd>`:''}<dt>계획</dt><dd>${esc(event.details||'아직 적어 둔 내용이 없어요.')}</dd></dl></div>${event.authorRole&&event.authorRole!==room.role?`<button class="primary" data-read-event="${esc(event.id)}" ${petHome.calendarRewards?.seen?.includes(room.role+':'+event.date+':'+event.id)?'disabled':''}>${petHome.calendarRewards?.seen?.includes(room.role+':'+event.date+':'+event.id)?'확인 완료':'일정 확인 +1하트 · 날짜별 1회'}</button>`:''}<div class="event-detail-actions"><button data-edit-event="${esc(event.id)}">수정하기</button><button class="danger" data-delete-event="${esc(event.id)}">삭제하기</button></div>`);
 }
 
 function eventDialog(id) {
@@ -256,7 +256,7 @@ function render() {
     if(saving) throw new Error('이전 동작이 끝나면 다시 시도해 주세요.');
     saving=true;
     try {
-      applyRoom(await request('/room/pets',{token:session.token,method:'POST',body:{...action,version:petHome.version}}));
+      const origin=document.querySelector('[data-pet-action="'+action.type+'"]')?.getBoundingClientRect(),before=petHome.hearts;applyRoom(await request('/room/pets',{token:session.token,method:'POST',body:{...action,version:petHome.version}}));const gained=petHome.hearts-before;if(gained>0&&origin)await flyHearts(origin,gained);
       render();
     } catch(error) {
       if(error.status===409){try {applyRoom(await request('/room',{token:session.token}));render();}catch{/* Keep the original conflict message. */}}
@@ -300,6 +300,7 @@ document.addEventListener('click', async e => {
   if (el.dataset.view) { view = el.dataset.view; render(); window.scrollTo(0, 0); }
   if (el.dataset.month) { month = new Date(month.getFullYear(), month.getMonth() + Number(el.dataset.month), 1); render(); }
   if (el.dataset.date) { selected = el.dataset.date; render(); dayDialog(); }
+  if(el.dataset.readEvent){el.disabled=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent}}));toast(petHome.hearts>before?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}return;}
   if (el.dataset.detailEvent) eventDetail(el.dataset.detailEvent);
   if (el.dataset.editEvent) eventDialog(el.dataset.editEvent);
   if (el.dataset.editNote) noteDialog(el.dataset.editNote);

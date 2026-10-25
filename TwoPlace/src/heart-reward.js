@@ -1,15 +1,16 @@
+import {starving} from '../shared/pet-care.js';
 import './heart-reward.css';
 const HOUR=3600000;
 export function rewardStatus(home,now){
-  const elapsed=Math.max(0,now-home.lastClaim),amount=elapsed>=HOUR?10:0;
+  const elapsed=Math.max(0,now-home.lastClaim),amount=!starving(home,now)&&elapsed>=HOUR?10:0;
   const seconds=Math.max(0,Math.ceil((HOUR-elapsed)/1000));
-  return {amount,progress:Math.min(100,elapsed/HOUR*100),remaining:`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
+  return {amount,blocked:starving(home,now),progress:Math.min(100,elapsed/HOUR*100),remaining:`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
 }
 export function heartCard(){return `<section class="heart-card"><div class="heart-card-copy"><h1>우리 둘의 하루가 모이는 곳</h1><p>사소한 순간도 함께라서 특별하니까</p></div><button class="hero-heart" data-action="claim-hearts" aria-label="쌓인 하트 받기">♥</button><p class="heart-reward-status" aria-live="polite"></p><div class="heart-reward-bottom"><div class="heart-gauge" role="progressbar" aria-label="다음 하트까지" aria-valuemin="0" aria-valuemax="100"><i></i></div><button class="heart-claim-button" data-action="claim-hearts">하트 받기</button></div></section>`;}
 export function updateHeartCard(home,now,pending){
   const card=document.querySelector('.heart-card');if(!card||!home)return;
   const status=rewardStatus(home,now),ready=status.amount>0;
-  card.querySelector('.heart-reward-status').textContent=ready?`하트가 쌓였어요 · ${status.amount}하트`:`다음 하트까지 ${status.remaining} · 1시간마다 10하트`;
+  card.querySelector('.heart-reward-status').textContent=status.blocked?'모모와 쿠키 모두 배부름이 0%예요. 먼저 먹이를 주세요.':ready?`하트가 쌓였어요 · ${status.amount}하트`:`다음 하트까지 ${status.remaining} · 1시간마다 10하트`;
   card.querySelector('.heart-gauge').setAttribute('aria-valuenow',String(Math.floor(status.progress)));
   card.querySelector('.heart-gauge i').style.width=`${status.progress}%`;
   card.querySelectorAll('[data-action="claim-hearts"]').forEach(button=>{button.disabled=pending||!ready;});

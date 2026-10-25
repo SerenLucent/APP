@@ -1,3 +1,4 @@
+import {calendarRewards,backfillCalendarRewards} from '../shared/calendar-rewards.js';
 import {cleanState,memberState} from '../shared/room-state.js';
 import {initialPetHome,petSnapshot,changePetHome,CATALOG} from '../server/pets.js';
 import {initialPlaces,changePlaces} from '../shared/places.js';
@@ -35,6 +36,7 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
   let data=seed();
   try{const saved=JSON.parse(storage?.getItem(KEY)||'null');if(saved?.seedDay===data.seedDay){cleanState(saved.state);if(Number.isSafeInteger(saved.revision)&&saved.petHome&&saved.places)data=saved;}}catch{/* Invalid demo storage starts from the samples. */}
   const persist=()=>{try{storage?.setItem(KEY,JSON.stringify(data));}catch{/* Demo remains usable in memory. */}};
+  data.petHome=backfillCalendarRewards(data.petHome,data.state,now());
   const snapshot=()=>structuredClone({code:'000000000000',role:'owner',memberCount:2,recoveryEnabled:false,revision:data.revision,state:data.state,petHome:petSnapshot(data.petHome,now()),catalog:CATALOG});
   return {
     reset(){data=seed();persist();return snapshot();},
@@ -42,8 +44,9 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
       if(path==='/room'&&method==='GET')return snapshot();
       if(path==='/room/state'&&method==='PUT'){
         if(body.revision!==data.revision){const e=new Error('모의 데이터를 새로 불러와 주세요.');e.status=409;throw e;}
-        data.state=memberState(data.state,body.state,'owner');data.revision++;persist();return snapshot();
+        const next=memberState(data.state,body.state,'owner');data.petHome=calendarRewards(data.petHome,data.state,next,now());data.state=next;data.revision++;persist();return snapshot();
       }
+      if(path==='/room/calendar/read'&&method==='POST'){data.petHome=calendarRewards(data.petHome,data.state,data.state,now(),{readRole:'owner',eventId:body.eventId});persist();return snapshot();}
       if(path==='/room/pets'&&method==='POST'){data.petHome=changePetHome(data.petHome,body,now(),()=>crypto.randomUUID());persist();return snapshot();}
       if(path==='/room/places'&&['GET','PUT'].includes(method)){if(method==='PUT'){data.places=changePlaces(data.places,body,'owner',now());persist();}return structuredClone({code:'000000000000',role:'owner',memberCount:2,...data.places});}
       throw new Error('모의 테스트에서는 실제 방 생성·입장·복구를 하지 않아요.');

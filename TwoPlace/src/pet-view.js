@@ -1,3 +1,6 @@
+import {actorDepth,motionPoint} from './pet-depth.js';
+import {petLevel,careRewardReady,starving} from '../shared/pet-care.js';
+import {mountPetBackground} from './pet-background.js';
 import {petImage,PET_POSES} from './pet-sprites.js';
 import {isTabletop} from '../shared/household-catalog.js';
 import {TABLE_SURFACES,tableSlot,availableTableSlot} from '../shared/tabletop.js';
@@ -20,7 +23,7 @@ function sceneDoors(){
   return '<button class="scene-door bedroom-exit-door" data-pet-space="home" aria-label="방 문 열고 거실로 나가기" title="거실로 나가기"></button><button class="scene-exit" data-pet-space="home">← 거실로</button>';
 }
 const petIds = ['mochi','kuki'];
-const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:'mochi',placing:null,rotation:0};
+const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:null,placing:null,rotation:0,draft:null,furniture:null,feeding:null,status:false};
 const facings={mochi:{pose:'front',flip:1},kuki:{pose:'front',flip:1}};
 const walkTokens={mochi:0,kuki:0};
 const motions={};
@@ -38,7 +41,7 @@ let hooks;
 let pending=false;
 const later = (callback,delay) => { const id=setTimeout(callback,delay); timers.push(id); return id; };
 function now() { return Date.now()+clockOffset; }
-function reward(home) { return now()-home.lastClaim>=3600000?10:0; }
+function reward(home) { return !starving(home,now())&&now()-home.lastClaim>=3600000?10:0; }
 function countdown(home) {
   const remaining = Math.max(0,Math.ceil((home.lastClaim+3600000-now())/1000));
   return `${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;
@@ -48,14 +51,13 @@ function settleMotion(id){
  const motion=motions[id];if(!motion)return;
  const t=Math.min(1,Math.max(0,(Date.now()-motion.startedAt)/motion.duration));
  positions[id]={x:motion.from.x+(motion.to.x-motion.from.x)*t,y:motion.from.y+(motion.to.y-motion.from.y)*t};
- const actor=document.querySelector(`.actor-${id}`);if(actor){const point=project(positions[id]);actor.style.transition='none';actor.style.left=point.x+'%';actor.style.top=point.y+'%';actor.getBoundingClientRect();actor.style.transition='';}
+ const actor=document.querySelector(`.actor-${id}`);if(actor){const point=project(positions[id]);actor.style.transition='none';actor.style.left=point.x+'%';actor.style.top=point.y+'%';actor.style.zIndex=String(actorDepth(positions[id]));actor.getBoundingClientRect();actor.style.transition='';}
  delete motions[id];
 }
 function setSelection(id){
   if(id)delete furnitureReservations[id];
   if(id&&furnitureUses[id])releaseFurniture(id);
   ui.selectedPet=id;
-  if(id)ui.pet=id;
   document.querySelectorAll('.pet-actor').forEach(actor=>{
     const selected=actor.dataset.pet===id;
     actor.classList.toggle('is-selected',selected);
@@ -68,13 +70,16 @@ function setSelection(id){
       actor.querySelector('.pet-speech').textContent='';
     }
   });
+}
+function selectCarePet(id){
+ ui.pet=id;
   document.querySelectorAll('[data-select-pet]').forEach(profile=>{
     const selected=profile.dataset.selectPet===ui.pet;
     profile.classList.toggle('chosen',selected);
     profile.setAttribute('aria-pressed',String(selected));
   });
   const feedLabel=document.querySelector('[data-pet-action="feed"] strong');
-  if(feedLabel)feedLabel.textContent=`${names[ui.pet]} 먹이 주기`;
+  if(feedLabel&&!ui.feeding)feedLabel.textContent=`${names[ui.pet]} 먹이 주기`;const panel=document.querySelector('.pet-panel');if(ui.panel==='care'&&panel)panel.innerHTML=carePanel(hooks.home());
 }
 function flashFloorCell(scene,world,blocked=false){
   scene.querySelectorAll('.move-cell-feedback').forEach(marker=>marker.remove());
@@ -100,24 +105,40 @@ function placedFurniture(item,catalog,items=[]){
   const parent=items.find(i=>i.id===item.parentId),surface=parent?tableSlot(parent,item.slot):null,rotation=surface?((parent.rotation||0)+(item.rotation||0))%360:(item.rotation||0);
   const point=surface?.screen||project(item),layout=furnitureLayout(item),frame=furnitureSprites[item.product]?.frames[layout.rotation/90];
  const model=furnishingModel(item.product,rotation),width=model?model.width*44*(1000/12)/100/20:layout.widthPercent*GRID_SIZE*(1000/12)/100,ratio=model?model.width/model.height:frame?frame.w/frame.h:1;
- return `<button class="placed-furniture" data-product="${item.product}" data-use-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 사용하기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:surface?Math.round(project(parent).y*10)+20:Math.round(point.y*10)+9};--item-size:${width}px;--sprite-height:${width/ratio}px;--ground-depth:${width/4}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureArt(item.product,rotation)}</button>`;
+ return `<button class="placed-furniture" data-product="${item.product}" data-use-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 사용하기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:surface?Math.round(project(parent).y*10)+10:Math.round(point.y*10)+9};--item-size:${width}px;--sprite-height:${width/ratio}px;--ground-depth:${width/4}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureArt(item.product,rotation)}</button>`;
 }
 function placementGrid(home){
-  const item=home.items.find(item=>item.id===ui.placing);
-  if(!item)return '';
-  if(isTabletop(item.product)){const tables=home.items.filter(i=>i.space===ui.space&&TABLE_SURFACES[i.product]);return `<div class="placement-hint">${tables.length?'식탁 상판의 빈 자리를 골라 주세요':'먼저 이 공간에 식탁을 배치해 주세요'} <button data-pet-action="rotate-place">회전</button><button data-pet-action="cancel-place">취소</button></div><div class="placement-grid">${tables.map(parent=>{const s=TABLE_SURFACES[parent.product];return Array.from({length:s.columns*s.rows},(_,slot)=>{const p=tableSlot(parent,slot).screen,free=availableTableSlot(home.items,parent.id,slot,item.id);return `<button class="tabletop-slot" data-table-parent="${esc(parent.id)}" data-table-slot="${slot}" style="left:${p.x}%;top:${p.y}%" aria-label="식탁 상판 ${slot+1}번 자리" ${free?'':'disabled'}>＋</button>`;}).join('');}).join('')}</div>`;}
-  let cells='';
-  for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
-    const world=cellCenter(c,r),point=project(world),allowed=placementAllowed(home.items,item,ui.space,world,ui.rotation);
-    cells+=`<button class="floor-slot ${allowed?'allowed':'blocked'}" data-slot="${world.x},${world.y}" style="left:${point.x}%;top:${point.y}%" aria-label="바닥 ${c+1}열 ${r+1}행에 배치${allowed?'':' · 배치 불가'}" ${allowed?'':'disabled'}></button>`;
-  }
-  return `<div class="placement-hint" role="status">초록색 자리에 놓아 주세요 <button data-pet-action="rotate-place">회전</button><button data-pet-action="cancel-place">취소</button></div><div class="placement-grid" aria-label="가구 배치 위치">${cells}</div>`;
+ const item=home.items.find(item=>item.id===ui.placing);if(!item)return '';
+ const draft=ui.draft,valid=draft&&(draft.parentId?availableTableSlot(home.items,draft.parentId,draft.slot,item.id):placementAllowed(home.items,item,ui.space,draft,ui.rotation));
+ let targets='';if(isTabletop(item.product)){targets=home.items.filter(i=>i.space===ui.space&&TABLE_SURFACES[i.product]).map(parent=>{const surface=TABLE_SURFACES[parent.product];return Array.from({length:surface.columns*surface.rows},(_,slot)=>{const p=tableSlot(parent,slot).screen;return '<button class="tabletop-slot" data-table-parent="'+parent.id+'" data-table-slot="'+slot+'" style="left:'+p.x+'%;top:'+p.y+'%" '+(availableTableSlot(home.items,parent.id,slot,item.id)?'':'disabled')+'>＋</button>';}).join('');}).join('');}
+ const preview=draft?placedFurniture({...item,...draft,rotation:ui.rotation},hooks?.catalog||[],home.items).replace('data-use-furniture="'+item.id+'"','data-draft="true"').replace('class="placed-furniture"','class="placed-furniture draft-furniture '+(valid?'valid':'invalid')+'"'):'';
+ return '<div class="placement-hint" role="status">터치하거나 가구를 드래그한 뒤 확인해 주세요 <button data-pet-action="rotate-place">회전</button><button data-pet-action="confirm-place" '+(valid?'':'disabled')+'>확인</button><button data-pet-action="cancel-place">취소</button></div>'+preview+'<div class="placement-grid tabletop-targets">'+targets+'</div>';
 }
+function furnitureMenu(home){const item=home.items.find(i=>i.id===ui.furniture);if(!item||item.space!==ui.space||ui.placing)return '';return '<div class="furniture-actions"><button data-use-furniture-now="'+item.id+'">사용</button><button data-place="'+item.id+'">이동</button><button data-rotate-furniture="'+item.id+'">회전</button><button data-store="'+item.id+'">보관</button></div>';}
+function beginPlacement(id){const item=hooks.home().items.find(i=>i.id===id);if(!item)return;ui.placing=id;ui.furniture=null;ui.rotation=item.rotation||0;ui.draft=item.space===ui.space?{x:item.x,y:item.y,...(item.parentId?{parentId:item.parentId,slot:item.slot}:{})}:null;ui.panel='decorate';hooks.render();}
+function previewAt(point){const item=hooks.home().items.find(i=>i.id===ui.placing);if(!item||isTabletop(item.product))return;const snapped=snap(point);if(ui.draft?.x===snapped.x&&ui.draft?.y===snapped.y)return;ui.draft=snapped;const scene=document.querySelector('.pet-scene'),old=scene.closest('.pet-viewport').querySelector('.placement-hint');old?.remove();scene.querySelector('.draft-furniture')?.remove();scene.querySelector('.tabletop-targets')?.remove();scene.insertAdjacentHTML('beforeend',placementGrid(hooks.home()));const menu=scene.querySelector('.placement-hint');if(menu)scene.closest('.pet-viewport').append(menu);}
+
+function careIcon(type,filled){const shapes={feed:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8l-6.2 3.3L7 14.2l-5-4.9 6.9-1Z"/>',pat:'<path d="M12 21S2 15 2 8.5C2 2 9 1 12 6c3-5 10-4 10 2.5C22 15 12 21 12 21Z"/>',sleep:'<path d="M20.8 15.6A9.5 9.5 0 0 1 8.4 3.2 9.6 9.6 0 1 0 20.8 15.6Z"/>',status:'<circle cx="12" cy="12" r="9"/><path d="M12 10v7m0-11v1" fill="none"/>'};return '<svg class="care-icon '+(filled?'filled':'outlined')+' icon-'+type+'" viewBox="0 0 24 24" aria-hidden="true">'+shapes[type]+'</svg>';}
 function carePanel(home) {
-  return `<div class="pet-profiles">${petIds.map(id=>`<button class="pet-profile ${ui.pet === id ? 'chosen' : ''}" data-select-pet="${id}" aria-pressed="${ui.pet === id}"><img src="${petImage(id)}" alt=""><span><strong>${names[id]}</strong><small>${id === 'mochi' ? '하트처럼 포근한 친구' : '별빛처럼 다정한 친구'}</small><span class="hunger-track" role="progressbar" aria-label="${names[id]} 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${home.pets[id].hunger}"><i style="width:${home.pets[id].hunger}%"></i></span><small>배부름 ${home.pets[id].hunger}%</small></span></button>`).join('')}</div><div class="care-actions"><button data-pet-action="feed"><span>✦</span><strong>${names[ui.pet]} 먹이 주기</strong><small>보유 먹이 ${home.snacks}개</small></button><button data-pet-action="pat"><span>♡</span><strong>쓰다듬기</strong><small>사랑을 전해 주세요</small></button><button data-pet-action="sleep"><span>☾</span><strong>잠깐 쉬기</strong><small>포근한 낮잠 시간</small></button></div>`;
+ const feed=home.snacks>0&&petLevel(home.pets[ui.pet],'hunger',now())<100,pat=careRewardReady(home,ui.pet,'pat',now()),sleep=careRewardReady(home,ui.pet,'sleep',now());
+ return '<div class="pet-profiles">'+petIds.map(id=>'<button class="pet-profile '+(ui.pet===id?'chosen':'')+'" data-select-pet="'+id+'" aria-pressed="'+(ui.pet===id)+'"><img src="'+petImage(id)+'" alt=""><span><strong>'+names[id]+'</strong><small>'+(id==='mochi'?'하트처럼 포근한 친구':'별빛처럼 다정한 친구')+'</small><span class="hunger-track" role="progressbar" aria-label="'+names[id]+' 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.ceil(petLevel(home.pets[id],'hunger',now()))+'"><i style="width:'+petLevel(home.pets[id],'hunger',now())+'%"></i></span><small>배부름 '+Math.ceil(petLevel(home.pets[id],'hunger',now()))+'%</small></span></button>').join('')+'</div><div class="care-actions">'+
+ '<button data-pet-action="feed" '+(ui.feeding?'disabled aria-busy="true" class="is-busy"':'')+'><span>'+careIcon('feed',feed)+'</span><strong>'+(ui.feeding?'먹이를 주는 중입니다…':names[ui.pet]+' 먹이 주기')+'</strong><small>보유 먹이 '+home.snacks+'개</small></button>'+
+ '<button data-pet-action="pat"><span>'+careIcon('pat',pat)+'</span><strong>쓰다듬기</strong><small>'+(pat?'친밀도 0% · +1 하트':'친밀도를 100% 채워요')+'</small></button>'+
+ '<button data-pet-action="sleep"><span>'+careIcon('sleep',sleep)+'</span><strong>잠깐 쉬기</strong><small>'+(sleep?'휴식을 주면 +1 하트':'체력을 100% 채워요')+'</small></button>'+
+ '<button data-pet-action="status"><span>'+careIcon('status',false)+'</span><strong>'+names[ui.pet]+' 상태보기</strong><small>배부름 · 친밀도 · 체력</small></button></div><div class="care-rules"><p>모모와 쿠키 모두 배부름이 0%가 되면 시간 하트를 받지 못해요.</p><p>친밀도와 체력은 4시간에 걸쳐 100%에서 0%로 줄어요.</p><p>친밀도 0%일 때 쓰다듬으면 +1 하트, 체력 0%일 때 휴식을 주면 +1 하트. 보상은 커플방 전체에서 종류별 4시간마다 한 번이에요.</p></div>';
 }
+function showPetStatus(){
+ const dialog=document.createElement('dialog');dialog.className='pet-status-dialog';dialog.innerHTML='<button class="status-close" aria-label="상태보기 닫기">×</button><h2>'+names[ui.pet]+' 상태보기</h2><p>돌보기 메뉴에서 게이지를 채워 주세요.</p>'+[['hunger','배부름'],['affinity','친밀도'],['energy','체력']].map(([key,label])=>'<div class="status-stat"><div>'+label+'<strong data-stat-value="'+key+'"></strong></div><div class="status-track" role="progressbar" aria-label="'+label+'" aria-valuemin="0" aria-valuemax="100" data-stat-gauge="'+key+'"><i></i></div></div>').join('')+'<p>배부름은 1시간에 4%씩 줄어요.<br>친밀도와 체력은 4시간에 걸쳐<br>100%에서 0%로 줄어요.<br>먹이로 배부름을, 쓰다듬기로 친밀도를,<br>휴식으로 체력을 채울 수 있어요.</p>';
+ dialog.dataset.petStatus=ui.pet;document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove(),{once:true});dialog.showModal();updateStatus();
+}
+function updateCareDisplay(home){
+ for(const profile of document.querySelectorAll('[data-select-pet]')){const value=petLevel(home.pets[profile.dataset.selectPet],'hunger',now()),gauge=profile.querySelector('[role="progressbar"]');gauge.setAttribute('aria-valuenow',Math.ceil(value));gauge.querySelector('i').style.width=value+'%';profile.querySelector('small:last-child').textContent='배부름 '+Math.ceil(value)+'%';}
+ for(const type of ['feed','pat','sleep']){const button=document.querySelector('[data-pet-action="'+type+'"]');if(!button)continue;const ready=type==='feed'?home.snacks>0&&petLevel(home.pets[ui.pet],'hunger',now())<100:careRewardReady(home,ui.pet,type,now()),icon=button.querySelector('svg');icon?.classList.toggle('filled',ready);icon?.classList.toggle('outlined',!ready);if(type!=='feed')button.querySelector('small').textContent=ready?(type==='pat'?'친밀도 0% · +1 하트':'휴식을 주면 +1 하트'):(type==='pat'?'친밀도를 100% 채워요':'체력을 100% 채워요');}
+}
+function updateStatus(){const dialog=document.querySelector('[data-pet-status]');if(!dialog)return;const pet=hooks.home().pets[dialog.dataset.petStatus];for(const key of ['hunger','affinity','energy']){const value=petLevel(pet,key,now());dialog.querySelector('[data-stat-value="'+key+'"]').textContent=Math.ceil(value)+'%';const gauge=dialog.querySelector('[data-stat-gauge="'+key+'"]');gauge.setAttribute('aria-valuenow',String(Math.ceil(value)));gauge.querySelector('i').style.width=value+'%';}}
+
 function shopPanel(home,catalog) {
-  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.filter(product=>usableInSpace(product.id,ui.space)).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">✦</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
+  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.filter(product=>usableInSpace(product.id,ui.space)).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">'+careIcon('feed',true)+'</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
 }
 function decoratePanel(home,catalog) {
   if (!home.items.length) return '<div class="pet-empty"><span>⌂</span><strong>우리만의 공간을 꾸며 봐요</strong><p>상점에서 가구를 구매하면 여기에 모여요.<br>가구를 고른 뒤 원하는 위치를 눌러 배치하세요.</p><button data-pet-panel="shop">상점 구경하기 ↗</button></div>';
@@ -142,10 +163,11 @@ export function petPage(home,catalog) {
   }
   clockOffset = home.serverNow-Date.now();
   const placed=home.items.filter(item=>item.space===ui.space);
-  return `<section class="pet-heading"><div><span class="eyebrow">MOMO & KUKI'S LITTLE HOME</span><h1>모모와 쿠키의 집<span>♡</span></h1><p>둘이 돌보는, 두 친구의 작은 세상.</p></div><div class="heart-wallet" aria-label="보유 하트 ${home.hearts}"><span>♡</span><strong>${home.hearts}</strong><small>우리의 하트</small></div></section><div class="space-tabs" aria-label="펫 공간">${Object.entries(spaces).filter(([id])=>id==='yard'||id==='home').map(([id,label])=>`<button data-pet-space="${id}" aria-pressed="${(ui.space===id || id==='home'&&ui.space.endsWith('Room'))}" class="${(ui.space===id || id==='home'&&ui.space.endsWith('Room')) ? 'active' : ''}">${label}</button>`).join('')}</div><div class="pet-viewport"><div class="camera-controls" aria-label="공간 확대 축소"><button data-camera="out" aria-label="축소">−</button><button data-camera="reset" class="camera-level" aria-label="전체 공간 보기">100%</button><button data-camera="in" aria-label="확대">＋</button></div><span class="camera-help">20 × 20 셀 · 두 손가락 확대 · 드래그로 둘러보기</span><section class="pet-world pet-scene iso-scene scene-${ui.space} ${ui.placing ? 'placing' : ''}" aria-label="${spaces[ui.space]} · 모모와 쿠키가 함께 지내는 공간">${isoScenery(ui.space)}${sceneDoors()}<span class="scene-location">${spaces[ui.space]} · ${ui.space==='yard'?'문을 눌러 집으로 들어가요':ui.space==='home'?'우리의 포근한 거실과 작은 주방':'우리만의 방을 꾸며요'}</span>${placed.map(item=>placedFurniture(item,catalog,home.items)).join('')}${petIds.map(actor).join('')}${ui.placing ? placementGrid(home) : ''}<span class="scene-tip">${ui.placing ? '구매한 가구로 우리 공간을 채워요' : '친구를 고르고 바닥을 누르면 따라와요'}</span></section></div><button class="claim-hearts" data-pet-action="claim"><span class="claim-heart">♡</span><span><strong>시간당 하트 받기</strong><small>한 번에 10하트 · 받은 뒤 1시간 대기</small></span><span class="claim-value" id="claim-value">${reward(home) ? `+${reward(home)} 받기` : countdown(home)}</span></button><div class="pet-panel-tabs" aria-label="펫 활동">${[['care','돌보기'],['shop','상점'],['decorate','보관함']].map(([id,label])=>`<button data-pet-panel="${id}" class="${ui.panel===id ? 'active' : ''}" aria-pressed="${ui.panel===id}">${label}</button>`).join('')}</div><section class="pet-panel">${ui.panel === 'care' ? carePanel(home) : ui.panel === 'shop' ? shopPanel(home,catalog) : decoratePanel(home,catalog)}</section><p class="pet-shared-note">♡ 하트, 먹이, 가구와 배치는 같은 커플방에서 함께 사용해요.</p>`;
+  return `<section class="pet-heading"><div><span class="eyebrow">MOMO & KUKI'S LITTLE HOME</span><h1>모모와 쿠키의 집<span>♡</span></h1><p>둘이 돌보는, 두 친구의 작은 세상.</p></div><div class="heart-wallet" aria-label="보유 하트 ${home.hearts}"><span>♡</span><strong>${home.hearts}</strong><small>우리의 하트</small></div></section><div class="space-tabs" aria-label="펫 공간">${Object.entries(spaces).filter(([id])=>id==='yard'||id==='home').map(([id,label])=>`<button data-pet-space="${id}" aria-pressed="${(ui.space===id || id==='home'&&ui.space.endsWith('Room'))}" class="${(ui.space===id || id==='home'&&ui.space.endsWith('Room')) ? 'active' : ''}">${label}</button>`).join('')}</div><div class="pet-map-shell"><div class="camera-controls" aria-label="공간 확대 축소"><button data-camera="out" aria-label="축소">−</button><button data-camera="reset" class="camera-level" aria-label="전체 공간 보기">100%</button><button data-camera="in" aria-label="확대">＋</button></div><div class="pet-viewport"><span class="camera-help">20 × 20 셀 · 두 손가락 확대 · 드래그로 둘러보기</span><section class="pet-world pet-scene iso-scene scene-${ui.space} ${ui.placing ? 'placing' : ''}" aria-label="${spaces[ui.space]} · 모모와 쿠키가 함께 지내는 공간">${isoScenery(ui.space)}${sceneDoors()}<span class="scene-location">${spaces[ui.space]} · ${ui.space==='yard'?'문을 눌러 집으로 들어가요':ui.space==='home'?'우리의 포근한 거실과 작은 주방':'우리만의 방을 꾸며요'}</span>${placed.filter(item=>item.id!==ui.placing).map(item=>placedFurniture(item,catalog,home.items)).join('')}${petIds.map(actor).join('')}${ui.placing ? placementGrid(home) : furnitureMenu(home)}<span class="scene-tip">${ui.placing ? '구매한 가구로 우리 공간을 채워요' : '친구를 고르고 바닥을 누르면 따라와요'}</span></section></div></div><button class="claim-hearts" data-pet-action="claim"><span class="claim-heart">♡</span><span><strong>시간당 하트 받기</strong><small>한 번에 10하트 · 받은 뒤 1시간 대기</small></span><span class="claim-value" id="claim-value">${reward(home) ? `+${reward(home)} 받기` : countdown(home)}</span></button><div class="pet-panel-tabs" aria-label="펫 활동">${[['care','돌보기'],['shop','상점'],['decorate','보관함']].map(([id,label])=>`<button data-pet-panel="${id}" class="${ui.panel===id ? 'active' : ''}" aria-pressed="${ui.panel===id}">${label}</button>`).join('')}</div><section class="pet-panel">${ui.panel === 'care' ? carePanel(home) : ui.panel === 'shop' ? shopPanel(home,catalog) : decoratePanel(home,catalog)}</section><p class="pet-shared-note">♡ 하트, 먹이, 가구와 배치는 같은 커플방에서 함께 사용해요.</p>`;
 }
 export function stopPets() {
   for(const id of petIds){releaseFurniture(id);delete furnitureReservations[id];}
+  document.querySelector('.pet-status-dialog')?.remove();
   controller?.abort(); controller=null;
   for(const id of petIds){walkTokens[id]++;settleMotion(id);}
   timers.forEach(clearTimeout); timers=[];
@@ -193,7 +215,7 @@ function movePet(id,target,onArrive){
     faceActor(id,facingForVector((next.x-old.x)*scene.clientWidth,(next.y-old.y)*scene.clientHeight));
     actor.classList.add('walking');
     actor.style.left=`${next.x}%`;actor.style.top=`${next.y}%`;
-    actor.style.zIndex=String(Math.round(next.y*10)+10);
+    const motion=motions[id];function paintDepth(){if(!actor.isConnected||motions[id]!==motion||token!==walkTokens[id])return;actor.style.zIndex=String(actorDepth(motionPoint(motion,Date.now())));if(Date.now()<motion.until)requestAnimationFrame(paintDepth);}paintDepth();
     actor.style.setProperty('--depth',.8+(next.y-42)/44*.25);
     positions[id]=point;
     later(step,duration+20);
@@ -205,7 +227,7 @@ function releaseFurniture(id){
   const use=furnitureUses[id];if(!use)return;
   positions[id]=use.exit;delete furnitureUses[id];
   const actor=document.querySelector(`.actor-${id}`);
-  if(actor){actor.dataset.using='';actor.dataset.mood='';actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;}
+  if(actor){actor.dataset.using='';actor.dataset.mood='';actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;actor.style.zIndex=String(actorDepth(positions[id]));}
 }
 function useFurniture(itemId){
   const home=hooks.home(),item=home.items.find(i=>i.id===itemId&&i.space===ui.space);
@@ -218,7 +240,7 @@ function useFurniture(itemId){
   }
   if(!action){hooks.toast('위치를 바꾸려면 보관함에서 가구를 골라 주세요.');return;}
   if(Object.values(furnitureUses).some(use=>use.item===itemId)||Object.values(furnitureReservations).includes(itemId)){hooks.toast('다른 친구가 사용 중이거나 가고 있어요.');return;}
-  const id=ui.pet;setSelection(id);
+  const id=ui.pet;walkTokens[id]++;settleMotion(id);
   const actor=document.querySelector(`.actor-${id}`);if(!actor)return;
   actor.dataset.mood='';
   const target=cellAt(item),[w,h]=footprint(item),candidates=[];
@@ -256,22 +278,35 @@ function wander(id) {
   }
   later(()=>wander(id),6500+Math.random()*3500);
 }
+function updateFeeding(){
+ const feeding=!!ui.feeding;
+ document.querySelectorAll('.care-actions button,[data-select-pet]').forEach(button=>button.disabled=feeding);
+ const button=document.querySelector('[data-pet-action="feed"]');if(!button)return;
+ button.classList.toggle('is-busy',feeding);button.setAttribute('aria-busy',String(feeding));
+ button.querySelector('strong').textContent=feeding?'먹이를 주는 중입니다…':names[ui.pet]+' 먹이 주기';
+}
 async function act(action,success) {
   if(pending) return false;
-  pending=true;
+  pending=true;const careButton=document.querySelector('[data-pet-action="'+action.type+'"]');if(['pat','sleep'].includes(action.type)&&careButton){careButton.disabled=true;careButton.classList.add('is-busy');careButton.setAttribute('aria-busy','true');careButton.querySelector('strong').textContent=action.type==='pat'?'쓰다듬는 중입니다…':'쉬게 하는 중입니다…';}
   try { await hooks.action(action); if(success) hooks.toast(success); return true; }
   catch(error) { hooks.toast(error.message); return false; }
-  finally { pending=false; }
+  finally { pending=false;if(['pat','sleep'].includes(action.type)&&ui.panel==='care'){const panel=document.querySelector('.pet-panel');if(panel)panel.innerHTML=carePanel(hooks.home());} }
 }
 export function mountPets(options) {
   stopPets(); hooks=options;
   controller=new AbortController();
   const root=document.querySelector('#app');
-  const viewport=root.querySelector('.pet-viewport');if(viewport)mountPetCamera(viewport,ui.space,controller.signal);
+  const viewport=root.querySelector('.pet-viewport');if(viewport){mountPetCamera(viewport,ui.space,controller.signal);mountPetBackground(viewport.querySelector('.pet-world'),ui.space,controller.signal);for(const menu of viewport.querySelectorAll('.placement-hint,.furniture-actions'))viewport.append(menu);}
+  let drag=null;
+  root.addEventListener('pointerdown',e=>{if(!e.target.closest('[data-draft]'))return;e.stopPropagation();const scene=e.target.closest('.pet-scene');const bounds=scene.getBoundingClientRect(),start=unproject((e.clientX-bounds.left)/bounds.width*100,(e.clientY-bounds.top)/bounds.height*100);drag={id:e.pointerId,scene,moved:false,x:e.clientX,y:e.clientY,start,before:{...ui.draft}};scene.dataset.draggingFurniture='true';root.setPointerCapture(e.pointerId);},{signal:controller.signal});
+  root.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<5&&!drag.moved)return;drag.moved=true;const r=drag.scene.getBoundingClientRect();const point=unproject((e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100);previewAt({x:drag.before.x+point.x-drag.start.x,y:drag.before.y+point.y-drag.start.y});e.preventDefault();},{signal:controller.signal});
+  for(const event of ['pointerup','pointercancel'])root.addEventListener(event,e=>{if(!drag||drag.id!==e.pointerId)return;delete drag.scene.dataset.draggingFurniture;drag=null;},{signal:controller.signal});
   document.addEventListener('click',e=>{
+    if(e.target instanceof Element&&ui.furniture&&e.target.closest('.pet-viewport')&&!e.target.closest('.furniture-actions')&&(!e.target.closest('button')||e.target.closest('[data-pet]'))){ui.furniture=null;document.querySelector('.furniture-actions')?.remove();}
     if(!ui.selectedPet || !(e.target instanceof Element))return;
     if(e.target.closest('[data-pet], [data-select-pet]'))return;
     const scene=e.target.closest('.pet-scene');
+    if(!scene)return;
     if(scene && !e.target.closest('button') && !ui.placing){
       const bounds=scene.getBoundingClientRect();
       const world=unproject((e.clientX-bounds.left)/bounds.width*100,(e.clientY-bounds.top)/bounds.height*100);
@@ -290,31 +325,31 @@ export function mountPets(options) {
         const point=snap(world),item=hooks.home().items.find(item=>item.id===ui.placing);
         if(item&&isTabletop(item.product)){hooks.toast('음식은 식탁 상판의 빈 자리를 눌러 올려 주세요.');return;}
         if(!item||!placementAllowed(hooks.home().items,item,ui.space,point,ui.rotation)){hooks.toast('다른 가구와 겹치는 자리예요. 초록색 자리를 골라 주세요.');return;}
-        if(await act({type:'place',item:ui.placing,space:ui.space,...point,rotation:ui.rotation},'여기에 놓았어요')){ui.placing=null;hooks.render();}
+        previewAt(point);
       }else if(ui.selectedPet){
         const target=cellAt(world);
         flashFloorCell(scene,world,!walkable(hooks.home().items,ui.space,target.c,target.r)||!petStepClear(cellCenter(target.c,target.r),cellCenter(target.c,target.r),otherPetSegments(ui.selectedPet)));
-        if(!movePet(ui.selectedPet,target))hooks.toast('친구나 가구가 있는 셀은 피해서 골라 주세요.');
+        if(!movePet(ui.selectedPet,target))hooks.toast('친구나 가구가 있는 셀은 피해서 골라 주세요.');setSelection(null);
       }
       return;
     }
     if (!button || pending) return;
-    if(button.dataset.petSpace){ui.space=button.dataset.petSpace;ui.placing=null;setSelection(null);for(const id of petIds)walkTokens[id]++; hooks.render(); return;}
+    if(button.dataset.petSpace){ui.space=button.dataset.petSpace;ui.placing=null;ui.draft=null;ui.furniture=null;setSelection(null);for(const id of petIds)walkTokens[id]++; hooks.render(); return;}
     if(button.dataset.petPanel){ui.panel=button.dataset.petPanel; ui.placing=null; hooks.render();return;}
-    if(button.dataset.selectPet){setSelection(button.dataset.selectPet);return;}
+    if(button.dataset.selectPet){selectCarePet(button.dataset.selectPet);return;}
     if(button.dataset.pet){setSelection(button.dataset.pet);return;}
-    if(button.dataset.tableParent){if(await act({type:'placeOnTable',item:ui.placing,parentId:button.dataset.tableParent,slot:Number(button.dataset.tableSlot),rotation:ui.rotation},'식탁 위에 올렸어요')){ui.placing=null;hooks.render();}return;}
-    if(button.dataset.useFurniture){useFurniture(button.dataset.useFurniture);return;}
+    if(button.dataset.tableParent){const parentId=button.dataset.tableParent,slot=Number(button.dataset.tableSlot);ui.draft={...tableSlot(hooks.home().items.find(i=>i.id===parentId),slot),parentId,slot};hooks.render();return;}
+    if(button.dataset.useFurnitureNow){useFurniture(button.dataset.useFurnitureNow);return;}if(button.dataset.useFurniture){ui.furniture=button.dataset.useFurniture;hooks.render();return;}if(button.dataset.rotateFurniture){beginPlacement(button.dataset.rotateFurniture);ui.rotation=(ui.rotation+90)%360;hooks.render();return;}
     if(button.dataset.buy){await act({type:'buy',product:button.dataset.buy},'우리 집에 작은 선물이 생겼어요');return;}
-    if(button.dataset.place || button.dataset.furniture){const selected=hooks.home().items.find(item=>item.id===(button.dataset.place||button.dataset.furniture));if(selected&&!usableInSpace(selected.product,ui.space)){const allowed=(PRODUCT_SPACES[selected.product]||[]).filter(space=>spaces[space]).map(space=>spaces[space]).join(' · ');hooks.toast(`${allowed||'다른 공간'}용 가구입니다. 해당 공간에서 배치해 주세요.`);return;}ui.placing=button.dataset.place || button.dataset.furniture;ui.rotation=hooks.home().items.find(item=>item.id===ui.placing)?.rotation||0;ui.panel='decorate';hooks.render();return;}
+    if(button.dataset.place || button.dataset.furniture){const selected=hooks.home().items.find(item=>item.id===(button.dataset.place||button.dataset.furniture));if(selected&&!usableInSpace(selected.product,ui.space)){const allowed=(PRODUCT_SPACES[selected.product]||[]).filter(space=>spaces[space]).map(space=>spaces[space]).join(' · ');hooks.toast(`${allowed||'다른 공간'}용 가구입니다. 해당 공간에서 배치해 주세요.`);return;}beginPlacement(button.dataset.place||button.dataset.furniture);return;}
     if(button.dataset.store){await act({type:'store',item:button.dataset.store},'가구를 보관함에 넣었어요');return;}
     if(button.dataset.slot){const [x,y]=button.dataset.slot.split(',').map(Number);const id=ui.placing;if(await act({type:'place',item:id,space:ui.space,x,y,rotation:ui.rotation},'여기에 놓았어요')){ui.placing=null;hooks.render();}return;}
     switch(button.dataset.petAction){
       case 'claim': await act({type:'claim'},'하트를 받았어요 ♡');break;
-      case 'feed': {const id=ui.pet;if(await act({type:'feed',pet:id},`${names[id]}가 맛있게 먹었어요`))react(id,'eat');break;}
-      case 'pat': react(ui.pet,'happy');break;
-      case 'sleep': react(ui.pet,'sleep');break;
-      case 'cancel-place': ui.placing=null;hooks.render();break;
+      case 'feed': {const id=ui.pet;ui.feeding=id;updateFeeding();try{if(await act({type:'feed',pet:id},`${names[id]}가 맛있게 먹었어요`))react(id,'eat');}finally{ui.feeding=null;updateFeeding();}break;}
+      case 'status':showPetStatus();break;case 'pat':{const id=ui.pet;if(await act({type:'pat',pet:id},'친밀도를 100% 채웠어요 ♡'))react(id,'happy');break;}
+      case 'sleep':{const id=ui.pet;if(await act({type:'sleep',pet:id},'체력을 100% 채웠어요'))react(id,'sleep');break;}
+      case 'confirm-place':{const d=ui.draft;if(!d)break;const action=d.parentId?{type:'placeOnTable',item:ui.placing,parentId:d.parentId,slot:d.slot,rotation:ui.rotation}:{type:'place',item:ui.placing,space:ui.space,x:d.x,y:d.y,rotation:ui.rotation};if(await act(action,'여기에 놓았어요')){ui.placing=null;ui.draft=null;hooks.render();}break;}case 'cancel-place': ui.placing=null;ui.draft=null;hooks.render();break;
       case 'rotate-place': ui.rotation=(ui.rotation+90)%360;hooks.render();break;
     }
   },{signal:controller.signal});
@@ -324,6 +359,6 @@ export function mountPets(options) {
   if(!reduced){later(()=>wander('mochi'),1200);later(()=>wander('kuki'),2500);}
   clock=setInterval(()=>{
     const target=document.querySelector('#claim-value'),home=hooks.home();
-    if(target && home) target.textContent=reward(home) ? `+${reward(home)} 받기` : countdown(home);
+    if(target && home) target.textContent=starving(home,now())?'먼저 먹이를 주세요':reward(home) ? `+${reward(home)} 받기` : countdown(home);updateStatus();if(ui.panel==='care'&&!pending)updateCareDisplay(home);
   },1000);
 }
