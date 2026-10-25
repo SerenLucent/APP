@@ -75,7 +75,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
     case 'sleep':{
       if(!['mochi','kuki'].includes(action.pet))throw new PetError('돌볼 친구를 골라 주세요.');
       const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
-      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.type]:now};}break;
+      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.pet]:{...home.careRewards?.[action.pet],[action.type]:now}};}break;
     }
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);

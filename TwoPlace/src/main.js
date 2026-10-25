@@ -69,7 +69,7 @@ async function save(next) {
   if (!room || saving) return false;
   saving = true;
   try {
-    applyRoom(await request('/room/state', {token:session.token, method:'PUT',body:{state:next,revision:room.revision}}));
+    const origin=(modal.querySelector('[type="submit"]')||document.activeElement)?.getBoundingClientRect(),before=petHome?.hearts||0;applyRoom(await request('/room/state', {token:session.token, method:'PUT',body:{state:next,revision:room.revision}}));const gained=petHome.hearts-before;if(gained>0&&origin){modal.close();await flyHearts(origin,gained);}
     return true;
   } catch(error) {
     if (error.status === 409) {
@@ -300,7 +300,7 @@ document.addEventListener('click', async e => {
   if (el.dataset.view) { view = el.dataset.view; render(); window.scrollTo(0, 0); }
   if (el.dataset.month) { month = new Date(month.getFullYear(), month.getMonth() + Number(el.dataset.month), 1); render(); }
   if (el.dataset.date) { selected = el.dataset.date; render(); dayDialog(); }
-  if(el.dataset.readEvent){el.disabled=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent}}));toast(petHome.hearts>before?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}return;}
+  if(el.dataset.readEvent){el.disabled=true;const origin=el.getBoundingClientRect();saving=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent}}));const gained=petHome.hearts-before;modal.close();if(gained>0)await flyHearts(origin,gained);toast(gained>0?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}finally{saving=false;}return;}
   if (el.dataset.detailEvent) eventDetail(el.dataset.detailEvent);
   if (el.dataset.editEvent) eventDialog(el.dataset.editEvent);
   if (el.dataset.editNote) noteDialog(el.dataset.editNote);

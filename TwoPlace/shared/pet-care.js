@@ -6,5 +6,5 @@ export function petLevel(pet,kind,now=Date.now()){
 }
 export function starving(home,now=Date.now()){return !!home.pets&&['mochi','kuki'].every(id=>petLevel(home.pets[id],'hunger',now)<=0);}
 export function careRewardReady(home,pet,type,now=Date.now()){
- const kind=type==='pat'?'affinity':'energy';return petLevel(home.pets[pet],kind,now)<=0&&now-(home.careRewards?.[type]??0)>=CARE_PERIOD;
+ const kind=type==='pat'?'affinity':'energy';return petLevel(home.pets[pet],kind,now)<=0&&now-(home.careRewards?.[pet]?.[type]??0)>=CARE_PERIOD;
 }

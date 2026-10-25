@@ -7,7 +7,7 @@ function petLevel(pet,kind,now=Date.now()){
 }
 function starving(home,now=Date.now()){return !!home.pets&&['mochi','kuki'].every(id=>petLevel(home.pets[id],'hunger',now)<=0);}
 function careRewardReady(home,pet,type,now=Date.now()){
- const kind=type==='pat'?'affinity':'energy';return petLevel(home.pets[pet],kind,now)<=0&&now-(home.careRewards?.[type]??0)>=CARE_PERIOD;
+ const kind=type==='pat'?'affinity':'energy';return petLevel(home.pets[pet],kind,now)<=0&&now-(home.careRewards?.[pet]?.[type]??0)>=CARE_PERIOD;
 }
 
 // Dimensions are floor cells, before 90-degree rotation. No render-time guesses.
@@ -293,7 +293,7 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
     case 'sleep':{
       if(!['mochi','kuki'].includes(action.pet))throw new PetError('돌볼 친구를 골라 주세요.');
       const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
-      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.type]:now};}break;
+      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.pet]:{...home.careRewards?.[action.pet],[action.type]:now}};}break;
     }
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);
