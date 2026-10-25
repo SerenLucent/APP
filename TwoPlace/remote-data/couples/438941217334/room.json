@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792898819213,
+  "updatedAt": 1792898831219,
   "revision": 19,
   "state": {
     "startDate": "2024-08-08",
@@ -225,8 +225,8 @@
     ]
   },
   "petHome": {
-    "version": 144,
-    "hearts": 40,
+    "version": 145,
+    "hearts": 41,
     "snacks": 0,
     "lastClaim": 1792898800883,
     "pets": {
@@ -358,10 +358,12 @@
         "2026-12-07": true
       },
       "reads": {
-        "2026-10-24": true
+        "2026-10-24": true,
+        "2026-10-25": true
       },
       "seen": [
-        "owner:2026-10-24:a87c5469eaa8cd2cf6e81b2df43036d5"
+        "owner:2026-10-24:a87c5469eaa8cd2cf6e81b2df43036d5",
+        "owner:2026-10-25:83d2010610c62e3e2d48e4a9e293e79e"
       ],
       "backfilled": true
     },
