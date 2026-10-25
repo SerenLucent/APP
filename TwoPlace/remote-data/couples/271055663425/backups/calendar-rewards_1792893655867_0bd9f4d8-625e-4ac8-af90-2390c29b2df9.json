@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "code": "271055663425",
+  "createdAt": 1792649745123,
+  "updatedAt": 1792742801074,
+  "revision": 0,
+  "state": {
+    "startDate": null,
+    "events": [],
+    "notes": []
+  },
+  "petHome": {
+    "version": 1,
+    "hearts": 120,
+    "snacks": 4,
+    "lastClaim": 1792649745123,
+    "pets": {
+      "mochi": {
+        "hunger": 75,
+        "updatedAt": 1792649745123
+      },
+      "kuki": {
+        "hunger": 75,
+        "updatedAt": 1792649745123
+      }
+    },
+    "items": [],
+    "layoutVersion": 1,
+    "remodel": {
+      "version": 1,
+      "stored": 0
+    }
+  },
+  "members": [
+    {
+      "hash": "6f54fbd6d857b5eba06f9f31022728f8f07d9323186e050d49e6b8e33e23f6f1",
+      "role": "owner"
+    }
+  ]
+}
