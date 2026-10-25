@@ -65,7 +65,7 @@
 @keyframes furniture-breathe{50%{transform:translateY(-1px) scaleY(1.015)}}
 @keyframes sleep-bubbles{50%{translate:0 -5px;opacity:.6}}
 @media(prefers-reduced-motion:reduce){.pet-actor[data-use-pose] .pet-body,.pet-actor[data-use-pose] .pet-speech{animation:none}}
-.pet-actor[data-use-pose="sit"] .pet-body{scale:.65;transform-origin:50% 95%}
+.pet-actor[data-use-pose="sit"] .pet-body{scale:var(--seated-scale,.65);transform-origin:50% 95%}
 .pet-actor[data-use-pose="sleep"] .pet-body{scale:.85;transform-origin:50% 95%}
 .pet-actor[data-use-pose="reach"] .pet-sprite{display:block;width:100%;height:100%;background-image:url('/pets/interaction-poses-v1.png');background-size:400% 400%;background-position:var(--pose-column) var(--pose-row);transform:none}
 .pet-actor[data-use-pose="reach"] .pet-sprite img{visibility:hidden}
@@ -81,3 +81,21 @@
 .pet-actor[data-mood="sleep"] .pet-body{transform:none;scale:.85;animation:furniture-breathe 3s ease-in-out infinite;transform-origin:50% 95%}
 .pet-actor[data-mood="sleep"] .pet-speech{animation:sleep-bubbles 3s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){.pet-actor[data-mood="sleep"] .pet-body,.pet-actor[data-mood="sleep"] .pet-speech{animation:none}}
+/* Sleeping head is registered at the pillow, not at the center of the bed. */
+.iso-scene .pet-actor[data-use-pose="sleep"]{transform:translate(calc(-1 * var(--sleep-head-x)),calc(-1 * var(--sleep-head-y))) scale(calc(var(--depth,1) * .85));transform-origin:var(--sleep-head-x) var(--sleep-head-y)}
+.pet-actor[data-use-pose="sleep"] .pet-body{scale:1;transform-origin:var(--sleep-head-x) var(--sleep-head-y)}
+.placed-furniture[data-product="premiumTV"][data-running="true"]{filter:drop-shadow(0 0 5px #add6e277)}
+.pet-actor[data-using="refrigerate"] .pet-body:after,.pet-actor[data-using="laundry"] .pet-body:after,.pet-actor[data-using="cinema"] .pet-body:after{position:absolute;left:var(--hand-x,60%);top:65%;transform:translate(-50%,-50%);font-size:26px;animation:use-prop 1.5s ease-in-out infinite}
+.pet-actor[data-using="refrigerate"] .pet-body:after{content:'🥛'}.pet-actor[data-using="laundry"] .pet-body:after{content:'🧺'}.pet-actor[data-using="cinema"] .pet-body:after{content:'🍿'}
+.pet-actor[data-use-pose="sleep"] .pet-sprite,.pet-actor[data-mood="sleep"] .pet-sprite{clip-path:inset(9% 0 2% 0)}
+.pet-actor[data-use-pose="reach"] .pet-sprite{clip-path:inset(7% 0 1% 0)}
+.furniture-foreground{pointer-events:none!important;user-select:none}.placed-furniture.furniture-foreground:hover{outline:none}
+/* Seated anchor is the hips on the cushion, not standing feet on the floor. */
+.iso-scene .pet-actor[data-use-pose="sit"]{transform:translate(-50%,calc(-1 * var(--seat-anchor,82%))) scale(var(--depth,1))}
+/* Interaction props are expressed by the character and furniture, without emoji overlays. */
+.pet-actor[data-using] .pet-body:after,.pet-actor[data-using] .pet-speech:before{content:none!important;display:none!important}
+/* Back-facing reach frames share one reliable drawing, mirrored for the opposite side. */
+.pet-actor[data-use-pose="reach"] .pet-sprite{transform:scaleX(var(--interaction-flip,1))}
+.pet-actor[data-use-pose="reach"] .pet-body{scale:var(--reach-scale,1)}
+.pet-actor[data-use-pose="interact"] .pet-body{transform:none;scale:1;animation:interact-breathe 2s ease-in-out infinite}
+@keyframes interact-breathe{50%{transform:translateY(1px) scaleY(.98)}}

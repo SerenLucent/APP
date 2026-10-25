@@ -1,4 +1,4 @@
-import {furnitureUsePose,useSpriteStyle} from './pet-furniture-use.js';
+import {furnitureUsePose,useSpriteStyle,furnitureApproach} from './pet-furniture-use.js';
 import {INVENTORY_TABS,inventoryCategory} from './pet-inventory.js';
 import {initialPlacement} from './pet-placement.js';
 import {actorDepth,motionPoint} from './pet-depth.js';
@@ -14,8 +14,8 @@ import {PRODUCT_ACTIONS,PRODUCT_SPACES,usableInSpace} from '../shared/pet-produc
 import {mountPetCamera} from './pet-camera.js';
 import './pets.css';
 import './pets-iso.css';
-import {isoScenery,isoFurniture} from './pet-art.js';
-import {project,unproject,insideFloor,cellCenter,cellAt,snap,placementAllowed,walkable,findPath,petStepClear,facingForVector,fromWorld,GRID_SIZE,footprint} from '../shared/pet-space.js';
+import {isoScenery,isoFurniture,furnitureForeground} from './pet-art.js';
+import {project,unproject,insideFloor,cellCenter,cellAt,snap,placementAllowed,walkable,findPath,petStepClear,facingForVector,fromWorld,toWorld,GRID_SIZE,footprint} from '../shared/pet-space.js';
 
 const esc = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const names = {mochi:'모모',kuki:'쿠키'};
@@ -49,7 +49,7 @@ function countdown(home) {
   const remaining = Math.max(0,Math.ceil((home.lastClaim+3600000-now())/1000));
   return `${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;
 }
-function furnitureArt(product,rotation=0) { return isoFurniture(product,rotation); }
+function furnitureArt(product,rotation=0,state='idle') { return isoFurniture(product,rotation,state); }
 function settleMotion(id){
  const motion=motions[id];if(!motion)return;
  const t=Math.min(1,Math.max(0,(Date.now()-motion.startedAt)/motion.duration));
@@ -101,14 +101,14 @@ function flashFloorCell(scene,world,blocked=false){
   later(()=>marker.remove(),1350);
 }
 function actor(id) {
-  const use=furnitureUses[id],pose=use?.pose,point=pose?.screen||project(positions[id]),face=facings[id];
+  const use=furnitureUses[id],pose=use?.pose,point=pose?.screen||project(positions[id]),face=pose?.facing||facings[id];
   return `<button class="pet-actor actor-${id} ${ui.selectedPet===id ? 'is-selected' : ''}" data-pet="${id}" aria-pressed="${ui.selectedPet===id}" data-facing="${face.pose}" data-use-pose="${pose?.kind||''}" data-using="${use?.action||''}" data-mood="${use?'using':''}" aria-label="${names[id]} 선택" style="left:${point.x}%;top:${point.y}%;z-index:${pose?.depth??Math.round(point.y*10)+10};${pose?useSpriteStyle(id,pose):''}--depth:${.8+(point.y-42)/44*.25};--facing-flip:${face.flip}"><span class="pet-shadow"></span><span class="pet-body"><span class="pet-sprite"><img src="${petImage(id,face.pose)}" alt="${names[id]}" draggable="false"></span></span><span class="pet-speech" aria-hidden="true">${use?.message||''}</span><span class="pet-name">${names[id]}</span></button>`;
 }
 function placedFurniture(item,catalog,items=[]){
   const parent=items.find(i=>i.id===item.parentId),surface=parent?tableSlot(parent,item.slot):null,rotation=surface?((parent.rotation||0)+(item.rotation||0))%360:(item.rotation||0);
   const point=surface?.screen||project(item),layout=furnitureLayout(item),frame=furnitureSprites[item.product]?.frames[layout.rotation/90];
  const model=furnishingModel(item.product,rotation),width=model?model.width*44*(1000/12)/100/20:layout.widthPercent*GRID_SIZE*(1000/12)/100,ratio=model?model.width/model.height:frame?frame.w/frame.h:1;
- return `<button class="placed-furniture" data-product="${item.product}" data-use-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 사용하기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:surface?Math.round(project(parent).y*10)+10:Math.round(point.y*10)+9};--item-size:${width}px;--sprite-height:${width/ratio}px;--ground-depth:${width/4}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureArt(item.product,rotation)}</button>`;
+ return `<button class="placed-furniture" data-product="${item.product}" data-furniture-turn="${rotation/90}" data-use-furniture="${item.id}" aria-label="${esc(catalog.find(p=>p.id===item.product)?.name||'가구')} 사용하기" style="left:${point.x}%;top:${point.y}%;z-index:${item.product==='rug'?1:surface?Math.round(project(parent).y*10)+10:Math.round(point.y*10)+9};--item-size:${width}px;--sprite-height:${width/ratio}px;--ground-depth:${width/4}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureArt(item.product,rotation)}</button>${furnitureForeground(item.product,rotation)?`<span class="placed-furniture furniture-foreground" aria-hidden="true" style="left:${point.x}%;top:${point.y}%;z-index:${Math.round(point.y*10)+12};--item-size:${width}px;--sprite-height:${width/ratio}px;--anchor-x:${(model?.anchorX??.5)*100}%;--anchor-y:${(model?.anchorY??.75)*100}%">${furnitureForeground(item.product,rotation)}</span>`:''}`;
 }
 function placementGrid(home){
  const item=home.items.find(item=>item.id===ui.placing);if(!item)return '';
@@ -235,8 +235,20 @@ function movePet(id,target,onArrive){
   step();return true;
 }
 
+const premiumAppliances=new Set(['premiumTV','premiumFridge','premiumWasher']);
+function paintAppliance(item,state='idle'){
+ const node=document.querySelector('[data-use-furniture="'+item.id+'"]');if(!node)return;
+ const model=furnishingModel(item.product,item.rotation||0,state),width=model.width*44*(1000/12)/100/20;
+ node.innerHTML=furnitureArt(item.product,item.rotation||0,state);node.dataset.running=String(state!=='idle');
+ node.style.setProperty('--item-size',width+'px');node.style.setProperty('--sprite-height',width*model.height/model.width+'px');node.style.setProperty('--anchor-x',model.anchorX*100+'%');node.style.setProperty('--anchor-y',model.anchorY*100+'%');
+}
+function animateAppliance(id){
+ const use=furnitureUses[id],item=hooks.home().items.find(i=>i.id===use?.item);if(!item||!premiumAppliances.has(item.product))return;
+ const tick=()=>{if(furnitureUses[id]!==use)return;const phase=Math.floor(Date.now()/650)%2;paintAppliance(item,item.product==='premiumFridge'?'open':item.product==='premiumWasher'?'spin'+(Math.floor(Date.now()/150)%8):(phase?'on':'scene'));if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)later(tick,item.product==='premiumWasher'?150:650);};tick();
+}
 function releaseFurniture(id){
   const use=furnitureUses[id];if(!use)return;
+  const appliance=hooks?.home()?.items.find(item=>item.id===use.item);if(appliance&&premiumAppliances.has(appliance.product))paintAppliance(appliance);
   positions[id]=use.exit;delete furnitureUses[id];
   const actor=document.querySelector(`.actor-${id}`);
   if(actor){actor.dataset.using='';actor.dataset.usePose='';actor.dataset.mood='';actor.style.removeProperty('--pose-column');actor.style.removeProperty('--pose-row');actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;actor.style.zIndex=String(actorDepth(positions[id]));}
@@ -255,12 +267,14 @@ function useFurniture(itemId){
   const id=ui.pet;if(furnitureUses[id])releaseFurniture(id);walkTokens[id]++;settleMotion(id);
   const actor=document.querySelector(`.actor-${id}`);if(!actor)return;
   actor.dataset.mood='';
-  const target=cellAt(item),[w,h]=footprint(item),candidates=[];
+  const target=cellAt(item),ideal=toWorld(furnitureApproach(item)),[w,h]=footprint(item),candidates=[];
   for(let c=0;c<GRID_SIZE;c++)for(let r=0;r<GRID_SIZE;r++){
-    if(Math.abs(c-target.c)>Math.ceil(w/2)+1||Math.abs(r-target.r)>Math.ceil(h/2)+1)continue;
-    const point=cellCenter(c,r);if(!walkable(home.items,ui.space,c,r)||!petStepClear(point,point,otherPetSegments(id)))continue;
+    if(Math.abs(c-target.c)>Math.ceil(w/2)+3||Math.abs(r-target.r)>Math.ceil(h/2)+3)continue;
+    const point=cellCenter(c,r);
+    if(!['rest','sleep','play'].includes(action)){const a=toWorld(point),b=toWorld(item),front=[[0,1],[-1,0],[0,-1],[1,0]][(item.rotation||0)/90];if((a.u-b.u)*front[0]+(a.v-b.v)*front[1]<=0)continue;}
+    if(!walkable(home.items,ui.space,c,r)||!petStepClear(point,point,otherPetSegments(id)))continue;
     const current=cellAt(positions[id]),path=findPath(home.items,ui.space,current,{c,r},(a,b)=>petStepClear(cellCenter(a.c,a.r),cellCenter(b.c,b.r),otherPetSegments(id)));
-    if(path.length||current.c===c&&current.r===r)candidates.push({c,r,d:Math.abs(c-target.c)+Math.abs(r-target.r),length:path.length});
+    if(path.length||current.c===c&&current.r===r)candidates.push({c,r,d:Math.hypot(toWorld(point).u-ideal.u,toWorld(point).v-ideal.v),length:path.length});
   }
   candidates.sort((a,b)=>a.d-b.d||a.length-b.length);
   if(!candidates.length){hooks.toast('가구 옆으로 갈 길이 없어요. 주변 셀을 비워 주세요.');return;}
@@ -268,12 +282,14 @@ function useFurniture(itemId){
     if(!actor.isConnected||furnitureReservations[id]!==itemId)return;
     delete furnitureReservations[id];
     const exit={...positions[id]},pose=furnitureUsePose(item,action,exit,home.items);furnitureUses[id]={item:itemId,exit,pose,action,until:Date.now()+(action==='sleep'?16000:9000)};
-    actor.dataset.mood='using';actor.dataset.using=action;actor.classList.remove('walking');faceActor(id,facingForVector(project(item).x-project(exit).x,project(item).y-project(exit).y));
-    positions[id]=pose.position;actor.dataset.usePose=pose.kind;
+    actor.dataset.mood='using';actor.dataset.using=action;actor.classList.remove('walking');faceActor(id,pose.facing);
+    positions[id]=pose.position;actor.dataset.usePose=pose.kind;actor.style.setProperty('--seat-anchor',item.product==='diningchair'?'100%':'82%');actor.style.setProperty('--seated-scale',item.product==='diningchair'?'.85':'.65');
     actor.style.setProperty('--pose-column',pose.column*100/3+'%');actor.style.setProperty('--pose-row',((pose.kind==='sleep'?2:0)+(id==='kuki'?1:0))*100/3+'%');
-    actor.style.setProperty('--hand-x',[0,3].includes(pose.column)?'64%':'36%');
+    actor.style.setProperty('--hand-x',[0,3].includes(pose.column)?'64%':'36%');const head=[[68,90],[32,90],[45,70],[55,70]][pose.column];actor.style.setProperty('--sleep-head-x',head[0]+'%');actor.style.setProperty('--sleep-head-y',head[1]+'%');
+    for(const declaration of useSpriteStyle(id,pose).split(';')){const [name,value]=declaration.split(':');if(name&&value)actor.style.setProperty(name,value);}
     actor.style.left=pose.screen.x+'%';actor.style.top=pose.screen.y+'%';actor.style.zIndex=String(pose.depth);
-    const messages={sleep:'z z z…',rest:'폭신폭신 ♡',read:'한 장 더…',study:'끄적끄적 ✎',tea:'따뜻한 차 한 잔',play:'통통! 재밌어',drink:'꿀꺽꿀꺽',water:'쑥쑥 자라라',watch:item.product==='pond'?'물고기다!':'재밌다 ♡',dress:'오늘도 단정하게 ♡',tidy:'차곡차곡'};
+    animateAppliance(id);
+    const messages={cinema:'영화 보는 중 ♡',refrigerate:'시원한 간식 꺼내기 ♡',laundry:'빨래가 빙글빙글!',sleep:'z z z…',rest:'폭신폭신 ♡',read:'한 장 더…',study:'끄적끄적 ✎',tea:'따뜻한 차 한 잔',play:'통통! 재밌어',drink:'꿀꺽꿀꺽',water:'쑥쑥 자라라',watch:item.product==='pond'?'물고기다!':'재밌다 ♡',dress:'오늘도 단정하게 ♡',tidy:'차곡차곡'};
     furnitureUses[id].message=messages[action]||'♡';actor.querySelector('.pet-speech').textContent=furnitureUses[id].message;
     hooks.toast(`${names[id]} · ${messages[action]||'가구를 사용해요'}`);
     const usage=furnitureUses[id];later(()=>{if(furnitureUses[id]===usage)releaseFurniture(id);},action==='sleep'?16000:9000);
@@ -369,7 +385,7 @@ export function mountPets(options) {
     }
   },{signal:controller.signal});
   // Movement is a local visual effect; shared care and furniture are server state.
-  for(const id of petIds){const use=furnitureUses[id];if(use)later(()=>{if(furnitureUses[id]===use)releaseFurniture(id);},Math.max(0,use.until-Date.now()));}
+  for(const id of petIds){const use=furnitureUses[id];if(use){animateAppliance(id);later(()=>{if(furnitureUses[id]===use)releaseFurniture(id);},Math.max(0,use.until-Date.now()));}}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const id of petIds)for(const pose of PET_POSES){const img=new Image();img.src=petImage(id,pose);}
   if(!reduced){later(()=>wander('mochi'),1200);later(()=>wander('kuki'),2500);}

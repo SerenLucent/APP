@@ -13,6 +13,9 @@ function careRewardReady(home,pet,type,now=Date.now()){
 // Dimensions are floor cells, before 90-degree rotation. No render-time guesses.
 const householdIndoor=['home','momoRoom','kukiRoom'],householdBedrooms=['momoRoom','kukiRoom'];
 const householdEntries=[
+ ['premiumTV','시네마 대형 스마트 TV',1200,[4,1],['home'],'cinema'],
+ ['premiumFridge','양문형 스마트 냉장고',1000,[3,2],['home'],'refrigerate'],
+ ['premiumWasher','프리미엄 드럼 세탁기',800,[2,2],['home'],'laundry'],
  ['armchair','폭신한 독서 의자',65,[2,2],householdIndoor,'rest'],['ottoman','동글 패브릭 풋스툴',35,[1,1],householdIndoor,'rest'],
  ['diningchair','원목 식탁 의자',35,[1,1],['home'],'rest'],['diningtable','둘이 쓰는 식탁',90,[3,2],['home'],'tea'],
  ['coffeeTable','서랍 소파 테이블',60,[2,1],['home'],'tidy'],['tvstand','라탄 거실장',80,[3,1],['home'],'tidy'],
@@ -30,7 +33,8 @@ const householdEntries=[
  ['barbecue','바비큐 그릴',85,[2,2],['yard'],'watch'],['picnicTable','정원 피크닉 테이블',95,[3,3],['yard'],'tea'],
  ['pottedTree','레몬 나무 화분',70,[2,2],['yard','home'],'water'],['flowerCart','꽃 수레',75,[2,2],['yard'],'water']
 ];
-const HOUSEHOLD_PRODUCTS=householdEntries.map(([id,name,price,footprint,spaces,action])=>({id,name,price,footprint,spaces,action,type:'furniture',symbol:'⌂',description:'네 방향으로 배치하는 우리 집 세간살이'}));
+const premiumDescriptions={premiumTV:'1,200 하트 · 화면을 켜고 함께 영화 보는 대형 TV',premiumFridge:'1,000 하트 · 문을 열어 시원한 간식을 꺼내요',premiumWasher:'800 하트 · 빨래를 넣으면 드럼이 돌아가요'};
+const HOUSEHOLD_PRODUCTS=householdEntries.map(([id,name,price,footprint,spaces,action])=>({id,name,price,footprint,spaces,action,type:'furniture',symbol:'⌂',description:premiumDescriptions[id]||'네 방향으로 배치하는 우리 집 세간살이'}));
 const TABLETOP_PRODUCTS=[
  ['mealPlate','따뜻한 한 끼',20],['toastPlate','토스트 브런치',15],['fruitPlate','과일 접시',15],['cakePlate','딸기 케이크',25],['teaSet','둘의 찻잔',20],['soupBowl','따뜻한 수프',15]
 ].map(([id,name,price])=>({id,name,price,type:'furniture',symbol:'◡',surface:'dining',footprint:[.65,.65],spaces:['home','yard'],description:'식탁 상판에만 올리는 음식 장식'}));

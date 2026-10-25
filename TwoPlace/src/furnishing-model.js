@@ -2,11 +2,11 @@ import {footprint} from '../shared/pet-space.js';
 // All vertices are in floor-cell units; screen axes match pet-space exactly.
 const palette={wood:'#c99665',cream:'#f4e5c9',pink:'#e7a7bb',mint:'#a3c5b4',blue:'#a1c6d6',leaf:'#7f9e70',water:'#85bfcb',soil:'#725e49',brass:'#c9a15e'};
 const cache=new Map();
-export function furnishingModel(product,rotation=0){
- const key=product+':'+rotation;if(cache.has(key))return cache.get(key);
+export function furnishingModel(product,rotation=0,state='idle'){
+ const key=product+':'+rotation+':'+state;if(cache.has(key))return cache.get(key);
  const [w,d]=footprint({product,rotation:0}),[fw,fd]=footprint({product,rotation});
- const turn=((rotation/90)%4+4)%4,faces=[],modelVertices=[];
- const rot=([u,v,z])=>turn===0?[u,v,z]:turn===1?[-v,u,z]:turn===2?[-u,-v,z]:[v,-u,z];
+ const turn=((rotation/90)%4+4)%4,faces=[],modelVertices=[];let foreground=false;
+ const rot=([u,v,z])=>{if(product==='premiumFridge')z*=.78;return turn===0?[u,v,z]:turn===1?[-v,u,z]:turn===2?[-u,-v,z]:[v,-u,z];};
  const project=vertex=>{const [a,b,z]=rot(vertex);return {x:(a-b)*20,y:(a+b)*10-z*20,depth:a+b+z};};
  function shade(hex,light){const n=parseInt(hex.slice(1),16);return '#'+[n>>16,(n>>8)&255,n&255].map(c=>Math.round(Math.min(255,Math.max(0,c*light))).toString(16).padStart(2,'0')).join('');}
  function quad(vertices,color,grain=false){
@@ -15,7 +15,7 @@ export function furnishingModel(product,rotation=0){
   const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]],length=Math.hypot(...n)||1;
   if(n.reduce((s,v)=>s+v,0)<-1e-8)return;
   const light=.77+.24*(n[2]/length)+.08*(-n[0]/length+n[1]/length);
-  const p=vertices.map(project);faces.push({depth:p.reduce((s,v)=>s+v.depth,0)/p.length,vertices:p,color:shade(color,light),paints:vertices.map(v=>{if(!v.normal)return shade(color,light);const n=rot(v.normal),l=Math.hypot(...n)||1;return shade(color,.77+.24*n[2]/l+.08*(-n[0]/l+n[1]/l));}),grain});
+  const p=vertices.map(project);faces.push({foreground,depth:p.reduce((s,v)=>s+v.depth,0)/p.length,vertices:p,color:shade(color,light),paints:vertices.map(v=>{if(!v.normal)return shade(color,light);const n=rot(v.normal),l=Math.hypot(...n)||1;return shade(color,.77+.24*n[2]/l+.08*(-n[0]/l+n[1]/l));}),grain});
  }
  function roundBox(cx,cy,z,sx,sy,sz,color,r=.06,grain=false,cloth=false){
   const center=[cx,cy,z+sz/2],half=[sx/2,sy/2,sz/2],radius=Math.min(r,...half),inner=half.map(h=>h-radius),steps=cloth?20:6;
@@ -57,9 +57,9 @@ export function furnishingModel(product,rotation=0){
   break;}
  case 'sofa':case 'bench':{
   const sofa=product==='sofa';legs(2.8,sofa?1.52:.82,.3,.16);box(0,0,.23,2.9,sofa?1.64:.92,.38,palette.wood,.1,true);
-  box(0,sofa?-.72:-.36,.55,2.9,.27,1.1,sofa?palette.cream:palette.wood,.1,!sofa);
-  for(const x of [-1.3,1.3])box(x,0,.5,.28,sofa?1.55:.8,.65,sofa?palette.cream:palette.wood,.13,!sofa);
-  for(const x of [-.65,.65]){cushion(x,.03,.61,1.18,sofa?1.17:.67,sofa?'#f0d9bc':palette.mint);if(sofa)box(x,-.54,.9,1.15,.29,.64,'#e9d0af',.13);}
+  foreground=turn===1||turn===2;box(0,sofa?-.72:-.36,.55,2.9,.27,1.1,sofa?palette.cream:palette.wood,.1,!sofa);foreground=false;
+  for(const x of [-1.3,1.3]){foreground=(turn<2?x>0:x<0);box(x,0,.5,.28,sofa?1.55:.8,.65,sofa?palette.cream:palette.wood,.13,!sofa);foreground=false;}
+  for(const x of [-.65,.65]){cushion(x,.03,.61,1.18,sofa?1.17:.67,sofa?'#f0d9bc':palette.mint);if(sofa){foreground=turn===1||turn===2;box(x,-.54,.9,1.15,.29,.64,'#e9d0af',.13);foreground=false;}}
   if(sofa)ball(-.87,-.32,1.18,.25,.17,.27,palette.pink);break;}
  case 'cushion':cushion(0,0,.05,.88,.88,palette.pink);break;
  case 'rug':box(0,0,.015,2.9,1.9,.075,palette.mint,.03);for(let y=-.8;y<.9;y+=.16)box(0,y,.09,2.67,.025,.015,'#c5dccc',.006);break;
@@ -108,6 +108,23 @@ export function furnishingModel(product,rotation=0){
   if(sink){box(0,0,1.55,1.95,1,.1,palette.wood,.025,true);box(-.3,0,1.64,.85,.65,.025,'#9caaa3',.05);box(-.3,0,1.665,.64,.46,.025,'#758f8f',.04);box(-.3,-.36,1.64,.05,.05,.5,palette.brass,.02);box(-.3,-.2,2.09,.05,.35,.06,palette.brass,.02);}
   else for(const x of [-.55,-.2,.2,.55])ball(x,depth/2+.09,height-.1,.07,.025,.07,palette.brass);
   break;}
+ case 'premiumTV':{
+  legs(3.7,.8,.36,.12);box(0,0,.3,3.85,.9,.45,palette.wood,.07,true);
+  for(const x of [-1.25,1.25])box(x,0,.75,.14,.48,.19,'#626965',.035);
+  box(0,-.08,.91,3.8,.18,2.08,'#505b5e',.08);box(0,.025,1.02,3.56,.035,1.84,state==='idle'?'#344447':'#9acbd1',.03);
+  if(state!=='idle'){ball(state==='on'?-.7:.45,.05,2.35,.32,.015,.32,'#f7d697');box(0,.052,1.04,3.5,.016,.38,'#8eaf92',.01);for(const x of [-1.1,.25,1.1])ball(x,.065,1.47,.6,.014,.36,state==='on'?'#b6c9a8':'#c8b5d7');}
+  box(0,.065,.94,.48,.035,.025,'#c6bca6',.01);ball(1.63,.065,.95,.025,.025,.025,state==='idle'?'#e2b4b4':'#b1e7c3');break;}
+ case 'premiumFridge':{
+  box(0,0,.04,2.78,1.85,3.5,'#dddcd2',.13);box(0,state==='open'?.38:.94,.17,2.6,.06,3.22,'#667b79',.035);
+  if(state==='open'){for(const z of [.6,1.35,2.1,2.85]){box(0,.78,z,2.48,.3,.06,'#eef4e6',.02);for(const x of [-.85,-.2,.65])ball(x,.84,z+.19,.13,.09,.18,x<0?'#d9bc92':'#b7d4b5');}
+   for(const x of [-1.34,1.34]){box(x,1.45,.18,.12,1.1,3.2,'#cbd8cf',.045);box(x,1.99,1.25,.18,.08,.8,palette.brass,.025);}
+  }else{for(const x of [-.66,.66]){box(x,.99,.17,1.27,.1,3.22,'#cbd8cf',.06);box(x<0?-.12:.12,1.065,1.55,.065,.065,.8,palette.brass,.025);}box(.64,1.065,2.25,.6,.035,.8,'#819993',.04);box(.64,1.09,2.75,.38,.02,.11,'#c2e1d3',.01);}
+  break;}
+ case 'premiumWasher':{
+  box(0,0,.05,1.85,1.85,1.85,'#e9e6de',.13);box(0,.95,1.54,1.64,.06,.27,'#cbd8d4',.04);ball(-.56,1.01,1.68,.1,.03,.1,palette.brass);box(.33,1.015,1.61,.56,.035,.15,'#526c6a',.025);
+  ball(0,.97,.88,.67,.07,.67,'#a5afaa');ball(0,1.04,.88,.55,.04,.55,'#415f66');
+  for(let i=0;i<3;i++){const a=(i*120+(state.startsWith('spin')?(Number(state.slice(4))||0)*45:0))*Math.PI/180;ball(Math.cos(a)*.24,1.09,.88+Math.sin(a)*.24,.2,.025,.15,[palette.pink,palette.blue,palette.cream][i]);}
+  ball(.3,1.11,1.15,.12,.015,.13,'#c3d5d4');break;}
  case 'television':{
   box(0,0,0,1.85,.85,.5,palette.wood,.05,true);box(0,-.03,.51,1.74,.6,1.15,palette.cream,.12);box(-.16,.295,.64,1.2,.055,.8,'#5f797b',.09);box(-.16,.33,.7,1.07,.025,.66,'#9eb9b2',.06);for(const z of [.8,1.3])ball(.64,.33,z,.08,.025,.08,palette.brass);break;}
  case 'coatRack':case 'mirrorStand':case 'birdbath':{

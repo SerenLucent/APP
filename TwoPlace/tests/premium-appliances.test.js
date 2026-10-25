@@ -1,0 +1,9 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {furnishingModel} from '../src/furnishing-model.js';
+import {furnitureUsePose} from '../src/pet-furniture-use.js';
+import {fromWorld,toWorld,GRID_SIZE} from '../shared/pet-space.js';
+import {CATALOG,initialPetHome,changePetHome} from '../server/pets.js';
+test('premium appliances have expensive independent SKUs and functional four-way models',()=>{for(const [id,price,state] of [['premiumTV',1200,'on'],['premiumFridge',1000,'open'],['premiumWasher',800,'spin2']]){assert.equal(CATALOG.find(p=>p.id===id).price,price);for(const rotation of [0,90,180,270]){const off=furnishingModel(id,rotation),on=furnishingModel(id,rotation,state);assert.ok(off.faces.length>20);assert.notDeepEqual(off.faces,on.faces);assert.ok(Number.isFinite(on.anchorX));}const home={...initialPetHome(0),hearts:price-1};assert.throws(()=>changePetHome(home,{type:'buy',product:id,version:0},0),/부족/);}});
+test('sleeping head follows pillow local coordinate in all four rotations',()=>{const base=fromWorld(.5,.5),center=toWorld(base);for(const [i,rotation] of [0,90,180,270].entries()){const pose=furnitureUsePose({...base,product:'bed',rotation},'sleep',base),head=toWorld(pose.position),offset=[[0,-.94],[.94,0],[0,.94],[-.94,0]][i];assert.ok(Math.abs((head.u-center.u)*GRID_SIZE-offset[0])<1e-8);assert.ok(Math.abs((head.v-center.v)*GRID_SIZE-offset[1])<1e-8);assert.equal(pose.column,[3,0,1,2][i]);}});
+
+test('sofa and bench backrests occupy a separate foreground layer when facing away',()=>{for(const product of ['sofa','bench'])for(const rotation of [0,90,180,270]){const model=furnishingModel(product,rotation),foreground=model.faces.filter(f=>f.foreground);assert.ok(foreground.length>0);assert.ok(foreground.length<model.faces.length);assert.ok(foreground.every(f=>f.vertices.every(p=>Number.isFinite(p.depth))));}});

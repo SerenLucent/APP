@@ -135,8 +135,8 @@ Object.assign(shapes,{
   pond:'<ellipse cx="50" cy="62" rx="46" ry="27" fill="#c3b59d"/><ellipse cx="50" cy="58" rx="39" ry="21" fill="#a1cdd0"/><ellipse cx="50" cy="58" rx="33" ry="16" fill="#b7dfe0"/><path d="M23 58q17-8 34-1M43 66q14-6 27-3" fill="none" stroke="#e7f7ef" stroke-width="2"/><ellipse cx="62" cy="56" rx="7" ry="3" fill="#e6a484"/><path d="m69 56 5-4v8Z" fill="#e6a484"/><ellipse cx="31" cy="49" rx="9" ry="5" fill="#94b58c"/><g fill="#e3d5bd"><ellipse cx="15" cy="53" rx="8" ry="5"/><ellipse cx="47" cy="35" rx="8" ry="5"/><ellipse cx="79" cy="76" rx="8" ry="5"/></g>',
   lantern:'<ellipse cx="50" cy="87" rx="18" ry="7" fill="#7d9185"/><path d="M50 82V33" stroke="#81958a" stroke-width="5"/><path d="m33 22 17-9 17 9v27l-17 9-17-9Z" fill="#fff0bb" stroke="#91a295" stroke-width="3"/><path d="m27 20 23-15 23 15-23 12Z" fill="#a8baaa"/><path d="M50 32v24" stroke="#91a295" stroke-width="2"/>'
 });
-export function isoFurniture(product,rotation=0){
- const model=furnishingModel(product,rotation);if(model){
+export function isoFurniture(product,rotation=0,state='idle'){
+ const model=furnishingModel(product,rotation,state);if(model){
   furnishingImage(model);
   return `<span class="furniture-art iso-furniture projected-furniture" data-model="${product}" data-direction="${((rotation/90)%4+4)%4}" aria-hidden="true"><img src="${model.image}" alt="" draggable="false" decoding="async" loading="lazy"/></span>`;
  }
@@ -146,3 +146,9 @@ export function isoFurniture(product,rotation=0){
  return `<span class="furniture-art iso-furniture" aria-hidden="true"><svg viewBox="0 0 100 100">${shadows}${shapes[product]||shapes.cushion}</svg></span>`;
 }
 
+
+export function furnitureForeground(product,rotation=0){
+ const model=furnishingModel(product,rotation);if(!model||!model.faces.some(f=>f.foreground))return '';
+ if(!model.foregroundImage)model.foregroundImage=furnishingImage({...model,image:null,faces:model.faces.filter(f=>f.foreground)});
+ return '<span class="furniture-art iso-furniture projected-furniture" aria-hidden="true"><img src="'+model.foregroundImage+'" alt="" draggable="false"></span>';
+}
