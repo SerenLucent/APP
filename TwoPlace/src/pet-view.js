@@ -25,7 +25,7 @@ function sceneDoors(){
   return '<button class="scene-door bedroom-exit-door" data-pet-space="home" aria-label="방 문 열고 거실로 나가기" title="거실로 나가기"></button><button class="scene-exit" data-pet-space="home">← 거실로</button>';
 }
 const petIds = ['mochi','kuki'];
-const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:null,placing:null,rotation:0,draft:null,furniture:null,feeding:null,status:false,placeSaving:false,focusPlacement:false,inventoryTab:'all'};
+const ui = {space:'yard',panel:'care',pet:'mochi',selectedPet:null,placing:null,rotation:0,draft:null,furniture:null,feeding:null,status:false,placeSaving:false,focusPlacement:false,inventoryTab:'all',shopTab:'all'};
 const facings={mochi:{pose:'front',flip:1},kuki:{pose:'front',flip:1}};
 const walkTokens={mochi:0,kuki:0};
 const motions={};
@@ -140,7 +140,10 @@ function updateCareDisplay(home){
 function updateStatus(){const dialog=document.querySelector('[data-pet-status]');if(!dialog)return;const pet=hooks.home().pets[dialog.dataset.petStatus];for(const key of ['hunger','affinity','energy']){const value=petLevel(pet,key,now());dialog.querySelector('[data-stat-value="'+key+'"]').textContent=Math.ceil(value)+'%';const gauge=dialog.querySelector('[data-stat-gauge="'+key+'"]');gauge.setAttribute('aria-valuenow',String(Math.ceil(value)));gauge.querySelector('i').style.width=value+'%';}}
 
 function shopPanel(home,catalog) {
-  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div><div class="pet-shop-grid">${catalog.filter(product=>usableInSpace(product.id,ui.space)).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">'+careIcon('feed',true)+'</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
+  const products=catalog.filter(product=>usableInSpace(product.id,ui.space));
+  const category=product=>product.type==='food'?'food':inventoryCategory(product.id);
+  const tabs='<div class="inventory-tabs" aria-label="상점 분류">'+Object.entries(INVENTORY_TABS).map(([id,label])=>'<button data-shop-tab="'+id+'" aria-pressed="'+(ui.shopTab===id)+'" class="'+(ui.shopTab===id?'active':'')+'">'+label+'<span>'+products.filter(product=>id==='all'||category(product)===id).length+'</span></button>').join('')+'</div>';
+  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div>${tabs}<div class="pet-shop-grid">${products.filter(product=>ui.shopTab==='all'||category(product)===ui.shopTab).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">'+careIcon('feed',true)+'</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
 }
 function decoratePanel(home,catalog) {
   const items=home.items.filter(item=>ui.inventoryTab==='all'||inventoryCategory(item.product)===ui.inventoryTab);
@@ -339,6 +342,7 @@ export function mountPets(options) {
     }
     if (!button || pending) return;
     if(button.dataset.petSpace){ui.space=button.dataset.petSpace;ui.placing=null;ui.draft=null;ui.furniture=null;setSelection(null);for(const id of petIds)walkTokens[id]++; hooks.render(); return;}
+    if(button.dataset.shopTab){ui.shopTab=button.dataset.shopTab;hooks.render();return;}
     if(button.dataset.inventoryTab){ui.inventoryTab=button.dataset.inventoryTab;hooks.render();return;}
     if(button.dataset.petPanel){ui.panel=button.dataset.petPanel; ui.placing=null; hooks.render();return;}
     if(button.dataset.selectPet){selectCarePet(button.dataset.selectPet);return;}
