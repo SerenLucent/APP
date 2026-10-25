@@ -13,3 +13,4 @@
 .demo-banner strong{display:block;font-size:12px;color:#725a24}.demo-banner button{background:white;padding:9px 12px;border-radius:8px;white-space:nowrap;font-size:11px}.demo-link{display:block;margin-top:18px;font-size:12px;color:#93725f;text-underline-offset:4px}
 
 [data-mode="demo"] .recovery-tools{display:none}
+.menu-grid .transit-card{background:#e6e2ff;border-color:#d8d2f3}.menu-grid .transit-card .tile-icon{color:#8171ce}.menu-grid .transit-card .card-desc{line-height:1.65;white-space:normal;word-break:keep-all}

@@ -15,6 +15,7 @@ const icons = {
   calendar: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 11h18M8 15h2M14 15h2"/>',
   note: '<path d="M14 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-8M14 3v7h7M14 3l7 7M7 14h10M7 17h6"/>',
   pin: '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  train: '<rect x="5" y="2" width="14" height="17" rx="4"/><path d="M5 10h14M12 2v8M8 19l-2 3M16 19l2 3"/><circle cx="8.5" cy="15" r=".7"/><circle cx="15.5" cy="15" r=".7"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   arrow: '<path d="m9 5 7 7-7 7"/>',
   home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/>',
@@ -95,7 +96,7 @@ async function refreshRoom() {
     const data = await request('/room',{token:session.token});
     const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || !connected;
     applyRoom(data);
-    if (changed && view !== 'places') render();
+    if (changed && !['places','transit'].includes(view)) render();
   } catch(error) {
     if (error.status === 401) { clearSession(); session = null; room = null; render(); toast(error.message); }
     else if (connected) { connected = false; render(); }
@@ -192,6 +193,7 @@ function home() {
   <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${state.notes.length ? `쌓인 이야기 ${state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
   <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스 메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">둘만의 공유 플레이스</span> ${icon('arrow')}</span></button>
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
+  <button class="menu-card transit-card" data-view="transit"><span class="tile-icon">${icon('train')}</span><span class="card-title">Transit Live</span><span class="card-desc">우리 만남의 시간을 지켜주는 실시간 지하철 정보</span><span class="card-bottom">수도권 실시간 열차 위치 ${icon('arrow')}</span></button>
   </div></section><aside class="today"><span class="today-flower">✳</span><div><span>${todayLabel}</span><p>오늘도 서로의 가장 가까운 편이 되어 주세요.</p></div></aside>`;
 }
 function eventDetailLink(event){return `상세보기${readRewardAvailable(event,room?.role,petHome?.calendarRewards)?' <span class="calendar-read-reward">+1 하트</span>':' ↗'}`;}
@@ -244,9 +246,13 @@ function notes() {
   return `<section class="page-heading"><span class="eyebrow">LITTLE NOTES, BIG LOVE</span><h1>커플 메모장</h1><p>장보기 목록부터, 문득 전하고 싶은 마음까지.</p></section><button class="new-note" data-action="note">${icon('plus')} 새로운 메모 남기기</button><section class="notes-list">${state.notes.length ? state.notes.map(n => `<article class="note-paper"><span class="eyebrow">${esc(n.date || '')}</span><p>${esc(n.body)}</p><div class="note-actions"><button data-edit-note="${esc(n.id)}">수정</button><button data-delete-note="${esc(n.id)}">삭제</button></div></article>`).join('') : `<div class="empty">${icon('note')}<h2>첫 번째 이야기를 기다려요</h2><p>둘이 함께 기억하고 싶은 내용을 남겨 보세요.</p></div>`}</section>`;
 }
 function render() {
-  stopPets();
+  stopPets(!!room&&view==='pets');
   finishLaunch();
-  if(room&&view==='places'){
+  if(room&&view==='transit'){
+    app.innerHTML=`<section class="place-frame-shell transit-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 메인화면으로</button><strong>Transit Live</strong><span>실시간 지하철 정보</span></header><iframe title="Transit Live · 실시간 지하철 정보" src="${import.meta.env.BASE_URL}transit-live/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
+    return;
+  }
+  if(room&&view==='places') {
     app.innerHTML=`<section class="place-frame-shell"><header class="place-frame-header"><button class="back" data-view="home">${icon('back')} 메인화면으로</button><strong>플레이스 메이트</strong><span>둘만의 공유 지도</span></header><iframe title="커플방 플레이스 메이트 공유 지도" src="${import.meta.env.BASE_URL}placemate/index.html" referrerpolicy="strict-origin-when-cross-origin"></iframe></section>`;
     return;
   }

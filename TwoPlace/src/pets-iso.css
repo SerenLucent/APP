@@ -55,3 +55,29 @@
 .pet-viewport>.furniture-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:248px;max-width:calc(100% - 24px);padding:12px}.furniture-actions button{min-height:46px;padding:10px 16px;font-size:15px;font-weight:600;border:1px solid #dab8a7;border-bottom-width:3px}.furniture-actions button:active{transform:translateY(2px);border-bottom-width:1px}
 .inventory-item button:disabled{opacity:.45;cursor:not-allowed;background:#e9e3dc;color:#95897c;box-shadow:none}
 .inventory-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 16px}.inventory-tabs button{padding:12px 5px;border:1px solid #e4d4c5;border-radius:10px;background:#faf4ec;color:#907b65;font-size:14px;min-height:46px}.inventory-tabs button span{display:block;font-size:11px;opacity:.7;margin-top:4px}.inventory-tabs button.active{border-color:#d6b869;background:#fff3cb;color:#80652b;box-shadow:inset 0 0 0 1px #e7d095}.inventory-empty{text-align:center;padding:32px 12px;color:#9e8b78;background:#faf4ec;border-radius:12px;font-size:14px}
+/* Furniture poses are drawn separately; never rotate a standing pet into a bed. */
+.pet-actor[data-use-pose="sit"] .pet-sprite,.pet-actor[data-use-pose="sleep"] .pet-sprite{display:block;width:100%;height:100%;background-image:url('/pets/furniture-poses-v1.png');background-size:400% 400%;background-position:var(--pose-column) var(--pose-row);transform:none}
+.pet-actor[data-use-pose="sit"] .pet-sprite img,.pet-actor[data-use-pose="sleep"] .pet-sprite img{visibility:hidden}
+.pet-actor[data-use-pose="sit"] .pet-body,.pet-actor[data-use-pose="sleep"] .pet-body{transform:none;animation:furniture-breathe 3s ease-in-out infinite;transform-origin:50% 85%}
+.pet-actor[data-use-pose="sit"] .pet-shadow,.pet-actor[data-use-pose="sleep"] .pet-shadow{visibility:hidden}
+.pet-actor[data-use-pose="sleep"] .pet-speech{animation:sleep-bubbles 3s ease-in-out infinite}
+.pet-actor[data-using="read"] .pet-speech:before{content:'📖 '}.pet-actor[data-using="study"] .pet-speech:before{content:'✏️ '}.pet-actor[data-using="tea"] .pet-speech:before{content:'☕ '}
+@keyframes furniture-breathe{50%{transform:translateY(-1px) scaleY(1.015)}}
+@keyframes sleep-bubbles{50%{translate:0 -5px;opacity:.6}}
+@media(prefers-reduced-motion:reduce){.pet-actor[data-use-pose] .pet-body,.pet-actor[data-use-pose] .pet-speech{animation:none}}
+.pet-actor[data-use-pose="sit"] .pet-body{scale:.65;transform-origin:50% 95%}
+.pet-actor[data-use-pose="sleep"] .pet-body{scale:.85;transform-origin:50% 95%}
+.pet-actor[data-use-pose="reach"] .pet-sprite{display:block;width:100%;height:100%;background-image:url('/pets/interaction-poses-v1.png');background-size:400% 400%;background-position:var(--pose-column) var(--pose-row);transform:none}
+.pet-actor[data-use-pose="reach"] .pet-sprite img{visibility:hidden}
+.pet-actor[data-use-pose="reach"] .pet-body{animation:use-reach 1.6s ease-in-out infinite;transform-origin:50% 95%}
+.pet-actor[data-use-pose="sit"][data-using="read"] .pet-sprite,.pet-actor[data-use-pose="sit"][data-using="tea"] .pet-sprite{background-image:url('/pets/interaction-poses-v1.png');background-position:var(--pose-column) calc(var(--pose-row) + 66.6667%)}
+.pet-actor[data-using="read"] .pet-body:after,.pet-actor[data-using="study"] .pet-body:after,.pet-actor[data-using="tea"] .pet-body:after,.pet-actor[data-using="water"] .pet-body:after,.pet-actor[data-using="drink"] .pet-body:after,.pet-actor[data-using="tidy"] .pet-body:after,.pet-actor[data-using="play"] .pet-body:after{position:absolute;left:var(--hand-x,60%);top:65%;transform:translate(-50%,-50%);font-size:28px;line-height:1;filter:drop-shadow(0 2px 1px #72563e33);pointer-events:none;animation:use-prop 1.5s ease-in-out infinite}
+.pet-actor[data-using="read"] .pet-body:after{content:'📖'}.pet-actor[data-using="study"] .pet-body:after{content:'✏️'}.pet-actor[data-using="tea"] .pet-body:after{content:'☕'}.pet-actor[data-using="water"] .pet-body:after{content:'💧'}.pet-actor[data-using="drink"] .pet-body:after{content:'🥛'}.pet-actor[data-using="tidy"] .pet-body:after{content:'🧺'}.pet-actor[data-using="play"] .pet-body:after{content:'⚽'}
+@keyframes use-reach{50%{transform:translateY(2px) rotate(2deg)}}@keyframes use-prop{50%{translate:0 -4px;rotate:5deg}}
+@media(prefers-reduced-motion:reduce){.pet-actor[data-use-pose] .pet-body:after{animation:none}}
+/* Care rest uses the same lying sprite as beds, resting directly on the floor. */
+.pet-actor[data-mood="sleep"] .pet-sprite{display:block;width:100%;height:100%;background-image:url('/pets/furniture-poses-v1.png');background-size:400% 400%;background-position:var(--pose-column) var(--pose-row);transform:none}
+.pet-actor[data-mood="sleep"] .pet-sprite img{visibility:hidden}
+.pet-actor[data-mood="sleep"] .pet-body{transform:none;scale:.85;animation:furniture-breathe 3s ease-in-out infinite;transform-origin:50% 95%}
+.pet-actor[data-mood="sleep"] .pet-speech{animation:sleep-bubbles 3s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.pet-actor[data-mood="sleep"] .pet-body,.pet-actor[data-mood="sleep"] .pet-speech{animation:none}}

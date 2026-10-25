@@ -1,3 +1,4 @@
+import {furnitureUsePose,useSpriteStyle} from './pet-furniture-use.js';
 import {INVENTORY_TABS,inventoryCategory} from './pet-inventory.js';
 import {initialPlacement} from './pet-placement.js';
 import {actorDepth,motionPoint} from './pet-depth.js';
@@ -100,8 +101,8 @@ function flashFloorCell(scene,world,blocked=false){
   later(()=>marker.remove(),1350);
 }
 function actor(id) {
-  const point=project(positions[id]),face=facings[id];
-  return `<button class="pet-actor actor-${id} ${ui.selectedPet===id ? 'is-selected' : ''}" data-pet="${id}" aria-pressed="${ui.selectedPet===id}" data-facing="${face.pose}" aria-label="${names[id]} 선택" style="left:${point.x}%;top:${point.y}%;z-index:${Math.round(point.y*10)+10};--depth:${.8+(point.y-42)/44*.25};--facing-flip:${face.flip}"><span class="pet-shadow"></span><span class="pet-body"><span class="pet-sprite"><img src="${petImage(id,face.pose)}" alt="${names[id]}" draggable="false"></span></span><span class="pet-speech" aria-hidden="true"></span><span class="pet-name">${names[id]}</span></button>`;
+  const use=furnitureUses[id],pose=use?.pose,point=pose?.screen||project(positions[id]),face=facings[id];
+  return `<button class="pet-actor actor-${id} ${ui.selectedPet===id ? 'is-selected' : ''}" data-pet="${id}" aria-pressed="${ui.selectedPet===id}" data-facing="${face.pose}" data-use-pose="${pose?.kind||''}" data-using="${use?.action||''}" data-mood="${use?'using':''}" aria-label="${names[id]} 선택" style="left:${point.x}%;top:${point.y}%;z-index:${pose?.depth??Math.round(point.y*10)+10};${pose?useSpriteStyle(id,pose):''}--depth:${.8+(point.y-42)/44*.25};--facing-flip:${face.flip}"><span class="pet-shadow"></span><span class="pet-body"><span class="pet-sprite"><img src="${petImage(id,face.pose)}" alt="${names[id]}" draggable="false"></span></span><span class="pet-speech" aria-hidden="true">${use?.message||''}</span><span class="pet-name">${names[id]}</span></button>`;
 }
 function placedFurniture(item,catalog,items=[]){
   const parent=items.find(i=>i.id===item.parentId),surface=parent?tableSlot(parent,item.slot):null,rotation=surface?((parent.rotation||0)+(item.rotation||0))%360:(item.rotation||0);
@@ -155,6 +156,7 @@ export function petPage(home,catalog) {
   if (!home) return '<div class="empty">모모와 쿠키의 집을 준비하고 있어요.</div>';
   const settled=[];
   for(const id of petIds){
+    if(furnitureUses[id]){settled.push(id);continue;}
     const current=cellAt(positions[id]);
     const safe=point=>petStepClear(point,point,settled.map(other=>({from:positions[other],to:positions[other]})));
     if(!walkable(home.items,ui.space,current.c,current.r)||!safe(positions[id])){
@@ -172,8 +174,8 @@ export function petPage(home,catalog) {
   const placed=home.items.filter(item=>item.space===ui.space);
   return `<section class="pet-heading"><div><span class="eyebrow">MOMO & KUKI'S LITTLE HOME</span><h1>모모와 쿠키의 집<span>♡</span></h1><p>둘이 돌보는, 두 친구의 작은 세상.</p></div><div class="heart-wallet" aria-label="보유 하트 ${home.hearts}"><span>♡</span><strong>${home.hearts}</strong><small>우리의 하트</small></div></section><div class="space-tabs" aria-label="펫 공간">${Object.entries(spaces).filter(([id])=>id==='yard'||id==='home').map(([id,label])=>`<button data-pet-space="${id}" aria-pressed="${(ui.space===id || id==='home'&&ui.space.endsWith('Room'))}" class="${(ui.space===id || id==='home'&&ui.space.endsWith('Room')) ? 'active' : ''}">${label}</button>`).join('')}</div><div class="pet-map-shell"><div class="camera-controls" aria-label="공간 확대 축소"><button data-camera="out" aria-label="축소">−</button><button data-camera="reset" class="camera-level" aria-label="전체 공간 보기">100%</button><button data-camera="in" aria-label="확대">＋</button></div><div class="pet-viewport"><span class="camera-help">20 × 20 셀 · 두 손가락 확대 · 드래그로 둘러보기</span><section class="pet-world pet-scene iso-scene scene-${ui.space} ${ui.placing ? 'placing' : ''}" aria-label="${spaces[ui.space]} · 모모와 쿠키가 함께 지내는 공간">${isoScenery(ui.space)}${sceneDoors()}<span class="scene-location">${spaces[ui.space]} · ${ui.space==='yard'?'문을 눌러 집으로 들어가요':ui.space==='home'?'우리의 포근한 거실과 작은 주방':'우리만의 방을 꾸며요'}</span>${placed.filter(item=>item.id!==ui.placing).map(item=>placedFurniture(item,catalog,home.items)).join('')}${petIds.map(actor).join('')}${ui.placing ? placementGrid(home) : furnitureMenu(home)}<span class="scene-tip">${ui.placing ? '구매한 가구로 우리 공간을 채워요' : '친구를 고르고 바닥을 누르면 따라와요'}</span></section></div></div><button class="claim-hearts" data-pet-action="claim"><span class="claim-heart">♡</span><span><strong>시간당 하트 받기</strong><small>한 번에 10하트 · 받은 뒤 1시간 대기</small></span><span class="claim-value" id="claim-value">${reward(home) ? `+${reward(home)} 받기` : countdown(home)}</span></button><div class="pet-panel-tabs" aria-label="펫 활동">${[['care','돌보기'],['shop','상점'],['decorate','보관함']].map(([id,label])=>`<button data-pet-panel="${id}" class="${ui.panel===id ? 'active' : ''}" aria-pressed="${ui.panel===id}">${label}</button>`).join('')}</div><section class="pet-panel">${ui.panel === 'care' ? carePanel(home) : ui.panel === 'shop' ? shopPanel(home,catalog) : decoratePanel(home,catalog)}</section><p class="pet-shared-note">♡ 하트, 먹이, 가구와 배치는 같은 커플방에서 함께 사용해요.</p>`;
 }
-export function stopPets() {
-  for(const id of petIds){releaseFurniture(id);delete furnitureReservations[id];}
+export function stopPets(preserveUse=false) {
+  for(const id of petIds){if(!preserveUse)releaseFurniture(id);delete furnitureReservations[id];}
   document.querySelector('.pet-status-dialog')?.remove();
   controller?.abort(); controller=null;
   for(const id of petIds){walkTokens[id]++;settleMotion(id);}
@@ -181,9 +183,12 @@ export function stopPets() {
   clearInterval(clock);
 }
 function react(id,mood) {
+  if(furnitureUses[id])releaseFurniture(id);
+  settleMotion(id);
   const actor=document.querySelector(`.actor-${id}`);
   if (!actor) return;
   actor.dataset.mood=mood;
+  if(mood==='sleep'){actor.style.setProperty('--pose-column','0%');actor.style.setProperty('--pose-row',id==='kuki'?'100%':'66.6667%');}
   walkTokens[id]++;
   faceActor(id,{pose:'front',flip:1});
   actor.classList.remove('walking');
@@ -234,7 +239,7 @@ function releaseFurniture(id){
   const use=furnitureUses[id];if(!use)return;
   positions[id]=use.exit;delete furnitureUses[id];
   const actor=document.querySelector(`.actor-${id}`);
-  if(actor){actor.dataset.using='';actor.dataset.mood='';actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;actor.style.zIndex=String(actorDepth(positions[id]));}
+  if(actor){actor.dataset.using='';actor.dataset.usePose='';actor.dataset.mood='';actor.style.removeProperty('--pose-column');actor.style.removeProperty('--pose-row');actor.querySelector('.pet-speech').textContent='';const p=project(positions[id]);actor.style.left=`${p.x}%`;actor.style.top=`${p.y}%`;actor.style.zIndex=String(actorDepth(positions[id]));}
 }
 function useFurniture(itemId){
   const home=hooks.home(),item=home.items.find(i=>i.id===itemId&&i.space===ui.space);
@@ -247,7 +252,7 @@ function useFurniture(itemId){
   }
   if(!action){hooks.toast('위치를 바꾸려면 보관함에서 가구를 골라 주세요.');return;}
   if(Object.values(furnitureUses).some(use=>use.item===itemId)||Object.values(furnitureReservations).includes(itemId)){hooks.toast('다른 친구가 사용 중이거나 가고 있어요.');return;}
-  const id=ui.pet;walkTokens[id]++;settleMotion(id);
+  const id=ui.pet;if(furnitureUses[id])releaseFurniture(id);walkTokens[id]++;settleMotion(id);
   const actor=document.querySelector(`.actor-${id}`);if(!actor)return;
   actor.dataset.mood='';
   const target=cellAt(item),[w,h]=footprint(item),candidates=[];
@@ -262,15 +267,16 @@ function useFurniture(itemId){
   const arrive=()=>{
     if(!actor.isConnected||furnitureReservations[id]!==itemId)return;
     delete furnitureReservations[id];
-    const exit={...positions[id]};furnitureUses[id]={item:itemId,exit};
-    actor.dataset.mood='using';actor.dataset.using=action;actor.classList.remove('walking');faceActor(id,{pose:action==='sleep'?'side':'front',flip:1});
-    if(['sleep','rest'].includes(action)){
-      positions[id]={x:item.x,y:item.y};const p=project(item);actor.style.left=`${p.x}%`;actor.style.top=`${p.y-2}%`;actor.style.zIndex=String(Math.round(p.y*10)+11);
-    }
-    const messages={sleep:'z z z…',rest:'폭신폭신 ♡',read:'한 장 더…',study:'끄적끄적 ✎',tea:'따뜻한 차 한 잔',play:'통통! 재밌어',drink:'꿀꺽꿀꺽',water:'쑥쑥 자라라',watch:'물고기다!',dress:'오늘도 단정하게 ♡',tidy:'차곡차곡'};
-    actor.querySelector('.pet-speech').textContent=messages[action]||'♡';
+    const exit={...positions[id]},pose=furnitureUsePose(item,action,exit,home.items);furnitureUses[id]={item:itemId,exit,pose,action,until:Date.now()+(action==='sleep'?16000:9000)};
+    actor.dataset.mood='using';actor.dataset.using=action;actor.classList.remove('walking');faceActor(id,facingForVector(project(item).x-project(exit).x,project(item).y-project(exit).y));
+    positions[id]=pose.position;actor.dataset.usePose=pose.kind;
+    actor.style.setProperty('--pose-column',pose.column*100/3+'%');actor.style.setProperty('--pose-row',((pose.kind==='sleep'?2:0)+(id==='kuki'?1:0))*100/3+'%');
+    actor.style.setProperty('--hand-x',[0,3].includes(pose.column)?'64%':'36%');
+    actor.style.left=pose.screen.x+'%';actor.style.top=pose.screen.y+'%';actor.style.zIndex=String(pose.depth);
+    const messages={sleep:'z z z…',rest:'폭신폭신 ♡',read:'한 장 더…',study:'끄적끄적 ✎',tea:'따뜻한 차 한 잔',play:'통통! 재밌어',drink:'꿀꺽꿀꺽',water:'쑥쑥 자라라',watch:item.product==='pond'?'물고기다!':'재밌다 ♡',dress:'오늘도 단정하게 ♡',tidy:'차곡차곡'};
+    furnitureUses[id].message=messages[action]||'♡';actor.querySelector('.pet-speech').textContent=furnitureUses[id].message;
     hooks.toast(`${names[id]} · ${messages[action]||'가구를 사용해요'}`);
-    later(()=>releaseFurniture(id),action==='sleep'?16000:9000);
+    const usage=furnitureUses[id];later(()=>{if(furnitureUses[id]===usage)releaseFurniture(id);},action==='sleep'?16000:9000);
   };
   const next=candidates[0],current=cellAt(positions[id]);
   furnitureReservations[id]=itemId;
@@ -300,7 +306,7 @@ async function act(action,success) {
   finally { pending=false;if(['pat','sleep'].includes(action.type)&&ui.panel==='care'){const panel=document.querySelector('.pet-panel');if(panel)panel.innerHTML=carePanel(hooks.home());} }
 }
 export function mountPets(options) {
-  stopPets(); hooks=options;
+  stopPets(true); hooks=options;
   controller=new AbortController();
   const root=document.querySelector('#app');
   const viewport=root.querySelector('.pet-viewport');if(viewport){const camera=mountPetCamera(viewport,ui.space,controller.signal);if(ui.focusPlacement&&ui.draft){camera.focus(project(ui.draft));ui.focusPlacement=false;}mountPetBackground(viewport.querySelector('.pet-world'),ui.space,controller.signal);for(const menu of viewport.querySelectorAll('.placement-hint,.furniture-actions'))viewport.append(menu);}
@@ -341,7 +347,7 @@ export function mountPets(options) {
       return;
     }
     if (!button || pending) return;
-    if(button.dataset.petSpace){ui.space=button.dataset.petSpace;ui.placing=null;ui.draft=null;ui.furniture=null;setSelection(null);for(const id of petIds)walkTokens[id]++; hooks.render(); return;}
+    if(button.dataset.petSpace){for(const id of petIds){releaseFurniture(id);delete furnitureReservations[id];}ui.space=button.dataset.petSpace;ui.placing=null;ui.draft=null;ui.furniture=null;setSelection(null);for(const id of petIds)walkTokens[id]++; hooks.render(); return;}
     if(button.dataset.shopTab){ui.shopTab=button.dataset.shopTab;hooks.render();return;}
     if(button.dataset.inventoryTab){ui.inventoryTab=button.dataset.inventoryTab;hooks.render();return;}
     if(button.dataset.petPanel){ui.panel=button.dataset.petPanel; ui.placing=null; hooks.render();return;}
@@ -363,6 +369,7 @@ export function mountPets(options) {
     }
   },{signal:controller.signal});
   // Movement is a local visual effect; shared care and furniture are server state.
+  for(const id of petIds){const use=furnitureUses[id];if(use)later(()=>{if(furnitureUses[id]===use)releaseFurniture(id);},Math.max(0,use.until-Date.now()));}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const id of petIds)for(const pose of PET_POSES){const img=new Image();img.src=petImage(id,pose);}
   if(!reduced){later(()=>wander('mochi'),1200);later(()=>wander('kuki'),2500);}
