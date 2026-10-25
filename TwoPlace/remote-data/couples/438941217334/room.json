@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792896022178,
+  "updatedAt": 1792896033514,
   "revision": 19,
   "state": {
     "startDate": "2024-08-08",
@@ -225,7 +225,7 @@
     ]
   },
   "petHome": {
-    "version": 141,
+    "version": 142,
     "hearts": 29,
     "snacks": 0,
     "lastClaim": 1792894124982,
@@ -325,10 +325,12 @@
       {
         "id": "ec7cc726ee284d58b8dd07b3556c2861",
         "product": "teaSet",
-        "space": null,
-        "x": 50.4,
-        "y": 81.28125,
-        "rotation": 0
+        "space": "home",
+        "x": 78.4,
+        "y": 79.66874999999999,
+        "rotation": 0,
+        "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
+        "slot": 0
       }
     ],
     "layoutVersion": 1,
