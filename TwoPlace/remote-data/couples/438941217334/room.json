@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792895571288,
+  "updatedAt": 1792895652608,
   "revision": 19,
   "state": {
     "startDate": "2024-08-08",
@@ -225,7 +225,7 @@
     ]
   },
   "petHome": {
-    "version": 136,
+    "version": 137,
     "hearts": 49,
     "snacks": 0,
     "lastClaim": 1792894124982,
@@ -317,9 +317,10 @@
       {
         "id": "8cf34c07f48c4d2a8e148d4c72cc1cb0",
         "product": "diningchair",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "home",
+        "x": 44,
+        "y": 80.475,
+        "rotation": 270
       }
     ],
     "layoutVersion": 1,
