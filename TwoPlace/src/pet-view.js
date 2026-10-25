@@ -302,7 +302,7 @@ function wander(id) {
   if (controller?.signal.aborted) return;
   const actor=document.querySelector(`.actor-${id}`);
   if (!actor) return;
-  if (!actor.dataset.mood && !ui.placing && ui.selectedPet!==id) {
+  if (!actor.dataset.mood && !ui.placing && ui.selectedPet!==id && !furnitureReservations[id] && !furnitureUses[id]) {
     for(let i=0;i<12;i++)if(movePet(id,{c:Math.floor(Math.random()*GRID_SIZE),r:Math.floor(Math.random()*GRID_SIZE)}))break;
   }
   later(()=>wander(id),6500+Math.random()*3500);

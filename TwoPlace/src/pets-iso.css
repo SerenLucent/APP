@@ -99,3 +99,5 @@
 .pet-actor[data-use-pose="reach"] .pet-body{scale:var(--reach-scale,1)}
 .pet-actor[data-use-pose="interact"] .pet-body{transform:none;scale:1;animation:interact-breathe 2s ease-in-out infinite}
 @keyframes interact-breathe{50%{transform:translateY(1px) scaleY(.98)}}
+/* Attach instantly to the furniture surface; walking transition duration must not lift it. */
+.iso-scene .pet-actor[data-use-pose="sleep"],.iso-scene .pet-actor[data-use-pose="sit"]{transition:none}
