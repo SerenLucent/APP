@@ -343,7 +343,7 @@ window.addEventListener('message',async event=>{
   const frame=app.querySelector('.place-frame-shell iframe'),data=event.data;
   if(event.origin!==location.origin||!frame||event.source!==frame.contentWindow||data?.type!=='twoplace:places:request'||typeof data.id!=='string'||data.id.length>40||!['GET','PUT','SEARCH','CONFIG'].includes(data.method)||!session)return;
   const response={type:'twoplace:places:response',id:data.id};
-  try{response.data=await request(data.method==='SEARCH'?'/room/places/search':data.method==='CONFIG'?'/room/places/map-config':'/room/places',{token:session.token,method:data.method==='SEARCH'?'POST':data.method==='CONFIG'?'GET':data.method,body:['PUT','SEARCH'].includes(data.method)?data.body:undefined});}
+  try{response.data=await request(data.method==='SEARCH'?'/room/places/search':data.method==='CONFIG'?'/room/places/map-config':'/room/places',{token:session.token,method:data.method==='SEARCH'?'POST':data.method==='CONFIG'?'GET':data.method,body:['PUT','SEARCH'].includes(data.method)?data.body:undefined});if(['GET','PUT'].includes(data.method))response.data.characters={...state.characters};}
   catch(error){response.error={message:error.message,status:error.status||503};}
   if(frame.isConnected)event.source.postMessage(response,location.origin);
 });

@@ -1,3 +1,4 @@
+import {coupleProfiles} from './couple-profiles.js';
 // Trusted, bundled PlaceMate couple mode. Credentials stay in the parent TwoPlace client.
 let nextId=0;
 const waiting=new Map();
@@ -20,14 +21,14 @@ export class CloudStore{
   async refresh(){this.snapshot=await bridge('GET');this.active=true;this.personal={pendingRoomKeys:[],revision:this.snapshot.revision};return this.toView();}
   toView(){
     const s=this.snapshot,alias=role=>role===s.role?'me':role;
-    return {users:['owner','partner'].map(role=>({id:alias(role),name:s.profiles[role].nickname,color:role==='owner'?'#f5dfd8':'#e6e0ee'})),rooms:[{id:s.code,code:s.code,name:'둘만의 공유 플레이스',description:'함께 가고 싶은 곳과 다녀온 추억을 같은 지도에 모아요.',emoji:'♡',master:alias('owner'),members:(s.memberCount===2?['owner','partner']:['owner']).map(alias),bans:[],pending:[],revision:s.revision}],places:s.places.map(p=>({...p,owner:alias(p.owner),rooms:[s.code]})),reviews:s.reviews.map(r=>({...r,user:alias(r.user)}))};
+    return {users:coupleProfiles(s),rooms:[{id:s.code,code:s.code,name:'둘만의 공유 플레이스',description:'함께 가고 싶은 곳과 다녀온 추억을 같은 지도에 모아요.',emoji:'♡',master:alias('owner'),members:(s.memberCount===2?['owner','partner']:['owner']).map(alias),bans:[],pending:[],revision:s.revision}],places:s.places.map(p=>({...p,owner:alias(p.owner),rooms:[s.code]})),reviews:s.reviews.map(r=>({...r,user:alias(r.user)}))};
   }
   async searchPlaces(query){return bridge('SEARCH',{query});}
   async saveView(db){
     if(this.snapshot.mapFeatures!==2&&db.places.some(p=>p.owner==='me'&&(p.wanted||!['맛집','카페','기타','쇼핑','산책'].includes(p.category))))throw new Error('새 카테고리와 가보고 싶은 곳을 저장하려면 투플레이스 Apps Script를 최신 Code.gs로 업데이트해주세요.');
     const places=db.places.filter(p=>p.owner==='me').map(p=>({...p,canonicalId:p.canonicalId||p.id})),known=new Set(db.places.map(p=>p.canonicalId||p.id));
     const reviews=db.reviews.filter(r=>r.user==='me'&&r.visited&&known.has(r.place));
-    const saved=await bridge('PUT',{revision:this.snapshot.revision,nickname:db.users.find(u=>u.id==='me').name,places,reviews});
+    const saved=await bridge('PUT',{revision:this.snapshot.revision,nickname:(coupleProfiles(this.snapshot).find(u=>u.id==='me').name===db.users.find(u=>u.id==='me').name?this.snapshot.profiles[this.snapshot.role].nickname:db.users.find(u=>u.id==='me').name),places,reviews});
     this.snapshot=saved;this.personal.revision=saved.revision;
   }
 }

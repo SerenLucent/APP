@@ -155,5 +155,5 @@ function action(a){
   if(['menu','visited','add','edit-place','review','visit','zoom-in','zoom-out','recenter','add-rating','profile','export','delete-place'].includes(a))localAction(a);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
-setInterval(async()=>{if(!cloud?.active||cloudBusy||cloudUnsure||document.hidden||modalRoot.firstChild||searchComposing||document.activeElement?.id==='search')return;cloudBusy=true;try{const previous=cloud.snapshot;const next=await cloud.refresh();if(previous.revision!==cloud.snapshot.revision||previous.memberCount!==cloud.snapshot.memberCount){db=next;render();}}catch(error){cloudUnsure=true;showCloudError(error);}finally{cloudBusy=false;}},15000);
+setInterval(async()=>{if(!cloud?.active||cloudBusy||cloudUnsure||document.hidden||modalRoot.firstChild||searchComposing||document.activeElement?.id==='search')return;cloudBusy=true;try{const previous=cloud.snapshot;const next=await cloud.refresh();if(previous.revision!==cloud.snapshot.revision||previous.memberCount!==cloud.snapshot.memberCount||JSON.stringify(previous.characters)!==JSON.stringify(cloud.snapshot.characters)){db=next;render();}}catch(error){cloudUnsure=true;showCloudError(error);}finally{cloudBusy=false;}},15000);
 render();startCloud();
