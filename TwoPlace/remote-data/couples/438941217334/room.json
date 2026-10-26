@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793028479288,
+  "updatedAt": 1793028492481,
   "revision": 26,
   "state": {
     "startDate": "2024-08-08",
@@ -295,7 +295,7 @@
     ]
   },
   "petHome": {
-    "version": 246,
+    "version": 247,
     "hearts": 9,
     "snacks": 2,
     "lastClaim": 1793028336899,
@@ -322,8 +322,8 @@
         "id": "fdc98c8be36949b7a7a2c2844ee40cca",
         "product": "cushion",
         "space": "momoRoom",
-        "x": 88,
-        "y": 50.375,
+        "x": 52,
+        "y": 48.225,
         "rotation": 0
       },
       {
