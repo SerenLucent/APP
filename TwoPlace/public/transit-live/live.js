@@ -38,7 +38,7 @@ function installPositions(data){
     return [{id,row:r,sign,from:delta===0?target:from,delta,since:now}];
   });
   trains.replaceChildren();
-  live.models.forEach(m=>{const el=document.createElement('div');el.className='train'+(terminalInfo(m.row.statnTnm).shortTurn?' short-turn':'');el.innerHTML=trainIcon;el.setAttribute('aria-hidden','true');el.title='열차 '+m.row.trainNo+' · '+m.row.statnNm+' · '+(m.row.statnTnm||'종착역 미제공');m.el=el;trains.append(el)});
+  live.models.forEach(m=>{const el=document.createElement('div');el.className='train '+(String(m.row.updnLine)==='0'?'train-up':'train-down')+(terminalInfo(m.row.statnTnm).shortTurn?' short-turn':'');el.innerHTML=trainIcon+'<span class="train-direction-arrow"></span>';el.setAttribute('aria-hidden','true');el.title='열차 '+m.row.trainNo+' · '+m.row.statnNm+' · '+(m.row.statnTnm||'종착역 미제공');m.el=el;trains.append(el)});
 }
 function modelPosition(m,now){return wrap(m.from+m.delta*Math.min(1,Math.max(0,(now-m.since)/2500)))}
 function terminalInfo(raw){
@@ -100,6 +100,13 @@ function destinationRoute(origin, destination){
   const outer=(origin-destination+names.length)%names.length;
   return {direction:currentRoute.oneWay?'순환':inner===outer?'양방향':inner<outer?'내선':'외선',stops:currentRoute.oneWay?inner:Math.min(inner,outer)};
 }
+// Keep trains at the platform ahead of approaching trains; remove only confirmed departures.
+function upcomingArrivals(items){
+  const seen=new Set();
+  const rank=r=>String(r.arvlCd)==='1'?0:String(r.arvlCd)==='0'?1:2;
+  const distance=r=>/^\d{5}/.test(String(r.ordkey||''))?Number(String(r.ordkey).slice(2,5)):Infinity;
+  return items.filter(r=>String(r.arvlCd)!=='2').slice().sort((a,b)=>rank(a)-rank(b)||distance(a)-distance(b)||String(a.ordkey||'').localeCompare(String(b.ordkey||''),undefined,{numeric:true})).filter(r=>{const id=r.btrainNo;if(!id)return true;if(seen.has(String(id)))return false;seen.add(String(id));return true}).slice(0,2);
+}
 window.renderLive=()=>{
   const name=names[selected],data=live.arrivals.get(arrivalKey()),old=dataOld(data);
   const route=destinationRoute(selected,live.destination);
@@ -110,12 +117,12 @@ window.renderLive=()=>{
   document.querySelector('#route-summary').textContent=route?`${name} → ${names[live.destination]} · ${route.direction}${currentLine.number===2&&currentRoute.loop?'순환':''} ${route.stops}개 역 이동`:live.destination===selected?'현재 선택한 역과 목적지가 같아요.':typed?'현재 구간의 자동완성에서 역을 선택해주세요.':'목적지를 고르면 더 적은 역을 지나는 방향을 표시해요.';
   const directions=currentRoute.oneWay?['순환']:currentLine.number===2&&currentRoute.loop?['내선','외선']:['상행','하행'];
   const cards=directions.map(direction=>{
-    const rows=(data?.items||[]).filter(r=>direction==='순환'||String(r.updnLine).includes(direction)||((direction==='상행'||direction==='하행')&&String(r.updnLine).includes(direction==='상행'?'내선':'외선'))).sort((a,b)=>String(a.ordkey||'').localeCompare(String(b.ordkey||''))).slice(0,2);
+    const rows=upcomingArrivals((data?.items||[]).filter(r=>direction==='순환'||String(r.updnLine).includes(direction)||((direction==='상행'||direction==='하행')&&String(r.updnLine).includes(direction==='상행'?'내선':'외선'))));
     const recommended=route&&(route.direction===direction||route.direction==='양방향');
-    return `<section class="direction-group${recommended?' recommended':''}" aria-label="${direction}${directions[0]==='내선'?'순환':''}${recommended?' · 목적지 추천 방향':''}"><div class="direction"><span>${direction}${directions[0]==='내선'?'순환':''}</span><span>${recommended?'목적지 방향':old?'이전 정보':'도착 안내'}</span></div>`+(rows.length?rows.map((r,i)=>{
+    return `<section class="direction-group${recommended?' recommended':''}" aria-label="${direction}${directions[0]==='내선'?'순환':''}${recommended?' · 목적지 추천 방향':''}"><div class="direction"><span><i class="detail-direction-triangle ${direction==='상행'||direction==='내선'||direction==='순환'?'direction-up':'direction-down'}" aria-hidden="true"></i>${direction}${directions[0]==='내선'?'순환':''}</span><span>${recommended?'목적지 방향':old?'이전 정보':'도착 안내'}</span></div>`+(rows.length?rows.map((r,i)=>{
       const journey=trainJourney(r,direction);
       const coverage=route?(journey.reaches===true?'목적지까지 운행':journey.reaches===false?'목적지까지 가지 않아요':'목적지 운행 여부 확인 필요'):'';
-      return `<div class="arrival ${i?'secondary ':''}${journey.reaches===true&&!old?'train-recommended ':''}${journey.shortTurn?'short-turn-card':''}"><div class="arrival-top"><b>${i?'다음':'이번'} 열차</b><strong class="live-message">${esc(r.arvlMsg2||'시간 미제공')}</strong></div><p class="train-destination">열차 ${esc(r.btrainNo||'번호 미제공')} · ${esc(journey.name?journey.name+'행':'행선지 미제공')}</p><p class="terminus-label">${journey.shortTurn?'<span class="short-turn-tag">중간 종착</span> ':''}${esc(journey.name?journey.name+' 종착':'종착역 미제공')}</p><p>${esc(r.arvlMsg3||r.trainLineNm||'')}</p>${coverage?`<p class="coverage-label ${journey.reaches===false?'does-not-reach':''}">${esc(coverage)}</p>`:''}</div>`;
+      return `<div class="arrival ${i?'secondary ':''}${journey.reaches===true&&!old?'train-recommended ':''}${journey.shortTurn?'short-turn-card':''}"><div class="arrival-top"><b>${i?'다음':'이번'} 열차</b><strong class="live-message">${esc(r.arvlMsg2||'시간 미제공')}</strong></div><p class="train-destination">열차 ${esc(r.btrainNo||'번호 미제공')} · <b class="destination-name">${esc(journey.name?journey.name+'행':'행선지 미제공')}</b></p><p class="terminus-label">${journey.shortTurn?'<span class="short-turn-tag">중간 종착</span> ':''}<b class="destination-name">${esc(journey.name?journey.name+' 종착':'종착역 미제공')}</b></p><p class="train-location">현재위치 ${esc(r.arvlMsg3||'정보 미제공')}</p>${coverage?`<p class="coverage-label ${journey.reaches===false?'does-not-reach':''}">${esc(coverage)}</p>`:''}</div>`;
     }).join(''):`<p class="detail-caption">${esc(live.arrivalError||(data?'현재 제공되는 도착정보가 없어요.':'도착정보를 불러오는 중…'))}</p>`)+`</section>`;
   }).join('');
   document.querySelector('#detail').innerHTML=`<div class="direction-grid">${cards}</div><p class="detail-caption">${live.arrivalError?esc(live.arrivalError)+'<br>':''}${data?'수신 '+stamp(data.updatedAt)+' · '+(old?'이전 정보 · 현재 상태와 다를 수 있어요':'서울시 제공 메시지 기준'):'연결 대기 중'}${route?'<br>방향은 역 수 기준 · 열차별 종착역까지 확인해 안내합니다. 다른 구간 종착은 별도 확인이 필요해요.':''}</p><div class="detail-bottom">${paused?'갱신 일시정지 · ':''}실제 운행정보 · 30초 간격 확인</div>`;
@@ -142,9 +149,27 @@ async function pollLive(){
 document.querySelector('#pause').onclick=()=>{paused=!paused;document.querySelector('#pause').textContent=paused?'▷ 실시간 갱신 재개':'Ⅱ 실시간 갱신 멈추기';clearTimeout(live.timer);live.nextRefreshAt=0;if(!paused)pollLive();renderDetail()};
 document.addEventListener('visibilitychange',()=>{clearTimeout(live.timer);clearTimeout(live.selectTimer);live.nextRefreshAt=0;if(!document.hidden&&!paused)pollLive();updateStatus()});
 const destinationInput=document.querySelector('#destination');
-function updateDestinationOptions(){document.querySelector('#destination-stations').innerHTML=names.map(n=>`<option value="${n}역"></option>`).join('')}
+const destinationResults=document.querySelector('#destination-results');
+function closeDestinationResults(){destinationResults.hidden=true;destinationInput.setAttribute('aria-expanded','false')}
+function updateDestinationOptions(){closeDestinationResults();destinationResults.replaceChildren()}
+function chooseDestination(index){live.destination=index;destinationInput.value=names[index]==='서울'?'서울역':names[index]+'역';closeDestinationResults();renderDetail()}
+function renderDestinationResults(){
+  const query=destinationInput.value.trim().replace(/역$/,'');
+  const index=names.indexOf(query);live.destination=index<0?null:index;
+  destinationResults.replaceChildren();
+  if(!query){closeDestinationResults();renderDetail();return}
+  const matches=names.map((name,index)=>({name,index})).filter(s=>s.name.includes(query)).slice(0,12);
+  destinationResults.hidden=false;destinationInput.setAttribute('aria-expanded','true');
+  if(!matches.length){const empty=document.createElement('p');empty.className='empty';empty.textContent='현재 구간에서 찾을 수 없는 역이에요.';destinationResults.append(empty)}
+  matches.forEach(({name,index})=>{const button=document.createElement('button');button.type='button';const title=document.createElement('strong');title.textContent=name==='서울'?'서울역':name+'역';const caption=document.createElement('small');caption.textContent=currentLine.name+' · '+currentRoute.name;button.append(title);button.append(caption);button.onclick=()=>chooseDestination(index);destinationResults.append(button)});
+  renderDetail();
+}
 updateDestinationOptions();
-destinationInput.addEventListener('input',()=>{const value=destinationInput.value.trim().replace(/역$/,'');const index=names.indexOf(value);live.destination=index<0?null:index;renderDetail()});
-document.querySelector('#clear-destination').onclick=()=>{destinationInput.value='';live.destination=null;renderDetail();destinationInput.focus()};
+destinationInput.addEventListener('input',renderDestinationResults);
+destinationInput.addEventListener('focus',()=>{if(destinationInput.value.trim())renderDestinationResults();else closeDestinationResults()});
+destinationInput.addEventListener('keydown',e=>{if(e.key==='Escape')closeDestinationResults();if(e.key==='Enter'){const b=destinationResults.hidden?null:destinationResults.querySelector('button');if(b){e.preventDefault();b.click()}}if(e.key==='ArrowDown'){const b=destinationResults.hidden?null:destinationResults.querySelector('button');if(b){e.preventDefault();b.focus()}}});
+destinationResults.addEventListener('keydown',e=>{const buttons=[...destinationResults.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);if(e.key==='Escape'){destinationInput.focus();closeDestinationResults()}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();buttons[(index+(e.key==='ArrowDown'?1:buttons.length-1))%buttons.length]?.focus()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.destination-search'))closeDestinationResults()});
+document.querySelector('#clear-destination').onclick=()=>{destinationInput.value='';live.destination=null;closeDestinationResults();renderDetail();destinationInput.focus()};
 window.changeLiveLine=()=>{live.revision++;clearTimeout(live.timer);clearTimeout(live.selectTimer);live.busy=false;live.positions=null;live.models=[];live.error='';live.arrivalError='';live.destination=null;live.nextRefreshAt=0;destinationInput.value='';updateDestinationOptions();trains.replaceChildren();renderDetail();pollLive()};
 trains.replaceChildren();renderDetail();pollLive();
