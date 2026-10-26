@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793028435416,
+  "updatedAt": 1793028454816,
   "revision": 26,
   "state": {
     "startDate": "2024-08-08",
@@ -295,8 +295,8 @@
     ]
   },
   "petHome": {
-    "version": 244,
-    "hearts": 94,
+    "version": 245,
+    "hearts": 9,
     "snacks": 2,
     "lastClaim": 1793028336899,
     "pets": {
@@ -409,6 +409,13 @@
         "x": 80,
         "y": 76.175,
         "rotation": 0
+      },
+      {
+        "id": "b7b5feacf52345bbab251b20519eb73b",
+        "product": "vanity",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
