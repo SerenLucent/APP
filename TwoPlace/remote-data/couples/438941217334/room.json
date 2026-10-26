@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1792978432986,
+  "updatedAt": 1792978436638,
   "revision": 23,
   "state": {
     "startDate": "2024-08-08",
@@ -266,7 +266,7 @@
     ]
   },
   "petHome": {
-    "version": 194,
+    "version": 195,
     "hearts": 58,
     "snacks": 2,
     "lastClaim": 1792978397411,
@@ -275,7 +275,7 @@
         "hunger": 93,
         "updatedAt": 1792978432985,
         "affinity": 100,
-        "affinityAt": 1792974605407,
+        "affinityAt": 1792978436637,
         "energy": 100,
         "energyAt": 1792974611008
       },
