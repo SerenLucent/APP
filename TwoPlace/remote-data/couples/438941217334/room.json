@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793028349061,
+  "updatedAt": 1793028398746,
   "revision": 26,
   "state": {
     "startDate": "2024-08-08",
@@ -295,7 +295,7 @@
     ]
   },
   "petHome": {
-    "version": 241,
+    "version": 242,
     "hearts": 94,
     "snacks": 2,
     "lastClaim": 1793028336899,
@@ -346,9 +346,9 @@
         "id": "def92f0fde6f4ba2a88c62bfde223551",
         "product": "rug",
         "space": "momoRoom",
-        "x": 24,
-        "y": 82.625,
-        "rotation": 0
+        "x": 80,
+        "y": 54.675,
+        "rotation": 180
       },
       {
         "id": "06ccfb9f31864f41a0c4f188d9624c0c",
