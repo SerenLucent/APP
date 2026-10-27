@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065681399,
-  "revision": 7,
+  "updatedAt": 1793065692159,
+  "revision": 8,
   "state": {
     "startDate": "2025-06-14",
     "events": [
@@ -61,7 +61,7 @@
         "id": "d3c59fe2a5b24ca91aa6dd08aeb79eed",
         "date": "2026-10-31",
         "title": "Reading club",
-        "kind": "date",
+        "kind": "general",
         "time": "",
         "place": "",
         "details": "",
