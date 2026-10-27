@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065459203,
-  "revision": 3,
+  "updatedAt": 1793065563827,
+  "revision": 4,
   "state": {
     "startDate": "2025-06-14",
     "events": [
@@ -30,13 +30,25 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "owner"
+      },
+      {
+        "id": "5db9cba8f8d581b4835bcd985ffab548",
+        "date": "2026-11-07",
+        "title": "목동동 성당 피정",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "점심 제공",
+        "startTime": "11:00",
+        "endTime": "03:00",
+        "authorRole": "owner"
       }
     ],
     "notes": []
   },
   "petHome": {
-    "version": 25,
-    "hearts": 64,
+    "version": 26,
+    "hearts": 69,
     "snacks": 4,
     "lastClaim": 1793065153204,
     "pets": {
@@ -66,7 +78,8 @@
     "calendarRewards": {
       "registration": {
         "2026-10-31": true,
-        "2026-11-01": true
+        "2026-11-01": true,
+        "2026-11-07": true
       },
       "reads": {},
       "seen": [],
