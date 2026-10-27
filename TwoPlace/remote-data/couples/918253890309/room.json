@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065563827,
-  "revision": 4,
+  "updatedAt": 1793065605306,
+  "revision": 5,
   "state": {
     "startDate": "2025-06-14",
     "events": [
@@ -42,13 +42,39 @@
         "startTime": "11:00",
         "endTime": "03:00",
         "authorRole": "owner"
+      },
+      {
+        "id": "6ed56f020fd66f17c0f2fee3fc557283",
+        "date": "2026-11-09",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner",
+        "workType": "shift"
+      },
+      {
+        "id": "11c3e1f7a8f0489a091ee7315c83c571",
+        "date": "2026-11-10",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner",
+        "workType": "shift"
       }
     ],
     "notes": []
   },
   "petHome": {
-    "version": 26,
-    "hearts": 69,
+    "version": 27,
+    "hearts": 79,
     "snacks": 4,
     "lastClaim": 1793065153204,
     "pets": {
@@ -79,7 +105,9 @@
       "registration": {
         "2026-10-31": true,
         "2026-11-01": true,
-        "2026-11-07": true
+        "2026-11-07": true,
+        "2026-11-09": true,
+        "2026-11-10": true
       },
       "reads": {},
       "seen": [],
