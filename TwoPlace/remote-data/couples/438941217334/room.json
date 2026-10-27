@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793084944121,
+  "updatedAt": 1793084962348,
   "revision": 26,
   "state": {
     "startDate": "2024-08-08",
@@ -295,8 +295,8 @@
     ]
   },
   "petHome": {
-    "version": 281,
-    "hearts": 57,
+    "version": 282,
+    "hearts": 2,
     "snacks": 2,
     "lastClaim": 1793084944119,
     "pets": {
@@ -417,6 +417,13 @@
         "x": 52,
         "y": 46.075,
         "rotation": 0
+      },
+      {
+        "id": "f63647536a404c4f930e6934a9657dff",
+        "product": "mirrorStand",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
