@@ -2,7 +2,7 @@ import {furnitureUsePose,useSpriteStyle,furnitureApproach} from './pet-furniture
 import {INVENTORY_TABS,inventoryCategory} from './pet-inventory.js';
 import {initialPlacement} from './pet-placement.js';
 import {actorDepth,motionPoint} from './pet-depth.js';
-import {petLevel,careRewardReady,starving} from '../shared/pet-care.js';
+import {petLevel,careRewardReady,careBonus,starving} from '../shared/pet-care.js';
 import {mountPetBackground} from './pet-background.js';
 import {petImage,PET_POSES} from './pet-sprites.js';
 import {isTabletop} from '../shared/household-catalog.js';
@@ -126,19 +126,23 @@ function carePanel(home) {
  const feed=home.snacks>0&&petLevel(home.pets[ui.pet],'hunger',now())<100,pat=careRewardReady(home,ui.pet,'pat',now()),sleep=careRewardReady(home,ui.pet,'sleep',now());
  return '<div class="pet-profiles">'+petIds.map(id=>'<button class="pet-profile '+(ui.pet===id?'chosen':'')+'" data-select-pet="'+id+'" aria-pressed="'+(ui.pet===id)+'"><img src="'+petImage(id)+'" alt=""><span><strong>'+names[id]+'</strong><small>'+(id==='mochi'?'하트처럼 포근한 친구':'별빛처럼 다정한 친구')+'</small><span class="hunger-track" role="progressbar" aria-label="'+names[id]+' 배부름" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.ceil(petLevel(home.pets[id],'hunger',now()))+'"><i style="width:'+petLevel(home.pets[id],'hunger',now())+'%"></i></span><small>배부름 '+Math.ceil(petLevel(home.pets[id],'hunger',now()))+'%</small></span></button>').join('')+'</div><div class="care-actions">'+
  '<button data-pet-action="feed" '+(ui.feeding?'disabled aria-busy="true" class="is-busy"':'')+'><span>'+careIcon('feed',feed)+'</span><strong>'+(ui.feeding?'먹이를 주는 중입니다…':names[ui.pet]+' 먹이 주기')+'</strong><small>보유 먹이 '+home.snacks+'개</small></button>'+
- '<button data-pet-action="pat"><span>'+careIcon('pat',pat)+'</span><strong>쓰다듬기</strong><small>'+(pat?'친밀도 0% · +1 하트':'친밀도를 100% 채워요')+'</small></button>'+
- '<button data-pet-action="sleep"><span>'+careIcon('sleep',sleep)+'</span><strong>잠깐 쉬기</strong><small>'+(sleep?'휴식을 주면 +1 하트':'체력을 100% 채워요')+'</small></button>'+
- '<button data-pet-action="status"><span>'+careIcon('status',false)+'</span><strong>'+names[ui.pet]+' 상태보기</strong><small>배부름 · 친밀도 · 체력</small></button></div><div class="care-rules"><p>모모와 쿠키 모두 배부름이 0%가 되면<br>시간 하트를 받지 못해요.</p><p>친밀도와 체력은 4시간에 걸쳐 100%에서 0%로 줄어요.</p><p>친밀도 0%일 때 쓰다듬으면 +1 하트, 체력 0%일 때 휴식을 주면 +1 하트. 보상은 친구마다 종류별 4시간에 한 번씩 받을 수 있어요.</p></div>';
+ '<button data-pet-action="pat"><span>'+careIcon('pat',pat)+'</span><strong>쓰다듬기</strong><small>'+(pat?'+1 하트':'')+'</small></button>'+
+ '<button data-pet-action="sleep"><span>'+careIcon('sleep',sleep)+'</span><strong>잠깐 쉬기</strong><small>'+(sleep?'+1 하트':'')+'</small></button>'+
+ '<button data-pet-action="status"><span>'+careIcon('status',false)+'</span><strong>'+names[ui.pet]+' 상태보기</strong><small>배부름 · 애정 보너스 · 휴식 보너스</small></button></div><div class="care-rules"><p>모모와 쿠키 모두 배부름이 0%가 되면<br>시간 하트를 받지 못해요.</p><p>애정 보너스와 휴식 보너스는 각각 30분마다 +1 하트, 친구마다 하루 5번까지 받아요.</p><p>매일 자정(한국 시간)에 0/5로 초기화돼요. 중간에 돌봐도 다음 보상 시간은 늦춰지지 않아요.</p></div>';
 }
 function showPetStatus(){
- const dialog=document.createElement('dialog');dialog.className='pet-status-dialog';dialog.innerHTML='<button class="status-close" aria-label="상태보기 닫기">×</button><h2>'+names[ui.pet]+' 상태보기</h2><p>돌보기 메뉴에서 게이지를 채워 주세요.</p>'+[['hunger','배부름'],['affinity','친밀도'],['energy','체력']].map(([key,label])=>'<div class="status-stat"><div>'+label+'<strong data-stat-value="'+key+'"></strong></div><div class="status-track" role="progressbar" aria-label="'+label+'" aria-valuemin="0" aria-valuemax="100" data-stat-gauge="'+key+'"><i></i></div></div>').join('')+'<p>배부름은 1시간에 4%씩 줄어요.<br>친밀도와 체력은 4시간에 걸쳐<br>100%에서 0%로 줄어요.<br>먹이로 배부름을, 쓰다듬기로 친밀도를,<br>휴식으로 체력을 채울 수 있어요.</p>';
- dialog.dataset.petStatus=ui.pet;document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove(),{once:true});dialog.showModal();updateStatus();
+ const dialog=document.createElement('dialog');dialog.className='pet-status-dialog';dialog.dataset.petStatus=ui.pet;document.body.append(dialog);dialog.showModal();updateStatus();
 }
 function updateCareDisplay(home){
  for(const profile of document.querySelectorAll('[data-select-pet]')){const value=petLevel(home.pets[profile.dataset.selectPet],'hunger',now()),gauge=profile.querySelector('[role="progressbar"]');gauge.setAttribute('aria-valuenow',Math.ceil(value));gauge.querySelector('i').style.width=value+'%';profile.querySelector('small:last-child').textContent='배부름 '+Math.ceil(value)+'%';}
- for(const type of ['feed','pat','sleep']){const button=document.querySelector('[data-pet-action="'+type+'"]');if(!button)continue;const ready=type==='feed'?home.snacks>0&&petLevel(home.pets[ui.pet],'hunger',now())<100:careRewardReady(home,ui.pet,type,now()),icon=button.querySelector('svg');icon?.classList.toggle('filled',ready);icon?.classList.toggle('outlined',!ready);if(type!=='feed')button.querySelector('small').textContent=ready?(type==='pat'?'친밀도 0% · +1 하트':'휴식을 주면 +1 하트'):(type==='pat'?'친밀도를 100% 채워요':'체력을 100% 채워요');}
+ for(const type of ['feed','pat','sleep']){const button=document.querySelector('[data-pet-action="'+type+'"]');if(!button)continue;const ready=type==='feed'?home.snacks>0&&petLevel(home.pets[ui.pet],'hunger',now())<100:careRewardReady(home,ui.pet,type,now()),icon=button.querySelector('svg');icon?.classList.toggle('filled',ready);icon?.classList.toggle('outlined',!ready);if(type!=='feed')button.querySelector('small').textContent=ready?'+1 하트':'';}
 }
-function updateStatus(){const dialog=document.querySelector('[data-pet-status]');if(!dialog)return;const pet=hooks.home().pets[dialog.dataset.petStatus];for(const key of ['hunger','affinity','energy']){const value=petLevel(pet,key,now());dialog.querySelector('[data-stat-value="'+key+'"]').textContent=Math.ceil(value)+'%';const gauge=dialog.querySelector('[data-stat-gauge="'+key+'"]');gauge.setAttribute('aria-valuenow',String(Math.ceil(value)));gauge.querySelector('i').style.width=value+'%';}}
+function updateStatus(){
+ const d=document.querySelector('[data-pet-status]');if(!d)return;const id=d.dataset.petStatus,home=hooks.home();
+ d.innerHTML='<button class="status-close" aria-label="상태보기 닫기">×</button><h2>'+names[id]+' 상태보기</h2><p>오늘 받은 돌보기 보너스를 확인해요.</p><div class="status-stat"><div>배부름<strong>'+Math.ceil(petLevel(home.pets[id],'hunger',now()))+'%</strong></div><div class="status-track hunger-status"><i style="width:'+petLevel(home.pets[id],'hunger',now())+'%"></i></div></div>'+['pat','sleep'].map(type=>{const bonus=careBonus(home,id,type,now()),left=Math.max(0,Math.ceil((bonus.nextAt-now())/1000));return '<div class="status-stat"><div>'+(type==='pat'?'애정':'휴식')+' 보너스<strong>'+bonus.count+'/5</strong></div><div class="bonus-segments '+type+'" role="img" aria-label="오늘 보상 '+bonus.count+'회, 최대 5회">'+Array.from({length:5},(_,i)=>'<i class="'+(i<bonus.count?'on':'')+'"></i>').join('')+'</div><p>'+(bonus.count>=5?'오늘 보상을 모두 받았어요.':bonus.ready?(type==='pat'?'지금 쓰다듬기 하면 +1 하트':'지금 휴식하면 +1 하트'):'다음 보상까지 '+Math.floor(left/60)+'분 '+String(left%60).padStart(2,'0')+'초')+'</p></div>';}).join('')+'<p>쓰다듬기와 휴식은 각각 30분마다 +1 하트,<br>친구마다 하루 최대 5번씩 받을 수 있어요.<br>중간에 돌봐도 보상 대기 시간은 늘어나지 않아요.<br>매일 자정(한국 시간)에 0/5로 초기화돼요.</p><p>배부름은 1시간에 4%씩 줄어요.</p>';
+ d.querySelector('.status-close').onclick=()=>{d.close();d.remove();};
+}
+
 
 function shopPanel(home,catalog) {
   const products=catalog.filter(product=>usableInSpace(product.id,ui.space));
@@ -316,7 +320,7 @@ function updateFeeding(){
 }
 async function act(action,success) {
   if(pending) return false;
-  pending=true;const careButton=document.querySelector('[data-pet-action="'+action.type+'"]');if(['pat','sleep'].includes(action.type)&&careButton){careButton.disabled=true;careButton.classList.add('is-busy');careButton.setAttribute('aria-busy','true');careButton.querySelector('strong').textContent=action.type==='pat'?'쓰다듬는 중입니다…':'쉬게 하는 중입니다…';}
+  pending=true;const careButton=document.querySelector('[data-pet-action="'+action.type+'"]');if(['pat','sleep'].includes(action.type)&&careButton){careButton.disabled=true;careButton.classList.add('is-busy');careButton.setAttribute('aria-busy','true');careButton.querySelector('strong').textContent=action.type==='pat'?'쓰다듬는 중입니다…':'휴식 중입니다…';}
   try { await hooks.action(action); if(success) hooks.toast(success); return true; }
   catch(error) { hooks.toast(error.message); return false; }
   finally { pending=false;if(['pat','sleep'].includes(action.type)&&ui.panel==='care'){const panel=document.querySelector('.pet-panel');if(panel)panel.innerHTML=carePanel(hooks.home());} }
@@ -378,8 +382,8 @@ export function mountPets(options) {
     switch(button.dataset.petAction){
       case 'claim': await act({type:'claim'},'하트를 받았어요 ♡');break;
       case 'feed': {const id=ui.pet;ui.feeding=id;updateFeeding();try{if(await act({type:'feed',pet:id},`${names[id]}가 맛있게 먹었어요`))react(id,'eat');}finally{ui.feeding=null;updateFeeding();}break;}
-      case 'status':showPetStatus();break;case 'pat':{const id=ui.pet;if(await act({type:'pat',pet:id},'친밀도를 100% 채웠어요 ♡'))react(id,'happy');break;}
-      case 'sleep':{const id=ui.pet;if(await act({type:'sleep',pet:id},'체력을 100% 채웠어요'))react(id,'sleep');break;}
+      case 'status':showPetStatus();break;case 'pat':{const id=ui.pet;if(await act({type:'pat',pet:id},'다정하게 쓰다듬었어요 ♡'))react(id,'happy');break;}
+      case 'sleep':{const id=ui.pet;if(await act({type:'sleep',pet:id},'편안하게 쉬었어요'))react(id,'sleep');break;}
       case 'confirm-place':{const d=ui.draft;if(!d)break;const action=d.parentId?{type:'placeOnTable',item:ui.placing,parentId:d.parentId,slot:d.slot,rotation:ui.rotation}:{type:'place',item:ui.placing,space:ui.space,x:d.x,y:d.y,rotation:ui.rotation};ui.placeSaving=true;const hint=document.querySelector('.placement-hint');if(hint){hint.setAttribute('aria-busy','true');hint.querySelector('.placement-message').textContent='서버에 저장 중입니다…';hint.querySelectorAll('button').forEach(button=>button.disabled=true);hint.querySelector('[data-pet-action="confirm-place"]').textContent='저장 중…';}try{if(await act(action,'여기에 배치했어요')){ui.placing=null;ui.draft=null;}}finally{ui.placeSaving=false;hooks.render();}break;}case 'cancel-place': ui.placing=null;ui.draft=null;hooks.render();break;
       case 'rotate-place': ui.rotation=(ui.rotation+90)%360;hooks.render();break;
     }

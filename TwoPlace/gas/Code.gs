@@ -6,9 +6,14 @@ function petLevel(pet,kind,now=Date.now()){
  return Math.max(0,Math.min(100,value-Math.floor(Math.max(0,now-at)/1000)*1000/CARE_PERIOD*100));
 }
 function starving(home,now=Date.now()){return !!home.pets&&['mochi','kuki'].every(id=>petLevel(home.pets[id],'hunger',now)<=0);}
-function careRewardReady(home,pet,type,now=Date.now()){
- const kind=type==='pat'?'affinity':'energy';return petLevel(home.pets[pet],kind,now)<=0&&now-(home.careRewards?.[pet]?.[type]??0)>=CARE_PERIOD;
+const CARE_BONUS_INTERVAL=30*60000;
+const CARE_BONUS_LIMIT=5;
+function careDay(now){return new Date(now+9*3600000).toISOString().slice(0,10);}
+function careBonus(home,pet,type,now=Date.now()){
+ const saved=home.careBonuses?.[pet]?.[type],count=saved?.day===careDay(now)?saved.count:0,last=saved?.lastAt;
+ return {count,remaining:Math.max(0,CARE_BONUS_LIMIT-count),nextAt:last===undefined?0:last+CARE_BONUS_INTERVAL,ready:count<CARE_BONUS_LIMIT&&(last===undefined||now-last>=CARE_BONUS_INTERVAL)};
 }
+function careRewardReady(home,pet,type,now=Date.now()){return careBonus(home,pet,type,now).ready;}
 
 // Dimensions are floor cells, before 90-degree rotation. No render-time guesses.
 const householdIndoor=['home','momoRoom','kukiRoom'],householdBedrooms=['momoRoom','kukiRoom'];
@@ -301,7 +306,7 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
     case 'sleep':{
       if(!['mochi','kuki'].includes(action.pet))throw new PetError('돌볼 친구를 골라 주세요.');
       const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
-      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.pet]:{...home.careRewards?.[action.pet],[action.type]:now}};}break;
+      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careBonuses={...home.careBonuses,[action.pet]:{...home.careBonuses?.[action.pet],[action.type]:{day:careDay(now),count:careBonus(home,action.pet,action.type,now).count+1,lastAt:now}}};}break;
     }
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);

@@ -1,4 +1,4 @@
-import {CARE_PERIOD,petLevel,starving,careRewardReady} from '../shared/pet-care.js';
+import {CARE_PERIOD,petLevel,starving,careRewardReady,careBonus,careDay} from '../shared/pet-care.js';
 import {availableTableSlot,syncTabletopItems,tableSlot} from '../shared/tabletop.js';
 import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS,isTabletop} from '../shared/household-catalog.js';
 import {PRODUCT_SPACES,usableInSpace} from '../shared/pet-products.js';
@@ -76,7 +76,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
     case 'sleep':{
       if(!['mochi','kuki'].includes(action.pet))throw new PetError('돌볼 친구를 골라 주세요.');
       const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
-      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careRewards={...home.careRewards,[action.pet]:{...home.careRewards?.[action.pet],[action.type]:now}};}break;
+      pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careBonuses={...home.careBonuses,[action.pet]:{...home.careBonuses?.[action.pet],[action.type]:{day:careDay(now),count:careBonus(home,action.pet,action.type,now).count+1,lastAt:now}}};}break;
     }
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);
