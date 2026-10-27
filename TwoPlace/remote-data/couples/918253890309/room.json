@@ -2,16 +2,29 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065335433,
-  "revision": 1,
+  "updatedAt": 1793065419086,
+  "revision": 2,
   "state": {
     "startDate": "2025-06-14",
-    "events": [],
+    "events": [
+      {
+        "id": "d3c59fe2a5b24ca91aa6dd08aeb79eed",
+        "date": "2026-10-31",
+        "title": "Reading club",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner"
+      }
+    ],
     "notes": []
   },
   "petHome": {
-    "version": 23,
-    "hearts": 54,
+    "version": 24,
+    "hearts": 59,
     "snacks": 4,
     "lastClaim": 1793065153204,
     "pets": {
@@ -39,7 +52,9 @@
       "stored": 0
     },
     "calendarRewards": {
-      "registration": {},
+      "registration": {
+        "2026-10-31": true
+      },
       "reads": {},
       "seen": [],
       "backfilled": true
