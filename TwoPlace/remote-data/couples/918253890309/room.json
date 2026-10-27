@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065419086,
-  "revision": 2,
+  "updatedAt": 1793065459203,
+  "revision": 3,
   "state": {
     "startDate": "2025-06-14",
     "events": [
@@ -18,13 +18,25 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "owner"
+      },
+      {
+        "id": "91a51f11b853702525a97749178c6b40",
+        "date": "2026-11-01",
+        "title": "두두 배드민턴 대회",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner"
       }
     ],
     "notes": []
   },
   "petHome": {
-    "version": 24,
-    "hearts": 59,
+    "version": 25,
+    "hearts": 64,
     "snacks": 4,
     "lastClaim": 1793065153204,
     "pets": {
@@ -53,7 +65,8 @@
     },
     "calendarRewards": {
       "registration": {
-        "2026-10-31": true
+        "2026-10-31": true,
+        "2026-11-01": true
       },
       "reads": {},
       "seen": [],
