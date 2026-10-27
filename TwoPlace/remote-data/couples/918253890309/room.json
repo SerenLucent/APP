@@ -2,23 +2,11 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793065633723,
-  "revision": 6,
+  "updatedAt": 1793065681399,
+  "revision": 7,
   "state": {
     "startDate": "2025-06-14",
     "events": [
-      {
-        "id": "d3c59fe2a5b24ca91aa6dd08aeb79eed",
-        "date": "2026-10-31",
-        "title": "Reading club",
-        "kind": "general",
-        "time": "",
-        "place": "",
-        "details": "",
-        "startTime": "",
-        "endTime": "",
-        "authorRole": "owner"
-      },
       {
         "id": "91a51f11b853702525a97749178c6b40",
         "date": "2026-11-01",
@@ -68,6 +56,18 @@
         "endTime": "",
         "authorRole": "owner",
         "workType": "shift"
+      },
+      {
+        "id": "d3c59fe2a5b24ca91aa6dd08aeb79eed",
+        "date": "2026-10-31",
+        "title": "Reading club",
+        "kind": "date",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner"
       }
     ],
     "notes": []
