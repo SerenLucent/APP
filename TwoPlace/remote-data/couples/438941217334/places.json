@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 15,
-  "updatedAt": 1792846269913,
+  "revision": 16,
+  "updatedAt": 1793197644557,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -11,17 +11,6 @@
     }
   },
   "places": [
-    {
-      "id": "778abda0-0dfb-4390-a4ac-6389489b843f",
-      "canonicalId": "naver_473556237a6d0223a784ea7296dd554a669a746be075f51cec1a62cbceac080f",
-      "owner": "partner",
-      "name": "삼거리반점",
-      "address": "경기도 포천시 내촌면 내촌로 63",
-      "category": "맛집",
-      "lat": 37.7859059,
-      "lng": 127.227072,
-      "checked": "2026-10-23"
-    },
     {
       "id": "c898fb40-9aef-4cc8-a8f3-a6ae12b0132c",
       "canonicalId": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
@@ -54,27 +43,21 @@
       "lat": 37.6056027,
       "lng": 127.0317231,
       "checked": "2026-10-24"
+    },
+    {
+      "id": "778abda0-0dfb-4390-a4ac-6389489b843f",
+      "canonicalId": "naver_473556237a6d0223a784ea7296dd554a669a746be075f51cec1a62cbceac080f",
+      "owner": "partner",
+      "name": "삼거리반점",
+      "address": "경기도 포천시 내촌면 내촌로 63",
+      "category": "맛집",
+      "wanted": false,
+      "lat": 37.7859059,
+      "lng": 127.227072,
+      "checked": "2026-10-23"
     }
   ],
   "reviews": [
-    {
-      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
-      "user": "partner",
-      "visited": true,
-      "rating": 0,
-      "custom": [],
-      "comment": "",
-      "visitedAt": null
-    },
-    {
-      "place": "naver_473556237a6d0223a784ea7296dd554a669a746be075f51cec1a62cbceac080f",
-      "user": "partner",
-      "visited": true,
-      "rating": 0,
-      "custom": [],
-      "comment": "",
-      "visitedAt": null
-    },
     {
       "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
       "user": "owner",
@@ -157,6 +140,33 @@
         }
       ],
       "comment": "맛은 쏘쏘. 24시간영업 매리트. 주차가 어려움",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_50914a7a190959cff4c15687470d65457e1ae34188ca49843954f217823ffd75",
+      "user": "partner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
+      "comment": "",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_473556237a6d0223a784ea7296dd554a669a746be075f51cec1a62cbceac080f",
+      "user": "partner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
+      "comment": "",
+      "visitedAt": null
+    },
+    {
+      "place": "naver_cde8b939f2cd307ccb51e0fa1840570e194632974185614c167ac485cc72d6a4",
+      "user": "partner",
+      "visited": true,
+      "rating": 0,
+      "custom": [],
+      "comment": "",
       "visitedAt": null
     }
   ]
