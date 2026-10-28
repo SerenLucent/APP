@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793189650423,
-  "revision": 28,
+  "updatedAt": 1793189688646,
+  "revision": 29,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -150,19 +150,6 @@
         "endTime": "19:00",
         "authorRole": "partner",
         "workType": "shift"
-      },
-      {
-        "id": "d8abf50649d13773387e23422cc5ef4c",
-        "date": "2026-11-02",
-        "title": "휴무",
-        "kind": "work",
-        "time": "",
-        "place": "",
-        "details": "",
-        "startTime": "",
-        "endTime": "",
-        "authorRole": "partner",
-        "workType": "off"
       },
       {
         "id": "463edad07c62172300b45196dfc61ffb",
