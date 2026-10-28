@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 16,
-  "updatedAt": 1793197644557,
+  "revision": 17,
+  "updatedAt": 1793197674635,
   "profiles": {
     "owner": {
       "nickname": "방을 만든 사람"
@@ -164,9 +164,9 @@
       "place": "naver_cde8b939f2cd307ccb51e0fa1840570e194632974185614c167ac485cc72d6a4",
       "user": "partner",
       "visited": true,
-      "rating": 0,
+      "rating": 5,
       "custom": [],
-      "comment": "",
+      "comment": "야경이 너무 이쁜 카페",
       "visitedAt": null
     }
   ]
