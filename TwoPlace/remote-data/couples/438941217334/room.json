@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793189629452,
-  "revision": 27,
+  "updatedAt": 1793189650423,
+  "revision": 28,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -271,6 +271,18 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "b255d5f9681872de4b2ffd6e75fa5042",
+        "date": "2026-11-22",
+        "title": "성히결혼식참석이슈",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": [
@@ -307,8 +319,8 @@
     ]
   },
   "petHome": {
-    "version": 339,
-    "hearts": 63,
+    "version": 340,
+    "hearts": 68,
     "snacks": 6,
     "lastClaim": 1793187510676,
     "pets": {
@@ -464,7 +476,8 @@
         "2026-12-07": true,
         "2027-02-19": true,
         "2027-08-08": true,
-        "2026-11-15": true
+        "2026-11-15": true,
+        "2026-11-22": true
       },
       "reads": {
         "2026-10-24": true,
