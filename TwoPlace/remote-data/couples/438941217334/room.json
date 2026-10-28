@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793187510677,
-  "revision": 26,
+  "updatedAt": 1793189629452,
+  "revision": 27,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -259,6 +259,18 @@
         "startTime": "06:00",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "f811167d436f0c081089c0091be6016d",
+        "date": "2026-11-15",
+        "title": "성히 주여니랑강릉",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": [
@@ -295,8 +307,8 @@
     ]
   },
   "petHome": {
-    "version": 338,
-    "hearts": 58,
+    "version": 339,
+    "hearts": 63,
     "snacks": 6,
     "lastClaim": 1793187510676,
     "pets": {
@@ -451,7 +463,8 @@
         "2026-12-06": true,
         "2026-12-07": true,
         "2027-02-19": true,
-        "2027-08-08": true
+        "2027-08-08": true,
+        "2026-11-15": true
       },
       "reads": {
         "2026-10-24": true,
