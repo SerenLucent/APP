@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793280216491,
+  "updatedAt": 1793280237449,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 404,
+    "version": 405,
     "hearts": 18,
     "snacks": 0,
     "lastClaim": 1793280171756,
@@ -448,9 +448,10 @@
       {
         "id": "d49216d63a89495895518bca20413fb2",
         "product": "bookshelf",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "momoRoom",
+        "x": 12,
+        "y": 56.825,
+        "rotation": 270
       }
     ],
     "layoutVersion": 1,
