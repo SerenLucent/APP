@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793369288993,
+  "updatedAt": 1793369298399,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 454,
+    "version": 455,
     "hearts": 35,
     "snacks": 11,
     "lastClaim": 1793368461145,
@@ -457,8 +457,8 @@
         "id": "eeb2c8554ff64c3e8277c451ecee88df",
         "product": "coatRack",
         "space": "momoRoom",
-        "x": 20,
-        "y": 65.425,
+        "x": 12,
+        "y": 67.575,
         "rotation": 270
       }
     ],
