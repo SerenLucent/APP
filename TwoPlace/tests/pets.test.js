@@ -42,7 +42,7 @@ test('buying furniture and food costs hearts; placement must be owned and inside
   home=changePetHome(home,{type:'store',version:2,item:'plant-1'},0);
   assert.equal(home.items[0].space,null);
   home=changePetHome(home,{type:'buy',version:3,product:'snack'},0);
-  assert.equal(home.hearts,85);assert.equal(home.snacks,5);
+  assert.equal(home.hearts,91);assert.equal(home.snacks,5);
   assert.throws(()=>changePetHome({...home,hearts:0},{type:'buy',version:4,product:'snack'},0));
   assert.throws(()=>changePetHome(home,{type:'buy',version:3,product:'snack'},0),e=>e.status===409);
 });

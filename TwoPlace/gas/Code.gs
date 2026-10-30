@@ -15,6 +15,8 @@ function careBonus(home,pet,type,now=Date.now()){
 }
 function careRewardReady(home,pet,type,now=Date.now()){return careBonus(home,pet,type,now).ready;}
 
+function hourlyHeartAmount(home,now=Date.now()){return now-home.lastClaim>=3600000?(starving(home,now)?5:10):0;}
+
 // Dimensions are floor cells, before 90-degree rotation. No render-time guesses.
 const householdIndoor=['home','momoRoom','kukiRoom'],householdBedrooms=['momoRoom','kukiRoom'];
 const householdEntries=[
@@ -238,7 +240,7 @@ const HOUR = 3600000;
 const HEARTS_PER_HOUR = 10;
 const SPACES = ['yard','terrace','home','momoRoom','kukiRoom'];
 const CATALOG = [
-  {id:'snack',name:'별사탕 먹이',price:10,type:'food',symbol:'✦',description:'한 마리의 배고픔을 25 채워 줘요'},
+  {id:'snack',name:'별사탕 먹이',price:4,type:'food',symbol:'✦',description:'한 마리의 배고픔을 25 채워 줘요'},
   {id:'cushion',name:'구름 방석',price:30,type:'furniture',symbol:'☁',description:'낮잠이 솔솔 오는 포근한 자리'},
   {id:'plant',name:'초록 화분',price:25,type:'furniture',symbol:'♧',description:'어디에 놓아도 싱그러운 작은 초록'},
   {id:'table',name:'동그란 테이블',price:50,type:'furniture',symbol:'◒',description:'둘이 마주 앉는 작은 테이블'},
@@ -265,7 +267,7 @@ function initialPetHome(now=Date.now()) {
   return {calendarRewards:{registration:{},reads:{},seen:[],backfilled:true},layoutVersion:1,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
 function hunger(pet,now=Date.now()) { return petLevel(pet,'hunger',now); }
-function claimable(home,now=Date.now()) { return !starving(home,now)&&now-home.lastClaim>=HOUR ? HEARTS_PER_HOUR : 0; }
+function claimable(home,now=Date.now()) { return hourlyHeartAmount(home,now); }
 function petSnapshot(home,now=Date.now()) {
   const items=JSON.parse(JSON.stringify(home.items));syncTabletopItems(items);
   return {...home,items, serverNow:now, claimable:claimable(home,now), nextClaimAt:home.lastClaim+HOUR, pets:Object.fromEntries(Object.entries(home.pets).map(([id,pet]) => [id,{...pet,hunger:hunger(pet,now),hungerBase:pet.hunger,affinity:petLevel(pet,'affinity',now),energy:petLevel(pet,'energy',now),sampledAt:now}]))};
@@ -275,7 +277,6 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
   const home = JSON.parse(JSON.stringify(current));
   switch(action.type) {
     case 'claim': {
-      if(starving(home,now))throw new PetError('모모와 쿠키 모두 배부름이 0%예요. 먹이를 준 뒤 하트를 받아 주세요.');
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');
       home.hearts += amount;

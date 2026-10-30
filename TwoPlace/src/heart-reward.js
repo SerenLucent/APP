@@ -1,8 +1,8 @@
-import {starving} from '../shared/pet-care.js';
+import {starving,hourlyHeartAmount} from '../shared/pet-care.js';
 import './heart-reward.css';
 const HOUR=3600000;
 export function rewardStatus(home,now){
-  const elapsed=Math.max(0,now-home.lastClaim),amount=!starving(home,now)&&elapsed>=HOUR?10:0;
+  const elapsed=Math.max(0,now-home.lastClaim),amount=hourlyHeartAmount(home,now);
   const seconds=Math.max(0,Math.ceil((HOUR-elapsed)/1000));
   return {amount,blocked:starving(home,now),progress:Math.min(100,elapsed/HOUR*100),remaining:`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
 }
@@ -10,7 +10,7 @@ export function heartCard(){return `<section class="heart-card"><div class="hear
 export function updateHeartCard(home,now,pending){
   const card=document.querySelector('.heart-card');if(!card||!home)return;
   const status=rewardStatus(home,now),ready=status.amount>0;
-  card.querySelector('.heart-reward-status').textContent=status.blocked?'모모와 쿠키 모두 배부름이 0%예요. 먼저 먹이를 주세요.':ready?`하트가 쌓였어요 · ${status.amount}하트`:`다음 하트까지 ${status.remaining} · 1시간마다 10하트`;
+  card.querySelector('.heart-reward-status').textContent=status.blocked?(ready?'둘 다 배고파서 5하트를 받아요. 먹이를 주면 다시 10하트!':`다음 하트까지 ${status.remaining} · 둘 다 배고프면 5하트`):ready?`하트가 쌓였어요 · ${status.amount}하트`:`다음 하트까지 ${status.remaining} · 1시간마다 10하트`;
   card.querySelector('.heart-gauge').setAttribute('aria-valuenow',String(Math.floor(status.progress)));
   card.querySelector('.heart-gauge i').style.width=`${status.progress}%`;
   card.querySelectorAll('[data-action="claim-hearts"]').forEach(button=>{button.disabled=pending||!ready;});

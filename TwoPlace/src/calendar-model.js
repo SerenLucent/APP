@@ -24,3 +24,5 @@ export function dateSpan(start,end){
 export function readRewardAvailable(event,role,rewards){
  return !!event?.authorRole&&!!role&&event.authorRole!==role&&!rewards?.reads?.[event.date]&&!rewards?.seen?.includes(role+':'+event.date+':'+event.id);
 }
+
+export function registrationRewardAvailable(home,state,date){return !home?.calendarRewards?.registration?.[date]&&!state.events.some(event=>event.date===date);}

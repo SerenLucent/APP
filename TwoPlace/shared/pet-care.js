@@ -13,3 +13,5 @@ export function careBonus(home,pet,type,now=Date.now()){
  return {count,remaining:Math.max(0,CARE_BONUS_LIMIT-count),nextAt:last===undefined?0:last+CARE_BONUS_INTERVAL,ready:count<CARE_BONUS_LIMIT&&(last===undefined||now-last>=CARE_BONUS_INTERVAL)};
 }
 export function careRewardReady(home,pet,type,now=Date.now()){return careBonus(home,pet,type,now).ready;}
+
+export function hourlyHeartAmount(home,now=Date.now()){return now-home.lastClaim>=3600000?(starving(home,now)?5:10):0;}
