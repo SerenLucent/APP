@@ -144,11 +144,25 @@ function updateStatus(){
 }
 
 
+function showFoodPurchase(price){
+ if(document.querySelector('.food-purchase-dialog'))return;
+ let quantity=1,busy=false;
+ const d=document.createElement('dialog');d.className='pet-status-dialog food-purchase-dialog';
+ d.innerHTML='<button class="status-close" aria-label="구매 창 닫기">×</button><h2>별사탕 먹이 구매</h2><p>1개당 '+price+' 하트 · 배부름 25 회복</p><p data-food-wallet></p><div class="food-quantity"><button data-quantity="minus" aria-label="수량 줄이기">−</button><strong data-food-count>1</strong><button data-quantity="plus" aria-label="수량 늘리기">+</button></div><p data-food-limit></p><button class="food-buy-confirm"></button><p data-food-progress role="status"></p>';
+ document.body.append(d);
+ const max=()=>Math.max(0,Math.min(Math.floor(hooks.home().hearts/price),100-hooks.home().snacks));
+ function update(){const limit=max();quantity=Math.min(Math.max(1,quantity),Math.max(1,limit));d.querySelector('[data-food-wallet]').textContent='보유 '+hooks.home().hearts+' 하트 · 먹이 '+hooks.home().snacks+'개';d.querySelector('[data-food-count]').textContent=quantity+'개';d.querySelector('[data-food-limit]').textContent='최대 '+limit+'개 구매 가능 · 먹이는 100개까지 보관해요.';d.querySelector('[data-quantity="minus"]').disabled=busy||quantity<=1;d.querySelector('[data-quantity="plus"]').disabled=busy||quantity>=limit;const b=d.querySelector('.food-buy-confirm');b.disabled=busy||limit<1;b.textContent=busy?'구매 중입니다…':quantity+'개 구매 · '+quantity*price+' 하트';d.querySelector('.status-close').disabled=busy;d.setAttribute('aria-busy',String(busy));}
+ d.querySelector('[data-quantity="minus"]').onclick=()=>{quantity--;update();};d.querySelector('[data-quantity="plus"]').onclick=()=>{quantity++;update();};
+ d.querySelector('.status-close').onclick=()=>d.close();d.addEventListener('cancel',e=>{if(busy)e.preventDefault();});d.addEventListener('close',()=>d.remove(),{once:true});
+ d.querySelector('.food-buy-confirm').onclick=async()=>{if(busy)return;update();if(max()<1)return;const count=quantity;busy=true;update();d.querySelector('[data-food-progress]').textContent='서버에 구매 내역을 저장하고 있어요…';try{if(await act({type:'buy',product:'snack',quantity:count},'별사탕 먹이 '+count+'개를 구매했어요'))d.close();else d.querySelector('[data-food-progress]').textContent='구매하지 못했어요. 보유 하트와 수량을 확인한 뒤 다시 시도해 주세요.';}finally{busy=false;if(d.isConnected)update();}};
+ update();d.showModal();
+}
+
 function shopPanel(home,catalog) {
   const products=catalog.filter(product=>usableInSpace(product.id,ui.space));
   const category=product=>product.type==='food'?'food':inventoryCategory(product.id);
   const tabs='<div class="inventory-tabs" aria-label="상점 분류">'+Object.entries(INVENTORY_TABS).map(([id,label])=>'<button data-shop-tab="'+id+'" aria-pressed="'+(ui.shopTab===id)+'" class="'+(ui.shopTab===id?'active':'')+'">'+label+'<span>'+products.filter(product=>id==='all'||category(product)===id).length+'</span></button>').join('')+'</div>';
-  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div>${tabs}<div class="pet-shop-grid">${products.filter(product=>ui.shopTab==='all'||category(product)===ui.shopTab).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">'+careIcon('feed',true)+'</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
+  return `<div class="pet-shop-note">${spaces[ui.space]}에 어울리는 가구 · 하트로 작은 행복을 선물해 주세요.<span>보유 ♡ ${home.hearts}</span></div>${tabs}<div class="pet-shop-grid">${products.filter(product=>ui.shopTab==='all'||category(product)===ui.shopTab).map(product=>`<article class="shop-product">${product.type === 'food' ? '<span class="food-art">'+careIcon('feed',true)+'</span>' : furnitureArt(product.id)}<strong>${esc(product.name)}</strong><p>${isTabletop(product.id)?'식탁 위 전용 · ':product.type==='furniture'?footprint({product:product.id,rotation:0}).join(' × ')+'셀 · ':''}${esc(product.description)}</p><button data-buy="${product.id}" data-buy-price="${product.price}" ${home.hearts<product.price ? 'disabled' : ''} aria-label="${esc(product.name)} 구매 ${product.price}하트">♡ ${product.price} <span>${home.hearts<product.price ? '하트 부족' : '구매하기'}</span></button></article>`).join('')}</div>`;
 }
 function decoratePanel(home,catalog) {
   const items=home.items.filter(item=>ui.inventoryTab==='all'||inventoryCategory(item.product)===ui.inventoryTab);
@@ -375,6 +389,7 @@ export function mountPets(options) {
     if(button.dataset.pet){setSelection(button.dataset.pet);return;}
     if(button.dataset.tableParent){const parentId=button.dataset.tableParent,slot=Number(button.dataset.tableSlot);ui.draft={...tableSlot(hooks.home().items.find(i=>i.id===parentId),slot),parentId,slot};hooks.render();return;}
     if(button.dataset.useFurnitureNow){useFurniture(button.dataset.useFurnitureNow);return;}if(button.dataset.useFurniture){ui.furniture=button.dataset.useFurniture;hooks.render();return;}if(button.dataset.rotateFurniture){beginPlacement(button.dataset.rotateFurniture);ui.rotation=(ui.rotation+90)%360;hooks.render();return;}
+    if(button.dataset.buy==='snack'){showFoodPurchase(Number(button.dataset.buyPrice));return;}
     if(button.dataset.buy){await act({type:'buy',product:button.dataset.buy},'우리 집에 작은 선물이 생겼어요');return;}
     if(button.dataset.place || button.dataset.furniture){const selected=hooks.home().items.find(item=>item.id===(button.dataset.place||button.dataset.furniture));if(selected&&!usableInSpace(selected.product,ui.space)){const allowed=(PRODUCT_SPACES[selected.product]||[]).filter(space=>spaces[space]).map(space=>spaces[space]).join(' · ');hooks.toast(`${allowed||'다른 공간'}용 가구입니다. 해당 공간에서 배치해 주세요.`);return;}beginPlacement(button.dataset.place||button.dataset.furniture);return;}
     if(button.dataset.store){await act({type:'store',item:button.dataset.store},'가구를 보관함에 넣었어요');return;}

@@ -286,11 +286,14 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
     case 'buy': {
       const product = CATALOG.find(item=>item.id === action.product);
       if (!product) throw new PetError('이 상품은 찾을 수 없어요.');
-      if (home.hearts < product.price) throw new PetError('하트가 부족해요. 하트를 더 모아 주세요.');
-      if (product.type === 'food' && home.snacks >= 100) throw new PetError('먹이는 최대 100개까지 보관할 수 있어요.');
+      const quantity=action.quantity===undefined?1:action.quantity;
+      if(!Number.isSafeInteger(quantity)||quantity<1||quantity>100||(product.type!=='food'&&quantity!==1))throw new PetError('구매 수량을 확인해 주세요.');
+      const total=product.price*quantity;
+      if (home.hearts < total) throw new PetError('하트가 부족해요. 하트를 더 모아 주세요.');
+      if (product.type === 'food' && home.snacks+quantity > 100) throw new PetError('먹이는 최대 100개까지 보관할 수 있어요.');
       if (product.type === 'furniture' && home.items.length >= 120) throw new PetError('가구는 최대 120개까지 보관할 수 있어요.');
-      home.hearts -= product.price;
-      if (product.type === 'food') home.snacks++;
+      home.hearts -= total;
+      if (product.type === 'food') home.snacks+=quantity;
       else home.items.push({id:idFactory(),product:product.id,space:null,x:50,y:65});
       break;
     }

@@ -105,3 +105,5 @@
 .pet-profile .hunger-track i,.pet-status-dialog .hunger-status i{background:#f3be8f!important}.pet-status-dialog .bonus-segments{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.pet-status-dialog .status-stat .bonus-segments i{height:22px;border:1px solid #e6d7dc;border-radius:6px;background:transparent!important}.pet-status-dialog .status-stat .bonus-segments i.on{background:#e2a8b8!important}.pet-status-dialog .status-stat .bonus-segments.sleep i.on{background:#b6a4d5!important}
 
 .furniture-actions .furniture-menu-name{grid-column:1 / -1;text-align:center;font-size:15px;line-height:1.45;color:#806952;overflow-wrap:anywhere;padding:1px 3px 5px}
+
+.food-quantity{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:12px;margin:24px 0;text-align:center}.food-quantity button,.food-buy-confirm{min-height:48px;border:1px solid #d9b8a8;border-bottom-width:3px;border-radius:12px;background:#f4dedb;color:#806952;font-size:20px}.food-quantity strong{font-size:24px}.food-buy-confirm{width:100%;font-size:16px;font-weight:600}.food-purchase-dialog button:disabled{opacity:.45;cursor:default}
