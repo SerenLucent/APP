@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793408101165,
+  "updatedAt": 1793408115507,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 480,
+    "version": 481,
     "hearts": 91,
     "snacks": 7,
     "lastClaim": 1793408051249,
@@ -441,9 +441,9 @@
         "id": "15cef30e89e24ca4b4781187407e9e7c",
         "product": "wardrobe",
         "space": "momoRoom",
-        "x": 12,
-        "y": 61.125,
-        "rotation": 270
+        "x": 28,
+        "y": 76.175,
+        "rotation": 0
       },
       {
         "id": "d49216d63a89495895518bca20413fb2",
