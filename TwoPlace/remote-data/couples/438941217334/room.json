@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793408163035,
+  "updatedAt": 1793408179340,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 486,
+    "version": 487,
     "hearts": 91,
     "snacks": 7,
     "lastClaim": 1793408051249,
@@ -426,7 +426,7 @@
         "product": "vanity",
         "space": "momoRoom",
         "x": 12,
-        "y": 71.875,
+        "y": 58.975,
         "rotation": 270
       },
       {
