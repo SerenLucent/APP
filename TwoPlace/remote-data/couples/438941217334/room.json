@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793484331447,
+  "updatedAt": 1793484349110,
   "revision": 31,
   "state": {
     "startDate": "2024-08-08",
@@ -311,7 +311,7 @@
     ]
   },
   "petHome": {
-    "version": 533,
+    "version": 534,
     "hearts": 33,
     "snacks": 1,
     "lastClaim": 1793484272751,
@@ -477,9 +477,10 @@
       {
         "id": "c6f07fd3ec0946dd9d8260a96e11e155",
         "product": "barbecue",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "yard",
+        "x": 40,
+        "y": 67.575,
+        "rotation": 90
       }
     ],
     "layoutVersion": 1,
