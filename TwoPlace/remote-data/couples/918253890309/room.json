@@ -2,10 +2,13 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793425215503,
-  "revision": 8,
+  "updatedAt": 1793425243400,
+  "revision": 9,
   "state": {
     "startDate": "2025-06-14",
+    "characters": {
+      "owner": "momo"
+    },
     "events": [
       {
         "id": "91a51f11b853702525a97749178c6b40",
