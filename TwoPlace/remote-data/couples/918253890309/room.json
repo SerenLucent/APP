@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793425413854,
-  "revision": 15,
+  "updatedAt": 1793425428512,
+  "revision": 16,
   "state": {
     "startDate": "2025-06-14",
     "characters": {
@@ -96,13 +96,25 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "c30afad33f1d2a2027f373fa522f8488",
+        "date": "2026-11-11",
+        "title": "하트용",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": []
   },
   "petHome": {
-    "version": 85,
-    "hearts": 20,
+    "version": 86,
+    "hearts": 25,
     "snacks": 0,
     "lastClaim": 1793424626757,
     "pets": {
@@ -137,7 +149,8 @@
         "2026-11-09": true,
         "2026-11-10": true,
         "2026-11-05": true,
-        "2026-11-02": true
+        "2026-11-02": true,
+        "2026-11-11": true
       },
       "reads": {},
       "seen": [],
