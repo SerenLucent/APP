@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793408152545,
+  "updatedAt": 1793408163035,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 485,
+    "version": 486,
     "hearts": 91,
     "snacks": 7,
     "lastClaim": 1793408051249,
@@ -373,8 +373,8 @@
         "id": "a46958196e67471c9fd6aeaebee1ac32",
         "product": "lamp",
         "space": "momoRoom",
-        "x": 32,
-        "y": 84.775,
+        "x": 12,
+        "y": 80.475,
         "rotation": 0
       },
       {
