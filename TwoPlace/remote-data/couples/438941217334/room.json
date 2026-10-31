@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793413264315,
+  "updatedAt": 1793413280903,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 498,
+    "version": 499,
     "hearts": 10,
     "snacks": 7,
     "lastClaim": 1793413220278,
@@ -464,9 +464,10 @@
       {
         "id": "c6c735c1ec6240f19e68a0c8d4c84dc3",
         "product": "picnicTable",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "yard",
+        "x": 52,
+        "y": 67.575,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
