@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793424665627,
+  "updatedAt": 1793424670258,
   "revision": 8,
   "state": {
     "startDate": "2025-06-14",
@@ -73,8 +73,8 @@
     "notes": []
   },
   "petHome": {
-    "version": 79,
-    "hearts": 9,
+    "version": 80,
+    "hearts": 10,
     "snacks": 0,
     "lastClaim": 1793424626757,
     "pets": {
@@ -82,7 +82,7 @@
         "hunger": 33,
         "updatedAt": 1793424647837,
         "affinityAt": 1793424665626,
-        "energyAt": 1793340557569,
+        "energyAt": 1793424670257,
         "affinity": 100,
         "energy": 100
       },
@@ -131,9 +131,9 @@
           "lastAt": 1793424665626
         },
         "sleep": {
-          "day": "2026-10-30",
+          "day": "2026-10-31",
           "count": 1,
-          "lastAt": 1793340557569
+          "lastAt": 1793424670257
         }
       },
       "kuki": {
