@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793425253355,
-  "revision": 10,
+  "updatedAt": 1793425259863,
+  "revision": 11,
   "state": {
     "startDate": "2025-06-14",
     "characters": {
       "owner": "momo",
-      "partner": "momo"
+      "partner": "kuki"
     },
     "events": [
       {
