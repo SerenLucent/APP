@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793413289170,
+  "updatedAt": 1793413310625,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 500,
+    "version": 501,
     "hearts": 10,
     "snacks": 7,
     "lastClaim": 1793413220278,
@@ -365,8 +365,8 @@
         "id": "06ccfb9f31864f41a0c4f188d9624c0c",
         "product": "table",
         "space": "home",
-        "x": 80,
-        "y": 80.475,
+        "x": 48,
+        "y": 82.625,
         "rotation": 0
       },
       {
@@ -381,8 +381,8 @@
         "id": "272c5fab68674f29b77ffd9d83d3c3da",
         "product": "mealPlate",
         "space": "home",
-        "x": 77.952,
-        "y": 80.475,
+        "x": 45.952,
+        "y": 82.625,
         "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
         "slot": 3,
         "rotation": 0
@@ -407,8 +407,8 @@
         "id": "ec7cc726ee284d58b8dd07b3556c2861",
         "product": "teaSet",
         "space": "home",
-        "x": 80,
-        "y": 79.44299999999998,
+        "x": 48,
+        "y": 81.59299999999999,
         "rotation": 0,
         "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
         "slot": 0
