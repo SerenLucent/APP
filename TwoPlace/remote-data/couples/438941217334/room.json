@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793408115507,
+  "updatedAt": 1793408122346,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 481,
+    "version": 482,
     "hearts": 91,
     "snacks": 7,
     "lastClaim": 1793408051249,
@@ -349,8 +349,8 @@
         "id": "13f9c27ee9364622ad44ea6c8a7cdd31",
         "product": "plant",
         "space": "momoRoom",
-        "x": 12,
-        "y": 76.175,
+        "x": 44,
+        "y": 67.575,
         "rotation": 0
       },
       {
