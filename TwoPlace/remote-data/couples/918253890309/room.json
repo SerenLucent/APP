@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793425678053,
-  "revision": 34,
+  "updatedAt": 1793425689903,
+  "revision": 35,
   "state": {
     "startDate": "2025-06-14",
     "characters": {
@@ -77,18 +77,6 @@
         "id": "bfe4aff223159a56dc35a9f4f7e69779",
         "date": "2026-11-05",
         "title": "교육",
-        "kind": "general",
-        "time": "",
-        "place": "",
-        "details": "",
-        "startTime": "",
-        "endTime": "",
-        "authorRole": "partner"
-      },
-      {
-        "id": "9481b22c7c03f05e9f95b5fd68186051",
-        "date": "2026-11-16",
-        "title": "하트용",
         "kind": "general",
         "time": "",
         "place": "",
