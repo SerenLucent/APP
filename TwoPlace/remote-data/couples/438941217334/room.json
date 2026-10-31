@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793408179340,
+  "updatedAt": 1793408189959,
   "revision": 29,
   "state": {
     "startDate": "2024-08-08",
@@ -306,7 +306,7 @@
     ]
   },
   "petHome": {
-    "version": 487,
+    "version": 488,
     "hearts": 91,
     "snacks": 7,
     "lastClaim": 1793408051249,
@@ -433,9 +433,9 @@
         "id": "f63647536a404c4f930e6934a9657dff",
         "product": "mirrorStand",
         "space": "momoRoom",
-        "x": 12,
-        "y": 65.425,
-        "rotation": 270
+        "x": 48,
+        "y": 86.925,
+        "rotation": 180
       },
       {
         "id": "15cef30e89e24ca4b4781187407e9e7c",
