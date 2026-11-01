@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793569169499,
+  "updatedAt": 1793569219061,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 579,
-    "hearts": 68,
+    "version": 580,
+    "hearts": 38,
     "snacks": 8,
     "lastClaim": 1793569169498,
     "pets": {
@@ -567,6 +567,13 @@
         "x": 16,
         "y": 46.075,
         "rotation": 0
+      },
+      {
+        "id": "858dde421b4b43fe97b932e9a7d5dfa8",
+        "product": "lantern",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
