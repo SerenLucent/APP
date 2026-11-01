@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793568523002,
-  "revision": 36,
+  "updatedAt": 1793568562341,
+  "revision": 37,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -322,6 +322,32 @@
         "endTime": "",
         "authorRole": "partner",
         "workType": "shift"
+      },
+      {
+        "id": "7e4fca7c82e36b44300afb00d15678cd",
+        "date": "2026-11-06",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "12:00",
+        "endTime": "23:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "091f0e3662bd4fb6be6a4a5770484ed7",
+        "date": "2026-11-07",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "12:00",
+        "endTime": "23:00",
+        "authorRole": "partner",
+        "workType": "shift"
       }
     ],
     "notes": [
@@ -363,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 577,
-    "hearts": 48,
+    "version": 578,
+    "hearts": 58,
     "snacks": 8,
     "lastClaim": 1793565395874,
     "pets": {
@@ -572,7 +598,9 @@
         "2026-11-22": true,
         "2026-11-03": true,
         "2026-11-04": true,
-        "2026-11-05": true
+        "2026-11-05": true,
+        "2026-11-06": true,
+        "2026-11-07": true
       },
       "reads": {
         "2026-10-24": true,
