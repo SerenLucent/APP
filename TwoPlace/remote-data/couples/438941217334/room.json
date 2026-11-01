@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793568442036,
-  "revision": 31,
+  "updatedAt": 1793568468542,
+  "revision": 32,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -270,6 +270,19 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "1418ba30a731057d0b9cc7b30fe1cdaa",
+        "date": "2026-11-02",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "06:27",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
       }
     ],
     "notes": [
