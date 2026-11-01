@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793568468542,
-  "revision": 32,
+  "updatedAt": 1793568478811,
+  "revision": 33,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -283,6 +283,19 @@
         "endTime": "",
         "authorRole": "partner",
         "workType": "shift"
+      },
+      {
+        "id": "d3765a86e15cbb074060d1aec53a8081",
+        "date": "2026-11-03",
+        "title": "휴무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "off"
       }
     ],
     "notes": [
@@ -324,8 +337,8 @@
     ]
   },
   "petHome": {
-    "version": 575,
-    "hearts": 33,
+    "version": 576,
+    "hearts": 38,
     "snacks": 8,
     "lastClaim": 1793565395874,
     "pets": {
@@ -530,7 +543,8 @@
         "2027-02-19": true,
         "2027-08-08": true,
         "2026-11-15": true,
-        "2026-11-22": true
+        "2026-11-22": true,
+        "2026-11-03": true
       },
       "reads": {
         "2026-10-24": true,
