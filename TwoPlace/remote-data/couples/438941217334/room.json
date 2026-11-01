@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793526017577,
+  "updatedAt": 1793526039196,
   "revision": 31,
   "state": {
     "startDate": "2024-08-08",
@@ -311,7 +311,7 @@
     ]
   },
   "petHome": {
-    "version": 558,
+    "version": 559,
     "hearts": 5,
     "snacks": 14,
     "lastClaim": 1793526002670,
@@ -485,9 +485,10 @@
       {
         "id": "b4cff03099fb46f5835de1d0bc840ff4",
         "product": "bench",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "yard",
+        "x": 16,
+        "y": 46.075,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
