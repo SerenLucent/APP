@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793553734045,
-  "revision": 42,
+  "updatedAt": 1793553903833,
+  "revision": 43,
   "state": {
     "startDate": "2025-06-14",
     "characters": {
@@ -84,6 +84,18 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "653e82b4c77457e8baf7dc7ea6361ba4",
+        "date": "2026-11-02",
+        "title": "서울 가족 저녁식사",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "owner"
       }
     ],
     "notes": []
