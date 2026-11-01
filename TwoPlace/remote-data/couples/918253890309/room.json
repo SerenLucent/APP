@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793553903833,
-  "revision": 43,
+  "updatedAt": 1793553923101,
+  "revision": 44,
   "state": {
     "startDate": "2025-06-14",
     "characters": {
@@ -43,19 +43,6 @@
         "time": "",
         "place": "",
         "details": "",
-        "startTime": "",
-        "endTime": "",
-        "authorRole": "owner",
-        "workType": "shift"
-      },
-      {
-        "id": "6ed56f020fd66f17c0f2fee3fc557283",
-        "date": "2026-11-09",
-        "title": "근무",
-        "kind": "work",
-        "time": "",
-        "place": "",
-        "details": "두두 강남 교육 출장",
         "startTime": "",
         "endTime": "",
         "authorRole": "owner",
