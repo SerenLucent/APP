@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793591974658,
+  "updatedAt": 1793597136202,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,10 +389,10 @@
     ]
   },
   "petHome": {
-    "version": 604,
-    "hearts": 24,
+    "version": 605,
+    "hearts": 34,
     "snacks": 15,
-    "lastClaim": 1793591936485,
+    "lastClaim": 1793597136200,
     "pets": {
       "mochi": {
         "hunger": 100,
@@ -759,6 +759,15 @@
         "character": "momo",
         "product": "wallpaperRose",
         "quantity": 1
+      },
+      {
+        "at": 1793597136200,
+        "amount": 10,
+        "balance": 34,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
       }
     ],
     "heartHistorySince": 1793584445635
