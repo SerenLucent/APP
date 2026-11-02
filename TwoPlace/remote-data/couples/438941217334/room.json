@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793608398063,
+  "updatedAt": 1793608408611,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 614,
-    "hearts": 19,
+    "version": 615,
+    "hearts": 20,
     "snacks": 15,
     "lastClaim": 1793605009791,
     "pets": {
@@ -647,7 +647,8 @@
         "2026-11-04": true,
         "2026-11-05": true,
         "2026-11-06": true,
-        "2026-11-07": true
+        "2026-11-07": true,
+        "2026-11-15": true
       },
       "seen": [
         "owner:2026-10-24:a87c5469eaa8cd2cf6e81b2df43036d5",
@@ -664,7 +665,8 @@
         "owner:2026-11-04:c110192cb3821601dd508f55784ffb5e",
         "owner:2026-11-05:68d1d664250d34d0852b9a7368b66751",
         "owner:2026-11-06:7e4fca7c82e36b44300afb00d15678cd",
-        "owner:2026-11-07:091f0e3662bd4fb6be6a4a5770484ed7"
+        "owner:2026-11-07:091f0e3662bd4fb6be6a4a5770484ed7",
+        "owner:2026-11-15:f811167d436f0c081089c0091be6016d"
       ],
       "backfilled": true
     },
@@ -859,6 +861,15 @@
         "at": 1793608398062,
         "amount": 1,
         "balance": 19,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608408610,
+        "amount": 1,
+        "balance": 20,
         "kind": "earn",
         "label": "일정 확인 보너스",
         "role": "owner",
