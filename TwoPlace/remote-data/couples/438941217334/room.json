@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793591961721,
+  "updatedAt": 1793591974658,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,7 +389,7 @@
     ]
   },
   "petHome": {
-    "version": 603,
+    "version": 604,
     "hearts": 24,
     "snacks": 15,
     "lastClaim": 1793591936485,
@@ -579,9 +579,13 @@
       {
         "id": "dce83244c3bb44759a887ab5c9680f21",
         "product": "wallpaperRose",
-        "space": null,
+        "space": "momoRoom",
         "x": 50,
-        "y": 65
+        "y": 65,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 0,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
