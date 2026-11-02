@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793658822925,
+  "updatedAt": 1793658848439,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,7 +389,7 @@
     ]
   },
   "petHome": {
-    "version": 638,
+    "version": 639,
     "hearts": 27,
     "snacks": 11,
     "lastClaim": 1793658785055,
@@ -601,9 +601,13 @@
       {
         "id": "17f90dafc6994de28e10390fdb4f62ca",
         "product": "wallShelf",
-        "space": null,
+        "space": "momoRoom",
         "x": 50,
-        "y": 65
+        "y": 65,
+        "wallSide": "left",
+        "wallCol": 3,
+        "wallRow": 1,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
