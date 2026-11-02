@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793658813272,
+  "updatedAt": 1793658822925,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 637,
-    "hearts": 92,
+    "version": 638,
+    "hearts": 27,
     "snacks": 11,
     "lastClaim": 1793658785055,
     "pets": {
@@ -597,6 +597,13 @@
         "wallCol": 2,
         "wallRow": 0,
         "rotation": 0
+      },
+      {
+        "id": "17f90dafc6994de28e10390fdb4f62ca",
+        "product": "wallShelf",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1036,6 +1043,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793658822922,
+        "amount": -65,
+        "balance": 27,
+        "kind": "purchase",
+        "label": "작은 벽걸이 선반 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallShelf",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
