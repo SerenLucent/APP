@@ -1,3 +1,4 @@
+import {wallProduct} from '../shared/wall-decor.js';
 import {furnishingImage} from './furniture-rasterizer.js';
 import {furnishingModel} from './furnishing-model.js';
 import {bedModel} from './bed-model.js';
@@ -64,7 +65,7 @@ function livingRoom(){
   </g>
   `;
 }
-function walls(space){
+function walls(space,items=[]){
   if(space==='home')return livingRoom();
   if(space==='yard'){
     // The house stands outside the floor (v < 0), with its doorway on v = 0.
@@ -106,11 +107,11 @@ function walls(space){
         <path d="M61 18.5 80.8 8.6" stroke="#b9796c" stroke-width=".8" stroke-linecap="round"/>
       </g>`;
   }
-  const left=true?'#e7d8c8':'#eee3d1',right=true?'#f3e6d7':'#f6eedf';
-  return `<path d="M5 37 50 14 95 37 94 39 50 17 6 39Z" fill="#fdf4e7"/><path d="M6 38 50 16V42L6 64Z" fill="${left}" stroke="#d6c1a7" stroke-width=".35"/>${true ? `<path d="M50 16 94 38V64L50 42Z" fill="${right}" stroke="#decbb2" stroke-width=".35"/>` : `<path d="M50 32 94 54v10L50 42Z" fill="#f3e8d5" opacity=".22"/><path d="M50 42V32M55.5 44.75v-10M61 47.5v-10M66.5 50.25v-10M72 53v-10M77.5 55.75v-10M83 58.5v-10M88.5 61.25v-10M94 64V38" fill="none" stroke="#eee0c7" stroke-width="1.3"/><path d="M50 32 94 54M50 40 94 62" fill="none" stroke="#fcf4e1" stroke-width="1.5"/>`}<path d="M6 61 50 39 94 61v3L50 42 6 64Z" fill="#cbb18d"/>${windowArt()}${bedroomExit()}${true ? '<g transform="matrix(1 .5 0 1 68 30)"><rect width="12" height="12" rx=".6" fill="#bfa381"/><rect x="1" y="1" width="10" height="10" fill="#fbf1de"/><path d="M6 9 3.5 5.8C1.8 3 5 2 6 4c1-2 4.2-1 2.5 1.8Z" fill="#d7aba0"/></g><path d="M9 59 43 43 56 49 22 66Z" fill="#fff0ca" opacity=".3"/>' : '<path d="M49 13 96 36v5L49 18Z" fill="#d6aa92"/><path d="M50 14 94 36v2L50 16Z" fill="#f5ddbc"/><g transform="matrix(1 .5 0 1 72 34)"><rect width="13" height="10" rx="1" fill="#d1bda1"/><path d="M6 8V0M6 4C0 4 1-2 6 2M6 2c5-5 8 1 0 3" stroke="#94aa7b" stroke-width="1.4" fill="none"/></g>'}`;
+  const finish=side=>wallProduct(items.find(i=>i.space===space&&i.wallSide===side&&wallProduct(i.product)?.surface==='wallpaper')?.product);const left=finish('left')?.color||'#e7d8c8',right=finish('right')?.color||'#f3e6d7';
+  return `<path d="M5 37 50 14 95 37 94 39 50 17 6 39Z" fill="#fdf4e7"/><path d="M6 38 50 16V42L6 64Z" fill="${left}" stroke="#d6c1a7" stroke-width=".35"/>${true ? `<path d="M50 16 94 38V64L50 42Z" fill="${right}" stroke="#decbb2" stroke-width=".35"/>` : `<path d="M50 32 94 54v10L50 42Z" fill="#f3e8d5" opacity=".22"/><path d="M50 42V32M55.5 44.75v-10M61 47.5v-10M66.5 50.25v-10M72 53v-10M77.5 55.75v-10M83 58.5v-10M88.5 61.25v-10M94 64V38" fill="none" stroke="#eee0c7" stroke-width="1.3"/><path d="M50 32 94 54M50 40 94 62" fill="none" stroke="#fcf4e1" stroke-width="1.5"/>`}<path d="M6 61 50 39 94 61v3L50 42 6 64Z" fill="#cbb18d"/>${['left','right'].filter(side=>finish(side)).map(side=>'<g transform="'+(side==='left'?'matrix(1 -.5 0 1 6 38)':'matrix(1 .5 0 1 50 16)')+'" opacity=".19">'+Array.from({length:22},(_,n)=>'<path d="M'+(n*2+1)+' 0v25" stroke="#fff" stroke-width=".35"/>').join('')+'</g>').join('')}${windowArt()}${bedroomExit()}${true ? '<path d="M9 59 43 43 56 49 22 66Z" fill="#fff0ca" opacity=".3"/>' : '<path d="M49 13 96 36v5L49 18Z" fill="#d6aa92"/><path d="M50 14 94 36v2L50 16Z" fill="#f5ddbc"/><g transform="matrix(1 .5 0 1 72 34)"><rect width="13" height="10" rx="1" fill="#d1bda1"/><path d="M6 8V0M6 4C0 4 1-2 6 2M6 2c5-5 8 1 0 3" stroke="#94aa7b" stroke-width="1.4" fill="none"/></g>'}`;
 }
-export function isoScenery(space){
-  return `<svg class="iso-scenery" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="oak-floor" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="matrix(1 .5 -1 .5 50 42)"><image href="${import.meta.env.BASE_URL}furniture/oak-floor-v1.png" width="12" height="12"/></pattern><filter id="iso-shadow"><feGaussianBlur stdDeviation="1.4"/></filter></defs><ellipse cx="50" cy="85" rx="42" ry="6" fill="#92795f" opacity=".13" filter="url(#iso-shadow)"/><path d="M6 64 50 86 94 64v5L50 91 6 69Z" fill="${space==='yard'?'#adba8f':'#bca17c'}"/><path d="M50 86 94 64v5L50 91Z" fill="${space==='yard'?'#99a97f':'#aa8c68'}"/>${tiles(space)}${walls(space)}</svg>`;
+export function isoScenery(space,items=[]){
+  return `<svg class="iso-scenery" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="oak-floor" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="matrix(1 .5 -1 .5 50 42)"><image href="${import.meta.env.BASE_URL}furniture/oak-floor-v1.png" width="12" height="12"/></pattern><filter id="iso-shadow"><feGaussianBlur stdDeviation="1.4"/></filter></defs><ellipse cx="50" cy="85" rx="42" ry="6" fill="#92795f" opacity=".13" filter="url(#iso-shadow)"/><path d="M6 64 50 86 94 64v5L50 91 6 69Z" fill="${space==='yard'?'#adba8f':'#bca17c'}"/><path d="M50 86 94 64v5L50 91Z" fill="${space==='yard'?'#99a97f':'#aa8c68'}"/>${tiles(space)}${walls(space,items)}</svg>`;
 }
 const shadows='<ellipse cx="51" cy="85" rx="31" ry="8" fill="#80694c" opacity=".13"/>';
 const shapes={

@@ -1,3 +1,4 @@
+import {isWallProduct} from './wall-decor.js';
 import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS,isTabletop} from './household-catalog.js';
 export const GRID_SIZE=20;
 export const FLOOR={cx:50,top:42,halfWidth:44,halfHeight:22};
@@ -19,6 +20,7 @@ function builtInOverlap(space,u,v,w,h){
   return u+w/(GRID_SIZE*2)>1-4/GRID_SIZE+e && v-h/(GRID_SIZE*2)<1/GRID_SIZE-e;
 }
 export function placementAllowed(items,item,space,point,rotation=item.rotation || 0){
+  if(isWallProduct(item.product))return false;
   if(isTabletop(item.product))return false;
   if(!insideFloor(point)) return false;
   const {u,v}=toWorld(point),[w,h]=footprint({...item,rotation});
@@ -27,7 +29,7 @@ export function placementAllowed(items,item,space,point,rotation=item.rotation |
   if(builtInOverlap(space,u,v,w,h))return false;
   if(item.product==='rug')return true;
   return !items.some(other=>{
-    if(other.id===item.id || other.space!==space || other.product==='rug'||isTabletop(other.product))return false;
+    if(other.id===item.id || other.space!==space || other.product==='rug'||isTabletop(other.product)||isWallProduct(other.product))return false;
     const pos=toWorld(other),[ow,oh]=footprint(other);
     return Math.abs(pos.u-u)<(w+ow)/(GRID_SIZE*2)-.008 && Math.abs(pos.v-v)<(h+oh)/(GRID_SIZE*2)-.008;
   });
@@ -37,7 +39,7 @@ export function walkable(items,space,c,r){
   const pos=toWorld(cellCenter(c,r));
   if(builtInOverlap(space,pos.u,pos.v,1,1))return false;
   return !items.some(item=>{
-    if(item.space!==space || item.product==='rug'||isTabletop(item.product))return false;
+    if(item.space!==space || item.product==='rug'||isTabletop(item.product)||isWallProduct(item.product))return false;
     const p=toWorld(item),[w,h]=footprint(item);
     return Math.abs(p.u-pos.u)<w/(GRID_SIZE*2)+.012 && Math.abs(p.v-pos.v)<h/(GRID_SIZE*2)+.012;
   });

@@ -44,10 +44,10 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
       if(path==='/room'&&method==='GET')return snapshot();
       if(path==='/room/state'&&method==='PUT'){
         if(body.revision!==data.revision){const e=new Error('모의 데이터를 새로 불러와 주세요.');e.status=409;throw e;}
-        const next=memberState(data.state,body.state,'owner');data.petHome=calendarRewards(data.petHome,data.state,next,now());data.state=next;data.revision++;persist();return snapshot();
+        const next=memberState(data.state,body.state,'owner');data.petHome=calendarRewards(data.petHome,data.state,next,now(),{actor:{role:'owner',character:data.state.characters?.owner}});data.state=next;data.revision++;persist();return snapshot();
       }
-      if(path==='/room/calendar/read'&&method==='POST'){data.petHome=calendarRewards(data.petHome,data.state,data.state,now(),{readRole:'owner',eventId:body.eventId});persist();return snapshot();}
-      if(path==='/room/pets'&&method==='POST'){data.petHome=changePetHome(data.petHome,body,now(),()=>crypto.randomUUID());persist();return snapshot();}
+      if(path==='/room/calendar/read'&&method==='POST'){data.petHome=calendarRewards(data.petHome,data.state,data.state,now(),{readRole:'owner',eventId:body.eventId,actor:{role:'owner',character:data.state.characters?.owner}});persist();return snapshot();}
+      if(path==='/room/pets'&&method==='POST'){data.petHome=changePetHome(data.petHome,body,now(),()=>crypto.randomUUID(),{role:'owner',character:data.state.characters?.owner});persist();return snapshot();}
       if(path==='/room/places'&&['GET','PUT'].includes(method)){if(method==='PUT'){data.places=changePlaces(data.places,body,'owner',now());persist();}return structuredClone({code:'000000000000',role:'owner',memberCount:2,...data.places});}
       throw new Error('모의 테스트에서는 실제 방 생성·입장·복구를 하지 않아요.');
     }

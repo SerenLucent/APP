@@ -178,12 +178,12 @@ function route_(req){
   if(path==='/room/state'&&method==='PUT'){
     const e=member_(req.token),state=memberState(e.room.state,body.state,e.role);
     if(!Number.isSafeInteger(body.revision)||body.revision!==e.room.revision)fail_(409,'상대가 먼저 수정했어요. 최신 내용을 확인해 주세요.');
-    e.room.petHome=calendarRewards(e.room.petHome,e.room.state,state);e.room.state=state;e.room.revision++;saveRoom_(e);return snapshot_(e.room,e.role);
+    e.room.petHome=calendarRewards(e.room.petHome,e.room.state,state,Date.now(),{actor:{role:e.role,character:e.room.state.characters?.[e.role]}});e.room.state=state;e.room.revision++;saveRoom_(e);return snapshot_(e.room,e.role);
   }
-  if(path==='/room/calendar/read'&&method==='POST'){const e=member_(req.token);e.room.petHome=calendarRewards(e.room.petHome,e.room.state,e.room.state,Date.now(),{readRole:e.role,eventId:body.eventId});saveRoom_(e);return snapshot_(e.room,e.role);}
+  if(path==='/room/calendar/read'&&method==='POST'){const e=member_(req.token);e.room.petHome=calendarRewards(e.room.petHome,e.room.state,e.room.state,Date.now(),{readRole:e.role,eventId:body.eventId,actor:{role:e.role,character:e.room.state.characters?.[e.role]}});saveRoom_(e);return snapshot_(e.room,e.role);}
   if(path==='/room/pets'&&method==='POST'){
     const e=member_(req.token);
-    e.room.petHome=changePetHome(e.room.petHome,body,Date.now(),()=>Utilities.getUuid().replace(/-/g,''));
+    e.room.petHome=changePetHome(e.room.petHome,body,Date.now(),()=>Utilities.getUuid().replace(/-/g,''),{role:e.role,character:e.room.state.characters?.[e.role]});
     saveRoom_(e);return snapshot_(e.room,e.role);
   }
   if(path==='/admin/rooms'&&method==='GET'){
@@ -202,7 +202,7 @@ function route_(req){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);
       writeJson_(ROOM_PREFIX+e.room.code+'/backups/'+Date.now()+'_'+Utilities.getUuid()+'.json',e.room,null,'Back up TwoPlace couple before administrator edit');
-      e.room.state=state;e.room.revision++;e.room.petHome={...pets,layoutVersion:e.room.petHome.layoutVersion,calendarRewards:e.room.petHome.calendarRewards,careRewards:e.room.petHome.careRewards,version:e.room.petHome.version+1};saveRoom_(e);
+      e.room.state=state;e.room.revision++;e.room.petHome={...pets,layoutVersion:e.room.petHome.layoutVersion,calendarRewards:e.room.petHome.calendarRewards,careRewards:e.room.petHome.careRewards,careBonuses:e.room.petHome.careBonuses,heartHistory:e.room.petHome.heartHistory,heartHistorySince:e.room.petHome.heartHistorySince,version:e.room.petHome.version+1};saveRoom_(e);
     }
     return snapshot_(e.room,'admin');
   }
@@ -218,14 +218,16 @@ function cleanAdminPets_(data){
   }
   const ids=new Set(),items=[];
   for(const item of data.items){
-    if(!item||typeof item.id!=='string'||!item.id||item.id.length>64||ids.has(item.id)||!(item.product==='fence'||CATALOG.some(p=>p.type==='furniture'&&p.id===item.product))||![null,...SPACES].includes(item.space)||![0,90,180,270].includes(item.rotation||0)||!Number.isFinite(item.x)||!Number.isFinite(item.y))fail_(400,'가구 데이터를 확인해 주세요.');
+    if(!item||typeof item.id!=='string'||!item.id||item.id.length>64||ids.has(item.id)||!(item.product==='fence'||CATALOG.some(p=>p.type!=='food'&&p.id===item.product))||![null,...SPACES].includes(item.space)||![0,90,180,270].includes(item.rotation||0)||!Number.isFinite(item.x)||!Number.isFinite(item.y))fail_(400,'가구 데이터를 확인해 주세요.');
     const clean={id:item.id,product:item.product,space:item.space,x:item.x,y:item.y,rotation:item.rotation||0};
     if(isTabletop(clean.product)){if(item.parentId!==undefined){if(typeof item.parentId!=='string'||!Number.isInteger(item.slot))fail_(400,'식탁 연결 정보를 확인해 주세요.');clean.parentId=item.parentId;clean.slot=item.slot;}}else if(item.parentId!==undefined)fail_(400,'식탁 위에는 음식만 올릴 수 있어요.');
+    if(isWallProduct(clean.product)&&item.wallSide){clean.wallSide=item.wallSide;clean.wallCol=item.wallCol;clean.wallRow=item.wallRow;}
+    if(clean.space&&isWallProduct(clean.product)&&!wallSlotAllowed(items,clean,clean.space,clean.wallSide,clean.wallCol,clean.wallRow))fail_(400,'벽 배치 정보를 확인해 주세요.');
     if(clean.space&&!usableInSpace(clean.product,clean.space))fail_(400,'공간에 맞지 않는 가구예요.');
-    if(clean.space&&!isTabletop(clean.product)&&!placementAllowed(items,clean,clean.space,clean,clean.rotation))fail_(400,'가구 위치가 겹치거나 바닥 밖에 있어요.');
+    if(clean.space&&!isTabletop(clean.product)&&!isWallProduct(clean.product)&&!placementAllowed(items,clean,clean.space,clean,clean.rotation))fail_(400,'가구 위치가 겹치거나 바닥 밖에 있어요.');
     ids.add(clean.id);items.push(clean);
   }
   // Validate all pairs, independent of input ordering (rugs are allowed underneath).
-  for(const item of items){if(isTabletop(item.product)){if(item.space){const parent=items.find(p=>p.id===item.parentId),point=tableSlot(parent,item.slot);if(!point||point.space!==item.space||Math.abs(point.x-item.x)>1e-6||Math.abs(point.y-item.y)>1e-6||!availableTableSlot(items,item.parentId,item.slot,item.id))fail_(400,'음식의 식탁 위치를 확인해 주세요.');}else if(item.parentId!==undefined)fail_(400,'보관한 음식의 연결을 확인해 주세요.');}else if(item.space&&!placementAllowed(items,item,item.space,item,item.rotation))fail_(400,'가구 위치를 확인해 주세요.');}
+  for(const item of items){if(isTabletop(item.product)){if(item.space){const parent=items.find(p=>p.id===item.parentId),point=tableSlot(parent,item.slot);if(!point||point.space!==item.space||Math.abs(point.x-item.x)>1e-6||Math.abs(point.y-item.y)>1e-6||!availableTableSlot(items,item.parentId,item.slot,item.id))fail_(400,'음식의 식탁 위치를 확인해 주세요.');}else if(item.parentId!==undefined)fail_(400,'보관한 음식의 연결을 확인해 주세요.');}else if(item.space&&!isWallProduct(item.product)&&!placementAllowed(items,item,item.space,item,item.rotation))fail_(400,'가구 위치를 확인해 주세요.');}
   return {version:0,hearts:data.hearts,snacks:data.snacks,lastClaim:now,pets,items};
 }

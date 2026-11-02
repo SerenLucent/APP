@@ -160,7 +160,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         const room = member(req);
         return reply(200, snapshot(room, room.role));
       }
-      if(path==='/api/room/calendar/read'&&req.method==='POST'){const auth=member(req),body=await readJson(req);snapshot(auth,auth.role);const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data);const updated=calendarRewards(current,JSON.parse(auth.state),JSON.parse(auth.state),Date.now(),{readRole:auth.role,eventId:body.eventId});db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);return reply(200,snapshot(auth,auth.role));}
+      if(path==='/api/room/calendar/read'&&req.method==='POST'){const auth=member(req),body=await readJson(req);snapshot(auth,auth.role);const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data);const updated=calendarRewards(current,JSON.parse(auth.state),JSON.parse(auth.state),Date.now(),{readRole:auth.role,eventId:body.eventId,actor:{role:auth.role,character:JSON.parse(auth.state).characters?.[auth.role]}});db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);return reply(200,snapshot(auth,auth.role));}
       if (path === '/api/room/pets' && req.method === 'POST') {
         const auth = member(req);
         const action = await readJson(req);
@@ -168,7 +168,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         try {
           db.prepare('INSERT OR IGNORE INTO pet_homes (room_id,data) VALUES (?,?)').run(auth.id,JSON.stringify(initialPetHome()));
           const current = JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(auth.id).data);
-          const updated = changePetHome(current,action,Date.now(),()=>randomBytes(16).toString('hex'));
+          const updated = changePetHome(current,action,Date.now(),()=>randomBytes(16).toString('hex'),{role:auth.role,character:JSON.parse(auth.state).characters?.[auth.role]});
           db.prepare('UPDATE pet_homes SET data = ? WHERE room_id = ?').run(JSON.stringify(updated),auth.id);
           db.exec('COMMIT');
         } catch(error) { db.exec('ROLLBACK'); throw error; }
@@ -184,7 +184,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
         try {
         const result = db.prepare('UPDATE rooms SET state = ?, revision = revision + 1 WHERE id = ? AND revision = ?').run(JSON.stringify(data), auth.id, body.revision);
         if (!result.changes) throw new ApiError(409,'상대가 먼저 내용을 수정했어요. 최신 내용을 확인한 뒤 다시 저장해 주세요.');
-        const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data),updated=calendarRewards(current,JSON.parse(auth.state),data);db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);db.exec('COMMIT');
+        const current=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id=?').get(auth.id).data),updated=calendarRewards(current,JSON.parse(auth.state),data,Date.now(),{actor:{role:auth.role,character:JSON.parse(auth.state).characters?.[auth.role]}});db.prepare('UPDATE pet_homes SET data=? WHERE room_id=?').run(JSON.stringify(updated),auth.id);db.exec('COMMIT');
         }catch(error){db.exec('ROLLBACK');throw error;}
         const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(auth.id);return reply(200,snapshot(room,auth.role));
       }

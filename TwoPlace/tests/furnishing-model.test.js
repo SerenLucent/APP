@@ -2,7 +2,7 @@ import {test} from 'node:test';import assert from 'node:assert/strict';
 import {furnishingModel} from '../src/furnishing-model.js';
 import {CATALOG} from '../server/pets.js';
 test('every saleable furnishing has four floor-registered solid views',()=>{
- for(const {id} of CATALOG.filter(p=>p.id!=='snack'))for(const rotation of [0,90,180,270]){
+ for(const {id} of CATALOG.filter(p=>p.type==='furniture'))for(const rotation of [0,90,180,270]){
   const model=furnishingModel(id,rotation);assert.ok(model,`${id} ${rotation}`);
   assert.ok(model.width>0&&model.height>0);assert.ok(model.anchorX>0&&model.anchorX<1);assert.ok(model.anchorY>0&&model.anchorY<1);
   for(let i=0;i<4;i++){const a=model.ground[i],b=model.ground[(i+1)%4];assert.ok(Math.abs(Math.abs((b.y-a.y)/(b.x-a.x))-.5)<1e-10);}

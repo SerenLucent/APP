@@ -1,0 +1,15 @@
+import {filterHeartHistory,heartHistoryDay} from '../shared/heart-history.js';
+import './heart-history.css';
+const historyEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function openHeartHistory({openDialog,modal,home,now=Date.now()}){
+ const today=heartHistoryDay(now),dateBefore=n=>heartHistoryDay(now-n*86400000),min=dateBefore(30);let range='3',start=dateBefore(2),end=today,tab='all';
+ function draw(){let rows=[],error='';try{if(start<min||end>today)throw new Error('최근 1개월 이내의 날짜를 선택해 주세요.');rows=filterHeartHistory(home().heartHistory||[],start,end,tab);}catch(e){error=e.message;}
+ const actor=e=>e.character==='momo'?'모모':e.character==='kuki'?'쿠키':e.role==='owner'?'방을 만든 사람':e.role==='partner'?'초대받은 사람':'시스템';
+ const time=e=>new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(e.at);
+ openDialog('하트 획득 · 사용내역','<div class="heart-history"><div class="history-periods">'+[['3','3일'],['7','1주'],['14','2주간'],['custom','기간검색']].map(([id,text])=>'<button data-history-period="'+id+'" aria-pressed="'+(id===range)+'">'+text+'</button>').join('')+'</div><div class="history-dates" '+(range==='custom'?'':'hidden')+'><label>시작일<input type="date" data-history-date="start" min="'+min+'" max="'+today+'" value="'+start+'"></label><span>~</span><label>종료일<input type="date" data-history-date="end" min="'+min+'" max="'+today+'" value="'+end+'"></label></div><p class="history-range">'+historyEsc(start)+' ~ '+historyEsc(end)+' · 한국 시간</p><div class="history-tabs">'+[['all','전체'],['purchase','구매'],['earn','획득']].map(([id,text])=>'<button data-history-tab="'+id+'" aria-pressed="'+(id===tab)+'">'+text+'</button>').join('')+'</div>'+(error?'<p role="alert">'+historyEsc(error)+'</p>':'<div class="history-list">'+(rows.length?rows.map(e=>'<article class="history-entry"><div><span class="history-actor '+(e.character==='momo'?'momo':e.character==='kuki'?'kuki':'')+'">● '+actor(e)+'</span><time datetime="'+new Date(e.at).toISOString()+'">'+time(e)+'</time><strong>'+historyEsc(e.label)+'</strong></div><div class="history-amount '+(e.amount>0?'earned':'spent')+'"><b>'+(e.amount>0?'+':'')+e.amount+' 하트</b><small>잔액 '+e.balance+' 하트</small></div></article>').join(''):'<p class="history-empty">이 기간에는 '+(tab==='purchase'?'구매':tab==='earn'?'획득':'하트')+' 내역이 없어요.</p>')+'</div>')+'<p class="history-footnote">최근 31일(최대 1개월) 내역을 조회할 수 있어요.<br>상세 기록 기능 적용 이후 거래부터 표시돼요.</p></div>');
+ modal.querySelectorAll('[data-history-period]').forEach(b=>b.onclick=()=>{range=b.dataset.historyPeriod;if(range!=='custom'){start=dateBefore(Number(range)-1);end=today;}draw();});
+ modal.querySelectorAll('[data-history-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.historyTab;draw();});
+ modal.querySelectorAll('[data-history-date]').forEach(input=>input.onchange=()=>{if(input.dataset.historyDate==='start')start=input.value;else end=input.value;draw();});
+ }
+ draw();
+}
