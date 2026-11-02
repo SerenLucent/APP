@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793601294502,
+  "updatedAt": 1793602304384,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 606,
-    "hearts": 44,
+    "version": 607,
+    "hearts": 4,
     "snacks": 15,
     "lastClaim": 1793601294500,
     "pets": {
@@ -586,6 +586,13 @@
         "wallCol": 2,
         "wallRow": 0,
         "rotation": 0
+      },
+      {
+        "id": "3c58f02062fa42b7b528ae2f97755b02",
+        "product": "wallpaperRose",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -777,6 +784,17 @@
         "label": "시간 하트",
         "role": "owner",
         "character": "kuki"
+      },
+      {
+        "at": 1793602304382,
+        "amount": -40,
+        "balance": 4,
+        "kind": "purchase",
+        "label": "로즈 밀크 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperRose",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
