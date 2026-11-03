@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793742216493,
+  "updatedAt": 1793742237336,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,7 +474,7 @@
     ]
   },
   "petHome": {
-    "version": 697,
+    "version": 698,
     "hearts": 9,
     "snacks": 9,
     "lastClaim": 1793742154100,
@@ -713,9 +713,10 @@
       {
         "id": "29f06b23d3c041fea9dd4e94507d152e",
         "product": "sofa",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "home",
+        "x": 16,
+        "y": 84.775,
+        "rotation": 270
       }
     ],
     "layoutVersion": 1,
