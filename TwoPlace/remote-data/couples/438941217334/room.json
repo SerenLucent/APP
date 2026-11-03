@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793691408151,
+  "updatedAt": 1793695377798,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,10 +474,10 @@
     ]
   },
   "petHome": {
-    "version": 671,
-    "hearts": 1,
+    "version": 672,
+    "hearts": 11,
     "snacks": 13,
-    "lastClaim": 1793691015984,
+    "lastClaim": 1793695377797,
     "pets": {
       "mochi": {
         "hunger": 84,
@@ -1367,6 +1367,15 @@
         "character": "momo",
         "product": "armchair",
         "quantity": 1
+      },
+      {
+        "at": 1793695377797,
+        "amount": 10,
+        "balance": 11,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
       }
     ],
     "heartHistorySince": 1793584445635
