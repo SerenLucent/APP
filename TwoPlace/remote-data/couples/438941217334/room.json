@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793691343350,
+  "updatedAt": 1793691358758,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,8 +474,8 @@
     ]
   },
   "petHome": {
-    "version": 666,
-    "hearts": 66,
+    "version": 667,
+    "hearts": 1,
     "snacks": 15,
     "lastClaim": 1793691015984,
     "pets": {
@@ -701,6 +701,13 @@
         "x": 12,
         "y": 63.275,
         "rotation": 90
+      },
+      {
+        "id": "d60d3e6742724d2986e73c1caf973382",
+        "product": "armchair",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1348,6 +1355,17 @@
         "label": "일정 등록 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793691358756,
+        "amount": -65,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "폭신한 독서 의자 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "armchair",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
