@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793691287228,
-  "revision": 42,
+  "updatedAt": 1793691343350,
+  "revision": 43,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -421,6 +421,18 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "da7cd02249f63eb3814084b252f77074",
+        "date": "2027-12-15",
+        "title": "성히한테중요한날",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": [
@@ -462,8 +474,8 @@
     ]
   },
   "petHome": {
-    "version": 665,
-    "hearts": 61,
+    "version": 666,
+    "hearts": 66,
     "snacks": 15,
     "lastClaim": 1793691015984,
     "pets": {
@@ -725,7 +737,8 @@
         "2026-11-07": true,
         "2026-11-23": true,
         "2026-12-15": true,
-        "2027-12-06": true
+        "2027-12-06": true,
+        "2027-12-15": true
       },
       "reads": {
         "2026-10-24": true,
@@ -1322,6 +1335,15 @@
         "at": 1793691287227,
         "amount": 5,
         "balance": 61,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691343350,
+        "amount": 5,
+        "balance": 66,
         "kind": "earn",
         "label": "일정 등록 보너스",
         "role": "partner",
