@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793676171783,
+  "updatedAt": 1793676194070,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,7 +389,7 @@
     ]
   },
   "petHome": {
-    "version": 658,
+    "version": 659,
     "hearts": 16,
     "snacks": 15,
     "lastClaim": 1793676118757,
@@ -612,9 +612,10 @@
       {
         "id": "fbdaba8a6d2549dd81466b205084b7f4",
         "product": "laundryBasket",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "momoRoom",
+        "x": 12,
+        "y": 63.275,
+        "rotation": 90
       }
     ],
     "layoutVersion": 1,
