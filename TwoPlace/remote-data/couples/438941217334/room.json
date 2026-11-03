@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793676118758,
+  "updatedAt": 1793676171783,
   "revision": 37,
   "state": {
     "startDate": "2024-08-08",
@@ -389,8 +389,8 @@
     ]
   },
   "petHome": {
-    "version": 657,
-    "hearts": 51,
+    "version": 658,
+    "hearts": 16,
     "snacks": 15,
     "lastClaim": 1793676118757,
     "pets": {
@@ -608,6 +608,13 @@
         "wallCol": 2,
         "wallRow": 1,
         "rotation": 0
+      },
+      {
+        "id": "fbdaba8a6d2549dd81466b205084b7f4",
+        "product": "laundryBasket",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1177,6 +1184,17 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793676171780,
+        "amount": -35,
+        "balance": 16,
+        "kind": "purchase",
+        "label": "담요 빨래 바구니 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "laundryBasket",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
