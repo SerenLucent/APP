@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793691250822,
-  "revision": 41,
+  "updatedAt": 1793691287228,
+  "revision": 42,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -409,6 +409,18 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "874b049e765ba51f9eac443189560413",
+        "date": "2027-12-06",
+        "title": "갱식이 생일",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
       }
     ],
     "notes": [
@@ -450,8 +462,8 @@
     ]
   },
   "petHome": {
-    "version": 664,
-    "hearts": 56,
+    "version": 665,
+    "hearts": 61,
     "snacks": 15,
     "lastClaim": 1793691015984,
     "pets": {
@@ -712,7 +724,8 @@
         "2026-11-06": true,
         "2026-11-07": true,
         "2026-11-23": true,
-        "2026-12-15": true
+        "2026-12-15": true,
+        "2027-12-06": true
       },
       "reads": {
         "2026-10-24": true,
@@ -1300,6 +1313,15 @@
         "at": 1793691250820,
         "amount": 5,
         "balance": 56,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691287227,
+        "amount": 5,
+        "balance": 61,
         "kind": "earn",
         "label": "일정 등록 보너스",
         "role": "partner",
