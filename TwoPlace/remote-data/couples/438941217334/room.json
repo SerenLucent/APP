@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793742196697,
+  "updatedAt": 1793742216493,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,8 +474,8 @@
     ]
   },
   "petHome": {
-    "version": 696,
-    "hearts": 89,
+    "version": 697,
+    "hearts": 9,
     "snacks": 9,
     "lastClaim": 1793742154100,
     "pets": {
@@ -709,6 +709,13 @@
         "x": 48,
         "y": 67.575,
         "rotation": 0
+      },
+      {
+        "id": "29f06b23d3c041fea9dd4e94507d152e",
+        "product": "sofa",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1511,6 +1518,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793742216491,
+        "amount": -80,
+        "balance": 9,
+        "kind": "purchase",
+        "label": "둘이 앉는 소파 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "sofa",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
