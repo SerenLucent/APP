@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793762932189,
+  "updatedAt": 1793764642979,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,8 +474,8 @@
     ]
   },
   "petHome": {
-    "version": 717,
-    "hearts": 71,
+    "version": 718,
+    "hearts": 11,
     "snacks": 7,
     "lastClaim": 1793762932188,
     "pets": {
@@ -717,6 +717,13 @@
         "x": 16,
         "y": 84.775,
         "rotation": 270
+      },
+      {
+        "id": "5bbb80286c8c4dc7be09efa433befc89",
+        "product": "coffeeTable",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1683,6 +1690,17 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793764642976,
+        "amount": -60,
+        "balance": 11,
+        "kind": "purchase",
+        "label": "서랍 소파 테이블 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "coffeeTable",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
