@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793664350305,
+  "updatedAt": 1793782537376,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,10 +75,10 @@
     "notes": []
   },
   "petHome": {
-    "version": 159,
-    "hearts": 26,
+    "version": 160,
+    "hearts": 31,
     "snacks": 0,
-    "lastClaim": 1793664263414,
+    "lastClaim": 1793782537375,
     "pets": {
       "mochi": {
         "hunger": 100,
@@ -332,6 +332,15 @@
         "character": "momo",
         "product": "barbecue",
         "quantity": 1
+      },
+      {
+        "at": 1793782537375,
+        "amount": 5,
+        "balance": 31,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793591777835
