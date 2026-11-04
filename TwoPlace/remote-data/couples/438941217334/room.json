@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793798934997,
+  "updatedAt": 1793798955235,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,8 +474,8 @@
     ]
   },
   "petHome": {
-    "version": 727,
-    "hearts": 91,
+    "version": 728,
+    "hearts": 6,
     "snacks": 7,
     "lastClaim": 1793798934995,
     "pets": {
@@ -725,6 +725,13 @@
         "x": 24,
         "y": 84.775,
         "rotation": 90
+      },
+      {
+        "id": "79f594ead64b4b60aa8fcd250d9660cc",
+        "product": "pantry",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -1774,6 +1781,17 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793798955232,
+        "amount": -85,
+        "balance": 6,
+        "kind": "purchase",
+        "label": "유리문 식료품장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "pantry",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635
