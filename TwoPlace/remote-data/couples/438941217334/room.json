@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793764642979,
+  "updatedAt": 1793764663646,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,7 +474,7 @@
     ]
   },
   "petHome": {
-    "version": 718,
+    "version": 719,
     "hearts": 11,
     "snacks": 7,
     "lastClaim": 1793762932188,
@@ -721,9 +721,10 @@
       {
         "id": "5bbb80286c8c4dc7be09efa433befc89",
         "product": "coffeeTable",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "home",
+        "x": 24,
+        "y": 84.775,
+        "rotation": 90
       }
     ],
     "layoutVersion": 1,
