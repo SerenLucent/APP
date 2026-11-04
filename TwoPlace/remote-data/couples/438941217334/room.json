@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793798995617,
+  "updatedAt": 1793799012669,
   "revision": 43,
   "state": {
     "startDate": "2024-08-08",
@@ -474,7 +474,7 @@
     ]
   },
   "petHome": {
-    "version": 730,
+    "version": 731,
     "hearts": 6,
     "snacks": 7,
     "lastClaim": 1793798934995,
@@ -730,7 +730,7 @@
         "id": "79f594ead64b4b60aa8fcd250d9660cc",
         "product": "pantry",
         "space": "home",
-        "x": 68,
+        "x": 60,
         "y": 46.075,
         "rotation": 0
       }
