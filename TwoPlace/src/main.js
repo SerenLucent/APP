@@ -41,6 +41,21 @@ let saving = false;
 let refreshing = false;
 let connected = true;
 let view = demoMode ? (new URLSearchParams(location.search).get('view') === 'home' ? 'home' : 'calendar') : 'home';
+function navigateView(next,replace=false){
+ view=next;
+ const entry={...history.state,twoPlaceView:next};
+ if(replace)history.replaceState(entry,'');else history.pushState(entry,'');
+ render();window.scrollTo(0,0);
+}
+window.twoPlaceBack=()=>{
+ const dialog=document.querySelector('dialog[open]');
+ if(dialog){dialog.close();return true;}
+ if(view!=='home'){navigateView('home',true);return true;}
+ return false;
+};
+window.addEventListener('popstate',()=>{const dialog=document.querySelector('dialog[open]');if(dialog)dialog.close();view=history.state?.twoPlaceView||'home';render();window.scrollTo(0,0);});
+history.replaceState({...history.state,twoPlaceView:'home'},'');
+if(view!=='home')history.pushState({...history.state,twoPlaceView:view},'');
 let month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let selected = dateKey();
 let timer;
@@ -306,8 +321,8 @@ function noteDialog(id) {
 document.addEventListener('click', async e => {
   const el = e.target.closest('button, .brand');
   if (!el) return;
-  if (el.matches('.brand')) { e.preventDefault(); view = 'home'; render(); }
-  if (el.dataset.view) { view = el.dataset.view; render(); window.scrollTo(0, 0); }
+  if (el.matches('.brand')) { e.preventDefault(); navigateView('home'); }
+  if (el.dataset.view) { navigateView(el.dataset.view); }
   if (el.dataset.month) { month = new Date(month.getFullYear(), month.getMonth() + Number(el.dataset.month), 1); render(); }
   if (el.dataset.date) { selected = el.dataset.date; render(); dayDialog(); }
   if(el.dataset.readEvent){el.disabled=true;const origin=el.getBoundingClientRect();saving=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent}}));const gained=petHome.hearts-before;modal.close();if(gained>0)await flyHearts(origin,gained);toast(gained>0?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}finally{saving=false;}return;}
@@ -333,7 +348,7 @@ document.addEventListener('click', async e => {
     case 'character': characterDialog();break;
     case 'heart-history':openHeartHistory({openDialog,modal,home:()=>petHome});break;
     case 'note': noteDialog(); break;
-    case 'place': view='places';render();break;
+    case 'place': navigateView('places');break;
     case 'game': location.assign(import.meta.env.BASE_URL+'adventure.html'+(demoMode?'?demo=1':''));break;
     case 'more': toast('앞으로 추가할 메뉴를 위한 자리예요'); break;
     case 'event': eventDialog(); break;
