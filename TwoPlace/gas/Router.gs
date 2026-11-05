@@ -202,7 +202,7 @@ function route_(req){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);
       writeJson_(ROOM_PREFIX+e.room.code+'/backups/'+Date.now()+'_'+Utilities.getUuid()+'.json',e.room,null,'Back up TwoPlace couple before administrator edit');
-      e.room.state=state;e.room.revision++;e.room.petHome={...pets,layoutVersion:e.room.petHome.layoutVersion,calendarRewards:e.room.petHome.calendarRewards,careRewards:e.room.petHome.careRewards,careBonuses:e.room.petHome.careBonuses,heartHistory:e.room.petHome.heartHistory,heartHistorySince:e.room.petHome.heartHistorySince,version:e.room.petHome.version+1};saveRoom_(e);
+      e.room.state=state;e.room.revision++;e.room.petHome={...pets,layoutVersion:e.room.petHome.layoutVersion,adventure:e.room.petHome.adventure,calendarRewards:e.room.petHome.calendarRewards,careRewards:e.room.petHome.careRewards,careBonuses:e.room.petHome.careBonuses,heartHistory:e.room.petHome.heartHistory,heartHistorySince:e.room.petHome.heartHistorySince,version:e.room.petHome.version+1};saveRoom_(e);
     }
     return snapshot_(e.room,'admin');
   }

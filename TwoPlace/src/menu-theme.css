@@ -14,3 +14,5 @@
 
 [data-mode="demo"] .recovery-tools{display:none}
 .menu-grid .transit-card{background:#e6e2ff;border-color:#d8d2f3}.menu-grid .transit-card .tile-icon{color:#8171ce}.menu-grid .transit-card .card-desc{line-height:1.65;white-space:normal;word-break:keep-all}
+
+.menu-grid .game-card{background:#ffe0bf;border-color:#f2ceaa}.menu-grid .game-card .tile-icon{color:#db9253}.menu-grid .game-card .card-desc{line-height:1.65;word-break:keep-all}

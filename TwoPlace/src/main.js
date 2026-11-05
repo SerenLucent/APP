@@ -17,6 +17,7 @@ const icons = {
   note: '<path d="M14 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-8M14 3v7h7M14 3l7 7M7 14h10M7 17h6"/>',
   pin: '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
   train: '<rect x="5" y="2" width="14" height="17" rx="4"/><path d="M5 10h14M12 2v8M8 19l-2 3M16 19l2 3"/><circle cx="8.5" cy="15" r=".7"/><circle cx="15.5" cy="15" r=".7"/>',
+  game: '<path d="M7 8h10a4 4 0 0 1 3.8 2.8l1 5a2 2 0 0 1-3.3 1.9L16 15H8l-2.5 2.7a2 2 0 0 1-3.3-1.9l1-5A4 4 0 0 1 7 8Z"/><path d="M7 10v4M5 12h4M16 11h.01M18 13h.01"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   arrow: '<path d="m9 5 7 7-7 7"/>',
   home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/>',
@@ -195,6 +196,7 @@ function home() {
   <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스 메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">둘만의 공유 플레이스</span> ${icon('arrow')}</span></button>
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
   <button class="menu-card transit-card" data-view="transit"><span class="tile-icon">${icon('train')}</span><span class="card-title">Transit Live</span><span class="card-desc">우리 만남의 시간을 지켜주는 실시간 지하철 정보</span><span class="card-bottom">수도권 실시간 열차 위치 ${icon('arrow')}</span></button>
+  <button class="menu-card game-card" data-action="game"><span class="tile-icon">${icon('game')}</span><span class="card-title">게임 하기</span><span class="card-desc">모모·쿠키와 숲을 개척해요</span><span class="card-bottom">장애물 100개 정리하고 룰렛 보상 ${icon('arrow')}</span></button>
   </div></section><aside class="today"><span class="today-flower">✳</span><div><span>${todayLabel}</span><p>오늘도 서로의 가장 가까운 편이 되어 주세요.</p></div></aside>`;
 }
 function eventDetailLink(event){return `상세보기${readRewardAvailable(event,room?.role,petHome?.calendarRewards)?' <span class="calendar-read-reward">+1 하트</span>':' ↗'}`;}
@@ -332,6 +334,7 @@ document.addEventListener('click', async e => {
     case 'heart-history':openHeartHistory({openDialog,modal,home:()=>petHome});break;
     case 'note': noteDialog(); break;
     case 'place': view='places';render();break;
+    case 'game': location.assign(import.meta.env.BASE_URL+'adventure.html'+(demoMode?'?demo=1':''));break;
     case 'more': toast('앞으로 추가할 메뉴를 위한 자리예요'); break;
     case 'event': eventDialog(); break;
     case 'day-list': dayDialog(); break;
