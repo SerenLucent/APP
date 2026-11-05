@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793888607750,
+  "updatedAt": 1793888623366,
   "revision": 44,
   "state": {
     "startDate": "2024-08-08",
@@ -479,7 +479,7 @@
     ]
   },
   "petHome": {
-    "version": 818,
+    "version": 819,
     "hearts": 6,
     "snacks": 18,
     "lastClaim": 1793888589307,
@@ -742,9 +742,10 @@
       {
         "id": "88bc1a67ff1a42498796a2ad3ef357b8",
         "product": "pond",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "yard",
+        "x": 24,
+        "y": 82.625,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
