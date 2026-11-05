@@ -1,4 +1,4 @@
-import {bindImmediateAction,bindMovementPointer} from './adventure-input.js';
+import {bindImmediateAction,bindMovementPointer,installGameTouchGuards} from './adventure-input.js';
 import {createAdventureWallet} from './adventure-wallet.js';
 import {mountAdventureProgress} from './adventure-progress-view.js';
 import {characterStats,rollAttack} from '../shared/adventure-progression.js';
@@ -16,6 +16,7 @@ $('.action-buttons').append($('[data-gauge-skill]'));
 $('.gauge-bottom').remove();
 const images={};for(const id of ['momo','kuki'])for(const pose of ['front','side','back','diagonal-front','diagonal-back']){const pet=id==='momo'?'mochi':'kuki',v=pose.startsWith('diagonal')?(id==='kuki'?'v3':'v1'):'v3',file=pose==='front'?`${pet}-standing-v2.png`:`${pet}-${pose}-${v}.png`;const image=new Image();image.src=base+'pets/'+file;images[id+'-'+pose]=image;}
 const momoSpin=new Image();momoSpin.src=base+'adventure/momo-spin-v1.png';
+installGameTouchGuards(document);
 const wallet=createAdventureWallet();
 function returnHome(){location.replace(base+(wallet.local?'demo.html?view=home':'index.html'));}
 $('[data-home]').onclick=returnHome;
@@ -131,6 +132,6 @@ bindImmediateAction($('[data-gauge-skill]'),gaugeSkill);bindImmediateAction($('[
 const special=$('[data-special]');special.addEventListener('pointerdown',e=>{if(specialPointer!==null)return;e.preventDefault();specialPointer=e.pointerId;special.setPointerCapture(e.pointerId);beginCharge('pointer');});special.addEventListener('pointerup',e=>{if(e.pointerId===specialPointer)releaseCharge('pointer');});special.addEventListener('pointercancel',e=>{if(e.pointerId===specialPointer)cancelCharge();});special.addEventListener('lostpointercapture',()=>{if(chargeSource==='pointer')cancelCharge();});special.addEventListener('contextmenu',e=>e.preventDefault());
 const joystick=$('.joystick');function setStick(e){const b=joystick.getBoundingClientRect(),dx=e.clientX-b.left-b.width/2,dy=e.clientY-b.top-b.height/2,travel=Math.max(18,(b.width-joystick.querySelector('b').offsetWidth)/2-6),l=Math.max(1,Math.hypot(dx,dy)/travel);stick={x:dx/l/travel,y:dy/l/travel};joystick.querySelector('b').style.transform=`translate(${stick.x*travel}px,${stick.y*travel}px)`;state.target=null;}
 bindMovementPointer(joystick,setStick,()=>{stick={x:0,y:0};joystick.querySelector('b').style.transform='';});
-canvas.addEventListener('pointerdown',e=>{if(paused)return;canvas.focus();const b=canvas.getBoundingClientRect();state.target={x:(e.clientX-b.left)/camera.scale+camera.x,y:(e.clientY-b.top)/camera.scale+camera.y};});
+canvas.addEventListener('pointerdown',e=>{if(paused)return;canvas.focus({preventScroll:true});const b=canvas.getBoundingClientRect();state.target={x:(e.clientX-b.left)/camera.scale+camera.x,y:(e.clientY-b.top)/camera.scale+camera.y};});
 const help=$('dialog');$('[data-help]').onclick=()=>{togglePause(true);help.showModal();};$('[data-close-help]').onclick=()=>{help.close();togglePause(false);};help.addEventListener('cancel',()=>togglePause(false));
 reset();progressUI=mountAdventureProgress({root,wallet,getState:()=>state,pause:togglePause,sync:()=>{syncStats();hud();},newRound,notify:status});loading=true;togglePause(true);wallet.init().then(()=>newRound()).catch(e=>{loading=false;loadError=true;status('저장 연결 실패: '+e.message);togglePause(true);});resize();function frame(now){const elapsed=Math.max(0,(now-last)||0),dt=Math.min(.04,elapsed/1000);last=now;if(!paused){if(!state.won&&!state.dead)state.playTimeMs=(state.playTimeMs||0)+elapsed;update(dt);}draw();requestAnimationFrame(frame);}requestAnimationFrame(frame);
