@@ -28,3 +28,6 @@ export function gainBasicGauge(pet,hit){if(hit)pet.gauge=Math.min(100,(pet.gauge
 export function spendGauge(pet){if((pet.gauge||0)<100)return false;pet.gauge=0;return true;}
 export function eatPowerHeart(pet){pet.powerTime=Math.min(90,(pet.powerTime||0)+10);}
 export function powerMultiplier(id,pet){return id==='kuki'&&pet.powerTime>0?1.2:1;}
+// Simultaneous contacts share one freeze; every later critical can trigger it again.
+export function requestCriticalHitStop(state,critical){if(critical)state.hitStop=Math.max(state.hitStop||0,.1);}
+export function consumeHitStop(state,elapsed){const frozen=Math.min(state.hitStop||0,elapsed);state.hitStop=Math.max(0,(state.hitStop||0)-frozen);return Math.max(0,elapsed-frozen);}
