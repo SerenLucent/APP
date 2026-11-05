@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793840765667,
-  "revision": 43,
+  "updatedAt": 1793843204983,
+  "revision": 44,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -436,6 +436,11 @@
       }
     ],
     "notes": [
+      {
+        "id": "6ad9b20ee73ceb33a0d4369dcd71f317",
+        "date": "2026-11-05",
+        "body": "바보야 ><"
+      },
       {
         "id": "d55ad9b8cea1e921122f9455cbd2e61b",
         "date": "2026-10-31",
