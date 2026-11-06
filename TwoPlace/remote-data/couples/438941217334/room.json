@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793979346879,
+  "updatedAt": 1793979366659,
   "revision": 44,
   "state": {
     "startDate": "2024-08-08",
@@ -479,7 +479,7 @@
     ]
   },
   "petHome": {
-    "version": 877,
+    "version": 878,
     "hearts": 63,
     "snacks": 10,
     "lastClaim": 1793978749070,
@@ -3085,41 +3085,14 @@
           "reward": null
         },
         "partner": {
-          "id": "01bd8c57ea8d41faa56bbdd2a127c9ca",
-          "seed": 29199447,
-          "mode": "offense",
-          "requestId": "853f46ac-33fb-4df0-a7de-c22e526a1554",
-          "startedAt": 1793936946378,
-          "enemyCount": 0,
-          "finishedAt": 1793979346877,
-          "reward": {
-            "id": "heart5",
-            "label": "하트 5개",
-            "hearts": 5,
-            "index": 1,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 14,
-          "cleared": [
-            "outpost-house"
-          ]
+          "id": "50b4e3220256459aa7ce1534b6dbc26e",
+          "seed": 1354031906,
+          "mode": "explore",
+          "requestId": "fc9fa7bd-9908-426e-be3d-82597132a072",
+          "startedAt": 1793979366645,
+          "enemyCount": 24,
+          "finishedAt": null,
+          "reward": null
         }
       },
       "operations": [
@@ -3155,7 +3128,8 @@
         "a371d21f-17f4-4081-81a3-045a05897bd5",
         "d7b1f0fe-5994-4441-80b6-d06417f7c551",
         "be8b36ea-cde7-415d-84be-6119651a4ca3",
-        "fa42375e-6f5a-4187-a93a-b4fc400ac694"
+        "fa42375e-6f5a-4187-a93a-b4fc400ac694",
+        "fc9fa7bd-9908-426e-be3d-82597132a072"
       ]
     }
   },
