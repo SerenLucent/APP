@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793979236118,
+  "updatedAt": 1793979258177,
   "revision": 44,
   "state": {
     "startDate": "2024-08-08",
@@ -479,7 +479,7 @@
     ]
   },
   "petHome": {
-    "version": 875,
+    "version": 876,
     "hearts": 58,
     "snacks": 10,
     "lastClaim": 1793978749070,
@@ -3029,41 +3029,14 @@
       },
       "runs": {
         "owner": {
-          "id": "c054dc63215145c8908a7059043c48c0",
-          "seed": 3226786915,
+          "id": "c784ef75000a4b258420e5135b2d922c",
+          "seed": 3347378037,
           "mode": "offense",
-          "requestId": "a371d21f-17f4-4081-81a3-045a05897bd5",
-          "startedAt": 1793975043399,
+          "requestId": "be8b36ea-cde7-415d-84be-6119651a4ca3",
+          "startedAt": 1793979258174,
           "enemyCount": 0,
-          "finishedAt": 1793975199488,
-          "reward": {
-            "id": "heart3",
-            "label": "하트 3개",
-            "hearts": 3,
-            "index": 10,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 13,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         },
         "partner": {
           "id": "01bd8c57ea8d41faa56bbdd2a127c9ca",
@@ -3107,7 +3080,8 @@
         "76016683-7c11-4561-8194-f2ca8956eb5b",
         "a6719230-8cfe-4122-9691-ee3f6c6b81f4",
         "a371d21f-17f4-4081-81a3-045a05897bd5",
-        "d7b1f0fe-5994-4441-80b6-d06417f7c551"
+        "d7b1f0fe-5994-4441-80b6-d06417f7c551",
+        "be8b36ea-cde7-415d-84be-6119651a4ca3"
       ]
     }
   },
