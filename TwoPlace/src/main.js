@@ -42,7 +42,7 @@ let bootError = '';
 let saving = false;
 let refreshing = false;
 let connected = true;
-let view = demoMode ? (new URLSearchParams(location.search).get('view') === 'home' ? 'home' : 'calendar') : 'home';
+let view = demoMode ? (['home','pets'].includes(new URLSearchParams(location.search).get('view')) ? new URLSearchParams(location.search).get('view') : 'calendar') : 'home';
 function navigateView(next,replace=false){
  view=next;
  const entry={...history.state,twoPlaceView:next};

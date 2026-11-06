@@ -224,10 +224,11 @@ function cleanAdminPets_(data){
     if(isWallProduct(clean.product)&&item.wallSide){clean.wallSide=item.wallSide;clean.wallCol=item.wallCol;clean.wallRow=item.wallRow;}
     if(clean.space&&isWallProduct(clean.product)&&!wallSlotAllowed(items,clean,clean.space,clean.wallSide,clean.wallCol,clean.wallRow))fail_(400,'벽 배치 정보를 확인해 주세요.');
     if(clean.space&&!usableInSpace(clean.product,clean.space))fail_(400,'공간에 맞지 않는 가구예요.');
-    if(clean.space&&!isTabletop(clean.product)&&!isWallProduct(clean.product)&&!placementAllowed(items,clean,clean.space,clean,clean.rotation))fail_(400,'가구 위치가 겹치거나 바닥 밖에 있어요.');
+    if(clean.space&&!isTabletop(clean.product)&&!isWallProduct(clean.product)&&!isFloorProduct(clean.product)&&!placementAllowed(items,clean,clean.space,clean,clean.rotation))fail_(400,'가구 위치가 겹치거나 바닥 밖에 있어요.');
+    if(clean.space&&isFloorProduct(clean.product)&&items.some(i=>i.space===clean.space&&isFloorProduct(i.product)))fail_(400,'공간당 바닥은 하나만 적용할 수 있어요.');
     ids.add(clean.id);items.push(clean);
   }
   // Validate all pairs, independent of input ordering (rugs are allowed underneath).
-  for(const item of items){if(isTabletop(item.product)){if(item.space){const parent=items.find(p=>p.id===item.parentId),point=tableSlot(parent,item.slot);if(!point||point.space!==item.space||Math.abs(point.x-item.x)>1e-6||Math.abs(point.y-item.y)>1e-6||!availableTableSlot(items,item.parentId,item.slot,item.id))fail_(400,'음식의 식탁 위치를 확인해 주세요.');}else if(item.parentId!==undefined)fail_(400,'보관한 음식의 연결을 확인해 주세요.');}else if(item.space&&!isWallProduct(item.product)&&!placementAllowed(items,item,item.space,item,item.rotation))fail_(400,'가구 위치를 확인해 주세요.');}
+  for(const item of items){if(isTabletop(item.product)){if(item.space){const parent=items.find(p=>p.id===item.parentId),point=tableSlot(parent,item.slot);if(!point||point.space!==item.space||Math.abs(point.x-item.x)>1e-6||Math.abs(point.y-item.y)>1e-6||!availableTableSlot(items,item.parentId,item.slot,item.id))fail_(400,'음식의 식탁 위치를 확인해 주세요.');}else if(item.parentId!==undefined)fail_(400,'보관한 음식의 연결을 확인해 주세요.');}else if(item.space&&!isWallProduct(item.product)&&!isFloorProduct(item.product)&&!placementAllowed(items,item,item.space,item,item.rotation))fail_(400,'가구 위치를 확인해 주세요.');}
   return {version:0,hearts:data.hearts,snacks:data.snacks,lastClaim:now,pets,items};
 }

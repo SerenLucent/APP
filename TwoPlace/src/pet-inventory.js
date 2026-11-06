@@ -1,7 +1,8 @@
+import {isFloorProduct} from '../shared/floor-designs.js';
 import {wallProduct} from '../shared/wall-decor.js';
 import {HOUSEHOLD_PRODUCTS,isTabletop} from '../shared/household-catalog.js';
-export const INVENTORY_TABS={all:'전체',furniture:'가구',decoration:'장식',food:'음식',wallpaper:'벽지',wall:'벽걸이',other:'기타'};
+export const INVENTORY_TABS={all:'전체',furniture:'가구',decoration:'장식',food:'음식',floor:'바닥',wallpaper:'벽지',wall:'벽걸이',other:'기타'};
 const decorations=new Set(['cushion','plant','rug','lamp','flowerbed','pond','lantern','pottedTree','flowerCart','birdbath']);
 const other=new Set(['toybox','bowl','catTower','wateringCan','laundryBasket','fence']);
 const furniture=new Set(['table','bed','sofa','bookshelf','desk','wardrobe','nightstand','bench',...HOUSEHOLD_PRODUCTS.map(p=>p.id)]);
-export function inventoryCategory(product){if(wallProduct(product))return wallProduct(product).surface;if(isTabletop(product))return 'food';if(decorations.has(product))return 'decoration';if(other.has(product))return 'other';return furniture.has(product)?'furniture':'other';}
+export function inventoryCategory(product){if(isFloorProduct(product))return 'floor';if(wallProduct(product))return wallProduct(product).surface;if(isTabletop(product))return 'food';if(decorations.has(product))return 'decoration';if(other.has(product))return 'other';return furniture.has(product)?'furniture':'other';}

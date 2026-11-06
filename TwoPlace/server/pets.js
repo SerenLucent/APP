@@ -1,3 +1,4 @@
+import {FLOOR_PRODUCTS,isFloorProduct,applyFloorPlacement} from '../shared/floor-designs.js';
 import {applyAdventureAction} from '../shared/adventure-progression.js';
 import {WALL_PRODUCTS,isWallProduct,applyWallPlacement} from '../shared/wall-decor.js';
 import {recordHeartChange} from '../shared/heart-history.js';
@@ -29,7 +30,7 @@ export const CATALOG = [
   {id:'flowerbed',name:'작은 꽃밭',price:45,type:'furniture',symbol:'❀',description:'꽃에 물을 주며 정원을 돌봐요'},
   {id:'pond',name:'조약돌 연못',price:100,type:'furniture',symbol:'≈',description:'잔물결과 작은 물고기를 구경해요'},
   {id:'lantern',name:'정원 랜턴',price:30,type:'furniture',symbol:'☼',description:'누르면 따뜻한 불빛이 켜져요'},
-  ...HOUSEHOLD_PRODUCTS,...TABLETOP_PRODUCTS,...WALL_PRODUCTS,
+  ...HOUSEHOLD_PRODUCTS,...TABLETOP_PRODUCTS,...WALL_PRODUCTS,...FLOOR_PRODUCTS,
 ].map(product=>({...product,spaces:PRODUCT_SPACES[product.id]}));
 export class PetError extends Error {
   constructor(message,status=400) { super(message); this.status=status; }
@@ -84,6 +85,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       const kind=action.type==='pat'?'affinity':'energy',pet=home.pets[action.pet],reward=careRewardReady(home,action.pet,action.type,now);
       pet[kind]=100;pet[kind+'At']=now;if(reward){home.hearts++;home.careBonuses={...home.careBonuses,[action.pet]:{...home.careBonuses?.[action.pet],[action.type]:{day:careDay(now),count:careBonus(home,action.pet,action.type,now).count+1,lastAt:now}}};}break;
     }
+    case 'applyFloor': {const item=home.items.find(i=>i.id===action.item);if(!item||!isFloorProduct(item.product))throw new PetError('보유한 바닥을 골라 주세요.');applyFloorPlacement(home,item,action.space);break;}
     case 'placeWall':{const item=home.items.find(i=>i.id===action.item);if(!item||!isWallProduct(item.product))throw new PetError('보유한 벽지 또는 벽걸이를 골라 주세요.');applyWallPlacement(home,item,action.space,action.side,action.col,action.row);break;}
     case 'placeOnTable': {
       const item=home.items.find(i=>i.id===action.item);
@@ -96,6 +98,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
     case 'place': {
       const item = home.items.find(item=>item.id === action.item);
       if (!item) throw new PetError('보유한 가구만 배치할 수 있어요.');
+      if(isFloorProduct(item.product))throw new PetError('바닥은 공간 전체 적용을 사용해 주세요.');
       if(isWallProduct(item.product))throw new PetError('벽지와 벽걸이는 벽 전용 배치를 사용해 주세요.');
       if(isTabletop(item.product))throw new PetError('음식은 식탁 위에만 배치할 수 있어요.');
       if (!SPACES.includes(action.space) || !Number.isFinite(action.x) || !Number.isFinite(action.y) || action.x<10 || action.x>90 || action.y<45 || action.y>88) throw new PetError('공간 안의 배치할 위치를 골라 주세요.');
@@ -124,6 +127,6 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
 export function remodelPetHome(current){
  if(current.layoutVersion>=1)return current;
  const home=JSON.parse(JSON.stringify(current)),placed=[];let stored=0;
- for(const item of home.items){if(!item.space||item.parentId)continue;if(!usableInSpace(item.product,item.space)||!placementAllowed(placed,item,item.space,item,item.rotation||0)){item.space=null;delete item.parentId;delete item.slot;stored++;}else placed.push(item);}
+ for(const item of home.items){if(!item.space||item.parentId||isFloorProduct(item.product))continue;if(!usableInSpace(item.product,item.space)||!placementAllowed(placed,item,item.space,item,item.rotation||0)){item.space=null;delete item.parentId;delete item.slot;stored++;}else placed.push(item);}
  syncTabletopItems(home.items);home.layoutVersion=1;home.version++;home.remodel={version:1,stored};return home;
 }

@@ -197,3 +197,9 @@ test('GAS offense uses the shared roulette and persists mode, reward and replay-
  const replay=h.call({path:'/room/pets',method:'POST',token,body:{...body,version:done.data.petHome.version}});assert.equal(replay.data.petHome.hearts,done.data.petHome.hearts);
  const saved=JSON.parse(h.files.get('TwoPlace/remote-data/couples/'+room.code+'/room.json').text);assert.equal(saved.petHome.adventure.history.length,1);assert.equal(saved.petHome.adventure.history[0].mode,'offense');assert.equal(saved.petHome.adventure.history[0].houses,1);assert.equal(saved.petHome.adventure.totalClears,1);
 });
+
+test('GAS floor application and admin backup preserve finishes and enforce one finish per room',()=>{
+ const h=harness();let home=h.context.initialPetHome(0);home.hearts=1000;const act=a=>home=h.context.changePetHome(home,{...a,version:home.version},0,()=>a.product);
+ act({type:'buy',product:'floorHoney'});act({type:'applyFloor',item:'floorHoney',space:'home'});act({type:'buy',product:'floorRosewood'});act({type:'applyFloor',item:'floorRosewood',space:'home'});assert.equal(home.items[0].space,null);
+ const clean=h.context.cleanAdminPets_(home);assert.equal(clean.items[1].space,'home');const bad=JSON.parse(JSON.stringify(home));bad.items[0].space='home';assert.throws(()=>h.context.cleanAdminPets_(bad));
+});

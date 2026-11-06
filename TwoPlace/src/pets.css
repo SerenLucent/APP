@@ -5,3 +5,12 @@
 .pet-actor{transform:translate(-50%,-95%)}.pet-body{transform-origin:50% 95%}.pet-shadow{bottom:1%}
 
 .shop-product button[data-buy]{border:1px solid #d988a4;border-bottom:3px solid #c46d8c;background:linear-gradient(#f8c1d5,#f0a8c2);color:#793b52;border-radius:10px;padding:11px 9px;font-weight:700;box-shadow:0 3px 7px #cf7a9924;transition:background .15s,transform .15s,box-shadow .15s;cursor:pointer}.shop-product button[data-buy]>span{font-size:10px;font-weight:700}.shop-product button[data-buy]:not(:disabled):hover{background:#f4b1ca;transform:translateY(-1px);box-shadow:0 5px 10px #cf7a9933}.shop-product button[data-buy]:not(:disabled):active{transform:translateY(2px);border-bottom-width:1px;box-shadow:none}.shop-product button[data-buy]:disabled{opacity:1;background:#eae6e3;color:#aaa29d;border:1px solid #ddd7d1;box-shadow:none;cursor:not-allowed;transform:none}
+
+/* Floor finishes reuse the existing projected floor, never the furniture layer. */
+.floor-thumbnail{display:block;width:100%;height:100%;min-height:64px;max-width:150px;max-height:100px;margin:auto}
+.floor-thumbnail svg{width:100%;height:100%;display:block}
+.inventory-item>.floor-thumbnail{width:76px;height:66px;min-height:0}
+.floor-room-preview{position:relative;aspect-ratio:1.25;background:#f7f0e5;border:1px solid #e5d7c2;border-radius:20px;overflow:hidden;margin:16px 0}
+.floor-room-preview .iso-scenery{position:absolute;width:100%;height:125%;inset:-12% 0 auto;pointer-events:none}
+.floor-picker .floor-dimensions{font-size:.85em;color:#82705d}
+.floor-picker [data-floor-status]{color:#ad576d}
