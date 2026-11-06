@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793981957040,
-  "revision": 49,
+  "updatedAt": 1793981968313,
+  "revision": 50,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -536,6 +536,19 @@
         "endTime": "",
         "authorRole": "partner",
         "workType": "shift"
+      },
+      {
+        "id": "1a89fe6b480c4ff389e23403e4aca5db",
+        "date": "2026-11-24",
+        "title": "휴무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "off"
       }
     ],
     "notes": [
@@ -582,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 900,
-    "hearts": 123,
+    "version": 901,
+    "hearts": 128,
     "snacks": 10,
     "lastClaim": 1793978749070,
     "pets": {
@@ -901,7 +914,8 @@
         "2026-11-13": true,
         "2026-11-14": true,
         "2026-11-16": true,
-        "2026-11-17": true
+        "2026-11-17": true,
+        "2026-11-24": true
       },
       "reads": {
         "2026-10-24": true,
@@ -2765,6 +2779,15 @@
         "at": 1793981957038,
         "amount": 5,
         "balance": 123,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981968312,
+        "amount": 5,
+        "balance": 128,
         "kind": "earn",
         "label": "일정 등록 보너스",
         "role": "partner",
