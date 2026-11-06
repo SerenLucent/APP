@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793981187705,
-  "revision": 45,
+  "updatedAt": 1793981330591,
+  "revision": 46,
   "state": {
     "startDate": "2024-08-08",
     "characters": {
@@ -445,6 +445,58 @@
         "startTime": "",
         "endTime": "",
         "authorRole": "partner"
+      },
+      {
+        "id": "657a2c679da1a015500e9755019d5d12",
+        "date": "2026-11-10",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "12fdbb1b1621a1612aac560aaca09f13",
+        "date": "2026-11-11",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "ae00f38401f189b23611b65de536f9d9",
+        "date": "2026-11-12",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "034ad872465c06bb934a354fe4968b22",
+        "date": "2026-11-13",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
       }
     ],
     "notes": [
@@ -491,8 +543,8 @@
     ]
   },
   "petHome": {
-    "version": 890,
-    "hearts": 83,
+    "version": 891,
+    "hearts": 103,
     "snacks": 10,
     "lastClaim": 1793978749070,
     "pets": {
@@ -803,7 +855,11 @@
         "2026-11-23": true,
         "2026-12-15": true,
         "2027-12-06": true,
-        "2027-12-15": true
+        "2027-12-15": true,
+        "2026-11-10": true,
+        "2026-11-11": true,
+        "2026-11-12": true,
+        "2026-11-13": true
       },
       "reads": {
         "2026-10-24": true,
@@ -2624,6 +2680,15 @@
         "balance": 83,
         "kind": "earn",
         "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981330589,
+        "amount": 20,
+        "balance": 103,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
         "role": "partner",
         "character": "momo"
       }
