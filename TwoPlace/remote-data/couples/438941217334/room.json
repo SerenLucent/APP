@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1793981968313,
+  "updatedAt": 1793981982878,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 901,
-    "hearts": 128,
+    "version": 902,
+    "hearts": 8,
     "snacks": 10,
     "lastClaim": 1793978749070,
     "pets": {
@@ -870,6 +870,13 @@
         "x": 50,
         "y": 65,
         "rotation": 0
+      },
+      {
+        "id": "6aed4c8c799a41f3853bff0d123057a4",
+        "product": "floorRosewood",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -2792,6 +2799,17 @@
         "label": "일정 등록 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1793981982873,
+        "amount": -120,
+        "balance": 8,
+        "kind": "purchase",
+        "label": "내추럴 월넛 마루 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "floorRosewood",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
