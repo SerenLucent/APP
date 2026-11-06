@@ -16,17 +16,19 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
  let data=adventureState(home.adventure);data.runs={...data.runs};data.operations=[...(data.operations||[])];
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
+  const mode=action.mode??'explore';if(!['explore','offense'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
   const previous=data.runs[role];
-  if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart){home.adventure=data;return;}
+  if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode){home.adventure=data;return;}
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
-  data.runs[role]={id,seed,requestId:action.actionId,startedAt:now,enemyCount:24+Math.floor((data.totalClears||0)/20)*4,finishedAt:null,reward:null};
+  data.runs[role]={id,seed,mode,requestId:action.actionId,startedAt:now,enemyCount:mode==='offense'?0:24+Math.floor((data.totalClears||0)/20)*4,finishedAt:null,reward:null};
  }else if(action.type==='adventureFinish'){
   const run=data.runs[role];if(!run||run.id!==action.runId)adventureFail('현재 탐험 기록이 아니에요. 새 탐험을 시작해 주세요.',409);
   if(run.finishedAt){home.adventure=data;return;}
-  const ids=action.cleared;if(!Array.isArray(ids)||ids.length!==100||new Set(ids).size!==100)adventureFail('서로 다른 장애물 100개를 정리해야 해요.');
-  const valid=new Set(createObstacles(run.seed).map(o=>o.id));if(ids.some(id=>!valid.has(id)))adventureFail('필드의 장애물 기록을 확인해 주세요.');
+  const mode=run.mode||'explore',ids=action.cleared;
+  if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
+  else{if(!Array.isArray(ids)||ids.length!==100||new Set(ids).size!==100)adventureFail('서로 다른 장애물 100개를 정리해야 해요.');const valid=new Set(createObstacles(run.seed).map(o=>o.id));if(ids.some(id=>!valid.has(id)))adventureFail('필드의 장애물 기록을 확인해 주세요.');}
   const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs),tier=rouletteTier(durationMs),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),reward={...ADVENTURE_REWARDS.find(r=>r.id===segments[index]),index,segments,tier};if(reward.hearts)home.hearts+=reward.hearts;else data[reward.field]+=reward.amount||1;
-  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,obstacles:100,reward:{...reward,index}}];
+  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='offense'?0:100,houses:mode==='offense'?1:0,reward:{...reward,index}}];
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){
   data=investAdventurePoint(data,action.pet,action.stat);

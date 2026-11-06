@@ -15,3 +15,19 @@ test('faster times add better roulette segments and every 20 shared clears adds 
 test('roulette spreads duplicate rewards apart, including the wraparound seam',()=>{for(const time of [900000,600000,400000,200000]){const table=rouletteTable(time);for(let i=0;i<table.length;i++)assert.notEqual(table[i],table[(i+1)%table.length]);}});
 
 test('all clear-time tiers offer exactly four two-point stat reward slots',()=>{assert.equal(ADVENTURE_REWARDS.find(r=>r.id==='point').amount,2);for(const ms of [900000,600000,400000,200000])assert.equal(rouletteTable(ms).filter(id=>id==='point').length,4);});
+
+test('offense grants the common roulette once, records the house objective and isolates modes and roles',()=>{
+ const home={hearts:0};let sequence=0;const id=()=>`abcdef0${sequence++}-1111-1111-1111-123456789012`;
+ const start=(mode,role='owner')=>applyAdventureAction(home,{type:'adventureStart',mode,actionId:`offense-start-${sequence}-000000`},1000,id,role);
+ assert.throws(()=>start('unknown'));start('offense');const run=home.adventure.runs.owner;assert.equal(run.mode,'offense');assert.equal(run.enemyCount,0);
+ const finish={type:'adventureFinish',actionId:'offense-finish-000000',runId:run.id,pet:'kuki',playTimeMs:3000};
+ for(const cleared of [[],['wrong-house'],['outpost-house','outpost-house']])assert.throws(()=>applyAdventureAction(home,{...finish,cleared},5000,id,'owner'));
+ assert.throws(()=>applyAdventureAction(home,{...finish,cleared:['outpost-house']},5000,id,'partner'));
+ applyAdventureAction(home,{...finish,cleared:['outpost-house']},5000,id,'owner',()=>.99);assert.equal(home.hearts,5);assert.equal(home.adventure.totalClears,1);
+ const history=home.adventure.history[0];assert.equal(history.mode,'offense');assert.equal(history.houses,1);assert.equal(history.durationMs,3000);assert.equal(history.character,'kuki');
+ applyAdventureAction(home,{...finish,actionId:'offense-retry-0000000',cleared:['outpost-house']},6000,id,'owner',()=>0);assert.equal(home.hearts,5);assert.equal(home.adventure.history.length,1);
+ start('explore');const explore=home.adventure.runs.owner;assert.equal(explore.mode,'explore');start('offense');assert.notEqual(home.adventure.runs.owner.id,explore.id);
+ assert.throws(()=>applyAdventureAction(home,{...finish,actionId:'stale-finish-00000000',runId:explore.id,cleared:['outpost-house']},6000,id,'owner'),e=>e.status===409);
+ start('explore');assert.throws(()=>applyAdventureAction(home,{...finish,actionId:'wrong-mode-finish0000',runId:home.adventure.runs.owner.id,cleared:['outpost-house']},6000,id,'owner'));
+ assert.equal(home.adventure.history.length,1);
+});
