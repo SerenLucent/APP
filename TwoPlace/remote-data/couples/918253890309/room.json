@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793960271197,
+  "updatedAt": 1793960362599,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,9 +75,9 @@
     "notes": []
   },
   "petHome": {
-    "version": 198,
-    "hearts": 24,
-    "snacks": 0,
+    "version": 199,
+    "hearts": 8,
+    "snacks": 4,
     "lastClaim": 1793960079938,
     "pets": {
       "mochi": {
@@ -545,6 +545,17 @@
         "label": "휴식 보너스",
         "role": "owner",
         "character": "kuki"
+      },
+      {
+        "at": 1793960362599,
+        "amount": -16,
+        "balance": 8,
+        "kind": "purchase",
+        "label": "별사탕 먹이 4개 구매",
+        "role": "owner",
+        "character": "kuki",
+        "product": "snack",
+        "quantity": 4
       }
     ],
     "heartHistorySince": 1793591777835
