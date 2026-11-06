@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794007178770,
+  "updatedAt": 1794007358386,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 906,
+    "version": 907,
     "hearts": 28,
     "snacks": 10,
     "lastClaim": 1794007156986,
@@ -2835,8 +2835,8 @@
     "adventure": {
       "hpPotions": 1,
       "staminaPotions": 1,
-      "points": 14,
-      "totalClears": 22,
+      "points": 16,
+      "totalClears": 23,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -3640,6 +3640,44 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "02cb7c35eeaf476c9e4d01a76d57723a",
+          "clearNo": 23,
+          "at": 1794007358383,
+          "startedAt": 1794007178767,
+          "durationMs": 172140,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 9,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -3666,8 +3704,36 @@
           "requestId": "13c01d43-491d-4136-9c58-34e9d460c2cf",
           "startedAt": 1794007178767,
           "enemyCount": 0,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794007358383,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 9,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 23,
+          "cleared": [
+            "outpost-house"
+          ]
         },
         "partner": {
           "id": "3e136454c8c640d1aeac396c9e11d4b6",
@@ -3756,7 +3822,8 @@
         "32a802f7-b936-4e4d-bf71-c652871ce772",
         "944365a3-e087-4af5-8161-6296ee8e33db",
         "6fe37d85-1581-42f2-bf7b-fd01753a12bb",
-        "13c01d43-491d-4136-9c58-34e9d460c2cf"
+        "13c01d43-491d-4136-9c58-34e9d460c2cf",
+        "92d12f07-2a31-4b0e-b074-0d2c5b205d82"
       ]
     }
   },
