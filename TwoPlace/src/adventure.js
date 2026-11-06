@@ -1,3 +1,5 @@
+import {installAppTouchPolicy} from './app-touch.js';
+installAppTouchPolicy();
 import {bindImmediateAction,bindMovementPointer,installGameTouchGuards} from './adventure-input.js';
 import {createAdventureWallet} from './adventure-wallet.js';
 import {mountAdventureProgress} from './adventure-progress-view.js';

@@ -1,3 +1,5 @@
+import {installAppTouchPolicy} from './app-touch.js';
+installAppTouchPolicy();
 import {openHeartHistory} from './heart-history-view.js';
 import './style.css';
 import './room.css';
