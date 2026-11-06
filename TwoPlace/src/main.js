@@ -351,7 +351,7 @@ document.addEventListener('click', async e => {
     case 'heart-history':openHeartHistory({openDialog,modal,home:()=>petHome});break;
     case 'note': noteDialog(); break;
     case 'place': navigateView('places');break;
-    case 'game': location.assign(import.meta.env.BASE_URL+'adventure.html'+(demoMode?'?demo=1':''));break;
+    case 'game': location.assign(import.meta.env.BASE_URL+'adventure-menu.html'+(demoMode?'?demo=1':''));break;
     case 'more': toast('앞으로 추가할 메뉴를 위한 자리예요'); break;
     case 'event': eventDialog(); break;
     case 'day-list': dayDialog(); break;

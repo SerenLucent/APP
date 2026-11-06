@@ -2,7 +2,7 @@ import {loadSession,request} from './room-client.js';
 import {changePetHome,initialPetHome} from '../server/pets.js';
 import {adventureState} from '../shared/adventure-progression.js';
 export function createAdventureWallet(){
- const session=new URLSearchParams(location.search).get('demo')==='1'?null:loadSession(),local=!session,key='twoplace:adventure-wallet:v1',pendingKey='twoplace:adventure-pending:'+ (local?'demo':'room');let home={...initialPetHome(),hearts:0},role='owner',busy=false,cachedHome=null,cachedProfile=null;
+ const session=(new URLSearchParams(location.search).get('demo')==='1'||new URLSearchParams(location.search).get('mode')==='offense')?null:loadSession(),local=!session,key='twoplace:adventure-wallet:v1',pendingKey='twoplace:adventure-pending:'+ (local?'demo':'room');let home={...initialPetHome(),hearts:0},role='owner',busy=false,cachedHome=null,cachedProfile=null;
  const read=()=>{try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved)home=saved;}catch{}};
  const persist=()=>{localStorage.setItem(key,JSON.stringify(home));};
  const refresh=async()=>{if(local)read();else{const data=await request('/room',{token:session.token});home=data.petHome;role=data.role;}return home;};
