@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794057388749,
+  "updatedAt": 1794057424522,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 970,
-    "hearts": 111,
+    "version": 971,
+    "hearts": 46,
     "snacks": 4,
     "lastClaim": 1794054976396,
     "pets": {
@@ -889,6 +889,13 @@
         "wallCol": 2,
         "wallRow": 0,
         "rotation": 0
+      },
+      {
+        "id": "4ab6b4d90a554c47be677adbebf582bf",
+        "product": "bookshelf",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -3076,6 +3083,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794057424519,
+        "amount": -65,
+        "balance": 46,
+        "kind": "purchase",
+        "label": "이야기 책장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "bookshelf",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
