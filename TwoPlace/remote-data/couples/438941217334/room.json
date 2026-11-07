@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794092783957,
+  "updatedAt": 1794092789289,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 1017,
+    "version": 1018,
     "hearts": 11,
     "snacks": 13,
     "lastClaim": 1794092650069,
@@ -3347,7 +3347,7 @@
     "adventure": {
       "hpPotions": 2,
       "staminaPotions": 2,
-      "points": 4,
+      "points": 3,
       "totalClears": 34,
       "history": [
         {
@@ -4606,7 +4606,7 @@
         "momo": {
           "strength": 6,
           "vitality": 0,
-          "stamina": 1,
+          "stamina": 2,
           "luck": 0,
           "dexterity": 0
         },
@@ -4738,7 +4738,8 @@
         "9647810c-75aa-4700-b179-edcf272d6d27",
         "8c1646f6-ba24-44b4-9207-b22e58294af5",
         "48238557-edaf-4df1-8803-edd180ecd6ce",
-        "8e096cf3-ae9a-4538-9593-e77fb6b6912d"
+        "8e096cf3-ae9a-4538-9593-e77fb6b6912d",
+        "1a456d09-0bd3-4505-acd6-31f1767b4f4e"
       ]
     }
   },
