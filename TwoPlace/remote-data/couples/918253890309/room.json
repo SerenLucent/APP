@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1793960390829,
+  "updatedAt": 1794042235609,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,10 +75,10 @@
     "notes": []
   },
   "petHome": {
-    "version": 203,
-    "hearts": 8,
+    "version": 204,
+    "hearts": 13,
     "snacks": 0,
-    "lastClaim": 1793960079938,
+    "lastClaim": 1794042235609,
     "pets": {
       "mochi": {
         "hunger": 64,
@@ -556,6 +556,15 @@
         "character": "kuki",
         "product": "snack",
         "quantity": 4
+      },
+      {
+        "at": 1794042235609,
+        "amount": 5,
+        "balance": 13,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793591777835
