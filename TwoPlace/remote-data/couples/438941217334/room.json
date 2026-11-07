@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794092635234,
+  "updatedAt": 1794092650072,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,10 +595,10 @@
     ]
   },
   "petHome": {
-    "version": 1007,
-    "hearts": 1,
+    "version": 1008,
+    "hearts": 11,
     "snacks": 13,
-    "lastClaim": 1794089021148,
+    "lastClaim": 1794092650069,
     "pets": {
       "mochi": {
         "hunger": 92,
@@ -3332,6 +3332,15 @@
         "character": "momo",
         "product": "pottedTree",
         "quantity": 1
+      },
+      {
+        "at": 1794092650069,
+        "amount": 10,
+        "balance": 11,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793584445635,
