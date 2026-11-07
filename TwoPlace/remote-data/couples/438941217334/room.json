@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794011194115,
+  "updatedAt": 1794011217650,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 919,
-    "hearts": 46,
+    "version": 920,
+    "hearts": 6,
     "snacks": 8,
     "lastClaim": 1794011168154,
     "pets": {
@@ -878,6 +878,13 @@
         "x": 50,
         "y": 65,
         "rotation": 0
+      },
+      {
+        "id": "1b6829d48d4f4832abf7f63bef4edf13",
+        "product": "wallpaperLilac",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -2910,6 +2917,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794011217646,
+        "amount": -40,
+        "balance": 6,
+        "kind": "purchase",
+        "label": "라벤더 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperLilac",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
