@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794057424522,
+  "updatedAt": 1794057441436,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 971,
+    "version": 972,
     "hearts": 46,
     "snacks": 4,
     "lastClaim": 1794054976396,
@@ -893,9 +893,10 @@
       {
         "id": "4ab6b4d90a554c47be677adbebf582bf",
         "product": "bookshelf",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "home",
+        "x": 12,
+        "y": 76.175,
+        "rotation": 270
       }
     ],
     "layoutVersion": 1,
