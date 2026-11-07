@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794092451558,
+  "updatedAt": 1794092490300,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 1003,
-    "hearts": 71,
+    "version": 1004,
+    "hearts": 1,
     "snacks": 13,
     "lastClaim": 1794089021148,
     "pets": {
@@ -897,6 +897,13 @@
         "x": 12,
         "y": 76.175,
         "rotation": 270
+      },
+      {
+        "id": "908d51fe758048bf9b16473f5d942d2a",
+        "product": "pottedTree",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -3313,6 +3320,17 @@
         "label": "휴식 보너스",
         "role": "owner",
         "character": "kuki"
+      },
+      {
+        "at": 1794092490297,
+        "amount": -70,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "레몬 나무 화분 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "pottedTree",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
