@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794011217650,
+  "updatedAt": 1794011226958,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 920,
+    "version": 921,
     "hearts": 6,
     "snacks": 8,
     "lastClaim": 1794011168154,
@@ -785,12 +785,9 @@
       {
         "id": "dce83244c3bb44759a887ab5c9680f21",
         "product": "wallpaperRose",
-        "space": "momoRoom",
+        "space": null,
         "x": 50,
         "y": 65,
-        "wallSide": "right",
-        "wallCol": 2,
-        "wallRow": 0,
         "rotation": 0
       },
       {
@@ -882,9 +879,13 @@
       {
         "id": "1b6829d48d4f4832abf7f63bef4edf13",
         "product": "wallpaperLilac",
-        "space": null,
+        "space": "momoRoom",
         "x": 50,
-        "y": 65
+        "y": 65,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 0,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
