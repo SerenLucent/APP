@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794011226958,
+  "updatedAt": 1794011247581,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 921,
+    "version": 922,
     "hearts": 6,
     "snacks": 8,
     "lastClaim": 1794011168154,
@@ -785,10 +785,13 @@
       {
         "id": "dce83244c3bb44759a887ab5c9680f21",
         "product": "wallpaperRose",
-        "space": null,
+        "space": "kukiRoom",
         "x": 50,
         "y": 65,
-        "rotation": 0
+        "rotation": 0,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 0
       },
       {
         "id": "3c58f02062fa42b7b528ae2f97755b02",
