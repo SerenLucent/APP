@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794016168323,
+  "updatedAt": 1794016303002,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 930,
+    "version": 931,
     "hearts": 19,
     "snacks": 6,
     "lastClaim": 1794015527180,
@@ -3847,41 +3847,14 @@
           "reward": null
         },
         "partner": {
-          "id": "3e136454c8c640d1aeac396c9e11d4b6",
-          "seed": 1041458260,
+          "id": "faab784cc1eb4be38cc51fad57285189",
+          "seed": 4205541452,
           "mode": "offense",
-          "requestId": "944365a3-e087-4af5-8161-6296ee8e33db",
-          "startedAt": 1793981780139,
+          "requestId": "7870dca8-eb40-4564-9fea-dd2a18558550",
+          "startedAt": 1794016302999,
           "enemyCount": 0,
-          "finishedAt": 1793981880594,
-          "reward": {
-            "id": "heart5",
-            "label": "하트 5개",
-            "hearts": 5,
-            "index": 8,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 22,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         }
       },
       "operations": [
@@ -3936,7 +3909,8 @@
         "13c01d43-491d-4136-9c58-34e9d460c2cf",
         "92d12f07-2a31-4b0e-b074-0d2c5b205d82",
         "a78f6b13-f4d1-4a9c-95f3-962c09c4a119",
-        "9a952ee6-b4ed-4ef4-a663-28f565e5691c"
+        "9a952ee6-b4ed-4ef4-a663-28f565e5691c",
+        "7870dca8-eb40-4564-9fea-dd2a18558550"
       ]
     }
   },
