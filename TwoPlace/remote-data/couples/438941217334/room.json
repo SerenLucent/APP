@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794031170595,
+  "updatedAt": 1794031201760,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 950,
+    "version": 951,
     "hearts": 60,
     "snacks": 6,
     "lastClaim": 1794031012378,
@@ -4040,41 +4040,14 @@
       },
       "runs": {
         "owner": {
-          "id": "076e979227c04fe1a11ad9fa119ca422",
-          "seed": 124688274,
+          "id": "b6daaf54ef2b48c894deeab36fc629cf",
+          "seed": 3067785044,
           "mode": "offense",
-          "requestId": "f5b5215b-3fc1-4d6c-8c91-2dc0aea17aac",
-          "startedAt": 1794031051952,
+          "requestId": "135cf5f5-6b24-426c-b06b-1a8f8fa21f1c",
+          "startedAt": 1794031201758,
           "enemyCount": 0,
-          "finishedAt": 1794031170593,
-          "reward": {
-            "id": "heart3",
-            "label": "하트 3개",
-            "hearts": 3,
-            "index": 10,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 27,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         },
         "partner": {
           "id": "faab784cc1eb4be38cc51fad57285189",
@@ -4183,7 +4156,8 @@
         "d41e3843-0b15-4f2d-91f7-3c09601db77e",
         "5442cb36-0083-441c-b6d4-676777bff801",
         "f5b5215b-3fc1-4d6c-8c91-2dc0aea17aac",
-        "b4592e92-6754-425f-8527-0f1bd7a6b95f"
+        "b4592e92-6754-425f-8527-0f1bd7a6b95f",
+        "135cf5f5-6b24-426c-b06b-1a8f8fa21f1c"
       ]
     }
   },
