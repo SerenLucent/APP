@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794017233444,
+  "updatedAt": 1794017239984,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 943,
+    "version": 944,
     "hearts": 27,
     "snacks": 6,
     "lastClaim": 1794015527180,
@@ -2992,7 +2992,7 @@
     "adventure": {
       "hpPotions": 1,
       "staminaPotions": 1,
-      "points": 11,
+      "points": 10,
       "totalClears": 26,
       "history": [
         {
@@ -3960,7 +3960,7 @@
         "kuki": {
           "strength": 0,
           "vitality": 0,
-          "stamina": 7,
+          "stamina": 8,
           "luck": 0,
           "dexterity": 0
         }
@@ -4079,7 +4079,8 @@
         "84861948-8ee4-4a2b-a51b-c373ce9b0bcd",
         "b9b44f76-233e-4c07-8cc6-42d4b3838b12",
         "37aa40dd-37d0-439e-be65-c33b524487e8",
-        "db324fe5-b231-4f6a-87a9-9dacf6b13635"
+        "db324fe5-b231-4f6a-87a9-9dacf6b13635",
+        "d41e3843-0b15-4f2d-91f7-3c09601db77e"
       ]
     }
   },
