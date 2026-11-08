@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794175169410,
+  "updatedAt": 1794175340455,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 1075,
+    "version": 1076,
     "hearts": 147,
     "snacks": 3,
     "lastClaim": 1794175111045,
@@ -5200,41 +5200,14 @@
       },
       "runs": {
         "owner": {
-          "id": "51f050c2ff774fb4a068659882e12ea9",
-          "seed": 1374703810,
+          "id": "75ed2ffb184c485192ba008b9fb2c3d3",
+          "seed": 1978478587,
           "mode": "offense",
-          "requestId": "15ac567b-6cc5-4f08-81cd-ce70b8441d9b",
-          "startedAt": 1794131911739,
+          "requestId": "7a6af8c0-974b-4c42-ada2-ab0a922e55e7",
+          "startedAt": 1794175340449,
           "enemyCount": 0,
-          "finishedAt": 1794132083955,
-          "reward": {
-            "id": "heart5",
-            "label": "하트 5개",
-            "hearts": 5,
-            "index": 5,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 44,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         },
         "partner": {
           "id": "a59d9123a5204ffc809351aa9c9ed7a4",
@@ -5374,7 +5347,8 @@
         "f632ba98-0f6a-4596-8748-648b9f50e66f",
         "f46db7c8-dc15-4e45-8f6d-4392115077d9",
         "15ac567b-6cc5-4f08-81cd-ce70b8441d9b",
-        "4f227ab0-129f-4f10-8d7c-59f4454eb0f4"
+        "4f227ab0-129f-4f10-8d7c-59f4454eb0f4",
+        "7a6af8c0-974b-4c42-ada2-ab0a922e55e7"
       ]
     }
   },
