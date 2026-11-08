@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794113418655,
+  "updatedAt": 1794113554909,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 1041,
-    "hearts": 63,
+    "version": 1042,
+    "hearts": 68,
     "snacks": 13,
     "lastClaim": 1794112826226,
     "pets": {
@@ -3431,6 +3431,15 @@
         "label": "시간 하트",
         "role": "owner",
         "character": "kuki"
+      },
+      {
+        "at": 1794113554907,
+        "amount": 5,
+        "balance": 68,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793584445635,
@@ -3438,7 +3447,7 @@
       "hpPotions": 2,
       "staminaPotions": 2,
       "points": 0,
-      "totalClears": 38,
+      "totalClears": 39,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -4840,6 +4849,43 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "55cad295ab3542c1936c9bf3a33da686",
+          "clearNo": 39,
+          "at": 1794113554907,
+          "startedAt": 1794113418652,
+          "durationMs": 129204,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -4866,8 +4912,35 @@
           "requestId": "20d7dc8d-e592-4128-9d4c-feb472208a64",
           "startedAt": 1794113418652,
           "enemyCount": 0,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794113554907,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 39,
+          "cleared": [
+            "outpost-house"
+          ]
         },
         "partner": {
           "id": "a59d9123a5204ffc809351aa9c9ed7a4",
@@ -4994,7 +5067,8 @@
         "dec5c6e0-db02-4d63-be46-91906b12e801",
         "6192400e-94a0-4d8f-8d58-9d0b4fb02829",
         "98ef18d8-59a5-4981-9ec3-420cfdd0e8e7",
-        "20d7dc8d-e592-4128-9d4c-feb472208a64"
+        "20d7dc8d-e592-4128-9d4c-feb472208a64",
+        "fb34157b-6d1e-433f-9b80-7de0e4d67d75"
       ]
     }
   },
