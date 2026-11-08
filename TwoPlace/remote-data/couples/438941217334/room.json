@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794175543511,
+  "updatedAt": 1794175785947,
   "revision": 50,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 1078,
-    "hearts": 147,
+    "version": 1079,
+    "hearts": 152,
     "snacks": 3,
     "lastClaim": 1794175111045,
     "pets": {
@@ -3548,6 +3548,15 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794175785944,
+        "amount": 5,
+        "balance": 152,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793584445635,
@@ -3555,7 +3564,7 @@
       "hpPotions": 3,
       "staminaPotions": 4,
       "points": 2,
-      "totalClears": 45,
+      "totalClears": 46,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -5218,6 +5227,43 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "6c996b3436434ee59429ef47f8fd0a05",
+          "clearNo": 46,
+          "at": 1794175785944,
+          "startedAt": 1794175543508,
+          "durationMs": 235954,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -5244,8 +5290,134 @@
           "requestId": "ae264863-b035-4001-ace5-613d60c517fc",
           "startedAt": 1794175543508,
           "enemyCount": 32,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794175785944,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 46,
+          "cleared": [
+            "first-tree",
+            "first-rock",
+            168,
+            18,
+            37,
+            24,
+            55,
+            112,
+            52,
+            81,
+            86,
+            29,
+            173,
+            3,
+            11,
+            71,
+            42,
+            67,
+            158,
+            31,
+            169,
+            161,
+            96,
+            66,
+            137,
+            0,
+            77,
+            98,
+            73,
+            128,
+            165,
+            79,
+            2,
+            7,
+            126,
+            15,
+            41,
+            84,
+            48,
+            47,
+            60,
+            107,
+            10,
+            155,
+            27,
+            36,
+            72,
+            120,
+            134,
+            64,
+            32,
+            99,
+            131,
+            19,
+            127,
+            69,
+            156,
+            133,
+            102,
+            163,
+            17,
+            34,
+            125,
+            13,
+            68,
+            70,
+            92,
+            141,
+            12,
+            40,
+            154,
+            76,
+            6,
+            39,
+            95,
+            117,
+            108,
+            4,
+            160,
+            144,
+            88,
+            162,
+            22,
+            75,
+            150,
+            118,
+            8,
+            114,
+            139,
+            149,
+            74,
+            147,
+            82,
+            30,
+            78,
+            106,
+            14,
+            23,
+            59,
+            166
+          ]
         },
         "partner": {
           "id": "a59d9123a5204ffc809351aa9c9ed7a4",
@@ -5259,7 +5431,6 @@
         }
       },
       "operations": [
-        "1dd463f0-1cf3-41bc-8735-9d7558ceac9d",
         "5de8a9b9-8a8e-4f89-ba98-162bba03bf55",
         "cc05c829-0c23-4b2d-9b8e-64880c63d871",
         "ea7b1ea2-04cc-46ac-b078-157ae060b270",
@@ -5386,7 +5557,8 @@
         "4f227ab0-129f-4f10-8d7c-59f4454eb0f4",
         "7a6af8c0-974b-4c42-ada2-ab0a922e55e7",
         "0b7845da-5cb8-489a-8cc2-364fa1b0a41e",
-        "ae264863-b035-4001-ace5-613d60c517fc"
+        "ae264863-b035-4001-ace5-613d60c517fc",
+        "dcb5253d-2587-43ea-bff1-b11b1d9eff13"
       ]
     }
   },
