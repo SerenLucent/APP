@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794201026518,
+  "updatedAt": 1794202752235,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,10 +595,10 @@
     ]
   },
   "petHome": {
-    "version": 1150,
-    "hearts": 0,
+    "version": 1151,
+    "hearts": 10,
     "snacks": 9,
-    "lastClaim": 1794198038650,
+    "lastClaim": 1794202752232,
     "pets": {
       "mochi": {
         "hunger": 94,
@@ -3900,6 +3900,15 @@
         "character": "momo",
         "product": "shoeCabinet",
         "quantity": 1
+      },
+      {
+        "at": 1794202752232,
+        "amount": 10,
+        "balance": 10,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793584445635,
