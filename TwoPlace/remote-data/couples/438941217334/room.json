@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794203027401,
+  "updatedAt": 1794203043218,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 1153,
+    "version": 1154,
     "hearts": 10,
     "snacks": 9,
     "lastClaim": 1794202752232,
@@ -6194,42 +6194,14 @@
       },
       "runs": {
         "owner": {
-          "id": "7297cc4d79334d12bff23aa23840c9cb",
-          "seed": 1922550861,
-          "mode": "offense",
-          "requestId": "c64f4ee4-770f-4218-8c46-e0b88586a851",
-          "startedAt": 1794202952121,
-          "enemyCount": 0,
-          "finishedAt": 1794203027398,
-          "reward": {
-            "id": "point",
-            "label": "스테이터스 포인트 2개",
-            "field": "points",
-            "amount": 2,
-            "index": 9,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 61,
-          "cleared": [
-            "outpost-house"
-          ]
+          "id": "17ded15a55ce424e842239f156e1087f",
+          "seed": 400478554,
+          "mode": "explore",
+          "requestId": "50bcd7e0-4795-4295-b619-edc056737278",
+          "startedAt": 1794203043215,
+          "enemyCount": 36,
+          "finishedAt": null,
+          "reward": null
         },
         "partner": {
           "id": "52b090cf8dfd44bab805e2a8b7254e9c",
@@ -6270,7 +6242,6 @@
         }
       },
       "operations": [
-        "13874dac-f61e-4458-af8b-8c4dc41dea38",
         "5e68a846-03bd-459e-8dd5-a164fb6f2e1c",
         "82aed15f-d031-4a06-8a0b-4ccacbbb0f03",
         "851957bd-dd31-4e69-906d-2ec5c6ebcec5",
@@ -6397,7 +6368,8 @@
         "49e31b3c-fbee-4a67-a7bd-28da81abd683",
         "56c86e5d-0355-4682-8ad4-e3b653bf8047",
         "c64f4ee4-770f-4218-8c46-e0b88586a851",
-        "dd719dd0-2a6f-4cec-826b-6089cb37d18c"
+        "dd719dd0-2a6f-4cec-826b-6089cb37d18c",
+        "50bcd7e0-4795-4295-b619-edc056737278"
       ]
     }
   },
