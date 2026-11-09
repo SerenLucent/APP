@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794228710422,
+  "updatedAt": 1794228738268,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,9 +595,9 @@
     ]
   },
   "petHome": {
-    "version": 1165,
-    "hearts": 65,
-    "snacks": 7,
+    "version": 1166,
+    "hearts": 1,
+    "snacks": 23,
     "lastClaim": 1794227261283,
     "pets": {
       "mochi": {
@@ -3963,6 +3963,17 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794228738264,
+        "amount": -64,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "별사탕 먹이 16개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 16
       }
     ],
     "heartHistorySince": 1793584445635,
