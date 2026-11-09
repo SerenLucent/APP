@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794199779977,
+  "updatedAt": 1794199811932,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 1146,
-    "hearts": 60,
+    "version": 1147,
+    "hearts": 0,
     "snacks": 11,
     "lastClaim": 1794198038650,
     "pets": {
@@ -924,6 +924,13 @@
         "wallCol": 2,
         "wallRow": 0,
         "rotation": 0
+      },
+      {
+        "id": "24f68a46281a47ef8e66fc7e6b2e159a",
+        "product": "shoeCabinet",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -3880,6 +3887,17 @@
         "role": "partner",
         "character": "momo",
         "product": "wallpaperMint",
+        "quantity": 1
+      },
+      {
+        "at": 1794199811928,
+        "amount": -60,
+        "balance": 0,
+        "kind": "purchase",
+        "label": "현관 신발장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "shoeCabinet",
         "quantity": 1
       }
     ],
