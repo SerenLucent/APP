@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794199811932,
+  "updatedAt": 1794199840379,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 1147,
+    "version": 1148,
     "hearts": 0,
     "snacks": 11,
     "lastClaim": 1794198038650,
@@ -928,9 +928,10 @@
       {
         "id": "24f68a46281a47ef8e66fc7e6b2e159a",
         "product": "shoeCabinet",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "home",
+        "x": 16,
+        "y": 46.075,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
