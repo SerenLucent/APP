@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794199719479,
+  "updatedAt": 1794199769341,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,8 +595,8 @@
     ]
   },
   "petHome": {
-    "version": 1144,
-    "hearts": 100,
+    "version": 1145,
+    "hearts": 60,
     "snacks": 11,
     "lastClaim": 1794198038650,
     "pets": {
@@ -913,6 +913,13 @@
         "x": 50,
         "y": 65,
         "rotation": 0
+      },
+      {
+        "id": "f70613d366b24644b99be9684f753e8b",
+        "product": "wallpaperMint",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -3859,6 +3866,17 @@
         "label": "별잠산 룰렛 보상",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794199769336,
+        "amount": -40,
+        "balance": 60,
+        "kind": "purchase",
+        "label": "민트 리넨 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperMint",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
