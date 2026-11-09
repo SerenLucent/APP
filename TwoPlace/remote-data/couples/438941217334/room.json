@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794228940441,
+  "updatedAt": 1794257762526,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,10 +607,10 @@
     ]
   },
   "petHome": {
-    "version": 1170,
-    "hearts": 4,
+    "version": 1171,
+    "hearts": 14,
     "snacks": 23,
-    "lastClaim": 1794227261283,
+    "lastClaim": 1794257762523,
     "pets": {
       "mochi": {
         "hunger": 91,
@@ -3993,6 +3993,15 @@
         "balance": 4,
         "kind": "earn",
         "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794257762523,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
         "role": "partner",
         "character": "momo"
       }
