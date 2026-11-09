@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794198159406,
+  "updatedAt": 1794198268155,
   "revision": 52,
   "state": {
     "startDate": "2024-08-08",
@@ -595,7 +595,7 @@
     ]
   },
   "petHome": {
-    "version": 1121,
+    "version": 1122,
     "hearts": 84,
     "snacks": 11,
     "lastClaim": 1794198038650,
@@ -5810,41 +5810,14 @@
       },
       "runs": {
         "owner": {
-          "id": "190c63e14da3422f8b36c27a60a7c29b",
-          "seed": 420242401,
+          "id": "8b71b850fbf5492eadd69779163c30e7",
+          "seed": 2339485776,
           "mode": "offense",
-          "requestId": "a1ef43ba-596b-4494-9881-55313683f27a",
-          "startedAt": 1794193149031,
+          "requestId": "8c17652c-881c-44c1-91fa-89b36b6929b5",
+          "startedAt": 1794198268151,
           "enemyCount": 0,
-          "finishedAt": 1794198159404,
-          "reward": {
-            "id": "staminaPotion",
-            "label": "스태미나 회복약 1개",
-            "field": "staminaPotions",
-            "index": 4,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 53,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         },
         "partner": {
           "id": "714533538f0a408bb4de1ceeb3348162",
@@ -5858,7 +5831,6 @@
         }
       },
       "operations": [
-        "bcfbc3aa-c9e7-4290-b00a-eaf05d1588ce",
         "7a78c68f-7c3c-414b-8432-f156ab65bbb2",
         "05e95354-4bce-4cf9-9244-101f1a93f73b",
         "dbb0d66f-18ed-41b3-b1bf-c156e3511f06",
@@ -5985,7 +5957,8 @@
         "8e0ac4e4-d207-4ca3-8266-58a087a4c3cb",
         "3724d3db-60fc-49f0-b427-9626f35c9ad9",
         "a1ef43ba-596b-4494-9881-55313683f27a",
-        "14c842a9-ef83-4bdc-9b47-49366289a8b2"
+        "14c842a9-ef83-4bdc-9b47-49366289a8b2",
+        "8c17652c-881c-44c1-91fa-89b36b6929b5"
       ]
     }
   },
