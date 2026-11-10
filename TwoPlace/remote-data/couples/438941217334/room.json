@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794300402890,
+  "updatedAt": 1794300538519,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,7 +607,7 @@
     ]
   },
   "petHome": {
-    "version": 1209,
+    "version": 1210,
     "hearts": 84,
     "snacks": 17,
     "lastClaim": 1794298330061,
@@ -4233,10 +4233,10 @@
     ],
     "heartHistorySince": 1793584445635,
     "adventure": {
-      "hpPotions": 7,
+      "hpPotions": 8,
       "staminaPotions": 7,
       "points": 2,
-      "totalClears": 67,
+      "totalClears": 68,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -6717,6 +6717,45 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "9fe7857beaff4c69bdfa233dd0710e2a",
+          "clearNo": 68,
+          "at": 1794300538514,
+          "startedAt": 1794300402888,
+          "durationMs": 129045,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 36,
+          "mode": "explore",
+          "obstacles": 80,
+          "trees": 50,
+          "rocks": 30,
+          "houses": 0,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -6839,12 +6878,117 @@
           "requestId": "0350469a-f312-4631-aced-9bdba4326117",
           "startedAt": 1794300402888,
           "enemyCount": 36,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794300538514,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 68,
+          "cleared": [
+            "field-0",
+            "field-2",
+            "field-4",
+            "field-5",
+            "field-10",
+            "field-12",
+            "field-13",
+            "field-14",
+            "field-15",
+            "field-16",
+            "field-18",
+            "field-20",
+            "field-24",
+            "field-26",
+            "field-27",
+            "field-28",
+            "field-29",
+            "field-30",
+            "field-33",
+            "field-34",
+            "field-36",
+            "field-37",
+            "field-40",
+            "field-41",
+            "field-42",
+            "field-44",
+            "field-45",
+            "field-49",
+            "field-64",
+            "field-66",
+            "field-68",
+            "field-72",
+            "field-74",
+            "field-75",
+            "field-80",
+            "field-81",
+            "field-86",
+            "field-87",
+            "field-95",
+            "field-98",
+            "field-102",
+            "field-104",
+            "field-105",
+            "field-108",
+            "field-109",
+            "field-114",
+            "field-117",
+            "field-119",
+            "field-120",
+            "field-126",
+            "field-1",
+            "field-3",
+            "field-6",
+            "field-7",
+            "field-8",
+            "field-9",
+            "field-11",
+            "field-17",
+            "field-19",
+            "field-22",
+            "field-23",
+            "field-25",
+            "field-31",
+            "field-32",
+            "field-35",
+            "field-67",
+            "field-73",
+            "field-78",
+            "field-84",
+            "field-90",
+            "field-96",
+            "field-101",
+            "field-106",
+            "field-111",
+            "field-125",
+            "field-130",
+            "field-132",
+            "field-140",
+            "field-141",
+            "field-145"
+          ]
         }
       },
       "operations": [
-        "a6e59f34-7f6d-4c4e-87b8-c6df8d482149",
         "dd58da9d-7c7e-4ee2-90ff-ba07a5272264",
         "37c2158e-0f00-4aeb-9192-1d4e3a6c190b",
         "82c0ed3b-4938-4027-9d85-1ac308b842f1",
@@ -6971,7 +7115,8 @@
         "8bcfa8b0-8494-4a35-9d42-0cbde8617d8d",
         "ba573534-0a36-4e22-866a-507500d71749",
         "499543ad-4213-40cf-99b4-d7a23b988491",
-        "0350469a-f312-4631-aced-9bdba4326117"
+        "0350469a-f312-4631-aced-9bdba4326117",
+        "a595474c-bbf6-4fbf-a37c-18e9eb897084"
       ]
     }
   },
