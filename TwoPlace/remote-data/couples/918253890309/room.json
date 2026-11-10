@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794304120315,
+  "updatedAt": 1794304203769,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,15 +75,15 @@
     "notes": []
   },
   "petHome": {
-    "version": 245,
-    "hearts": 14,
+    "version": 246,
+    "hearts": 15,
     "snacks": 2,
     "lastClaim": 1794302357462,
     "pets": {
       "mochi": {
         "hunger": 25,
         "updatedAt": 1794302407148,
-        "affinityAt": 1794302366063,
+        "affinityAt": 1794304203768,
         "energyAt": 1794302372869,
         "affinity": 100,
         "energy": 100
@@ -153,8 +153,8 @@
       "mochi": {
         "pat": {
           "day": "2026-11-10",
-          "count": 2,
-          "lastAt": 1794302366063
+          "count": 3,
+          "lastAt": 1794304203768
         },
         "sleep": {
           "day": "2026-11-10",
@@ -807,6 +807,15 @@
         "balance": 14,
         "kind": "earn",
         "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794304203768,
+        "amount": 1,
+        "balance": 15,
+        "kind": "earn",
+        "label": "애정 보너스",
         "role": "owner",
         "character": "kuki"
       }
