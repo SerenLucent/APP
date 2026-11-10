@@ -3,8 +3,45 @@ import {initialAdventure,characterStats,rollAttack,investAdventurePoint} from '.
 test('independent stats have requested bases, point increments and 100-point caps',()=>{assert.deepEqual(characterStats('momo'),{maxHp:100,maxSp:100,minAttack:8,maxAttack:15,critical:.1,dexterity:0});assert.equal(characterStats('kuki').critical,.05);const max=characterStats('kuki',{strength:100,vitality:100,stamina:100,luck:100,dexterity:100});assert.equal(max.maxHp,600);assert.equal(max.maxSp,600);assert.equal(max.minAttack,110);assert.equal(max.maxAttack,220);assert.equal(max.critical,.55);let p=initialAdventure();p.points=2;p=investAdventurePoint(p,'momo','strength');assert.equal(p.stats.momo.strength,1);assert.equal(p.stats.kuki.strength,0);p.stats.momo.strength=100;assert.throws(()=>investAdventurePoint(p,'momo','strength'));});
 test('dexterity biases damage toward maximum and is exactly max at 100, crit is separate',()=>{const rng=()=>.5;assert.ok(rollAttack('momo',{dexterity:70},rng).base>rollAttack('momo',{},rng).base);assert.equal(rollAttack('kuki',{dexterity:100},rng).base,20);let n=0;const crit=rollAttack('momo',{},()=>n++===0?.5:0);assert.equal(crit.critical,true);assert.equal(crit.damage,crit.base*2);});
 import {applyAdventureAction,adventureState,ADVENTURE_REWARDS,rouletteTable,rouletteTier} from '../shared/adventure-progression.js';
-import {createObstacles} from '../shared/adventure-field.js';
+import {adventureLevel} from '../shared/adventure-progression.js';
+
+test('batch applies both friends in one version, rejects the whole invalid batch and deduplicates retries',()=>{
+ const home=initialPetHome();
+ home.adventure=initialAdventure();
+ home.adventure.points=12;
+ const action={type:'adventureInvestBatch',actionId:'invest-batch-000001',version:home.version,allocations:{momo:{strength:10},kuki:{luck:2}}};
+ const apply=(current,request)=>changePetHome(current,request,1000,()=>'',{role:'owner'});
+ assert.throws(()=>apply(home,{...action,allocations:{momo:{strength:10},kuki:{luck:3}}}));
+ assert.equal(home.adventure.stats.momo.strength,0);
+ assert.equal(home.adventure.points,12);
+ const updated=apply(home,action);
+ assert.equal(updated.version,home.version+1);
+ assert.equal(updated.adventure.points,0);
+ assert.deepEqual(adventureLevel(updated.adventure.stats.momo),{level:2,progress:0});
+ assert.deepEqual(adventureLevel(updated.adventure.stats.kuki),{level:1,progress:2});
+ assert.deepEqual(apply(updated,{...action,version:updated.version}).adventure,updated.adventure);
+});
+import {createObstacles,EXPLORATION_FIELD_VERSION,explorationProof} from '../shared/adventure-field.js';
 import {changePetHome,initialPetHome} from '../server/pets.js';
+test('mixed field clears require 50 trees and 30 rocks, including after migrating an existing run',()=>{
+ const home={hearts:0};
+ const start=(actionId,fieldVersion,id)=>applyAdventureAction(home,{type:'adventureStart',actionId,fieldVersion},1000,()=>id,'owner');
+ start('legacy-start-000000',1,'12345678-1234-1234-1234-123456789012');
+ const previous=home.adventure.runs.owner;
+ start('mixed-start-0000000',EXPLORATION_FIELD_VERSION,'22345678-1234-1234-1234-123456789012');
+ const run=home.adventure.runs.owner;
+ assert.notEqual(run.id,previous.id);
+ const objects=createObstacles(run.seed,run.fieldVersion);
+ const trees=objects.filter(o=>o.type==='tree'), rocks=objects.filter(o=>o.type==='rock');
+ assert.equal(trees.length,100);
+ assert.equal(rocks.length,60);
+ const finish=cleared=>applyAdventureAction(home,{type:'adventureFinish',actionId:'mixed-finish-000000',runId:run.id,cleared},2000,()=>'', 'owner');
+ assert.throws(()=>finish([...trees.slice(0,51),...rocks.slice(0,29)].map(o=>o.id)),/나무 50개와 바위 30개/);
+ for(const item of [...trees.slice(0,70),...rocks.slice(0,30)])item.hp=0;
+ finish(explorationProof(objects));
+ const [entry]=home.adventure.history;
+ assert.deepEqual([entry.obstacles,entry.trees,entry.rocks],[80,50,30]);
+});
 test('each roulette reward is granted once and only after 100 distinct field obstacles from the current run',()=>{
  for(let i=0;i<6;i++){const home={hearts:0};applyAdventureAction(home,{type:'adventureStart',actionId:'start-action-00000000'},1000,()=>('12345678-1234-1234-1234-123456789012'),'owner');const run=home.adventure.runs.owner,ids=createObstacles(run.seed).slice(0,100).map(o=>o.id);assert.equal(createObstacles(run.seed).length,160);assert.throws(()=>applyAdventureAction(home,{type:'adventureFinish',actionId:'finish-action-000000',runId:run.id,cleared:ids.slice(1)},2000,()=>'', 'owner'));assert.throws(()=>applyAdventureAction(home,{type:'adventureFinish',actionId:'finish-action-000000',runId:run.id,cleared:Array(100).fill(ids[0])},2000,()=>'', 'owner'));applyAdventureAction(home,{type:'adventureFinish',actionId:'finish-action-000000',runId:run.id,cleared:ids},1000000,()=>'', 'owner',()=>rouletteTable(999000).indexOf(ADVENTURE_REWARDS[i].id)/12+.001);const r=ADVENTURE_REWARDS[i];if(r.hearts)assert.equal(home.hearts,r.hearts);else assert.equal(home.adventure[r.field],r.amount||1);const previous=JSON.stringify(home);applyAdventureAction(home,{type:'adventureFinish',actionId:'finish-action-retry0',runId:run.id,cleared:ids},3000,()=>'', 'owner',()=>.9);assert.equal(JSON.stringify(home),previous);}
 });

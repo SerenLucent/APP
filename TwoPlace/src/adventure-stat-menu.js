@@ -1,0 +1,113 @@
+import {ADVENTURE_STATS, adventureLevel, characterStats} from '../shared/adventure-progression.js';
+import {createAdventureWallet} from './adventure-wallet.js';
+import './adventure-stat-menu.css';
+
+const pets = {
+ momo: {name:'모모', image:'mochi-standing-v2.png'},
+ kuki: {name:'쿠키', image:'kuki-standing-v2.png'},
+};
+const portrait = id => import.meta.env.BASE_URL+'pets/'+pets[id].image;
+const statValues = stats => ({
+ strength: ['공격력', stats.minAttack+'–'+stats.maxAttack],
+ vitality: ['최대 HP', stats.maxHp],
+ stamina: ['최대 스태미나', stats.maxSp],
+ luck: ['치명타', (stats.critical*100).toFixed(1)+'%'],
+ dexterity: ['최대 피해 보정', stats.dexterity+'%'],
+});
+
+export function mountAdventureStatMenu(button){
+ button.onclick=async()=>{
+  const wallet=createAdventureWallet();
+  const dialog=document.createElement('dialog');
+  dialog.className='adventure-stat-menu';
+  dialog.setAttribute('aria-label','스테이터스');
+  dialog.innerHTML='<div class="stats-header"><h2>스테이터스</h2><button type="button" data-close aria-label="닫기">×</button></div><div data-stat-content><p role="status">스테이터스를 불러오는 중…</p></div>';
+  document.body.append(dialog);
+  dialog.showModal();
+  const content=dialog.querySelector('[data-stat-content]');
+  let selected=null, saving=false, message='';
+  const draft={momo:{},kuki:{}};
+  const count=id=>Object.values(draft[id]).reduce((total,amount)=>total+amount,0);
+  dialog.querySelector('[data-close]').onclick=()=>{if(!saving)dialog.close();};
+  dialog.addEventListener('cancel',event=>{if(saving)event.preventDefault();});
+  dialog.addEventListener('close',()=>{dialog.remove();button.focus();},{once:true});
+
+  function render(){
+   const {stats,points}=wallet.profile;
+   const spent=count('momo')+count('kuki');
+   content.innerHTML='<div class="stats-characters">'+Object.keys(pets).map(id=>
+    '<button type="button" data-pet="'+id+'" aria-pressed="'+(selected===id)+'" '+(saving?'disabled':'')+'><img src="'+portrait(id)+'" alt=""><b>'+pets[id].name+'</b><small>Lv. '+adventureLevel(stats[id]).level+'</small></button>'
+   ).join('')+'</div><p class="stats-points">공유 포인트 <strong>'+points+'</strong>'+(spent?' · 배분 후 '+(points-spent):'')+'</p>';
+   if(!selected){
+    content.insertAdjacentHTML('beforeend','<p class="stats-hint">포인트를 배분할 친구를 골라 주세요.</p>');
+    return;
+   }
+   const saved=stats[selected];
+   const pending=Object.fromEntries(Object.keys(ADVENTURE_STATS).map(key=>[key,saved[key]+(draft[selected][key]||0)]));
+   const current=statValues(characterStats(selected,saved));
+   const preview=statValues(characterStats(selected,pending));
+   const savedLevel=adventureLevel(saved), nextLevel=adventureLevel(pending);
+   content.insertAdjacentHTML('beforeend',`
+    <div class="stats-hero">
+     <img src="${portrait(selected)}" alt="">
+     <strong>${pets[selected].name} · Lv. ${savedLevel.level}</strong>
+     <small>${count(selected)?'배분 후 Lv. '+nextLevel.level+' · ':''}다음 레벨 ${nextLevel.progress}/10</small>
+     <progress value="${nextLevel.progress}" max="10" aria-label="다음 레벨까지 배분한 포인트"></progress>
+    </div>
+    <dl class="stats-current" aria-label="현재 적용된 능력치">${Object.values(current).map(([label,value])=>'<div><dt>'+label+'</dt><dd>'+value+'</dd></div>').join('')}</dl>
+    <div class="stats-rows">${Object.entries(ADVENTURE_STATS).map(([key,stat])=>`
+     <div class="stats-row">
+      <div><b>${stat.name}</b> <small>${pending[key]}/100</small></div>
+      <span class="stats-delta">${current[key][0]} <strong>${current[key][1]}${draft[selected][key]?' → '+preview[key][1]:''}</strong></span>
+      <button type="button" data-minus="${key}" aria-label="${stat.name} 1포인트 빼기" ${saving||!draft[selected][key]?'disabled':''}>−</button>
+      <button type="button" data-plus="${key}" aria-label="${stat.name} 1포인트 추가" ${saving||spent>=points||pending[key]>=100?'disabled':''}>+</button>
+     </div>`).join('')}</div>
+    <button type="button" class="stats-apply" data-apply ${saving||!spent?'disabled':''}>${saving?'적용 중…':spent?'적용 · '+spent+'포인트':'적용'}</button>
+    <p class="stats-hint" role="status"></p>`);
+   content.querySelector('[role="status"]').textContent=message||'10포인트를 배분할 때마다 레벨이 1 올라요.';
+   dialog.querySelector('[data-close]').disabled=saving;
+  }
+
+  content.addEventListener('click',async event=>{
+   const control=event.target.closest('button');
+   if(!control||control.disabled||saving)return;
+   if(control.dataset.pet){
+    selected=control.dataset.pet;
+    render();
+    content.querySelector('[data-pet="'+selected+'"]').focus({preventScroll:true});
+    return;
+   }
+   const key=control.dataset.plus||control.dataset.minus;
+   if(key){
+    const points=(draft[selected][key]||0)+(control.dataset.plus?1:-1);
+    if(points)draft[selected][key]=points;
+    else delete draft[selected][key];
+    message='';
+    render();
+    content.querySelector('[data-'+(control.dataset.plus?'plus':'minus')+'="'+key+'"]').focus({preventScroll:true});
+   }else if(control.hasAttribute('data-apply')){
+    saving=true;
+    message='스테이터스를 적용하는 중이에요.';
+    render();
+    try{
+     await wallet.investBatch(draft);
+     draft.momo={};
+     draft.kuki={};
+     message='스테이터스를 적용했어요.';
+    }catch(error){
+     message=error.message;
+    }finally{
+     saving=false;
+     render();
+    }
+   }
+  });
+
+  try{
+   await wallet.init();
+   if(dialog.open)render();
+  }catch(error){
+   content.querySelector('[role="status"]').textContent=error.message;
+  }
+ };
+}

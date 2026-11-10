@@ -48,7 +48,7 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
   const home = structuredClone(current);
   switch(action.type) {
-    case 'adventureStart':case 'adventureFinish':case 'adventureInvest':case 'adventurePotion':applyAdventureAction(home,action,now,idFactory,actor.role);break;
+    case 'adventureStart':case 'adventureFinish':case 'adventureInvest':case 'adventureInvestBatch':case 'adventurePotion':applyAdventureAction(home,action,now,idFactory,actor.role);break;
     case 'claim': {
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');

@@ -1,6 +1,7 @@
 export const OFFENSE_BASE={x:1500,y:860,spawn:{x:1500,y:965},start:{x:1500,y:1120}};
+export const OUTPOST_MAX_HP=3000;
 export function createOffense(){
- const house={id:'outpost-house',type:'house',x:OFFENSE_BASE.x,y:OFFENSE_BASE.y,hp:6000,max:6000,radius:64,name:'방울이 산채 본체',flash:0};
+ const house={id:'outpost-house',type:'house',x:OFFENSE_BASE.x,y:OFFENSE_BASE.y,hp:OUTPOST_MAX_HP,max:OUTPOST_MAX_HP,radius:64,name:'방울이 산채 본체',flash:0};
  return {objects:[house],wave:0,nextWave:2,elapsed:0,spawned:0};
 }
 export function offenseProgress(objects){const house=objects.find(o=>o.type==='house');return {remainingHp:Math.max(0,house?.hp||0),maxHp:house?.max||1,complete:!!house&&house.hp<=0};}

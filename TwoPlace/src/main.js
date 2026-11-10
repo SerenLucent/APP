@@ -213,7 +213,7 @@ function home() {
   <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스 메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">둘만의 공유 플레이스</span> ${icon('arrow')}</span></button>
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
   <button class="menu-card transit-card" data-view="transit"><span class="tile-icon">${icon('train')}</span><span class="card-title">Transit Live</span><span class="card-desc">우리 만남의 시간을 지켜주는 실시간 지하철 정보</span><span class="card-bottom">수도권 실시간 열차 위치 ${icon('arrow')}</span></button>
-  <button class="menu-card game-card" data-action="game"><span class="tile-icon">${icon('game')}</span><span class="card-title">게임 하기</span><span class="card-desc">모모·쿠키와 숲을 개척해요</span><span class="card-bottom">장애물 100개 정리하고 룰렛 보상 ${icon('arrow')}</span></button>
+  <button class="menu-card game-card" data-action="game"><span class="tile-icon">${icon('game')}</span><span class="card-title">게임 하기</span><span class="card-desc">모모·쿠키와 숲을 개척해요</span><span class="card-bottom">나무 50개와 바위 30개 정리하고 룰렛 보상 ${icon('arrow')}</span></button>
   </div></section><aside class="today"><span class="today-flower">✳</span><div><span>${todayLabel}</span><p>오늘도 서로의 가장 가까운 편이 되어 주세요.</p></div></aside>`;
 }
 function eventDetailLink(event){return `상세보기${readRewardAvailable(event,room?.role,petHome?.calendarRewards)?' <span class="calendar-read-reward">+1 하트</span>':' ↗'}`;}

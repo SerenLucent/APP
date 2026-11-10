@@ -14,6 +14,13 @@ export function enemyPath(start,goal,obstacles){
  if(!found)return [];const path=[];let k=end;while(k!==origin){path.push({x:(k%COLS)*CELL+20,y:Math.floor(k/COLS)*CELL+20});k=parents.get(k);if(k===undefined)return [];}return path.reverse();
 }
 export function stepEnemy(enemy,player,obstacles,dt){
+ if(enemy.stun>0){
+  enemy.stun=Math.max(0,enemy.stun-dt);
+  enemy.windup=0;
+  enemy.repath=0;
+  return false;
+ }
+ if(enemy.training)return false;
  const before=enemy.mode;enemy.mode=enemyMode(enemy,player);enemy.cooldown=Math.max(0,enemy.cooldown-dt);enemy.repath-=dt;
  if(enemy.mode==='dead'||enemy.mode==='idle'){enemy.windup=0;enemy.path=[];return false;}
  if(before!==enemy.mode){enemy.path=[];enemy.repath=0;enemy.windup=0;}
