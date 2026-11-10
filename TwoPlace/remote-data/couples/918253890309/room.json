@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794313909592,
+  "updatedAt": 1794314748719,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,7 +75,7 @@
     "notes": []
   },
   "petHome": {
-    "version": 256,
+    "version": 257,
     "hearts": 32,
     "snacks": 0,
     "lastClaim": 1794313885996,
