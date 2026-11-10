@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794304102261,
+  "updatedAt": 1794304120315,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,7 +75,7 @@
     "notes": []
   },
   "petHome": {
-    "version": 244,
+    "version": 245,
     "hearts": 14,
     "snacks": 2,
     "lastClaim": 1794302357462,
@@ -913,42 +913,15 @@
       },
       "runs": {
         "owner": {
-          "id": "16ba0e3826ac44a086bfd2fbfd1e7e76",
-          "seed": 381292088,
-          "mode": "offense",
+          "id": "8eb2318ce7ce45b696312d6cc17824b8",
+          "seed": 2394042764,
+          "mode": "defense",
           "fieldVersion": 1,
-          "requestId": "f4db290a-5508-43a5-87c6-6701dfcb6f55",
-          "startedAt": 1794303512539,
-          "enemyCount": 0,
-          "finishedAt": 1794304102259,
-          "reward": {
-            "id": "heart5",
-            "label": "하트 5개",
-            "hearts": 5,
-            "index": 11,
-            "segments": [
-              "point",
-              "staminaPotion",
-              "heart3",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "staminaPotion",
-              "heart3",
-              "point",
-              "heart1",
-              "heart5"
-            ],
-            "tier": {
-              "id": "B",
-              "label": "B · 12분 이내"
-            }
-          },
-          "clearNo": 2,
-          "cleared": [
-            "outpost-house"
-          ]
+          "requestId": "f9b92413-8702-45d0-9539-fef18f9cd767",
+          "startedAt": 1794304120314,
+          "enemyCount": 58,
+          "finishedAt": null,
+          "reward": null
         }
       },
       "operations": [
@@ -957,7 +930,8 @@
         "cfe757d0-b0c6-4165-a680-7dbd087173ad",
         "a2c514de-c145-4853-b105-7f2298f32b3b",
         "f4db290a-5508-43a5-87c6-6701dfcb6f55",
-        "4b648a14-794d-4cc5-9f39-9057af57134d"
+        "4b648a14-794d-4cc5-9f39-9057af57134d",
+        "f9b92413-8702-45d0-9539-fef18f9cd767"
       ]
     }
   },
