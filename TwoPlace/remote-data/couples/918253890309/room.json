@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794273337789,
+  "updatedAt": 1794273350861,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,9 +75,9 @@
     "notes": []
   },
   "petHome": {
-    "version": 225,
-    "hearts": 11,
-    "snacks": 0,
+    "version": 226,
+    "hearts": 3,
+    "snacks": 2,
     "lastClaim": 1794061507368,
     "pets": {
       "mochi": {
@@ -704,6 +704,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794273350861,
+        "amount": -8,
+        "balance": 3,
+        "kind": "purchase",
+        "label": "별사탕 먹이 2개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 2
       }
     ],
     "heartHistorySince": 1793591777835
