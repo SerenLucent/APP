@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794273368185,
+  "updatedAt": 1794302357464,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,10 +75,10 @@
     "notes": []
   },
   "petHome": {
-    "version": 229,
-    "hearts": 13,
+    "version": 230,
+    "hearts": 18,
     "snacks": 0,
-    "lastClaim": 1794273368183,
+    "lastClaim": 1794302357462,
     "pets": {
       "mochi": {
         "hunger": 25,
@@ -724,6 +724,15 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794302357462,
+        "amount": 5,
+        "balance": 18,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793591777835
