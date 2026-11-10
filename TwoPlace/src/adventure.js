@@ -1,3 +1,4 @@
+import {DEFENSE_HOME,DEFENSE_WAVES,DEFENSE_TOTAL,DEFENSE_START,createDefense,stepDefense} from './adventure-defense.js';
 import {EXPLORATION_FIELD_VERSION,EXPLORATION_GOALS,explorationProof} from '../shared/adventure-field.js';
 import {KUKI_SLAM_RADIUS,KUKI_SLAM_MULTIPLIER,KUKI_WAVE_LIFE,drawGroundWave,drawPowerStar} from './adventure-kuki-slam.js';
 import {HEART_ORBIT_END,HEART_LAUNCH_END,HEART_FALL_TIME,HEART_IMPACT_RADIUS,createHeartMeteor,stepHeartMeteor,heartImpactTargets} from './adventure-heart-meteor.js';
@@ -34,14 +35,17 @@ const weaponImages={};for(const id of ['momo','kuki']){const im=new Image();im.s
 const switchImages={};for(const id of ['momo','kuki']){const im=new Image();im.src=base+'adventure/'+id+'-switch-v1.png';switchImages[id]=im;}
 const momoSpin=new Image();momoSpin.src=base+'adventure/momo-spin-v1.png';
 installGameTouchGuards(document);
-const offenseMode=new URLSearchParams(location.search).get('mode')==='offense';
-document.documentElement.classList.toggle('offense-mode',offenseMode);
+const modeParams=new URLSearchParams(location.search);
+const offenseMode=modeParams.get('mode')==='offense';
+const defenseDemo=modeParams.get('mode')==='defense'&&modeParams.get('demo')==='1';
+document.documentElement.classList.toggle('offense-mode',offenseMode||defenseDemo);
 const wallet=createAdventureWallet();
 const demoParams=new URLSearchParams(location.search);
-const heartMeteorDemo=!offenseMode&&demoParams.get('demo')==='1'&&demoParams.get('heartMeteorTest')==='1';
-const kukiSlamDemo=!offenseMode&&demoParams.get('demo')==='1'&&demoParams.get('kukiSlamTest')==='1';
+const heartMeteorDemo=!offenseMode&&!defenseDemo&&demoParams.get('demo')==='1'&&demoParams.get('heartMeteorTest')==='1';
+const kukiSlamDemo=!offenseMode&&!defenseDemo&&demoParams.get('demo')==='1'&&demoParams.get('kukiSlamTest')==='1';
 const skillDemo=heartMeteorDemo||kukiSlamDemo;
 const modes=document.createElement('button');modes.textContent='모험 선택';modes.onclick=()=>location.replace(base+'adventure-menu.html'+(wallet.local?'?demo=1':''));$('.top-actions').prepend(modes);
+if(defenseDemo)mountDefenseHud();
 if(offenseMode){$('.adventure-top h1').textContent='방울이 산채 원정';$('.location').textContent='원정 · 본체 파괴';$('.stage').insertAdjacentHTML('beforeend','<div class="outpost-health-panel"><div class="outpost-health-heading"><strong>산채 본체</strong><span data-outpost-hp>'+OUTPOST_MAX_HP.toLocaleString()+' / '+OUTPOST_MAX_HP.toLocaleString()+'</span></div><div class="outpost-health" role="progressbar" aria-label="산채 본체 HP" aria-valuemin="0" aria-valuemax="'+OUTPOST_MAX_HP+'"><i></i></div></div>');}
 
 function returnHome(){location.replace(base+(wallet.local?'demo.html?view=home':'index.html'));}
@@ -50,12 +54,16 @@ window.twoPlaceBack=()=>{const dialog=document.querySelector('dialog[open]');if(
 let state,keys=new Set(),stick={x:0,y:0},chargeSource=null,specialPointer=null,clock=0,last=0,hudClock=0,w=1000,h=600,dpr=1,paused=false,loading=true,loadError=false,shake=0;
 const camera={x:0,y:0,scale:1};
 function usesMixedField(){return !round||round.fieldVersion===EXPLORATION_FIELD_VERSION;}
-function reset(){loading=false;loadError=false;shake=0;state={active:'momo',pets:{momo:{hp:100,sp:100,gauge:0,powerTime:0},kuki:{hp:100,sp:100,gauge:0,powerTime:0}},p:{x:550,y:1040,fx:1,fy:0},objects:createObstacles(round?.seed,usesMixedField()?EXPLORATION_FIELD_VERSION:1),cleared:[],enemies:[],defeated:0,particles:[],texts:[],weaponDrops:[],hearts:[],kukiWave:null,heartMeteor:null,burst:null,attack:null,charge:null,basic:0,invuln:0,swap:0,target:null,trees:0,rocks:0,won:false,clearDelay:0,clearAge:0,dead:false,hitStop:0,switching:null};if(offenseMode){state.offense=createOffense();state.objects=state.offense.objects;Object.assign(state.p,OFFENSE_BASE.start);state.spawn={...OFFENSE_BASE.start};state.enemies=[];}else state.enemies=createEnemies([...state.objects,explorationHouseCollider()],round?.enemyCount??24);if(skillDemo){state.objects=[];state.active=kukiSlamDemo?'kuki':'momo';state.pets[state.active].gauge=100;state.enemies=(kukiSlamDemo?[[-177,22],[164,-24],[15,65],[300,8]]:[[-64,-28],[62,-22],[10,54],[190,5]]).map(([dx,dy],i)=>({id:'heart-demo-'+i,type:'enemy',training:true,x:state.p.x+dx,y:state.p.y+dy,hp:kukiSlamDemo?150:2500,max:kukiSlamDemo?150:2500,radius:22,mode:'idle',flash:0,windup:0}));}state.colliders=offenseMode?state.objects:[...state.objects,explorationHouseCollider()];if(wallet.local&&new URLSearchParams(location.search).get('weaponTest')==='1'){state.weaponDrops.push({owner:'momo',x:state.p.x-65,y:state.p.y,life:45},{owner:'kuki',x:state.p.x+65,y:state.p.y,life:45});}syncStats(true);keys.clear();stick={x:0,y:0};clock=0;chargeSource=null;specialPointer=null;paused=false;$('[data-pause]').disabled=false;$('[data-pause]').textContent='일시정지';$('.stage-message').hidden=true;status('나무는 모모로 넓게, 단단한 바위는 쿠키로 한 방에!');hud();}
+function reset(){loading=false;loadError=false;shake=0;state={active:'momo',pets:{momo:{hp:100,sp:100,gauge:0,powerTime:0},kuki:{hp:100,sp:100,gauge:0,powerTime:0}},p:{x:550,y:1040,fx:1,fy:0},objects:defenseDemo?[]:createObstacles(round?.seed,usesMixedField()?EXPLORATION_FIELD_VERSION:1),cleared:[],enemies:[],defeated:0,particles:[],texts:[],weaponDrops:[],hearts:[],kukiWave:null,heartMeteor:null,burst:null,attack:null,charge:null,basic:0,invuln:0,swap:0,target:null,trees:0,rocks:0,won:false,clearDelay:0,clearAge:0,dead:false,hitStop:0,switching:null};if(defenseDemo){
+ state.defense=createDefense();
+ Object.assign(state.p,DEFENSE_START,{fx:0,fy:-1});
+ state.spawn=DEFENSE_START;
+ }else if(offenseMode){state.offense=createOffense();state.objects=state.offense.objects;Object.assign(state.p,OFFENSE_BASE.start);state.spawn={...OFFENSE_BASE.start};state.enemies=[];}else state.enemies=createEnemies([...state.objects,explorationHouseCollider()],round?.enemyCount??24);if(skillDemo){state.objects=[];state.active=kukiSlamDemo?'kuki':'momo';state.pets[state.active].gauge=100;state.enemies=(kukiSlamDemo?[[-177,22],[164,-24],[15,65],[300,8]]:[[-64,-28],[62,-22],[10,54],[190,5]]).map(([dx,dy],i)=>({id:'heart-demo-'+i,type:'enemy',training:true,x:state.p.x+dx,y:state.p.y+dy,hp:kukiSlamDemo?150:2500,max:kukiSlamDemo?150:2500,radius:22,mode:'idle',flash:0,windup:0}));}state.colliders=defenseDemo?[state.defense.house]:offenseMode?state.objects:[...state.objects,explorationHouseCollider()];if(wallet.local&&new URLSearchParams(location.search).get('weaponTest')==='1'){state.weaponDrops.push({owner:'momo',x:state.p.x-65,y:state.p.y,life:45},{owner:'kuki',x:state.p.x+65,y:state.p.y,life:45});}syncStats(true);keys.clear();stick={x:0,y:0};clock=0;chargeSource=null;specialPointer=null;paused=false;$('[data-pause]').disabled=false;$('[data-pause]').textContent='일시정지';$('.stage-message').hidden=true;status('나무는 모모로 넓게, 단단한 바위는 쿠키로 한 방에!');hud();}
 function syncStats(fill=false){if(!state)return;for(const id of ['momo','kuki']){const stats=characterStats(id,wallet.profile.stats[id]),p=state.pets[id],oldHp=p.maxHp??100,oldSp=p.maxSp??100;p.maxHp=stats.maxHp;p.maxSp=stats.maxSp;p.hp=fill?p.maxHp:p.hp>0?Math.min(p.maxHp,p.hp+Math.max(0,p.maxHp-oldHp)):0;p.sp=fill?p.maxSp:Math.min(p.maxSp,p.sp+Math.max(0,p.maxSp-oldSp));}}
 function activePowerMultiplier(id){return id==='momo'&&state.pets.momo.powerTime>0?1.2:powerMultiplier(id,state.pets[id]);}
 function damageMultiplier(id){return activePowerMultiplier(id)*weaponMultiplier(state.pets[id]);}
 function attackRoll(base=null){const id=state.active,hit=rollAttack(id,wallet.profile.stats[id]),normal=id==='momo'?11.5:15;return {...hit,damage:(base===null?hit.damage:base*hit.damage/normal)*damageMultiplier(id)};}
-async function newRound(restart=false){loading=true;loadError=false;togglePause(true);status('탐험 기록을 준비하고 있어요…');try{await loadEnvironment();if(!skillDemo)round=await wallet.start(restart,offenseMode?'offense':'explore');reset();progressUI?.refresh();status(kukiSlamDemo?'별똥별 쿵 시안 · E 또는 필살기 버튼을 눌러 보세요.':heartMeteorDemo?'하트 팡 테스트 · E 또는 필살기 버튼을 눌러 보세요.':offenseMode?'주변에서 몰려오는 적을 상대하며 산채 본체를 파괴하세요.':(wallet.local?'테스트 탐험':'커플방 탐험')+(usesMixedField()?' · 나무 50개와 바위 30개를 정리하세요!':' · 장애물 100개 정리 후 룰렛 보상!'));}catch(e){loading=false;loadError=true;status(e.message+' · 서버에 새 GAS 코드가 필요할 수 있어요.');togglePause(true);}}
+async function newRound(restart=false){loading=true;loadError=false;togglePause(true);status('탐험 기록을 준비하고 있어요…');try{await loadEnvironment();if(!skillDemo)round=await wallet.start(restart,defenseDemo?'defense':offenseMode?'offense':'explore');reset();progressUI?.refresh();status(defenseDemo?'집을 향해 오는 방울이를 막으세요. 첫 공격이 곧 시작돼요.':kukiSlamDemo?'별똥별 쿵 시안 · E 또는 필살기 버튼을 눌러 보세요.':heartMeteorDemo?'하트 팡 테스트 · E 또는 필살기 버튼을 눌러 보세요.':offenseMode?'주변에서 몰려오는 적을 상대하며 산채 본체를 파괴하세요.':(wallet.local?'테스트 탐험':'커플방 탐험')+(usesMixedField()?' · 나무 50개와 바위 30개를 정리하세요!':' · 장애물 100개 정리 후 룰렛 보상!'));}catch(e){loading=false;loadError=true;status(e.message+' · 서버에 새 GAS 코드가 필요할 수 있어요.');togglePause(true);}}
 function status(text){$('[data-status]').textContent=text;}
 function float(x,y,text,color='#fff1b2',critical=false){state.texts.push({x,y,text,color,t:1.2,critical});}
 function particles(x,y,color,n=14){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=30+Math.random()*130;state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-45,t:.35+Math.random()*.45,color,size:2+Math.random()*5});}}
@@ -146,20 +154,21 @@ function update(dt){clock+=dt;const p=state.p;state.swap=Math.max(0,state.swap-d
  for(const drop of state.weaponDrops){drop.life-=dt;if(Math.hypot(drop.x-p.x,drop.y-p.y)<32&&collectWeapon(state.pets[state.active],drop,state.active)){drop.life=0;float(p.x,p.y-100,(state.active==='momo'?'하트봉':'별망치')+' 획득! ×1.5 · 10회',state.active==='momo'?'#ffb7d5':'#ffe495');}}state.weaponDrops=state.weaponDrops.filter(d=>d.life>0);
  for(const id of ['momo','kuki'])if(id!==state.active)recoverPet(state.pets[id],dt,true);else if(!state.burst&&!state.attack&&!state.charge&&!state.basic)recoverPet(state.pets[id],dt,false);
  if(offenseMode){const fresh=stepOffense(state.offense,state.enemies,state.objects,dt,p);if(fresh.length){state.enemies=state.enemies.filter(e=>e.hp>0);state.enemies.push(...fresh);float(OFFENSE_BASE.spawn.x,OFFENSE_BASE.spawn.y-65,'집 지킴이 +'+fresh.length,'#ffd3ad');status('증원 '+state.offense.wave+'차 · 사방에서 집 지킴이가 몰려와요!');}}
- for(const enemy of state.enemies)if(stepEnemy(enemy,p,offenseMode?state.colliders.filter(o=>!o.enemyPass):state.colliders,dt))hurtPlayer(10);
- if(!offenseMode&&thorns.some(t=>Math.hypot(t.x-p.x,t.y-p.y)<t.r))hurtPlayer(12);
+ if(defenseDemo)updateDefense(dt);
+ else for(const enemy of state.enemies)if(stepEnemy(enemy,p,offenseMode?state.colliders.filter(o=>!o.enemyPass):state.colliders,dt))hurtPlayer(10);
+ if(!offenseMode&&!defenseDemo&&thorns.some(t=>Math.hypot(t.x-p.x,t.y-p.y)<t.r))hurtPlayer(12);
 
  if(offenseMode&&offenseProgress(state.objects).complete){beginClear();}
  const explorationCleared=usesMixedField()
   ?state.trees>=EXPLORATION_GOALS.tree&&state.rocks>=EXPLORATION_GOALS.rock
   :state.trees+state.rocks>=100;
- if(!offenseMode&&explorationCleared)beginClear();
+ if(!offenseMode&&!defenseDemo&&explorationCleared)beginClear();
  }
- if(state.clearDelay>0){state.clearAge+=dt;state.clearDelay=Math.max(0,state.clearDelay-dt);if(!state.clearDelay){if(offenseMode)completeOffense();else progressUI.roulette(round.id,usesMixedField()?explorationProof(state.objects):state.cleared.slice(0,100));}}
+ if(state.clearDelay>0){state.clearAge+=dt;state.clearDelay=Math.max(0,state.clearDelay-dt);if(!state.clearDelay){if(defenseDemo)progressUI.roulette(round.id,state.enemies.filter(enemy=>enemy.hp<=0).map(enemy=>enemy.id));else if(offenseMode)completeOffense();else progressUI.roulette(round.id,usesMixedField()?explorationProof(state.objects):state.cleared.slice(0,100));}}
  for(const o of combatTargets())o.flash=Math.max(0,o.flash-dt);for(const q of state.particles){q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=(q.star?110:q.burst?0:190)*dt;q.t-=dt;if(q.star)q.angle+=q.spin*dt;}state.particles=state.particles.filter(q=>q.t>0);for(const q of state.texts){q.y-=23*dt;q.t-=dt;}state.texts=state.texts.filter(q=>q.t>0);
  hudClock+=dt;if(hudClock>.08){hudClock=0;hud();}
 }
-function hurtPlayer(damage){if(state.switching||state.invuln||state.burst||state.dead||state.won)return;const p=state.p;state.pets[state.active].hp=Math.max(0,state.pets[state.active].hp-damage);state.invuln=1;float(p.x,p.y-85,'HP −'+damage,'#ffc0c0');shake=5;if(!state.pets[state.active].hp){cancelCharge();state.attack=null;const other=state.active==='momo'?'kuki':'momo';if(state.pets[other].hp>0){state.active=other;Object.assign(p,offenseMode?OFFENSE_BASE.start:{x:550,y:1040});status('친구가 쓰러졌어요! 남은 친구가 안전한 곳으로 돌아왔어요.');}else{state.dead=true;message('잠깐 쉬어갈까요?','상단 처음부터 버튼으로 다시 도전할 수 있어요.');}}}
+function hurtPlayer(damage){if(state.switching||state.invuln||state.burst||state.dead||state.won)return;const p=state.p;state.pets[state.active].hp=Math.max(0,state.pets[state.active].hp-damage);state.invuln=1;float(p.x,p.y-85,'HP −'+damage,'#ffc0c0');shake=5;if(!state.pets[state.active].hp){cancelCharge();state.attack=null;const other=state.active==='momo'?'kuki':'momo';if(state.pets[other].hp>0){state.active=other;Object.assign(p,defenseDemo?DEFENSE_START:offenseMode?OFFENSE_BASE.start:{x:550,y:1040});status('친구가 쓰러졌어요! 남은 친구가 안전한 곳으로 돌아왔어요.');}else{state.dead=true;message('잠깐 쉬어갈까요?','상단 처음부터 버튼으로 다시 도전할 수 있어요.');}}}
 function message(title,copy){const m=$('.stage-message');m.hidden=false;m.querySelector('strong').textContent=title;m.querySelector('span').textContent=copy;}
 function hud(){progressUI?.refresh();for(const id of ['momo','kuki']){const c=$(`[data-fighter="${id}"]`),pet=state.pets[id],reserve=id!==state.active;c.classList.toggle('active',!reserve);c.querySelector('[data-state]').textContent=pet.hp<=0?'쓰러짐':reserve?(pet.hp>=100&&pet.sp>=100?'대기 · 회복 완료':'회복 중 ↑ HP · SP'):'PLAYING · 출전';c.querySelector('[data-hp]').style.width=pet.hp/pet.maxHp*100+'%';c.querySelector('[data-sp]').style.width=pet.sp/pet.maxSp*100+'%';c.querySelector('[data-hp-text]').textContent=Math.ceil(pet.hp)+'/'+pet.maxHp;c.querySelector('[data-sp-text]').textContent=Math.floor(pet.sp)+'/'+pet.maxSp;c.querySelector('[data-gauge]').style.width=pet.gauge+'%';c.querySelector('[data-gauge-text]').textContent=pet.gauge+'/100';const buff=c.querySelector('[data-power]');buff.hidden=!pet.powerTime;buff.textContent='공격력 +20% · '+Math.ceil(pet.powerTime)+'초'+(reserve?' (대기 중 정지)':'');}
  const pet=state.pets[state.active],ready=pet.gauge>=100,gaugeButton=$('[data-gauge-skill]');$('[data-gauge-name]').textContent=state.active==='momo'?'하트 팡!':'별똥별 쿵!';$('[data-gauge-value]').textContent=pet.gauge+' / 100';$('.skill-track i').style.width=pet.gauge+'%';$('.skill-track').setAttribute('aria-valuenow',String(pet.gauge));$('.gauge-panel').classList.toggle('ready',ready);gaugeButton.disabled=!ready||(state.active==='momo'&&!!state.heartMeteor)||!!state.switching||!!state.burst||!!state.attack||!!state.charge||state.basic>0||paused||state.dead||state.won;gaugeButton.innerHTML='필살기<small>'+(state.burst?'사용 중':ready?'사용 가능':pet.gauge+' / 100')+'</small>';gaugeButton.setAttribute('aria-label','필살기 · '+(ready?'사용 가능':pet.gauge+' / 100 · 충전 중'));$('[data-gauge-help]').textContent=state.active==='momo'?'운석 5회 · 쿠키 공격력 +20% 하트':'기본 공격 ×5 · 3초 기절 · 모모 공격력 +20% 별';
@@ -167,6 +176,7 @@ function hud(){progressUI?.refresh();for(const id of ['momo','kuki']){const c=$(
  if(offenseMode){const progress=offenseProgress(state.objects),bar=$('.outpost-health');bar.querySelector('i').style.width=progress.remainingHp/progress.maxHp*100+'%';bar.setAttribute('aria-valuenow',Math.ceil(progress.remainingHp));$('[data-outpost-hp]').textContent=Math.ceil(progress.remainingHp).toLocaleString()+' / '+progress.maxHp.toLocaleString()+' · '+Math.ceil(progress.remainingHp/progress.maxHp*100)+'%';}
  const living=state.enemies.filter(e=>e.hp>0);$('[data-enemy-status]').textContent='추격 '+living.filter(e=>e.mode==='chase').length+' · 귀환 '+living.filter(e=>e.mode==='return').length+' · 대기 '+living.filter(e=>e.mode==='idle').length;
  $('.mission strong').textContent=offenseMode?'산채 본체 파괴':skillDemo?'필살기 연습':usesMixedField()?`나무 ${Math.min(state.trees,EXPLORATION_GOALS.tree)}/${EXPLORATION_GOALS.tree} · 바위 ${Math.min(state.rocks,EXPLORATION_GOALS.rock)}/${EXPLORATION_GOALS.rock}`:`장애물 ${state.trees+state.rocks} / 100`;$('[data-progress]').textContent=offenseMode?`증원 ${state.offense.wave}차`:`적 ${state.defeated} / ${state.enemies.length} 퇴치`;
+ if(defenseDemo)updateDefenseHud();
  const charge=$('.charge-readout');charge.hidden=!state.charge&&!state.attack;if(state.charge){const plan=skillPlan(state.active,state.charge.time,state.pets[state.active].sp);charge.querySelector('strong').textContent=!plan.ready?`차지 준비${state.active==='kuki'?' · 100%':''} · ${Math.max(0,CHARGE_DELAY-state.charge.time).toFixed(1)}초 후 충전`:state.active==='momo'?`귀 회오리 · 목표 ${plan.duration.toFixed(1)}초 / 가능 ${plan.usableDuration.toFixed(1)}초`:`별꼬리 회전 · 공격 배율 ${Math.round((1+19*plan.power)*100)}%`;charge.querySelector('span').textContent=plan.ready?(state.active==='momo'?`회전 중 초당 ${plan.drainRate.toFixed(1)} 소모 · 0이면 멈춤`:`적용 ${Math.round(plan.damage/15*100*powerMultiplier(state.active,state.pets[state.active]))}% · 스태미나 ${Math.round(plan.cost)} / ${Math.round(plan.requiredCost)}`):'1초 이내에 놓으면 취소 · 이동속도 50%';charge.querySelector('i').style.width=plan.power*100+'%';}else if(state.attack){const a=state.attack;charge.querySelector('strong').textContent=a.id==='momo'?`회전 중 · ${Math.min(a.duration-a.t,state.pets.momo.sp/a.drainRate).toFixed(1)}초 남음`:'별꼬리 회전 타격!';charge.querySelector('span').textContent=a.id==='momo'?'스태미나가 계속 줄어요 · 0이면 회전 종료':'보유 스태미나에 맞춘 위력으로 타격해요';charge.querySelector('i').style.width=Math.max(0,(1-a.t/a.duration)*100)+'%';}
  $('[data-special]').classList.toggle('holding',!!state.charge);$('[data-basic]').disabled=!!state.switching||paused||state.dead||state.won;$('[data-special]').disabled=!!state.switching||paused||state.dead||state.won;$('[data-switch]').disabled=!!state.switching||!!state.burst||!!state.attack||!!state.charge||state.swap>0||state.dead||state.won;$('[data-switch] small').textContent=state.switching?'교체 중 · 무적':`Q · ${state.active==='momo'?'쿠키':'모모'}로`;
 }
@@ -185,15 +195,15 @@ function drawPlayer(){const p=state.p,id=state.active,a=state.attack;if(state.sw
  if(state.pets[id].weaponDurability>0){ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffe9b6';ctx.strokeStyle='#3e5842';ctx.lineWidth=3;const label='×1.5 · '+state.pets[id].weaponDurability+'/10';ctx.strokeText(label,p.x,p.y-112);ctx.fillText(label,p.x,p.y-112);}
  ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff8df';ctx.strokeStyle='#3e5842';ctx.lineWidth=3;ctx.strokeText(id==='momo'?'모모':'쿠키',p.x,p.y+24);ctx.fillText(id==='momo'?'모모':'쿠키',p.x,p.y+24);
 }
-function draw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);const scale=w<650?.82:1.04;camera.scale=scale;camera.x=state.p.x-w/(2*scale);camera.y=state.p.y-h*(offenseMode?.6:.5)/scale;ctx.save();const sceneShake=visibleShake(shake,paused,state.won||state.dead);ctx.translate(-camera.x*scale+(Math.random()-.5)*sceneShake,-camera.y*scale+(Math.random()-.5)*sceneShake);ctx.scale(scale,scale);
+function draw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);const scale=defenseDemo?Math.min(w/620,h/425,1):w<650?.82:1.04;camera.scale=scale;camera.x=(defenseDemo?(state.p.x*.25+DEFENSE_HOME.x*.75):state.p.x)-w/(2*scale);camera.y=(defenseDemo?(state.p.y*.25+DEFENSE_HOME.y*.75):state.p.y)-h*(defenseDemo?.59:offenseMode?.6:.5)/scale;ctx.save();const sceneShake=visibleShake(shake,paused,state.won||state.dead);ctx.translate(-camera.x*scale+(Math.random()-.5)*sceneShake,-camera.y*scale+(Math.random()-.5)*sceneShake);ctx.scale(scale,scale);
  drawEnvironmentGround(ctx);
- for(const t of (offenseMode?[]:thorns)){if(!drawEnvironmentProp(ctx,'trap',t,{width:t.r*2.15,height:t.r*1.4,anchor:t.r*.5})){ellipse(t.x,t.y,t.r,t.r*.48,'#916f5855');ctx.strokeStyle='#aa765d';ctx.lineWidth=3;for(let i=0;i<9;i++){const x=t.x+Math.cos(i*2.4)*t.r*.7,y=t.y+Math.sin(i*2.4)*t.r*.3;ctx.beginPath();ctx.moveTo(x-9,y+5);ctx.lineTo(x,y-15);ctx.lineTo(x+9,y+4);ctx.stroke();}}ctx.fillStyle='#fff1b5';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('가시덤불 · 주의',t.x,t.y+t.r*.55+12);}
+ for(const t of (offenseMode||defenseDemo?[]:thorns)){if(!drawEnvironmentProp(ctx,'trap',t,{width:t.r*2.15,height:t.r*1.4,anchor:t.r*.5})){ellipse(t.x,t.y,t.r,t.r*.48,'#916f5855');ctx.strokeStyle='#aa765d';ctx.lineWidth=3;for(let i=0;i<9;i++){const x=t.x+Math.cos(i*2.4)*t.r*.7,y=t.y+Math.sin(i*2.4)*t.r*.3;ctx.beginPath();ctx.moveTo(x-9,y+5);ctx.lineTo(x,y-15);ctx.lineTo(x+9,y+4);ctx.stroke();}}ctx.fillStyle='#fff1b5';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('가시덤불 · 주의',t.x,t.y+t.r*.55+12);}
 
  if(state.kukiWave)drawGroundWave(ctx,state.kukiWave.x,state.kukiWave.y,(clock-state.kukiWave.start)/KUKI_WAVE_LIFE);
  for(const particle of state.particles){
   if(particle.groundWave)drawGroundWave(ctx,particle.x,particle.y,1-particle.t/particle.life,particle.size,'pink');
  }
- const visible=state.objects.filter(o=>o.x>camera.x-130&&o.x<camera.x+w/scale+130&&o.y>camera.y-50&&o.y<camera.y+h/scale+180);const entities=visible.map(o=>({y:o.y,draw:()=>offenseMode?drawOutpostPart(ctx,o):o.type==='tree'?tree(o):rock(o)}));for(const drop of state.weaponDrops)entities.push({y:drop.y,draw:()=>drawWeaponDrop(drop)});for(const heart of state.hearts)entities.push({y:heartPose(heart).y,draw:()=>drawHeart(heart)});for(const e of state.enemies)if(e.hp>0&&Math.abs(e.x-state.p.x)<w/camera.scale&&Math.abs(e.y-state.p.y)<h/camera.scale)entities.push({y:e.y,draw:()=>drawEnemy(e)});entities.push({y:state.p.y,draw:drawPlayer},offenseMode?{y:OFFENSE_BASE.y,draw:()=>drawOutpost(ctx,offenseProgress(state.objects),clock,state.clearAge)}:{y:465,draw:house});entities.sort((a,b)=>a.y-b.y);for(const e of entities)e.draw();
+ const visible=state.objects.filter(o=>o.x>camera.x-130&&o.x<camera.x+w/scale+130&&o.y>camera.y-50&&o.y<camera.y+h/scale+180);const entities=visible.map(o=>({y:o.y,draw:()=>offenseMode?drawOutpostPart(ctx,o):o.type==='tree'?tree(o):rock(o)}));for(const drop of state.weaponDrops)entities.push({y:drop.y,draw:()=>drawWeaponDrop(drop)});for(const heart of state.hearts)entities.push({y:heartPose(heart).y,draw:()=>drawHeart(heart)});for(const e of state.enemies)if(e.hp>0&&Math.abs(e.x-state.p.x)<w/camera.scale&&Math.abs(e.y-state.p.y)<h/camera.scale)entities.push({y:e.y,draw:()=>drawEnemy(e)});entities.push({y:state.p.y,draw:drawPlayer},offenseMode?{y:OFFENSE_BASE.y,draw:()=>drawOutpost(ctx,offenseProgress(state.objects),clock,state.clearAge)}:defenseDemo?{y:DEFENSE_HOME.y,draw:drawDefenseHome}:{y:465,draw:house});entities.sort((a,b)=>a.y-b.y);for(const e of entities)e.draw();
  if(state.heartMeteor)drawHeartMeteor(state.heartMeteor);
  for(const o of visible)if(o.type!=='core'&&o.hp>0&&Math.hypot(o.x-state.p.x,o.y-state.p.y)<190){const yy=o.y-(o.type==='tree'?142:o.type==='wall'?110:78);ctx.fillStyle='#2f4439cc';ctx.fillRect(o.x-29,yy,58,6);ctx.fillStyle=o.type==='tree'?'#d0dba1':'#cad2bd';ctx.fillRect(o.x-29,yy,58*o.hp/o.max,6);ctx.font='10px sans-serif';ctx.fillStyle='#fff4d8';ctx.textAlign='center';ctx.fillText(`${o.name||(o.type==='tree'?'나무':'바위')} ${Math.ceil(o.hp)}/${o.max}`,o.x,yy-5);}
  for(const q of state.particles){if(q.groundWave)continue;ctx.globalAlpha=Math.min(1,q.t*2);if(q.star)drawStar(q);else if(q.burst){const age=1-q.t/q.life;ctx.strokeStyle=q.color;ctx.lineWidth=3*(1-age);ctx.beginPath();ctx.ellipse(q.x,q.y,q.size*(.3+age),q.size*(.3+age)*.65,0,0,Math.PI*2);ctx.stroke();}else{ctx.fillStyle=q.color;ctx.fillRect(q.x,q.y,q.size,q.size);}}ctx.globalAlpha=1;for(const q of state.texts){ctx.globalAlpha=Math.min(1,q.t*2);ctx.font='900 '+(q.critical?30:15)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle=q.color;ctx.strokeStyle='#263629';ctx.lineJoin='round';ctx.lineWidth=q.critical?5:3;ctx.strokeText(q.text,q.x,q.y);ctx.fillText(q.text,q.x,q.y);}ctx.globalAlpha=1;
@@ -209,7 +219,7 @@ function togglePause(force){if((loading||loadError)&&force!==true)return;paused=
 const movement=['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'];
 window.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;const key=e.key.toLowerCase();if(movement.includes(key)||[' ','q','j','e','escape'].includes(key))e.preventDefault();if(movement.includes(key))keys.add(key);if(e.repeat)return;if(key===' ')beginCharge('key');if(key==='j')basic();if(key==='e')gaugeSkill();if(key==='q')swap();if(key==='escape')togglePause();});
 window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key===' ')releaseCharge('key');});window.addEventListener('blur',()=>togglePause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)togglePause(true);});
-bindImmediateAction($('[data-gauge-skill]'),gaugeSkill);bindImmediateAction($('[data-basic]'),basic);bindImmediateAction($('[data-switch]'),swap);$('[data-pause]').onclick=()=>togglePause();$('[data-reset]').onclick=()=>{if(confirm('탐험을 처음부터 다시 시작할까요?'))newRound(true);};
+bindImmediateAction($('[data-gauge-skill]'),gaugeSkill);bindImmediateAction($('[data-basic]'),basic);bindImmediateAction($('[data-switch]'),swap);$('[data-pause]').onclick=()=>togglePause();$('[data-reset]').onclick=()=>{if(defenseDemo||confirm('탐험을 처음부터 다시 시작할까요?'))newRound(true);};
 const special=$('[data-special]');special.addEventListener('pointerdown',e=>{if(specialPointer!==null||e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();if(!beginCharge('pointer'))return;specialPointer=e.pointerId;special.setPointerCapture(e.pointerId);});special.addEventListener('pointerup',e=>{if(e.pointerId!==specialPointer)return;specialPointer=null;releaseCharge('pointer');});special.addEventListener('pointercancel',e=>{if(e.pointerId===specialPointer)cancelCharge();});special.addEventListener('lostpointercapture',e=>{if(e.pointerId===specialPointer)cancelCharge();});special.addEventListener('contextmenu',e=>e.preventDefault());
 const joystick=$('.joystick');function setStick(e){const b=joystick.getBoundingClientRect(),dx=e.clientX-b.left-b.width/2,dy=e.clientY-b.top-b.height/2,travel=Math.max(18,(b.width-joystick.querySelector('b').offsetWidth)/2-6),l=Math.max(1,Math.hypot(dx,dy)/travel);stick={x:dx/l/travel,y:dy/l/travel};joystick.querySelector('b').style.transform=`translate(${stick.x*travel}px,${stick.y*travel}px)`;state.target=null;}
 bindMovementPointer(joystick,setStick,()=>{stick={x:0,y:0};joystick.querySelector('b').style.transform='';});
@@ -250,4 +260,59 @@ function impactKukiSlam(origin){
  }
  state.kukiWave={x,y,start:clock};shake=12;dropHearts(origin,true,'star');
  status('별똥별 쿵! 모모로 교체해 노란 별 5개를 주워 보세요.');
+}
+
+function mountDefenseHud(){
+ $('.adventure-top h1').textContent='우리 집 방어';
+ $('.stage').insertAdjacentHTML('beforeend',
+  '<div class="outpost-health-panel"><div class="outpost-health-heading"><strong>우리 집 HP</strong><span data-defense-hp></span></div><div class="outpost-health" role="progressbar" aria-label="우리 집 HP" aria-valuemin="0" aria-valuemax="'+DEFENSE_HOME.max+'"><i></i></div></div>');
+ const help=$('.help-dialog');
+ help.querySelector('h2').textContent='우리 집 방어';
+ help.querySelector('h2').insertAdjacentHTML('afterend','<p>사방에서 몰려오는 방울이를 막고 '+DEFENSE_WAVES.length+'차 공격을 버텨요. 일부 방울이는 모모와 쿠키를 추격해요. Q 또는 교체 버튼으로 캐릭터를 바꿀 수 있어요. 집 HP가 0이 되면 방어에 실패해요.</p>');
+}
+function updateDefenseHud(){
+ const defense=state.defense,house=defense.house;
+ const bar=$('.outpost-health');
+ bar.querySelector('i').style.width=house.hp/house.max*100+'%';
+ bar.setAttribute('aria-valuenow',String(house.hp));
+ $('[data-defense-hp]').textContent=house.hp.toLocaleString()+' / '+house.max.toLocaleString();
+ $('.mission strong').textContent='우리 집 지키기';
+ $('[data-progress]').textContent=(defense.wave?defense.wave+' / '+DEFENSE_WAVES.length+'차':'첫 공격 준비 중')+' · 방울이 '+state.defeated+' / '+DEFENSE_TOTAL+'마리 저지';
+ $('[data-enemy-status]').textContent=defense.wave<DEFENSE_WAVES.length&&!state.dead&&!state.won?'다음 공격까지 '+Math.max(0,Math.ceil(defense.nextWave))+'초':'';
+}
+function updateDefense(dt){
+ const result=stepDefense(state.defense,state.enemies,dt),house=state.defense.house;
+ if(result.fresh.length){
+  state.enemies.push(...result.fresh);
+  const hunters=result.fresh.filter(enemy=>enemy.defenseTarget==='player').length;
+  status(state.defense.wave+'차 공격 · 집 공격 '+(result.fresh.length-hunters)+'마리 · 캐릭터 추격 '+hunters+'마리');
+ }
+ if(result.damage){
+  float(house.x,house.y-100,'집 HP −'+result.damage,'#ffc0c0');
+  shake=Math.max(shake,5);
+ }
+ if(house.hp<=0||result.complete){
+  state.dead=house.hp<=0;
+  if(result.complete){
+   beginClear();
+   status('방어 성공 · '+DEFENSE_WAVES.length+'차 공격을 모두 막았어요.');
+   hud();
+   return;
+  }
+  state.attack=null;state.burst=null;state.heartMeteor=null;state.basic=0;
+  cancelCharge();keys.clear();stick={x:0,y:0};state.p.walking=false;
+  message('우리 집이 무너졌어요','상단 처음부터 버튼으로 다시 도전해 보세요.');
+  status('방어 실패 · 집의 HP가 0이 됐어요.');
+  hud();
+  return;
+ }
+ for(const enemy of state.enemies){
+  if(enemy.defenseTarget==='player'&&stepEnemy(enemy,state.p,state.colliders,dt))hurtPlayer(10);
+ }
+}
+function drawDefenseHome(){
+ const house=state.defense.house;
+ ellipse(house.x,house.y+8,99,43,house.flash?'#ffd1b072':'#d7f1c657');
+ if(house.hp>0)drawEnvironmentProp(ctx,'house',house,{width:175,height:165,anchor:26});
+ else for(let i=0;i<7;i++)ellipse(house.x+(i-3)*17,house.y+i%2*10,14,6,'#97794d');
 }

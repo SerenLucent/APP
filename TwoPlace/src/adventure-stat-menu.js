@@ -16,8 +16,16 @@ const statValues = stats => ({
 });
 
 export function mountAdventureStatMenu(button){
+ const wallet=createAdventureWallet();
+ const updateHighlight=()=>button.classList.toggle('has-points',wallet.profile.points>0);
+ let loading;
+ function load(){
+  loading ||= wallet.init().then(updateHighlight).finally(()=>{loading=null;});
+  return loading;
+ }
+ void load().catch(()=>{});
+ window.addEventListener('pageshow',event=>{if(event.persisted)void load().catch(()=>{});});
  button.onclick=async()=>{
-  const wallet=createAdventureWallet();
   const dialog=document.createElement('dialog');
   dialog.className='adventure-stat-menu';
   dialog.setAttribute('aria-label','스테이터스');
@@ -91,6 +99,7 @@ export function mountAdventureStatMenu(button){
     render();
     try{
      await wallet.investBatch(draft);
+     updateHighlight();
      draft.momo={};
      draft.kuki={};
      message='스테이터스를 적용했어요.';
@@ -104,7 +113,7 @@ export function mountAdventureStatMenu(button){
   });
 
   try{
-   await wallet.init();
+   await load();
    if(dialog.open)render();
   }catch(error){
    content.querySelector('[role="status"]').textContent=error.message;

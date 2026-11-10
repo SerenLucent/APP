@@ -4,6 +4,7 @@ test('independent stats have requested bases, point increments and 100-point cap
 test('dexterity biases damage toward maximum and is exactly max at 100, crit is separate',()=>{const rng=()=>.5;assert.ok(rollAttack('momo',{dexterity:70},rng).base>rollAttack('momo',{},rng).base);assert.equal(rollAttack('kuki',{dexterity:100},rng).base,20);let n=0;const crit=rollAttack('momo',{},()=>n++===0?.5:0);assert.equal(crit.critical,true);assert.equal(crit.damage,crit.base*2);});
 import {applyAdventureAction,adventureState,ADVENTURE_REWARDS,rouletteTable,rouletteTier} from '../shared/adventure-progression.js';
 import {adventureLevel} from '../shared/adventure-progression.js';
+import {createDefense,DEFENSE_TOTAL,DEFENSE_WAVES,stepDefense} from '../src/adventure-defense.js';
 
 test('batch applies both friends in one version, rejects the whole invalid batch and deduplicates retries',()=>{
  const home=initialPetHome();
@@ -52,6 +53,32 @@ test('faster times add better roulette segments and every 20 shared clears adds 
 test('roulette spreads duplicate rewards apart, including the wraparound seam',()=>{for(const time of [900000,600000,400000,200000]){const table=rouletteTable(time);for(let i=0;i<table.length;i++)assert.notEqual(table[i],table[(i+1)%table.length]);}});
 
 test('all clear-time tiers offer exactly four two-point stat reward slots',()=>{assert.equal(ADVENTURE_REWARDS.find(r=>r.id==='point').amount,2);for(const ms of [900000,600000,400000,200000])assert.equal(rouletteTable(ms).filter(id=>id==='point').length,4);});
+
+test('defense rewards a complete set of waves once in the demo wallet',()=>{
+ const home={hearts:0},id=()=> 'abcdef01-1111-1111-1111-123456789012';
+ const start={type:'adventureStart',mode:'defense',actionId:'defense-start-000000'};
+ const demo={local:true},random=()=>.99;
+ assert.throws(()=>applyAdventureAction(home,{...start,local:true},1000,id,'owner'));
+ applyAdventureAction(home,start,1000,id,'owner',random,demo);
+ const defense=createDefense(),cleared=[];
+ for(const count of DEFENSE_WAVES){
+  const {fresh}=stepDefense(defense,[],2);
+  assert.equal(fresh.length,count);
+  cleared.push(...fresh.map(enemy=>enemy.id));
+ }
+ assert.equal(stepDefense(defense,[],0).complete,true);
+ const finish={type:'adventureFinish',actionId:'defense-finish-000000',runId:id(),cleared,playTimeMs:3000};
+ assert.throws(()=>applyAdventureAction(home,finish,5000,id,'owner',random));
+ for(const invalid of [cleared.slice(0,-1),[...cleared.slice(0,-1),cleared[0]]]){
+  assert.throws(()=>applyAdventureAction(home,{...finish,cleared:invalid},5000,id,'owner',random,demo));
+ }
+ applyAdventureAction(home,finish,5000,id,'owner',random,demo);
+ applyAdventureAction(home,{...finish,actionId:'defense-retry-000000'},6000,id,'owner',random,demo);
+ assert.equal(home.hearts,5);
+ assert.equal(home.adventure.history.length,1);
+ assert.equal(home.adventure.history[0].mode,'defense');
+ assert.equal(home.adventure.history[0].enemyCount,DEFENSE_TOTAL);
+});
 
 test('offense grants the common roulette once, records the house objective and isolates modes and roles',()=>{
  const home={hearts:0};let sequence=0;const id=()=>`abcdef0${sequence++}-1111-1111-1111-123456789012`;

@@ -1,5 +1,7 @@
 export const EXPLORATION_FIELD_VERSION=2;
 export const EXPLORATION_GOALS={tree:50,rock:30};
+export const DEFENSE_WAVES=[4,6,8,4,6,8,4,6,8,4];
+export const DEFENSE_TOTAL=DEFENSE_WAVES.reduce((total,count)=>total+count,0);
 
 export function createObstacles(initialSeed=74129,fieldVersion=1){
  if(fieldVersion===EXPLORATION_FIELD_VERSION)return createMixedField(initialSeed);

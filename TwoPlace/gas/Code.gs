@@ -27,6 +27,8 @@ function applyFloorPlacement(home,item,space){
 
 const EXPLORATION_FIELD_VERSION=2;
 const EXPLORATION_GOALS={tree:50,rock:30};
+const DEFENSE_WAVES=[4,6,8,4,6,8,4,6,8,4];
+const DEFENSE_TOTAL=DEFENSE_WAVES.reduce((total,count)=>total+count,0);
 
 function createObstacles(initialSeed=74129,fieldVersion=1){
  if(fieldVersion===EXPLORATION_FIELD_VERSION)return createMixedField(initialSeed);
@@ -114,23 +116,30 @@ function rouletteTier(durationMs){return durationMs<=300000?{id:'S',label:'S · 
 function rouletteTable(durationMs){const tier=rouletteTier(durationMs).id;return {C:['point','staminaPotion','point','hpPotion','heart1','point','staminaPotion','heart3','hpPotion','point','heart1','heart5'],B:['point','staminaPotion','heart3','point','hpPotion','heart5','point','staminaPotion','heart3','point','heart1','heart5'],A:['point','heart5','heart3','point','staminaPotion','heart5','point','hpPotion','heart3','point','heart1','heart5'],S:['point','heart5','heart3','point','staminaPotion','heart5','point','hpPotion','heart5','point','heart3','heart5']}[tier];}
 
 function adventureFail(message,status=400){const error=new Error(message);error.status=status;throw error;}
-function applyAdventureAction(home,action,now,idFactory,role,random=Math.random){
+function applyAdventureAction(home,action,now,idFactory,role,random=Math.random,{local=false}={}){
  if(!['owner','partner'].includes(role))adventureFail('커플방 연결을 확인해 주세요.',403);
  if(typeof action.actionId!=='string'||!/^[a-zA-Z0-9_-]{16,80}$/.test(action.actionId))adventureFail('저장 요청 번호를 확인해 주세요.');
  let data=adventureState(home.adventure);data.runs={...data.runs};data.operations=[...(data.operations||[])];
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
-  const mode=action.mode??'explore';if(!['explore','offense'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
+  const mode=action.mode??'explore';if(!['explore','offense'].includes(mode)&&!(local&&mode==='defense'))adventureFail('모험 종류를 확인해 주세요.');
   const fieldVersion=mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion){home.adventure=data;return;}
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
-  data.runs[role]={id,seed,mode,fieldVersion,requestId:action.actionId,startedAt:now,enemyCount:mode==='offense'?0:24+Math.floor((data.totalClears||0)/20)*4,finishedAt:null,reward:null};
+  const enemyCount=mode==='defense'?DEFENSE_TOTAL:mode==='offense'?0:24+Math.floor((data.totalClears||0)/20)*4;
+  data.runs[role]={id,seed,mode,fieldVersion,requestId:action.actionId,startedAt:now,enemyCount,finishedAt:null,reward:null};
  }else if(action.type==='adventureFinish'){
   const run=data.runs[role];if(!run||run.id!==action.runId)adventureFail('현재 탐험 기록이 아니에요. 새 탐험을 시작해 주세요.',409);
   if(run.finishedAt){home.adventure=data;return;}
   const mode=run.mode||'explore',ids=action.cleared;
   if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
+  else if(mode==='defense'){
+   if(!local)adventureFail('방어는 모의 테스트에서만 가능해요.');
+   const defeated=new Set(Array.isArray(ids)?ids:[]);
+   const complete=Array.isArray(ids)&&ids.length===DEFENSE_TOTAL&&DEFENSE_WAVES.every((count,wave)=>Array.from({length:count},(_,i)=>`defense-${wave+1}-${i}`).every(id=>defeated.has(id)));
+   if(!complete)adventureFail('방울이를 모두 막아야 해요.');
+  }
   else{
    const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
    const required=mixed?EXPLORATION_GOALS.tree+EXPLORATION_GOALS.rock:100;
@@ -141,7 +150,7 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
   }
   const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs),tier=rouletteTier(durationMs),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),reward={...ADVENTURE_REWARDS.find(r=>r.id===segments[index]),index,segments,tier};if(reward.hearts)home.hearts+=reward.hearts;else data[reward.field]+=reward.amount||1;
   const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
-  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='offense'?0:ids.length,...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
+  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.length:0,...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){
   data=investAdventurePoint(data,action.pet,action.stat);
@@ -474,7 +483,7 @@ function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto.random
   if (!action || !Number.isSafeInteger(action.version) || action.version !== current.version) throw new PetError('상대가 먼저 펫 공간을 바꿨어요. 최신 상태에서 다시 시도해 주세요.',409);
   const home = JSON.parse(JSON.stringify(current));
   switch(action.type) {
-    case 'adventureStart':case 'adventureFinish':case 'adventureInvest':case 'adventureInvestBatch':case 'adventurePotion':applyAdventureAction(home,action,now,idFactory,actor.role);break;
+    case 'adventureStart':case 'adventureFinish':case 'adventureInvest':case 'adventureInvestBatch':case 'adventurePotion':applyAdventureAction(home,action,now,idFactory,actor.role,Math.random,{local:actor.local===true});break;
     case 'claim': {
       const amount = claimable(home,now);
       if (!amount) throw new PetError('하트가 모이고 있어요. 한 시간이 지나면 받을 수 있어요.');

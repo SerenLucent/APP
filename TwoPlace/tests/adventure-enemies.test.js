@@ -2,6 +2,30 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createEnemies,enemyMode,enemyPath,stepEnemy,ENEMY_RULES} from '../src/adventure-enemies.js';
 import {createObstacles} from '../src/adventure-model.js';
+import {createDefense,stepDefense} from '../src/adventure-defense.js';
+
+test('each first-wave house attacker strikes after reaching the house',()=>{
+ const {fresh}=stepDefense(createDefense(),[],2);
+ for(const enemy of fresh.filter(enemy=>enemy.defenseTarget==='house')){
+  const defense=createDefense();
+  let damage=0;
+  for(let frame=0;frame<300&&!damage;frame++)damage=stepDefense(defense,[enemy],1/60).damage;
+  assert.equal(damage,5,enemy.id);
+ }
+});
+
+test('defense hunter reaches a player across the house without clipping the wall',()=>{
+ const defense=createDefense();
+ const {fresh}=stepDefense(defense,[],2);
+ const hunter=fresh.find(enemy=>enemy.defenseTarget==='player');
+ const player={x:1225,y:1030};
+ let hit=false;
+ for(let frame=0;frame<480&&!hit;frame++){
+  hit=stepEnemy(hunter,player,[defense.house],1/60);
+  assert.ok(Math.hypot(hunter.x-defense.house.x,hunter.y-defense.house.y)>=defense.house.radius+18);
+ }
+ assert.ok(hit);
+});
 test('slam stun cancels an attack and prevents movement until three seconds have passed',()=>{
  const enemy=createEnemies()[0];
  const player={x:enemy.x+20,y:enemy.y};
