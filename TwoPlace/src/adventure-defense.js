@@ -49,7 +49,7 @@ export function stepDefense(defense,enemies,dt){
  const wave=++defense.wave;
  const count=DEFENSE_WAVES[wave-1];
  const strengthStep=Math.min(wave-1,2);
- defense.nextWave=11;
+ defense.nextWave=12;
  const fresh=Array.from({length:count},(_,index)=>{
   const angle=index/count*Math.PI*2+wave*.44;
   const hp=60+strengthStep*15;
