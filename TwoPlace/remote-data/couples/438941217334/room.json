@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794341504155,
+  "updatedAt": 1794341510588,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,8 +607,8 @@
     ]
   },
   "petHome": {
-    "version": 1216,
-    "hearts": 24,
+    "version": 1217,
+    "hearts": 25,
     "snacks": 17,
     "lastClaim": 1794341504147,
     "pets": {
@@ -616,7 +616,7 @@
         "hunger": 100,
         "updatedAt": 1794288894512,
         "affinity": 100,
-        "affinityAt": 1794288865968,
+        "affinityAt": 1794341510582,
         "energy": 100,
         "energyAt": 1794288872073
       },
@@ -1057,9 +1057,9 @@
           "lastAt": 1794288872073
         },
         "pat": {
-          "day": "2026-11-10",
-          "count": 5,
-          "lastAt": 1794288865968
+          "day": "2026-11-11",
+          "count": 1,
+          "lastAt": 1794341510582
         }
       },
       "kuki": {
@@ -4282,6 +4282,15 @@
         "balance": 24,
         "kind": "earn",
         "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341510582,
+        "amount": 1,
+        "balance": 25,
+        "kind": "earn",
+        "label": "애정 보너스",
         "role": "partner",
         "character": "momo"
       }
