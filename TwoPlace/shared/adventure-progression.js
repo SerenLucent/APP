@@ -35,13 +35,13 @@ export function rouletteTier(durationMs){return durationMs<=300000?{id:'S',label
 export function rouletteTable(durationMs){const tier=rouletteTier(durationMs).id;return {C:['point','staminaPotion','point','hpPotion','heart1','point','staminaPotion','heart3','hpPotion','point','heart1','heart5'],B:['point','staminaPotion','heart3','point','hpPotion','heart5','point','staminaPotion','heart3','point','heart1','heart5'],A:['point','heart5','heart3','point','staminaPotion','heart5','point','hpPotion','heart3','point','heart1','heart5'],S:['point','heart5','heart3','point','staminaPotion','heart5','point','hpPotion','heart5','point','heart3','heart5']}[tier];}
 
 function adventureFail(message,status=400){const error=new Error(message);error.status=status;throw error;}
-export function applyAdventureAction(home,action,now,idFactory,role,random=Math.random,{local=false}={}){
+export function applyAdventureAction(home,action,now,idFactory,role,random=Math.random){
  if(!['owner','partner'].includes(role))adventureFail('커플방 연결을 확인해 주세요.',403);
  if(typeof action.actionId!=='string'||!/^[a-zA-Z0-9_-]{16,80}$/.test(action.actionId))adventureFail('저장 요청 번호를 확인해 주세요.');
  let data=adventureState(home.adventure);data.runs={...data.runs};data.operations=[...(data.operations||[])];
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
-  const mode=action.mode??'explore';if(!['explore','offense'].includes(mode)&&!(local&&mode==='defense'))adventureFail('모험 종류를 확인해 주세요.');
+  const mode=action.mode??'explore';if(!['explore','offense','defense'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
   const fieldVersion=mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion){home.adventure=data;return;}
@@ -54,7 +54,6 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
   const mode=run.mode||'explore',ids=action.cleared;
   if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
   else if(mode==='defense'){
-   if(!local)adventureFail('방어는 모의 테스트에서만 가능해요.');
    const defeated=new Set(Array.isArray(ids)?ids:[]);
    const complete=Array.isArray(ids)&&ids.length===DEFENSE_TOTAL&&DEFENSE_WAVES.every((count,wave)=>Array.from({length:count},(_,i)=>`defense-${wave+1}-${i}`).every(id=>defeated.has(id)));
    if(!complete)adventureFail('방울이를 모두 막아야 해요.');

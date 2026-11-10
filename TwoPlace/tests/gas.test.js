@@ -198,6 +198,30 @@ test('GAS offense uses the shared roulette and persists mode, reward and replay-
  const saved=JSON.parse(h.files.get('TwoPlace/remote-data/couples/'+room.code+'/room.json').text);assert.equal(saved.petHome.adventure.history.length,1);assert.equal(saved.petHome.adventure.history[0].mode,'offense');assert.equal(saved.petHome.adventure.history[0].houses,1);assert.equal(saved.petHome.adventure.totalClears,1);
 });
 
+test('GAS defense pays the shared room once after all ten waves are cleared',async()=>{
+ const {DEFENSE_WAVES,DEFENSE_TOTAL}=await import('../shared/adventure-field.js');
+ const h=harness(),owner='d'.repeat(64),partner='e'.repeat(64);
+ const room=h.call({path:'/rooms',method:'POST',body:{requestToken:owner}}).data;
+ assert.equal(h.call({path:'/rooms/join',method:'POST',body:{code:room.code,requestToken:partner}}).status,200);
+ const start=h.call({path:'/room/pets',method:'POST',token:owner,body:{type:'adventureStart',mode:'defense',actionId:'gas-defense-start000',version:room.petHome.version}});
+ assert.equal(start.status,200);
+ const {petHome}=start.data,run=petHome.adventure.runs.owner;
+ const cleared=DEFENSE_WAVES.flatMap((count,wave)=>Array.from({length:count},(_,index)=>`defense-${wave+1}-${index}`));
+ const finish={type:'adventureFinish',actionId:'gas-defense-finish00',version:petHome.version,runId:run.id,pet:'kuki',cleared};
+ const submit=(token,body)=>h.call({path:'/room/pets',method:'POST',token,body});
+ assert.equal(submit(owner,{...finish,cleared:cleared.slice(0,-1)}).status,400);
+ assert.equal(submit(partner,finish).status,409);
+ vm.runInContext('Math.random=()=>.99',h.context);
+ const done=submit(owner,finish);
+ assert.equal(done.status,200);
+ assert.equal(submit(owner,{...finish,actionId:'gas-defense-replay00',version:done.data.petHome.version}).status,200);
+ const shared=h.call({path:'/room',token:partner}).data.petHome;
+ assert.equal(shared.hearts,petHome.hearts+5);
+ assert.equal(shared.adventure.history.length,1);
+ assert.equal(shared.adventure.history[0].mode,'defense');
+ assert.equal(shared.adventure.history[0].enemyCount,DEFENSE_TOTAL);
+});
+
 test('GAS floor application and admin backup preserve finishes and enforce one finish per room',()=>{
  const h=harness();let home=h.context.initialPetHome(0);home.hearts=1000;const act=a=>home=h.context.changePetHome(home,{...a,version:home.version},0,()=>a.product);
  act({type:'buy',product:'floorHoney'});act({type:'applyFloor',item:'floorHoney',space:'home'});act({type:'buy',product:'floorRosewood'});act({type:'applyFloor',item:'floorRosewood',space:'home'});assert.equal(home.items[0].space,null);

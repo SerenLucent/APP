@@ -54,12 +54,11 @@ test('roulette spreads duplicate rewards apart, including the wraparound seam',(
 
 test('all clear-time tiers offer exactly four two-point stat reward slots',()=>{assert.equal(ADVENTURE_REWARDS.find(r=>r.id==='point').amount,2);for(const ms of [900000,600000,400000,200000])assert.equal(rouletteTable(ms).filter(id=>id==='point').length,4);});
 
-test('defense rewards a complete set of waves once in the demo wallet',()=>{
+test('defense rewards a complete set of waves once in the room wallet',()=>{
  const home={hearts:0},id=()=> 'abcdef01-1111-1111-1111-123456789012';
  const start={type:'adventureStart',mode:'defense',actionId:'defense-start-000000'};
- const demo={local:true},random=()=>.99;
- assert.throws(()=>applyAdventureAction(home,{...start,local:true},1000,id,'owner'));
- applyAdventureAction(home,start,1000,id,'owner',random,demo);
+ const random=()=>.99;
+ applyAdventureAction(home,start,1000,id,'owner',random);
  const defense=createDefense(),cleared=[];
  for(const count of DEFENSE_WAVES){
   const {fresh}=stepDefense(defense,[],2);
@@ -68,12 +67,12 @@ test('defense rewards a complete set of waves once in the demo wallet',()=>{
  }
  assert.equal(stepDefense(defense,[],0).complete,true);
  const finish={type:'adventureFinish',actionId:'defense-finish-000000',runId:id(),cleared,playTimeMs:3000};
- assert.throws(()=>applyAdventureAction(home,finish,5000,id,'owner',random));
+ assert.throws(()=>applyAdventureAction(home,finish,5000,id,'partner',random));
  for(const invalid of [cleared.slice(0,-1),[...cleared.slice(0,-1),cleared[0]]]){
-  assert.throws(()=>applyAdventureAction(home,{...finish,cleared:invalid},5000,id,'owner',random,demo));
+  assert.throws(()=>applyAdventureAction(home,{...finish,cleared:invalid},5000,id,'owner',random));
  }
- applyAdventureAction(home,finish,5000,id,'owner',random,demo);
- applyAdventureAction(home,{...finish,actionId:'defense-retry-000000'},6000,id,'owner',random,demo);
+ applyAdventureAction(home,finish,5000,id,'owner',random);
+ applyAdventureAction(home,{...finish,actionId:'defense-retry-000000'},6000,id,'owner',random);
  assert.equal(home.hearts,5);
  assert.equal(home.adventure.history.length,1);
  assert.equal(home.adventure.history[0].mode,'defense');
