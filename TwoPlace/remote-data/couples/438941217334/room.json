@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794288894515,
+  "updatedAt": 1794288929296,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,7 +607,7 @@
     ]
   },
   "petHome": {
-    "version": 1201,
+    "version": 1202,
     "hearts": 74,
     "snacks": 17,
     "lastClaim": 1794288856018,
@@ -6752,45 +6752,18 @@
           ]
         },
         "partner": {
-          "id": "dd731bf7e87d445387847243f551bec1",
-          "seed": 3715308535,
+          "id": "16e5c96d5476461ab1254ec5e3206cd7",
+          "seed": 384158061,
           "mode": "offense",
-          "requestId": "c549dd62-e437-42ea-a3f3-b59e87d297af",
-          "startedAt": 1794228829627,
+          "fieldVersion": 1,
+          "requestId": "ffcf4a59-ab42-4759-bef3-5acd6a183728",
+          "startedAt": 1794288929292,
           "enemyCount": 0,
-          "finishedAt": 1794228904079,
-          "reward": {
-            "id": "staminaPotion",
-            "label": "스태미나 회복약 1개",
-            "field": "staminaPotions",
-            "index": 4,
-            "segments": [
-              "point",
-              "heart5",
-              "heart3",
-              "point",
-              "staminaPotion",
-              "heart5",
-              "point",
-              "hpPotion",
-              "heart5",
-              "point",
-              "heart3",
-              "heart5"
-            ],
-            "tier": {
-              "id": "S",
-              "label": "S · 5분 이내"
-            }
-          },
-          "clearNo": 64,
-          "cleared": [
-            "outpost-house"
-          ]
+          "finishedAt": null,
+          "reward": null
         }
       },
       "operations": [
-        "13c01d43-491d-4136-9c58-34e9d460c2cf",
         "92d12f07-2a31-4b0e-b074-0d2c5b205d82",
         "a78f6b13-f4d1-4a9c-95f3-962c09c4a119",
         "9a952ee6-b4ed-4ef4-a663-28f565e5691c",
@@ -6917,7 +6890,8 @@
         "8d5a9a66-8e04-4fc1-8497-5806c7aa728a",
         "a29a6340-3612-46a5-8c13-0f96b24f7b82",
         "c549dd62-e437-42ea-a3f3-b59e87d297af",
-        "85468d00-665f-45e1-86d2-326139c82e9f"
+        "85468d00-665f-45e1-86d2-326139c82e9f",
+        "ffcf4a59-ab42-4759-bef3-5acd6a183728"
       ]
     }
   },
