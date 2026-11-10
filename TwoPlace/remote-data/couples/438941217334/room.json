@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794311116420,
+  "updatedAt": 1794311128953,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,8 +607,8 @@
     ]
   },
   "petHome": {
-    "version": 1212,
-    "hearts": 104,
+    "version": 1213,
+    "hearts": 4,
     "snacks": 17,
     "lastClaim": 1794311116412,
     "pets": {
@@ -944,6 +944,13 @@
         "x": 16,
         "y": 46.075,
         "rotation": 0
+      },
+      {
+        "id": "3e45da3e1ba447a78cd3d1d3efd45504",
+        "product": "greenhouse",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -4247,6 +4254,17 @@
         "label": "시간 하트",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794311128949,
+        "amount": -100,
+        "balance": 4,
+        "kind": "purchase",
+        "label": "작은 온실 선반 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "greenhouse",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
