@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794350109235,
+  "updatedAt": 1794350270255,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,8 +607,8 @@
     ]
   },
   "petHome": {
-    "version": 1242,
-    "hearts": 54,
+    "version": 1243,
+    "hearts": 59,
     "snacks": 13,
     "lastClaim": 1794347315682,
     "pets": {
@@ -4437,6 +4437,15 @@
         "label": "별잠산 룰렛 보상",
         "role": "owner",
         "character": "kuki"
+      },
+      {
+        "at": 1794350270244,
+        "amount": 5,
+        "balance": 59,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
       }
     ],
     "heartHistorySince": 1793584445635,
@@ -4444,7 +4453,7 @@
       "hpPotions": 8,
       "staminaPotions": 7,
       "points": 0,
-      "totalClears": 69,
+      "totalClears": 70,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -7001,6 +7010,45 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "8518773a3e09456fa20a7963bb13d8b3",
+          "clearNo": 70,
+          "at": 1794350270244,
+          "startedAt": 1794350109231,
+          "durationMs": 153253,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 36,
+          "mode": "explore",
+          "obstacles": 80,
+          "trees": 50,
+          "rocks": 30,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -7028,8 +7076,114 @@
           "requestId": "747eabc9-42ee-4d01-a2df-2066ecc5de14",
           "startedAt": 1794350109231,
           "enemyCount": 36,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794350270244,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 70,
+          "cleared": [
+            "field-0",
+            "field-6",
+            "field-7",
+            "field-8",
+            "field-9",
+            "field-14",
+            "field-18",
+            "field-21",
+            "field-23",
+            "field-25",
+            "field-27",
+            "field-30",
+            "field-31",
+            "field-33",
+            "field-34",
+            "field-35",
+            "field-36",
+            "field-37",
+            "field-38",
+            "field-39",
+            "field-42",
+            "field-43",
+            "field-45",
+            "field-47",
+            "field-63",
+            "field-64",
+            "field-69",
+            "field-73",
+            "field-75",
+            "field-77",
+            "field-79",
+            "field-80",
+            "field-86",
+            "field-89",
+            "field-96",
+            "field-98",
+            "field-100",
+            "field-104",
+            "field-109",
+            "field-112",
+            "field-116",
+            "field-119",
+            "field-121",
+            "field-124",
+            "field-125",
+            "field-126",
+            "field-128",
+            "field-129",
+            "field-131",
+            "field-132",
+            "field-1",
+            "field-2",
+            "field-4",
+            "field-5",
+            "field-10",
+            "field-11",
+            "field-12",
+            "field-15",
+            "field-16",
+            "field-20",
+            "field-26",
+            "field-40",
+            "field-49",
+            "field-62",
+            "field-66",
+            "field-68",
+            "field-72",
+            "field-85",
+            "field-91",
+            "field-94",
+            "field-95",
+            "field-101",
+            "field-105",
+            "field-108",
+            "field-113",
+            "field-118",
+            "field-137",
+            "field-146",
+            "field-147",
+            "field-153"
+          ]
         },
         "partner": {
           "id": "9fe7857beaff4c69bdfa233dd0710e2a",
@@ -7150,7 +7304,6 @@
         }
       },
       "operations": [
-        "84861948-8ee4-4a2b-a51b-c373ce9b0bcd",
         "b9b44f76-233e-4c07-8cc6-42d4b3838b12",
         "37aa40dd-37d0-439e-be65-c33b524487e8",
         "db324fe5-b231-4f6a-87a9-9dacf6b13635",
@@ -7277,7 +7430,8 @@
         "ff899795-e253-4811-9ffe-14caebc1fd19",
         "696fd318-1ee7-41f4-9eea-f2dd2506fa51",
         "cb347878-f74e-451c-a101-ca837f88c78d",
-        "747eabc9-42ee-4d01-a2df-2066ecc5de14"
+        "747eabc9-42ee-4d01-a2df-2066ecc5de14",
+        "0642c683-eb7a-4d28-8248-69212b2b8af2"
       ]
     }
   },
