@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794314748719,
+  "updatedAt": 1794314853786,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,7 +75,7 @@
     "notes": []
   },
   "petHome": {
-    "version": 257,
+    "version": 258,
     "hearts": 32,
     "snacks": 0,
     "lastClaim": 1794313885996,
@@ -994,13 +994,13 @@
       },
       "runs": {
         "owner": {
-          "id": "8eb2318ce7ce45b696312d6cc17824b8",
-          "seed": 2394042764,
-          "mode": "defense",
-          "fieldVersion": 1,
-          "requestId": "f9b92413-8702-45d0-9539-fef18f9cd767",
-          "startedAt": 1794304120314,
-          "enemyCount": 58,
+          "id": "b68e83b6cbeb488b963b7d273ce64d6d",
+          "seed": 3062793142,
+          "mode": "explore",
+          "fieldVersion": 2,
+          "requestId": "0f9d62dd-c683-41da-a8bc-5eb44db1a6e6",
+          "startedAt": 1794314853783,
+          "enemyCount": 24,
           "finishedAt": null,
           "reward": null
         }
@@ -1012,7 +1012,8 @@
         "a2c514de-c145-4853-b105-7f2298f32b3b",
         "f4db290a-5508-43a5-87c6-6701dfcb6f55",
         "4b648a14-794d-4cc5-9f39-9057af57134d",
-        "f9b92413-8702-45d0-9539-fef18f9cd767"
+        "f9b92413-8702-45d0-9539-fef18f9cd767",
+        "0f9d62dd-c683-41da-a8bc-5eb44db1a6e6"
       ]
     }
   },
