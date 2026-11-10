@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794311146557,
+  "updatedAt": 1794319341856,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,10 +607,10 @@
     ]
   },
   "petHome": {
-    "version": 1214,
-    "hearts": 4,
+    "version": 1215,
+    "hearts": 14,
     "snacks": 17,
-    "lastClaim": 1794311116412,
+    "lastClaim": 1794319341854,
     "pets": {
       "mochi": {
         "hunger": 100,
@@ -4266,6 +4266,15 @@
         "character": "momo",
         "product": "greenhouse",
         "quantity": 1
+      },
+      {
+        "at": 1794319341854,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
       }
     ],
     "heartHistorySince": 1793584445635,
