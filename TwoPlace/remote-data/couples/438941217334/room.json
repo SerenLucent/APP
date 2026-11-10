@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794288929296,
+  "updatedAt": 1794288999776,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,7 +607,7 @@
     ]
   },
   "petHome": {
-    "version": 1202,
+    "version": 1203,
     "hearts": 74,
     "snacks": 17,
     "lastClaim": 1794288856018,
@@ -4224,10 +4224,10 @@
     ],
     "heartHistorySince": 1793584445635,
     "adventure": {
-      "hpPotions": 6,
+      "hpPotions": 7,
       "staminaPotions": 6,
       "points": 0,
-      "totalClears": 64,
+      "totalClears": 65,
       "history": [
         {
           "runId": "1814a9c2cded4e9089e7d337a85d40b1",
@@ -6596,6 +6596,43 @@
               "label": "S · 5분 이내"
             }
           }
+        },
+        {
+          "runId": "16e5c96d5476461ab1254ec5e3206cd7",
+          "clearNo": 65,
+          "at": 1794288999771,
+          "startedAt": 1794288929292,
+          "durationMs": 62646,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
         }
       ],
       "stats": {
@@ -6759,12 +6796,38 @@
           "requestId": "ffcf4a59-ab42-4759-bef3-5acd6a183728",
           "startedAt": 1794288929292,
           "enemyCount": 0,
-          "finishedAt": null,
-          "reward": null
+          "finishedAt": 1794288999771,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 65,
+          "cleared": [
+            "outpost-house"
+          ]
         }
       },
       "operations": [
-        "92d12f07-2a31-4b0e-b074-0d2c5b205d82",
         "a78f6b13-f4d1-4a9c-95f3-962c09c4a119",
         "9a952ee6-b4ed-4ef4-a663-28f565e5691c",
         "7870dca8-eb40-4564-9fea-dd2a18558550",
@@ -6891,7 +6954,8 @@
         "a29a6340-3612-46a5-8c13-0f96b24f7b82",
         "c549dd62-e437-42ea-a3f3-b59e87d297af",
         "85468d00-665f-45e1-86d2-326139c82e9f",
-        "ffcf4a59-ab42-4759-bef3-5acd6a183728"
+        "ffcf4a59-ab42-4759-bef3-5acd6a183728",
+        "ccac96c5-612d-4cf5-ba67-7c27533b2491"
       ]
     }
   },
