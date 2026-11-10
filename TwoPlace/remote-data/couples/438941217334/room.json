@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794311128953,
+  "updatedAt": 1794311146557,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,7 +607,7 @@
     ]
   },
   "petHome": {
-    "version": 1213,
+    "version": 1214,
     "hearts": 4,
     "snacks": 17,
     "lastClaim": 1794311116412,
@@ -948,9 +948,10 @@
       {
         "id": "3e45da3e1ba447a78cd3d1d3efd45504",
         "product": "greenhouse",
-        "space": null,
-        "x": 50,
-        "y": 65
+        "space": "yard",
+        "x": 60,
+        "y": 48.225,
+        "rotation": 0
       }
     ],
     "layoutVersion": 1,
