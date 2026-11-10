@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "918253890309",
   "createdAt": 1792680364510,
-  "updatedAt": 1794313885999,
+  "updatedAt": 1794313892049,
   "revision": 45,
   "state": {
     "startDate": "2025-06-14",
@@ -75,15 +75,15 @@
     "notes": []
   },
   "petHome": {
-    "version": 252,
-    "hearts": 28,
+    "version": 253,
+    "hearts": 29,
     "snacks": 0,
     "lastClaim": 1794313885996,
     "pets": {
       "mochi": {
         "hunger": 50,
         "updatedAt": 1794304235527,
-        "affinityAt": 1794304203768,
+        "affinityAt": 1794313892048,
         "energyAt": 1794304210630,
         "affinity": 100,
         "energy": 100
@@ -153,8 +153,8 @@
       "mochi": {
         "pat": {
           "day": "2026-11-10",
-          "count": 3,
-          "lastAt": 1794304203768
+          "count": 4,
+          "lastAt": 1794313892048
         },
         "sleep": {
           "day": "2026-11-10",
@@ -852,6 +852,15 @@
         "balance": 28,
         "kind": "earn",
         "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794313892048,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "애정 보너스",
         "role": "owner",
         "character": "kuki"
       }
