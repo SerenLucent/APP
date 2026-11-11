@@ -1,6 +1,6 @@
 {
-  "stardust": 240,
-  "skillPoints": 0,
+  "stardust": 0,
+  "skillPoints": 1,
   "skills": {
     "momo": {
       "charge": 1,
@@ -96,7 +96,8 @@
     "550cb8c2-5142-4177-b075-4e25f86ef855",
     "a39cf34d-b093-4195-a364-0cb6f530d927",
     "28d70fb6-7950-4546-9ba3-4392312f592d",
-    "a3a4aaa4-4aed-4d3d-a54d-5c498a5df694"
+    "a3a4aaa4-4aed-4d3d-a54d-5c498a5df694",
+    "be66c0cc-b2c6-4b3c-bdb1-f116d0bd80b7"
   ],
   "bestDurationMs": 192659
 }
