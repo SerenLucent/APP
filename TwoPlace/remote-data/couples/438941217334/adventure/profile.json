@@ -1,4 +1,16 @@
 {
+  "stardust": 0,
+  "skillPoints": 0,
+  "skills": {
+    "momo": {
+      "charge": 1,
+      "ultimate": 1
+    },
+    "kuki": {
+      "charge": 1,
+      "ultimate": 1
+    }
+  },
   "hpPotions": 8,
   "staminaPotions": 7,
   "points": 0,
@@ -21,42 +33,15 @@
   },
   "runs": {
     "owner": {
-      "id": "87883a1a006a4e98a45aacf553972e40",
-      "seed": 2273851930,
-      "mode": "offense",
-      "fieldVersion": 1,
-      "requestId": "a2c955ee-6b73-472c-8220-4815f4a3beeb",
-      "startedAt": 1794350333640,
-      "enemyCount": 0,
-      "finishedAt": 1794350407327,
-      "reward": {
-        "id": "heart5",
-        "label": "하트 5개",
-        "hearts": 5,
-        "index": 11,
-        "segments": [
-          "point",
-          "heart5",
-          "heart3",
-          "point",
-          "staminaPotion",
-          "heart5",
-          "point",
-          "hpPotion",
-          "heart5",
-          "point",
-          "heart3",
-          "heart5"
-        ],
-        "tier": {
-          "id": "S",
-          "label": "S · 5분 이내"
-        }
-      },
-      "clearNo": 71,
-      "cleared": [
-        "outpost-house"
-      ]
+      "id": "fd8eb57266314ef2a3cfee70ba415670",
+      "seed": 4253988210,
+      "mode": "explore",
+      "fieldVersion": 2,
+      "requestId": "8b41154a-b4c3-4f6e-ba2c-b5814abcc3bb",
+      "startedAt": 1794378170365,
+      "enemyCount": 36,
+      "finishedAt": null,
+      "reward": null
     },
     "partner": {
       "id": "9fe7857beaff4c69bdfa233dd0710e2a",
@@ -177,7 +162,6 @@
     }
   },
   "operations": [
-    "db324fe5-b231-4f6a-87a9-9dacf6b13635",
     "d41e3843-0b15-4f2d-91f7-3c09601db77e",
     "5442cb36-0083-441c-b6d4-676777bff801",
     "f5b5215b-3fc1-4d6c-8c91-2dc0aea17aac",
@@ -304,7 +288,8 @@
     "747eabc9-42ee-4d01-a2df-2066ecc5de14",
     "0642c683-eb7a-4d28-8248-69212b2b8af2",
     "a2c955ee-6b73-472c-8220-4815f4a3beeb",
-    "c56b64be-c296-4e6f-bbd4-beb2b2be2780"
+    "c56b64be-c296-4e6f-bbd4-beb2b2be2780",
+    "8b41154a-b4c3-4f6e-ba2c-b5814abcc3bb"
   ],
   "bestDurationMs": 43540
 }
