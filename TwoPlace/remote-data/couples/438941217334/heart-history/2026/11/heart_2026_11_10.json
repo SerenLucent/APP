@@ -638,6 +638,17 @@
       "label": "시간 하트",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794398488948,
+      "amount": -80,
+      "balance": 4,
+      "kind": "purchase",
+      "label": "크림 도자기 변기 1개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "bathToilet",
+      "quantity": 1
     }
   ]
 }

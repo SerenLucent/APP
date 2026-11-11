@@ -330,6 +330,13 @@
       "x": 48,
       "y": 48.225,
       "rotation": 0
+    },
+    {
+      "id": "e600b51c4b4b4b5ea860b20bc04f65ff",
+      "product": "bathToilet",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
