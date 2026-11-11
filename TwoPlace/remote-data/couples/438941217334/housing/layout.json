@@ -299,10 +299,13 @@
     {
       "id": "f70613d366b24644b99be9684f753e8b",
       "product": "wallpaperMint",
-      "space": null,
+      "space": "home",
       "x": 50,
       "y": 65,
-      "rotation": 0
+      "rotation": 0,
+      "wallSide": "left",
+      "wallCol": 2,
+      "wallRow": 0
     },
     {
       "id": "24f68a46281a47ef8e66fc7e6b2e159a",
