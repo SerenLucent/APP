@@ -33,42 +33,15 @@
   },
   "runs": {
     "owner": {
-      "id": "5b066cbad9cb4c01856db7bd1d4ef0d7",
-      "seed": 1527147706,
+      "id": "cc3a61f9e0d9456c8022a85251349549",
+      "seed": 3426378233,
       "mode": "offense",
       "fieldVersion": 1,
-      "requestId": "deployment-growth-start-1",
-      "startedAt": 1794377307846,
+      "requestId": "deployment-growth-start-2",
+      "startedAt": 1794377317146,
       "enemyCount": 0,
-      "finishedAt": 1794377312383,
-      "reward": {
-        "id": "heart3",
-        "label": "하트 3개",
-        "hearts": 3,
-        "index": 5,
-        "segments": [
-          "heart2",
-          "heart3",
-          "heart2",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart5"
-        ],
-        "tier": {
-          "id": "S",
-          "label": "S",
-          "stardust": 120
-        },
-        "stardust": 120
-      },
-      "clearNo": 4,
-      "cleared": [
-        "outpost-house"
-      ]
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
@@ -83,7 +56,8 @@
     "deployment-v25-use-hp",
     "deployment-v25-use-stamina",
     "deployment-growth-start-1",
-    "deployment-growth-finish-1"
+    "deployment-growth-finish-1",
+    "deployment-growth-start-2"
   ],
   "bestDurationMs": 0
 }
