@@ -1,0 +1,7 @@
+<resources>
+    <string name="exit_momo">모모</string>
+    <string name="exit_title">종료하시겠습니까?</string>
+    <string name="exit_message">모모와 쿠키는 여기서 기다릴게요.\n다음에 또 함께해요 ♡</string>
+    <string name="exit_no">아니요</string>
+    <string name="exit_yes">예</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:gravity="center_horizontal"
+    android:padding="26dp" android:background="@drawable/exit_dialog_background">
+    <ImageView android:layout_width="72dp" android:layout_height="72dp"
+        android:src="@mipmap/ic_launcher_round" android:contentDescription="@string/exit_momo" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="18dp" android:text="@string/exit_title"
+        android:textColor="#72594F" android:textSize="21sp" android:textStyle="bold" android:gravity="center" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" android:text="@string/exit_message"
+        android:textColor="#9B8578" android:textSize="14sp" android:gravity="center" android:lineSpacingExtra="4dp" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="26dp" android:orientation="horizontal">
+        <Button android:id="@+id/exit_no" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="54dp" android:layout_marginEnd="6dp" android:text="@string/exit_no"
+            android:textSize="16sp" android:textStyle="bold" android:textColor="#8A7764"
+            android:background="@drawable/exit_button_no" android:backgroundTint="@null" android:stateListAnimator="@null" />
+        <Button android:id="@+id/exit_yes" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="54dp" android:layout_marginStart="6dp" android:text="@string/exit_yes"
+            android:textSize="16sp" android:textStyle="bold" android:textColor="#865363"
+            android:background="@drawable/exit_button_yes" android:backgroundTint="@null" android:stateListAnimator="@null" />
+    </LinearLayout>
+</LinearLayout>

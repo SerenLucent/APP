@@ -1,7 +1,7 @@
 {
   "appId": "com.twoplace.app",
   "appName": "TwoPlace",
-  "webDir": "dist",
+  "webDir": "android-shell",
   "server": {
     "url": "https://serenlucent.github.io/APP/TwoPlace/",
     "cleartext": false,
