@@ -11,7 +11,7 @@
       "ultimate": 1
     }
   },
-  "hpPotions": 2,
+  "hpPotions": 1,
   "staminaPotions": 2,
   "points": 0,
   "totalClears": 3,
@@ -136,7 +136,8 @@
     "deployment-v25-defense-start",
     "deployment-v25-defense-finish",
     "deployment-v25-buy-hpPotion",
-    "deployment-v25-buy-spPotion"
+    "deployment-v25-buy-spPotion",
+    "deployment-v25-use-hp"
   ],
   "bestDurationMs": 0
 }
