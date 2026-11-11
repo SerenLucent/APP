@@ -167,13 +167,10 @@
     {
       "id": "dce83244c3bb44759a887ab5c9680f21",
       "product": "wallpaperRose",
-      "space": "kukiRoom",
+      "space": null,
       "x": 50,
       "y": 65,
-      "rotation": 0,
-      "wallSide": "right",
-      "wallCol": 2,
-      "wallRow": 0
+      "rotation": 0
     },
     {
       "id": "3c58f02062fa42b7b528ae2f97755b02",
