@@ -11,6 +11,17 @@
       "label": "일정 등록 보너스",
       "role": "owner",
       "character": null
+    },
+    {
+      "at": 1794377192142,
+      "amount": -25,
+      "balance": 105,
+      "kind": "purchase",
+      "label": "초록 화분 1개 구매",
+      "role": "owner",
+      "character": null,
+      "product": "plant",
+      "quantity": 1
     }
   ]
 }

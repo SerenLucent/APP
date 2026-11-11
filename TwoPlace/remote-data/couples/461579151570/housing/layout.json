@@ -1,4 +1,12 @@
 {
-  "items": [],
+  "items": [
+    {
+      "id": "aa1c75091a0141fab2097691e8e2abd8",
+      "product": "plant",
+      "space": null,
+      "x": 50,
+      "y": 65
+    }
+  ],
   "layoutVersion": 1
 }
