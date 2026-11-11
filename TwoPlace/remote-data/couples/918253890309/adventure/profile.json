@@ -33,13 +33,13 @@
   },
   "runs": {
     "owner": {
-      "id": "c7a5e3dc8b464b34a8c2a55e036230e4",
-      "seed": 3349537756,
-      "mode": "defense",
-      "fieldVersion": 1,
-      "requestId": "58d8b118-749b-4df6-97b7-316eb96d09a2",
-      "startedAt": 1794378820097,
-      "enemyCount": 58,
+      "id": "fd64266b5dcc4fc083872cd2ea92de32",
+      "seed": 4251199083,
+      "mode": "explore",
+      "fieldVersion": 2,
+      "requestId": "2fa25d41-ae9d-42a7-8796-36686f77e9dc",
+      "startedAt": 1794379006265,
+      "enemyCount": 24,
       "finishedAt": null,
       "reward": null
     }
@@ -64,7 +64,8 @@
     "5186e82c-7400-474b-8c0b-428f59f28940",
     "6d826996-a2a1-43a9-bb9c-65c4d7263b5f",
     "16d5cc71-5184-4764-8173-2be9ea20d41f",
-    "58d8b118-749b-4df6-97b7-316eb96d09a2"
+    "58d8b118-749b-4df6-97b7-316eb96d09a2",
+    "2fa25d41-ae9d-42a7-8796-36686f77e9dc"
   ],
   "bestDurationMs": 192659
 }
