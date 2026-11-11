@@ -381,6 +381,15 @@
       "label": "휴식 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794379289050,
+      "amount": 3,
+      "balance": 62,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
