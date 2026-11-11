@@ -1,5 +1,5 @@
 {
-  "stardust": 350,
+  "stardust": 334,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -12,7 +12,7 @@
     }
   },
   "hpPotions": 2,
-  "staminaPotions": 0,
+  "staminaPotions": 2,
   "points": 0,
   "totalClears": 3,
   "stats": {
@@ -135,7 +135,8 @@
     "deployment-v25-offense-finish",
     "deployment-v25-defense-start",
     "deployment-v25-defense-finish",
-    "deployment-v25-buy-hpPotion"
+    "deployment-v25-buy-hpPotion",
+    "deployment-v25-buy-spPotion"
   ],
   "bestDurationMs": 0
 }
