@@ -299,12 +299,9 @@
     {
       "id": "f70613d366b24644b99be9684f753e8b",
       "product": "wallpaperMint",
-      "space": "kukiRoom",
+      "space": null,
       "x": 50,
       "y": 65,
-      "wallSide": "left",
-      "wallCol": 2,
-      "wallRow": 0,
       "rotation": 0
     },
     {
