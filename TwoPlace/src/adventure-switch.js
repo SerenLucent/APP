@@ -1,7 +1,7 @@
 export const SWITCH_POSE_SECONDS=.5,SWITCH_RISE_SECONDS=.35,SWITCH_FALL_SECONDS=.45;
 export const SWITCH_TOTAL=SWITCH_POSE_SECONDS+SWITCH_RISE_SECONDS+SWITCH_FALL_SECONDS;
 export function startSwitch(state){
- if(state.switching||state.dead||state.won||state.burst||state.attack||state.charge||state.basic>0||state.swap>0)return false;
+ if(state.knockout||state.switching||state.dead||state.won||state.burst||state.attack||state.charge||state.basic>0||state.swap>0)return false;
  const to=state.active==='momo'?'kuki':'momo';if(state.pets[to].hp<=0)return false;
  state.switching={from:state.active,to,t:0};state.target=null;state.p.walking=false;state.p.fx=0;state.p.fy=1;state.invuln=Math.max(state.invuln||0,SWITCH_TOTAL+1);state.swap=SWITCH_TOTAL;return true;
 }
