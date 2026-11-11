@@ -33,49 +33,23 @@
   },
   "runs": {
     "owner": {
-      "id": "1c313dc426824841a154a4eebbb84ea1",
-      "seed": 472989124,
-      "mode": "offense",
+      "id": "59a73c0bdb184eaf80cf4baae7eab1aa",
+      "seed": 1504132107,
+      "mode": "defense",
       "fieldVersion": 1,
-      "requestId": "deployment-v25-offense-start",
-      "startedAt": 1794377213711,
-      "enemyCount": 0,
-      "finishedAt": 1794377218981,
-      "reward": {
-        "id": "heart3",
-        "label": "하트 3개",
-        "hearts": 3,
-        "index": 8,
-        "segments": [
-          "heart2",
-          "heart3",
-          "heart2",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart5"
-        ],
-        "tier": {
-          "id": "S",
-          "label": "S",
-          "stardust": 120
-        },
-        "stardust": 120
-      },
-      "clearNo": 2,
-      "cleared": [
-        "outpost-house"
-      ]
+      "requestId": "deployment-v25-defense-start",
+      "startedAt": 1794377224567,
+      "enemyCount": 58,
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
     "deployment-v25-explore-start",
     "deployment-v25-explore-finish",
     "deployment-v25-offense-start",
-    "deployment-v25-offense-finish"
+    "deployment-v25-offense-finish",
+    "deployment-v25-defense-start"
   ],
   "bestDurationMs": 0
 }
