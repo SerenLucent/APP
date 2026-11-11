@@ -1,5 +1,5 @@
 {
-  "stardust": 814,
+  "stardust": 934,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -14,7 +14,7 @@
   "hpPotions": 1,
   "staminaPotions": 1,
   "points": 0,
-  "totalClears": 7,
+  "totalClears": 8,
   "stats": {
     "momo": {
       "strength": 0,
@@ -40,8 +40,35 @@
       "requestId": "deployment-growth-start-5",
       "startedAt": 1794377348753,
       "enemyCount": 0,
-      "finishedAt": null,
-      "reward": null
+      "finishedAt": 1794377353970,
+      "reward": {
+        "id": "heart2",
+        "label": "하트 2개",
+        "hearts": 2,
+        "index": 4,
+        "segments": [
+          "heart2",
+          "heart3",
+          "heart2",
+          "heart4",
+          "heart2",
+          "heart3",
+          "heart4",
+          "heart2",
+          "heart3",
+          "heart5"
+        ],
+        "tier": {
+          "id": "S",
+          "label": "S",
+          "stardust": 120
+        },
+        "stardust": 120
+      },
+      "clearNo": 8,
+      "cleared": [
+        "outpost-house"
+      ]
     }
   },
   "operations": [
@@ -63,7 +90,8 @@
     "deployment-growth-finish-3",
     "deployment-growth-start-4",
     "deployment-growth-finish-4",
-    "deployment-growth-start-5"
+    "deployment-growth-start-5",
+    "deployment-growth-finish-5"
   ],
   "bestDurationMs": 0
 }
