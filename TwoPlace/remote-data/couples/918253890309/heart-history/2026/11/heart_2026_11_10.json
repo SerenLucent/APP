@@ -307,6 +307,15 @@
       "label": "별잠산 룰렛 보상",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794378206076,
+      "amount": 2,
+      "balance": 60,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
