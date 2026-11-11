@@ -1,1 +1,50 @@
-{}
+{
+  "stardust": 0,
+  "skillPoints": 0,
+  "skills": {
+    "momo": {
+      "charge": 1,
+      "ultimate": 1
+    },
+    "kuki": {
+      "charge": 1,
+      "ultimate": 1
+    }
+  },
+  "hpPotions": 0,
+  "staminaPotions": 0,
+  "points": 0,
+  "totalClears": 0,
+  "stats": {
+    "momo": {
+      "strength": 0,
+      "vitality": 0,
+      "stamina": 0,
+      "luck": 0,
+      "dexterity": 0
+    },
+    "kuki": {
+      "strength": 0,
+      "vitality": 0,
+      "stamina": 0,
+      "luck": 0,
+      "dexterity": 0
+    }
+  },
+  "runs": {
+    "owner": {
+      "id": "12d9e827a88d40d3a179efa9edcd7077",
+      "seed": 316270631,
+      "mode": "explore",
+      "fieldVersion": 2,
+      "requestId": "deployment-v25-explore-start",
+      "startedAt": 1794377204336,
+      "enemyCount": 24,
+      "finishedAt": null,
+      "reward": null
+    }
+  },
+  "operations": [
+    "deployment-v25-explore-start"
+  ]
+}
