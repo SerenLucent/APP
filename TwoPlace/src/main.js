@@ -54,7 +54,7 @@ async function loadViewContent(){
   const data=await request('/room/content',{token:session.token,method:'POST',body:{section:target==='pets'?'housing':target,years:target==='calendar'?[String(month.getFullYear())]:[]}});
   if(sequence!==contentSequence||view!==target)return;
   applyRoom(data);
-  if(target==='pets')await warmPetAssets(petHome);
+  if(target==='pets')await warmPetAssets(petHome,{catalog:petCatalog,isCurrent:()=>sequence===contentSequence&&view===target,onProgress:(label,done,total)=>{if(sequence!==contentSequence||view!==target)return;const message=document.querySelector('.content-loading p');if(message)message.textContent=label+' ('+done+'/'+total+')';}});
  }catch(error){if(sequence===contentSequence)contentError=error.message;}
  finally{if(sequence===contentSequence){contentBusy='';render();}}
 }
