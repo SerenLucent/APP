@@ -27,10 +27,10 @@
     {
       "id": "def92f0fde6f4ba2a88c62bfde223551",
       "product": "rug",
-      "space": null,
-      "x": 28,
-      "y": 48.225,
-      "rotation": 0
+      "space": "home",
+      "x": 16,
+      "y": 58.975,
+      "rotation": 90
     },
     {
       "id": "06ccfb9f31864f41a0c4f188d9624c0c",
