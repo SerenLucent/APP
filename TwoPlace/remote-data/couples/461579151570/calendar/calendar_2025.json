@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": "deployment-calendar-old",
+      "date": "2025-12-31",
+      "title": "연도 경계 점검",
+      "authorRole": "owner"
+    }
+  ],
+  "rewards": {
+    "registration": {
+      "2025-12-31": true
+    },
+    "reads": {},
+    "seen": [],
+    "backfilled": true
+  }
+}

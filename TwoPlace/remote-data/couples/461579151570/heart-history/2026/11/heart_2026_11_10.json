@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "heart",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "at": 1794377179287,
+      "amount": 10,
+      "balance": 130,
+      "kind": "earn",
+      "label": "일정 등록 보너스",
+      "role": "owner",
+      "character": null
+    }
+  ]
+}

@@ -2,8 +2,8 @@
   "schemaVersion": 2,
   "code": "461579151570",
   "createdAt": 1794377167474,
-  "updatedAt": 1794377171193,
-  "revision": 0,
+  "updatedAt": 1794377179583,
+  "revision": 1,
   "state": {
     "startDate": null,
     "characters": {}
@@ -20,10 +20,13 @@
   ],
   "storageVersion": 2,
   "content": {
-    "calendarYears": [],
-    "eventCount": 0,
+    "calendarYears": [
+      "2025",
+      "2026"
+    ],
+    "eventCount": 2,
     "noteCount": 0,
-    "heartSince": null,
+    "heartSince": 1794377179287,
     "clearSince": null
   }
 }

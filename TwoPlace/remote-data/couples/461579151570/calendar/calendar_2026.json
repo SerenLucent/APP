@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": "deployment-calendar-current",
+      "date": "2026-11-11",
+      "title": "배포 분리 저장 점검",
+      "authorRole": "owner"
+    }
+  ],
+  "rewards": {
+    "registration": {
+      "2026-11-11": true
+    },
+    "reads": {},
+    "seen": [],
+    "backfilled": true
+  }
+}
