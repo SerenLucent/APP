@@ -1,4 +1,4 @@
-const rooms=['home','momoRoom','kukiRoom'];
+const rooms=['home','upperFloor','momoRoom','kukiRoom'];
 export const FLOOR_PRODUCTS=[
  {id:'floorHoney',name:'허니 오크 마루',price:100,pattern:'plank',base:'#dbb98d',accent:'#bd9265',light:'#efd4ad',spaces:rooms,description:'따뜻한 나뭇결과 엇갈린 이음새의 원목 마루'},
  {id:'floorRosewood',name:'내추럴 월넛 마루',price:120,pattern:'plank',base:'#b99572',accent:'#927153',light:'#d0b18d',spaces:rooms,description:'차분한 호두나무 색과 깊은 나뭇결의 원목 마루'},

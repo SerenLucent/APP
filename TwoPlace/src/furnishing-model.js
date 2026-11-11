@@ -6,7 +6,8 @@ export function furnishingModel(product,rotation=0,state='idle'){
  const key=product+':'+rotation+':'+state;if(cache.has(key))return cache.get(key);
  const [w,d]=footprint({product,rotation:0}),[fw,fd]=footprint({product,rotation});
  const turn=((rotation/90)%4+4)%4,faces=[],modelVertices=[];let foreground=false;
- const rot=([u,v,z])=>{if(product==='premiumFridge')z*=.78;return turn===0?[u,v,z]:turn===1?[-v,u,z]:turn===2?[-u,-v,z]:[v,-u,z];};
+ const wetScale=({bathToilet:1.65,bathBasin:1.65,bathHamper:1.3,bathMat:1.5})[product]||1;
+ const rot=([u,v,z])=>{u*=wetScale;v*=wetScale;z*=wetScale;if(product==='premiumFridge')z*=.78;return turn===0?[u,v,z]:turn===1?[-v,u,z]:turn===2?[-u,-v,z]:[v,-u,z];};
  const project=vertex=>{const [a,b,z]=rot(vertex);return {x:(a-b)*20,y:(a+b)*10-z*20,depth:a+b+z};};
  function shade(hex,light){const n=parseInt(hex.slice(1),16);return '#'+[n>>16,(n>>8)&255,n&255].map(c=>Math.round(Math.min(255,Math.max(0,c*light))).toString(16).padStart(2,'0')).join('');}
  function quad(vertices,color,grain=false){
@@ -34,6 +35,34 @@ export function furnishingModel(product,rotation=0,state='idle'){
  const cushion=(x,y,z,sx,sy,color)=>{box(x,y,z,sx,sy,.38,color,.18,false,'pillow');for(const u of [-.22,.22])for(const v of [-.18,.18])ball(x+u*sx,y+v*sy,z+.47,.022,.022,.008,shade(color,.87));};
  const plant=(x,y,z,size=.8)=>{box(x,y,z,size*.5,size*.5,.43,palette.cream,.12);for(let i=0;i<7;i++){const a=i*Math.PI*2/7;ball(x+Math.cos(a)*size*.22,y+Math.sin(a)*size*.22,z+.65+(i%3)*.1,size*.16,size*.1,size*.28,i%2?'#9ab584':palette.leaf);}};
  switch(product){
+ case 'bathStool':{
+  // Low, broad seat sized to the pets; all four feet stay in its 2 × 2 cells.
+  for(const x of [-.61,.61])for(const y of [-.55,.55]){
+   box(x,y,0,.3,.32,.76,'#b4d1cf',.09);
+   box(x,y,0,.32,.34,.09,'#8daeb0',.04);
+  }
+  box(0,0,.67,1.82,1.66,.28,'#d5e9df',.13);
+  box(0,0,.94,1.61,1.45,.055,'#edf4e5',.025);
+  // Recessed carry handle and rounded lip, rather than a flat block.
+  box(0,-.04,1,.46,.16,.014,'#87aaa8',.007);
+  box(0,-.08,1.016,.32,.035,.012,'#b6d1c4',.006);
+  for(const x of [-.5,-.26,.26,.5])box(x,.16,1,.018,.69,.01,'#d8e8d8',.005);
+  break;}
+ case 'bathToilet':{
+  box(0,.05,.02,.67,1.12,.32,'#edf0e8',.15);ball(0,.2,.48,.43,.65,.35,'#fff9eb');
+  ball(0,.25,.75,.4,.55,.065,'#d6e4df');ball(0,.26,.78,.27,.39,.03,'#a8c9cc');
+  box(0,-.65,.18,.88,.46,1.22,'#fff8e9',.12);box(0,-.65,1.4,.94,.52,.1,'#e5eee4',.045);
+  box(.2,-.4,1.2,.16,.035,.075,palette.brass,.025);break;}
+ case 'bathBasin':{
+  legs(1.8,.85,.2,.13);box(0,0,.14,1.87,.89,1.05,'#b9cdb9',.08);
+  for(const x of [-.44,.44]){box(x,.46,.25,.84,.065,.82,'#d7e2cd',.035);ball(x<0?-.13:.13,.51,.81,.035,.028,.035,palette.brass);}
+  box(0,0,1.19,1.96,.98,.12,'#fff8e8',.05);ball(0,.05,1.39,.64,.36,.17,'#f7fbf0');ball(0,.08,1.53,.47,.25,.035,'#c6e0df');
+  box(0,-.34,1.3,.065,.065,.43,'#b8c8cc',.03);box(0,-.23,1.69,.065,.28,.055,'#d7e3e3',.025);ball(.64,-.15,1.43,.09,.09,.14,'#d9bdab');break;}
+ case 'bathHamper':{
+  box(0,0,.04,.88,.88,.83,'#cead82',.13,true);for(let z=.18;z<.85;z+=.12)box(0,0,z,.9,.9,.027,'#e6cda8',.012,true);
+  for(const y of [-.22,.07,.3])box(0,y,.88,.75,.19,.2,y===.07?'#b9d6d5':'#f7ecd6',.08,false,'pillow');break;}
+ case 'bathMat':{
+  box(0,0,.015,1.9,.87,.1,'#b5d0c4',.05);for(let x=-.83;x<.85;x+=.12)box(x,0,.115,.025,.67,.012,'#d6e5d5',.006);break;}
  case 'bed':{
   legs(1.85,2.85,.63,.17);
   box(0,0,.43,1.94,2.92,.29,palette.wood,.08,true);

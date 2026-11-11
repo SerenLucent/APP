@@ -1,6 +1,11 @@
 // Dimensions are floor cells, before 90-degree rotation. No render-time guesses.
-const householdIndoor=['home','momoRoom','kukiRoom'],householdBedrooms=['momoRoom','kukiRoom'];
+const householdIndoor=['home','upperFloor','momoRoom','kukiRoom'],householdBedrooms=['momoRoom','kukiRoom'];
 const householdEntries=[
+ ['bathStool','동글 목욕 의자',35,[2,2],['shower'],'rest'],
+ ['bathToilet','크림 도자기 변기',80,[2,3],['toilet'],'tidy'],
+ ['bathBasin','물방울 세면대',75,[4,2],['toilet','shower'],'tidy'],
+ ['bathHamper','라탄 수건 바구니',40,[2,2],['toilet','shower'],'tidy'],
+ ['bathMat','보송 욕실 발매트',30,[3,2],['toilet','shower'],'rest'],
  ['premiumTV','시네마 대형 스마트 TV',1200,[4,1],['home'],'cinema'],
  ['premiumFridge','양문형 스마트 냉장고',1000,[3,2],['home'],'refrigerate'],
  ['premiumWasher','프리미엄 드럼 세탁기',800,[2,2],['home'],'laundry'],

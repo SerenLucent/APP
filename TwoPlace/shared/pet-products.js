@@ -1,7 +1,7 @@
 import {FLOOR_PRODUCTS} from './floor-designs.js';
 import {WALL_PRODUCTS} from './wall-decor.js';
 import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS} from './household-catalog.js';
-const indoor=['home','momoRoom','kukiRoom'];
+const indoor=['home','upperFloor','momoRoom','kukiRoom'];
 const bedrooms=['momoRoom','kukiRoom'];
 export const PRODUCT_SPACES={
   snack:['yard',...indoor],cushion:indoor,plant:['yard','terrace',...indoor],table:['home'],rug:indoor,lamp:indoor,

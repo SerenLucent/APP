@@ -7,10 +7,11 @@ import {availableTableSlot,syncTabletopItems,tableSlot} from '../shared/tabletop
 import {HOUSEHOLD_PRODUCTS,TABLETOP_PRODUCTS,isTabletop} from '../shared/household-catalog.js';
 import {PRODUCT_SPACES,usableInSpace} from '../shared/pet-products.js';
 import {placementAllowed} from '../shared/pet-space.js';
+import {purchaseStock} from '../shared/purchase-limits.js';
 
 export const HOUR = 3600000;
 export const HEARTS_PER_HOUR = 10;
-export const SPACES = ['yard','terrace','home','momoRoom','kukiRoom'];
+export const SPACES = ['yard','terrace','home','upperFloor','momoRoom','kukiRoom','toilet','shower'];
 export const CATALOG = [
   {id:'snack',name:'별사탕 먹이',price:4,type:'food',symbol:'✦',description:'한 마리의 배고픔을 25 채워 줘요'},
   {id:'cushion',name:'구름 방석',price:30,type:'furniture',symbol:'☁',description:'낮잠이 솔솔 오는 포근한 자리'},
@@ -36,7 +37,7 @@ export class PetError extends Error {
   constructor(message,status=400) { super(message); this.status=status; }
 }
 export function initialPetHome(now=Date.now()) {
-  return {calendarRewards:{registration:{},reads:{},seen:[],backfilled:true},layoutVersion:1,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
+  return {calendarRewards:{registration:{},reads:{},seen:[],backfilled:true},layoutVersion:2,version:0, hearts:120, snacks:4, lastClaim:now, pets:{mochi:{hunger:75,updatedAt:now},kuki:{hunger:75,updatedAt:now}}, items:[]};
 }
 export function hunger(pet,now=Date.now()) { return petLevel(pet,'hunger',now); }
 export function claimable(home,now=Date.now()) { return hourlyHeartAmount(home,now); }
@@ -62,6 +63,8 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
       const quantity=action.quantity===undefined?1:action.quantity;
       if(!Number.isSafeInteger(quantity)||quantity<1||quantity>100||(product.type!=='food'&&quantity!==1))throw new PetError('구매 수량을 확인해 주세요.');
       const total=product.price*quantity;
+      const stock=purchaseStock(home,product);
+      if(stock.count+quantity>stock.limit)throw new PetError(product.name+'은 최대 '+stock.limit+'개까지 보유할 수 있어요.');
       if (home.hearts < total) throw new PetError('하트가 부족해요. 하트를 더 모아 주세요.');
       if (product.type === 'food' && home.snacks+quantity > 100) throw new PetError('먹이는 최대 100개까지 보관할 수 있어요.');
       if (product.type !== 'food' && home.items.length >= 120) throw new PetError('가구는 최대 120개까지 보관할 수 있어요.');
@@ -125,8 +128,8 @@ export function changePetHome(current,action,now=Date.now(),idFactory=()=>crypto
 
 // Keep ownership and currency; retire only placements invalid in the remodel.
 export function remodelPetHome(current){
- if(current.layoutVersion>=1)return current;
+ if(current.layoutVersion>=2)return current;
  const home=JSON.parse(JSON.stringify(current)),placed=[];let stored=0;
- for(const item of home.items){if(!item.space||item.parentId||isFloorProduct(item.product))continue;if(!usableInSpace(item.product,item.space)||!placementAllowed(placed,item,item.space,item,item.rotation||0)){item.space=null;delete item.parentId;delete item.slot;stored++;}else placed.push(item);}
- syncTabletopItems(home.items);home.layoutVersion=1;home.version++;home.remodel={version:1,stored};return home;
+ for(const item of home.items){if(!item.space||item.parentId||isFloorProduct(item.product)||isWallProduct(item.product))continue;if(!usableInSpace(item.product,item.space)||!placementAllowed(placed,item,item.space,item,item.rotation||0)){item.space=null;delete item.parentId;delete item.slot;stored++;}else placed.push(item);}
+ syncTabletopItems(home.items);if(!(current.layoutVersion>=1))home.version++;home.layoutVersion=2;home.remodel={version:2,stored};return home;
 }

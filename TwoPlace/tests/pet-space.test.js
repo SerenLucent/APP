@@ -42,7 +42,7 @@ test('pets find a route around furniture and never step into blocked cells',()=>
 });
 
 test('living-room fixtures block furniture and walking while bedrooms stay open',()=>{
-  for(const [c,r] of [[GRID_SIZE-4,0],[GRID_SIZE-1,0]]){
+  for(const [c,r] of [[17,0],[18,4]]){
     const point=cellCenter(c,r);
     assert.equal(walkable([],'home',c,r),false);
     assert.equal(placementAllowed([],{id:'plant',product:'plant'},'home',point),false);

@@ -3,7 +3,7 @@ import {HOUSEHOLD_PRODUCTS} from '../shared/household-catalog.js';
 import {CATALOG,initialPetHome,changePetHome} from '../server/pets.js';
 import {footprint,cellCenter} from '../shared/pet-space.js';
 test('new household products buy and persist their registered dimensions and all four rotations',()=>{
- assert.equal(HOUSEHOLD_PRODUCTS.length,35);assert.equal(CATALOG.filter(p=>p.type==='furniture').length,58);
+ assert.equal(HOUSEHOLD_PRODUCTS.length,40);assert.equal(CATALOG.filter(p=>p.type==='furniture').length,63);
  for(const product of HOUSEHOLD_PRODUCTS){let home={...initialPetHome(0),hearts:2000};home=changePetHome(home,{type:'buy',product:product.id,version:home.version},0,()=>product.id);assert.equal(home.hearts,2000-product.price);
   for(const rotation of [0,90,180,270]){home=changePetHome(home,{type:'place',item:product.id,version:home.version,space:product.spaces[0],rotation,...cellCenter(10,10)},0);assert.equal(home.items[0].rotation,rotation);assert.deepEqual(footprint(home.items[0]),rotation%180?[...product.footprint].reverse():product.footprint);}
   const invalid=['yard','home','momoRoom'].find(space=>!product.spaces.includes(space));if(invalid)assert.throws(()=>changePetHome(home,{type:'place',item:product.id,version:home.version,space:invalid,...cellCenter(10,10)},0));

@@ -76,7 +76,7 @@ test('bedrooms save separate furniture layouts and retain them when visiting ano
   home=changePetHome(home,{type:'place',version:3,item:'kuki-plant',space:'kukiRoom',...cellCenter(3,3)},0);
   assert.deepEqual(petSnapshot(home,0).items.map(item=>item.space),['momoRoom','kukiRoom']);
   assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'momoRoom',...cellCenter(3,3)},0));
-  assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'home',...cellCenter(19,0)},0));
+  assert.throws(()=>changePetHome(home,{type:'place',version:4,item:'kuki-plant',space:'home',...cellCenter(18,0)},0));
   assert.equal(home.items[1].space,'kukiRoom');
 });
 

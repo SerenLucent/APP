@@ -1,5 +1,5 @@
 // Storage schema 2: current state and append-only history have separate documents.
-import {initialPetHome,petSnapshot,CATALOG,changePetHome} from '../server/pets.js';
+import {initialPetHome,petSnapshot,CATALOG,changePetHome,remodelPetHome} from '../server/pets.js';
 import {memberState} from './room-state.js';
 import {calendarRewards} from './calendar-rewards.js';
 const STORAGE_DAY=86400000;
@@ -73,7 +73,7 @@ export function createRoomDocuments(core,{read,commit,now=()=>Date.now(),idFacto
  function content(section,years=[]){
   if(section==='calendar')calendar(years);
   else if(section==='notes'){state.notes=load('notes/notes.json').notes;sections.notes=true;}
-  else if(section==='housing'){const layout=load('housing/layout.json');Object.assign(home,layout);sections.housing=true;}
+  else if(section==='housing'){const layout=load('housing/layout.json');Object.assign(home,layout);sections.housing=true;const remodeled=remodelPetHome(home);if(remodeled!==home){home=remodeled;save();}}
   else if(section==='adventure'){home.adventure={...load('adventure/profile.json'),history:[]};sections.adventure=true;}
   else storageError('불러올 항목을 확인해 주세요.');
  }

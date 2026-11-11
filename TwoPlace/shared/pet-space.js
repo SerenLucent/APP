@@ -16,9 +16,9 @@ export function snap(point){const {c,r}=cellAt(point);return cellCenter(c,r);}
 export function footprint(item){const size=footprints[item.product] || [1,1];return item.rotation%180===90 ? [size[1],size[0]] : size;}
 // Fixed living-room sofa (2 × 4) and kitchen (4 × 1) share the floor grid.
 function builtInOverlap(space,u,v,w,h){
-  if(space!=='home')return false;
+  if(space!=='home'&&space!=='upperFloor')return false;
   const e=1e-6;
-  return u+w/(GRID_SIZE*2)>1-4/GRID_SIZE+e && v-h/(GRID_SIZE*2)<1/GRID_SIZE-e;
+  return u+w/(GRID_SIZE*2)>17/GRID_SIZE+e && u-w/(GRID_SIZE*2)<19/GRID_SIZE-e && v-h/(GRID_SIZE*2)<5/GRID_SIZE-e;
 }
 export function placementAllowed(items,item,space,point,rotation=item.rotation || 0){
   if(isWallProduct(item.product)||isFloorProduct(item.product))return false;

@@ -1,0 +1,5 @@
+import {staircaseArt,stairwellArt,centeredRoomDoors} from './stairs-art.js';
+export function houseWalls(space,colors={}){
+ return `<path d="M5 37 50 14 95 37 94 39 50 17 6 39Z" fill="#fdf4e7"/><path d="M6 38 50 16V42L6 64Z" fill="${colors.left||'#e7d8c8'}" stroke="#d6c1a7" stroke-width=".35"/><path d="M50 16 94 38V64L50 42Z" fill="${colors.right||'#f3e6d7'}" stroke="#decbb2" stroke-width=".35"/><path d="M6 61 50 39 94 61v3L50 42 6 64Z" fill="#cbb18d"/>${centeredRoomDoors(space==='home'?1:2)}${space==='home'?staircaseArt():stairwellArt()}`;
+}
+export function wetExitArt(){return '<g transform="matrix(1 .5 0 1 55 27.5)"><rect x="-.6" y="-.6" width="9.2" height="17.6" rx=".5" fill="#a6b9b6"/><rect width="8" height="17" rx=".4" fill="#d8e4db"/><rect x="1" y="2" width="6" height="6" rx=".5" fill="#f4f4e4"/><circle cx="6.6" cy="10" r=".4" fill="#ac9263"/><rect x="-.3" y="-4.7" width="8.6" height="2.8" rx=".5" fill="#fff3de"/><text x="4" y="-2.7" text-anchor="middle" font-size="1.8" fill="#8b7964">거실로</text></g>';}

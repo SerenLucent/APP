@@ -1,7 +1,7 @@
 import {fromWorld,toWorld,project,GRID_SIZE,footprint,facingForVector,FLOOR} from '../shared/pet-space.js';
 import {actorDepth} from './pet-depth.js';
 // Heights and local offsets in the same cell units as furnishing-model.js.
-const seats={cushion:.5,sofa:1.05,bench:1.05,armchair:.9,ottoman:.9,diningchair:1.4};
+const seats={cushion:.5,sofa:1.05,bench:1.05,armchair:.9,ottoman:.9,diningchair:1.4,bathStool:1};
 export function furnitureApproach(item){
  const turn=((item.rotation||0)%360+360)%360/90,base=toWorld(item),[width,depth]=footprint({...item,rotation:0});
  const rear=(turn===1||turn===2)&&['premiumTV','premiumFridge'].includes(item.product);
