@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794361685928,
+  "updatedAt": 1794361718734,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,8 +607,8 @@
     ]
   },
   "petHome": {
-    "version": 1253,
-    "hearts": 88,
+    "version": 1254,
+    "hearts": 13,
     "snacks": 11,
     "lastClaim": 1794361644134,
     "pets": {
@@ -952,6 +952,13 @@
         "x": 60,
         "y": 48.225,
         "rotation": 0
+      },
+      {
+        "id": "032d17d53ed6446799dfab6486464dc7",
+        "product": "flowerCart",
+        "space": null,
+        "x": 50,
+        "y": 65
       }
     ],
     "layoutVersion": 1,
@@ -4509,6 +4516,17 @@
         "label": "휴식 보너스",
         "role": "partner",
         "character": "momo"
+      },
+      {
+        "at": 1794361718731,
+        "amount": -75,
+        "balance": 13,
+        "kind": "purchase",
+        "label": "꽃 수레 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "flowerCart",
+        "quantity": 1
       }
     ],
     "heartHistorySince": 1793584445635,
