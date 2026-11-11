@@ -1,7 +1,7 @@
 {
-  "version": 1284,
+  "version": 1285,
   "hearts": 4,
-  "snacks": 13,
+  "snacks": 12,
   "lastClaim": 1794398469431,
   "pets": {
     "mochi": {
@@ -13,8 +13,8 @@
       "energyAt": 1794361660245
     },
     "kuki": {
-      "hunger": 99,
-      "updatedAt": 1794361680636,
+      "hunger": 84,
+      "updatedAt": 1794400875778,
       "affinityAt": 1794361667116,
       "energyAt": 1794361674093,
       "affinity": 100,
