@@ -66,7 +66,9 @@ test('failed commit leaves wallet and history unchanged; notes and furniture rem
 test('existing real room migration preserves balances, all calendar events, notes, furniture and history counts',()=>{
  const file='releases/APP/TwoPlace/remote-data/couples/438941217334/room.json';
  if(!fs.existsSync(file))return;
- const input=JSON.parse(fs.readFileSync(file)),files=partitionLegacyRoom(input,now);
+ let input=JSON.parse(fs.readFileSync(file));
+ if(input.storageVersion===2){const folder=file.replace(/room\.json$/,'backups/'),backup=fs.readdirSync(folder).find(name=>name.startsWith('storage-v2_'));assert.ok(backup,'Migrated room retains original backup');input=JSON.parse(fs.readFileSync(folder+backup));}
+ const files=partitionLegacyRoom(input,now);
  assert.equal(files['wallet/current.json'].hearts,input.petHome.hearts);
  assert.equal(files['housing/layout.json'].items.length,input.petHome.items.length);
  assert.equal(files['notes/notes.json'].notes.length,input.state.notes.length);

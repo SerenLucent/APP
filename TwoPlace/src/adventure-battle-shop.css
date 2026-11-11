@@ -13,7 +13,9 @@
 .battle-skills article{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #6e886344}.battle-skills article>div{flex:1}.battle-skills small{display:block;margin-top:6px}
 .battle-feedback{min-height:20px;line-height:1.5;color:#ffe3a9;font-size:13px}
 .stage-clear-dialog h2{font-size:clamp(28px,5vw,44px);font-weight:900;color:#294238;letter-spacing:-1px}
-.clear-stardust{color:#ffe2a0;font-size:26px;font-weight:800;display:block;margin:18px 0}
+.clear-stardust{color:#294238;font-size:30px;font-weight:900;display:block;margin:20px 0;padding:16px 20px;background:#f1e3bf;border-radius:16px;border:1px solid #c8b17e}
+.stage-clear-dialog [data-clear-preparing]{color:#52634f;line-height:1.6;font-size:16px}
+.stage-clear-dialog [data-clear-retry]{font:inherit;padding:12px 22px;border-radius:14px;background:#dce5c9;color:#294238;border:1px solid #879b73}
 .skill-portrait{display:block;width:100px;height:110px;object-fit:contain;margin:10px auto}
 .character-skills .skill-upgrade-row{flex-wrap:wrap;gap:12px;padding:18px 0}
 .character-skills .skill-description{flex:1 1 175px}
