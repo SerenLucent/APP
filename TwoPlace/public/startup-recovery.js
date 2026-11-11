@@ -50,11 +50,20 @@
     if (dots) dots.hidden = true;
   }
   var timer = setTimeout(show, 12000);
+  function roomLoading() {
+    // Modules have started successfully. A first-time storage migration can take longer.
+    clearTimeout(timer);
+    timer = setTimeout(show, 110000);
+    var caption = screen.querySelector('p');
+    if (caption) caption.textContent = '커플방 데이터를 읽고 있습니다. 처음 한 번은 조금 더 걸릴 수 있어요.';
+  }
+  window.addEventListener('twoplace:room-loading', roomLoading);
   window.addEventListener('error', show, true);
   window.addEventListener('unhandledrejection', show);
   window.addEventListener('twoplace:ready', function () {
     clearTimeout(timer);
     window.removeEventListener('error', show, true);
     window.removeEventListener('unhandledrejection', show);
+    window.removeEventListener('twoplace:room-loading', roomLoading);
   }, {once:true});
 })();

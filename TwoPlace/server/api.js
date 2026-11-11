@@ -6,6 +6,7 @@ import { randomBytes, randomInt, createHash, scryptSync } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { initialPetHome, petSnapshot, changePetHome, remodelPetHome, CATALOG } from './pets.js';
+import {openSqlRoomDocuments} from './room-documents.js';
 
 const emptyState = () => ({startDate: null, events: [], notes: []});
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -34,6 +35,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
     CREATE TABLE IF NOT EXISTS recovery (room_id TEXT PRIMARY KEY REFERENCES rooms(id), salt TEXT NOT NULL, hash TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS recovery_attempts (code TEXT PRIMARY KEY, at INTEGER, count INTEGER);`);
   db.exec('CREATE TABLE IF NOT EXISTS place_maps (room_id TEXT PRIMARY KEY REFERENCES rooms(id), data TEXT NOT NULL)');
+  db.exec('CREATE TABLE IF NOT EXISTS room_documents (room_id TEXT NOT NULL, path TEXT NOT NULL, data TEXT NOT NULL, PRIMARY KEY(room_id,path))');
   function passwordHash(password,salt){
     if(typeof password!=='string'||password.length<8||password.length>128)throw new ApiError(400,'복구 암호는 8~128자로 입력해 주세요.');
     return scryptSync(password,salt,32).toString('hex');
@@ -53,6 +55,7 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
     if (++entry.count > (action === 'create' ? 20 : 30)) throw new ApiError(429, '잠시 후 다시 시도해 주세요.');
   }
   function snapshot(room, role) {
+    if(db.prepare("SELECT 1 FROM room_documents WHERE room_id=? AND path='room.json'").get(room.id))return openSqlRoomDocuments(db,room).snapshot(role);
     const {count} = db.prepare('SELECT count(*) AS count FROM members WHERE room_id = ?').get(room.id);
     db.prepare('INSERT OR IGNORE INTO pet_homes (room_id,data) VALUES (?,?)').run(room.id,JSON.stringify(initialPetHome()));
     const previous=JSON.parse(db.prepare('SELECT data FROM pet_homes WHERE room_id = ?').get(room.id).data),petHome=backfillCalendarRewards(remodelPetHome(previous),JSON.parse(room.state));
@@ -75,9 +78,24 @@ export function createRoomApi({dbPath = process.env.ROOM_DB_PATH || resolve('.da
       const ownOrigins = [`http://${req.headers.host}`, `https://${req.headers.host}`];
       if (origin && !ownOrigins.includes(origin) && !allowedOrigins.includes(origin)) throw new ApiError(403, '허용되지 않은 접속 주소예요.');
       if (origin) { res.setHeader('Access-Control-Allow-Origin', origin); res.setHeader('Vary','Origin'); }
-      res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization');
+      res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization, X-TwoPlace-Storage');
       res.setHeader('Access-Control-Allow-Methods','GET, POST, PUT, OPTIONS');
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+      if(req.headers['x-twoplace-storage']!=='2'&&['/api/room/state','/api/room/calendar/read','/api/room/pets'].includes(path)){
+        const old=member(req);if(db.prepare("SELECT 1 FROM room_documents WHERE room_id=? AND path='room.json'").get(old.id))throw new ApiError(409,'저장 방식이 업데이트되었어요. 최신 버전으로 다시 열어 주세요.');
+      }
+      if(req.headers['x-twoplace-storage']==='2'&&['/api/room','/api/room/content','/api/room/history','/api/room/state','/api/room/calendar/read','/api/room/pets'].includes(path)){
+        const auth=member(req),body=req.method==='GET'?{}:await readJson(req);
+        db.exec('BEGIN IMMEDIATE');
+        try{
+          const documents=openSqlRoomDocuments(db,auth);let data;
+          if(path==='/api/room'&&req.method==='GET')data=documents.snapshot(auth.role);
+          else if(path==='/api/room/content'&&req.method==='POST'){documents.content(body.section,body.years||[]);data=documents.snapshot(auth.role);}
+          else if(path==='/api/room/history'&&req.method==='POST'){if(!['heart','clear'].includes(body.kind))throw new ApiError(400,'이력 종류를 확인해 주세요.');data=documents.history(body.kind,body.start,body.end);}
+          else{if(path==='/api/room/state'&&req.method==='PUT')documents.updateState(body,auth.role);else if(path==='/api/room/calendar/read'&&req.method==='POST')documents.readCalendar(body,auth.role);else if(path==='/api/room/pets'&&req.method==='POST')documents.petAction(body,auth.role);else throw new ApiError(404,'요청한 기능이 없어요.');data=documents.snapshot(auth.role);}
+          db.exec('COMMIT');return reply(200,data);
+        }catch(error){db.exec('ROLLBACK');throw error;}
+      }
       if (path === '/api/rooms' && req.method === 'POST') {
         const body = await readJson(req);
         if (body.requestToken !== undefined && !/^[a-f0-9]{64}$/.test(body.requestToken)) throw new ApiError(400,'요청 정보를 확인해 주세요.');

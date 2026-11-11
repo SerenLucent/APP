@@ -38,7 +38,7 @@ function github_(path,method,payload){
 }
 function roomPath_(code){if(!/^\d{12}$/.test(code))fail_(400,'방 코드를 확인해 주세요.');return ROOM_PREFIX+code+'/room.json';}
 function validPath_(path){
-  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|places\.json|backups\/[a-zA-Z0-9_-]+\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
+  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|places\.json|backups\/[a-zA-Z0-9_-]+\.json|wallet\/current\.json|housing\/layout\.json|adventure\/profile\.json|notes\/notes\.json|calendar\/calendar_\d{4}\.json|(heart-history|game-history)\/\d{4}\/\d{2}\/(heart|clear)_\d{4}_\d{2}_\d{2}\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
   return path.split('/').map(encodeURIComponent).join('/');
 }
 function readRoom_(path){
@@ -54,7 +54,7 @@ function writeJson_(path,room,sha,message){
   return result.content.sha;
 }
 function saveRoom_(entry){entry.room.updatedAt=Date.now();entry.sha=writeJson_(entry.path,entry.room,entry.sha);}
-function snapshot_(room,role){return {code:room.code,role,recoveryEnabled:!!room.recovery,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
+function snapshot_(room,role){if(room.storageVersion===2){const entry={room:room,head:github_('/git/ref/heads/'+GITHUB_BRANCH,'GET').object.sha},session=storageSession_(entry);storageAll_(session,room);return session.snapshot(role);}return {code:room.code,role,recoveryEnabled:!!room.recovery,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
 function recoveryHash_(code,password,salt){
   if(typeof password!=='string'||password.length<8||password.length>128)fail_(400,'복구 암호는 8~128자로 입력해 주세요.');
   let pepper=props_().getProperty('RECOVERY_PEPPER');
@@ -74,6 +74,7 @@ function member_(token){
   if(!fileId)fail_(401,'커플방에 다시 입장해 주세요.');
   const entry=readRoom_(fileId),member=entry.room.members.find(m=>m.hash===hashed);
   if(!member)fail_(401,'입장 정보를 확인해 주세요.');
+  if(entry.room.storageVersion===2)return {...entry,role:member.role};
   const remodeled=remodelPetHome(entry.room.petHome);if(remodeled!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/remodel-v1_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before home remodel');entry.room.petHome=remodeled;saveRoom_(entry);}
   const credited=backfillCalendarRewards(entry.room.petHome,entry.room.state);if(credited!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/calendar-rewards_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before calendar reward backfill');entry.room.petHome=credited;saveRoom_(entry);}
   return {...entry,role:member.role};
@@ -104,7 +105,10 @@ function doPost(e){
   finally{if(locked)lock.releaseLock();}
 }
 function route_(req){
+  const partitioned=routePartitioned_(req);if(partitioned)return partitioned.data;
   const body=req.body||{},path=req.path,method=req.method||'GET';
+  // Old clients must update before mutating a migrated room; never write over split state.
+  if(req.storageProtocol!==2&&['/room/state','/room/calendar/read','/room/pets'].includes(path)){const old=member_(req.token);if(old.room.storageVersion===2)fail_(409,'저장 방식이 업데이트되었어요. 최신 버전으로 다시 열어 주세요.');}
   if(path==='/health')return {ok:true};
   if(path==='/room/places/map-config'&&method==='GET'){member_(req.token);return pmNaverConfig_();}
   if(path==='/room/places/search'&&method==='POST'){const e=member_(req.token);return pmNaverSearch_(body.query,e.room.code+':'+e.role);}
@@ -198,6 +202,7 @@ function route_(req){
     if(!/^\d{12}$/.test(body.code))fail_(400,'방 코드를 확인해 주세요.');
     const id=props_().getProperty('github-room:'+body.code);if(!id)fail_(404,'방이 없어요.');
     const e=readRoom_(id);
+    if(e.room.storageVersion===2&&method==='PUT')fail_(409,'분리 저장된 방은 최신 관리 기능으로 수정해 주세요.');
     if(method==='PUT'){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);

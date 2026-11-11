@@ -21,6 +21,11 @@ test('slow startup offers manual recovery and successful startup cancels the wat
   const slow=boot();slow.timers[0]();assert.equal(slow.recovery.hidden,false);
   const ready=boot();ready.listeners['twoplace:ready']();assert.equal(ready.timers.length,0);assert.equal(ready.listeners.error,undefined);
 });
+test('valid room migration can wait longer while script failures still expose recovery immediately',()=>{
+  const h=boot();h.listeners['twoplace:room-loading']();assert.equal(h.timers.length,1);assert.equal(h.recovery.hidden,true);
+  h.listeners.error({message:'script failed'});assert.equal(h.recovery.hidden,false);
+  h.listeners['twoplace:ready']();assert.equal(h.timers.length,0);assert.equal(h.listeners['twoplace:room-loading'],undefined);
+});
 test('image errors do not claim startup failure, while script errors expose safe diagnostics',()=>{
   const h=boot();h.listeners.error({target:{tagName:'IMG'}});assert.equal(h.recovery.hidden,true);
   h.listeners.error({target:{tagName:'SCRIPT'},message:'Failed https://test.invalid/file?token=private',lineno:4});

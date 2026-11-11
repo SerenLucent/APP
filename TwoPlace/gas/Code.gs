@@ -618,6 +618,130 @@ function remodelPetHome(current){
  syncTabletopItems(home.items);home.layoutVersion=1;home.version++;home.remodel={version:1,stored};return home;
 }
 
+// Storage schema 2: current state and append-only history have separate documents.
+const STORAGE_DAY=86400000;
+const storageClone=value=>JSON.parse(JSON.stringify(value));
+function storageError(message,status=400){throw Object.assign(new Error(message),{status});}
+function historyPeriod(kind,at){
+ if(!['heart','clear'].includes(kind)||!Number.isFinite(at))storageError('이력 날짜를 확인해 주세요.');
+ const day=new Date(at+9*3600000).toISOString().slice(0,10),[year,month,d]=day.split('-');
+ const start=String(1+Math.floor((Number(d)-1)/3)*3).padStart(2,'0');
+ return `${kind==='heart'?'heart-history':'game-history'}/${year}/${month}/${kind}_${year}_${month}_${start}.json`;
+}
+function historyFiles(kind,start,end){
+ const valid=d=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d))&&new Date(d).toISOString().slice(0,10)===d;
+ if(!valid(start)||!valid(end)||end<start||Date.parse(end)-Date.parse(start)>30*STORAGE_DAY)storageError('조회 기간은 최대 31일로 선택해 주세요.');
+ const paths=new Set();
+ for(let at=Date.parse(start)-9*3600000;at<=Date.parse(end)-9*3600000;at+=STORAGE_DAY)paths.add(historyPeriod(kind,at));
+ return [...paths];
+}
+function compactClear(row){
+ const copy=storageClone(row);
+ if(copy.reward){delete copy.reward.segments;delete copy.reward.index;if(copy.reward.tier)copy.reward.tier={id:copy.reward.tier.id};}
+ return copy;
+}
+function yearRewards(rewards,year){
+ const r=rewards||{};
+ return {registration:Object.fromEntries(Object.entries(r.registration||{}).filter(([day])=>day.startsWith(year+'-'))),reads:Object.fromEntries(Object.entries(r.reads||{}).filter(([day])=>day.startsWith(year+'-'))),seen:(r.seen||[]).filter(key=>key.split(':')[1]?.startsWith(year+'-')),backfilled:true};
+}
+function joinRewards(calendars){
+ const rewards={registration:{},reads:{},seen:[],backfilled:true};
+ for(const calendar of calendars){Object.assign(rewards.registration,calendar.rewards?.registration);Object.assign(rewards.reads,calendar.rewards?.reads);rewards.seen.push(...(calendar.rewards?.seen||[]));}
+ return rewards;
+}
+function partitionLegacyRoom(input,now=Date.now()){
+ const room=storageClone(input),home=room.petHome||initialPetHome(now),documents={};
+ const years=new Set((room.state.events||[]).map(e=>e.date.slice(0,4)));
+ for(const day of [...Object.keys(home.calendarRewards?.registration||{}),...Object.keys(home.calendarRewards?.reads||{})])years.add(day.slice(0,4));
+ for(const key of home.calendarRewards?.seen||[])if(/^\d{4}-/.test(key.split(':')[1]||''))years.add(key.split(':')[1].slice(0,4));
+ for(const year of years)documents[`calendar/calendar_${year}.json`]={events:room.state.events.filter(e=>e.date.startsWith(year+'-')),rewards:yearRewards(home.calendarRewards,year)};
+ documents['notes/notes.json']={notes:room.state.notes||[]};
+ documents['housing/layout.json']={items:home.items||[],layoutVersion:home.layoutVersion,remodel:home.remodel};
+ const adventure=storageClone(home.adventure||{}),clears=adventure.history||[];delete adventure.history;
+ if(clears.length)adventure.bestDurationMs=Math.min(...clears.map(e=>e.durationMs));
+ documents['adventure/profile.json']=adventure;
+ const hearts=home.heartHistory||[];
+ for(const [kind,rows] of [['heart',hearts],['clear',clears]])for(const row of rows){const name=historyPeriod(kind,row.at);if(!documents[name])documents[name]={schemaVersion:1,kind,timezone:'Asia/Seoul',entries:[]};documents[name].entries.push(kind==='clear'?compactClear(row):row);}
+ delete home.items;delete home.layoutVersion;delete home.remodel;delete home.adventure;delete home.calendarRewards;delete home.heartHistory;
+ documents['wallet/current.json']=home;
+ room.schemaVersion=2;room.storageVersion=2;room.state={startDate:room.state.startDate,characters:room.state.characters||{}};delete room.petHome;
+ room.content={calendarYears:[...years].sort(),eventCount:input.state.events.length,noteCount:input.state.notes.length,heartSince:hearts.length?Math.min(...hearts.map(e=>e.at)):null,clearSince:clears.length?Math.min(...clears.map(e=>e.at)):null};
+ documents['room.json']=room;
+ return documents;
+}
+
+// read(relative) and commit(changes) are synchronous and bound to one room.
+// commit must publish the room and changed documents atomically.
+function createRoomDocuments(core,{read,commit,now=()=>Date.now(),idFactory}){
+ core=storageClone(core);
+ const loaded=new Map(),original=new Map();
+ function load(name,fallback){
+  if(!loaded.has(name)){const data=read(name);if(data===null&&fallback===undefined)storageError('저장 파일을 찾지 못했어요. 다시 불러와 주세요.',503);const value=data===null?storageClone(fallback):data;loaded.set(name,value);original.set(name,JSON.stringify(value));}
+  return loaded.get(name);
+ }
+ let wallet=load('wallet/current.json');
+ const sections={calendarYears:[],notes:false,housing:false,adventure:false};
+ let state={...core.state,events:[],notes:[]},home={...wallet,items:[]};
+ function calendar(years){
+  if(!Array.isArray(years)||years.length>30)storageError('불러올 연도를 확인해 주세요.');
+  for(const year of years){if(!/^\d{4}$/.test(String(year)))storageError('캘린더 연도를 확인해 주세요.');if(!sections.calendarYears.includes(String(year))){const name=`calendar/calendar_${year}.json`,value=load(name,core.content.calendarYears.includes(String(year))?undefined:{events:[],rewards:yearRewards({},String(year))});state.events.push(...value.events);sections.calendarYears.push(String(year));}}
+  home.calendarRewards=joinRewards(sections.calendarYears.map(year=>load(`calendar/calendar_${year}.json`)));
+ }
+ function content(section,years=[]){
+  if(section==='calendar')calendar(years);
+  else if(section==='notes'){state.notes=load('notes/notes.json').notes;sections.notes=true;}
+  else if(section==='housing'){const layout=load('housing/layout.json');Object.assign(home,layout);sections.housing=true;}
+  else if(section==='adventure'){home.adventure={...load('adventure/profile.json'),history:[]};sections.adventure=true;}
+  else storageError('불러올 항목을 확인해 주세요.');
+ }
+ function history(kind,start,end){
+  const rows=historyFiles(kind,start,end).flatMap(file=>load(file,{entries:[]}).entries).filter(row=>{const day=new Date(row.at+9*3600000).toISOString().slice(0,10);return day>=start&&day<=end;});
+  return {entries:rows.sort((a,b)=>b.at-a.at),start,end,since:core.content[kind==='heart'?'heartSince':'clearSince']};
+ }
+ function snapshot(role){
+  const dataState={...core.state};if(sections.calendarYears.length)dataState.events=state.events;if(sections.notes)dataState.notes=state.notes;
+  const safeHome=petSnapshot(home,now());if(!sections.housing)delete safeHome.items;
+  delete safeHome.heartHistory;if(safeHome.adventure)delete safeHome.adventure.history;
+  return {storageVersion:2,code:core.code,role,recoveryEnabled:!!core.recovery,memberCount:core.members.length,revision:core.revision,state:dataState,petHome:safeHome,catalog:CATALOG,sections:storageClone(sections),content:core.content};
+ }
+ function save(){
+  for(const [kind,rows] of [['heart',home.heartHistory||[]],['clear',home.adventure?.history||[]]])for(const row of rows){const file=historyPeriod(kind,row.at),archive=load(file,{schemaVersion:1,kind,timezone:'Asia/Seoul',entries:[]});archive.entries.push(kind==='clear'?compactClear(row):row);const key=kind==='heart'?'heartSince':'clearSince';core.content[key]=core.content[key]===null?row.at:Math.min(core.content[key],row.at);}
+  if(sections.housing)loaded.set('housing/layout.json',{items:home.items,layoutVersion:home.layoutVersion,...(home.remodel?{remodel:home.remodel}:{})});
+  if(sections.notes){loaded.set('notes/notes.json',{notes:state.notes});core.content.noteCount=state.notes.length;}
+  if(sections.calendarYears.length){
+   for(const year of sections.calendarYears){const name=`calendar/calendar_${year}.json`,old=load(name),events=state.events.filter(e=>e.date.startsWith(year+'-'));core.content.eventCount+=events.length-old.events.length;loaded.set(name,{events,rewards:yearRewards(home.calendarRewards,year)});}
+   core.content.calendarYears=[...new Set([...core.content.calendarYears,...sections.calendarYears])].sort();
+  }
+  if(sections.adventure){const adventure={...home.adventure};for(const row of adventure.history||[])adventure.bestDurationMs=Math.min(adventure.bestDurationMs??Infinity,row.durationMs);delete adventure.history;loaded.set('adventure/profile.json',adventure);home.adventure={...adventure,history:[]};}
+  wallet={...home};for(const key of ['items','layoutVersion','remodel','adventure','calendarRewards','heartHistory'])delete wallet[key];loaded.set('wallet/current.json',wallet);delete home.heartHistory;
+  core.state={startDate:state.startDate,characters:state.characters||{}};core.updatedAt=now();
+  const changes={'room.json':core};for(const [file,data] of loaded)if(JSON.stringify(data)!==original.get(file))changes[file]=data;
+  commit(changes);
+  for(const [file,data] of loaded)original.set(file,JSON.stringify(data));
+ }
+ function updateState(body,role){
+  if(body.revision!==core.revision)storageError('상대가 먼저 수정했어요. 최신 내용을 확인해 주세요.',409);
+  const scope=body.scope||'all',years=body.years||core.content.calendarYears;
+  if(!['all','profile','calendar','notes'].includes(scope))storageError('저장할 항목을 확인해 주세요.');
+  if(scope==='all'||scope==='calendar')calendar(years);
+  if(scope==='all'||scope==='notes')content('notes');
+  const submitted=body.state||{};
+  if(scope==='calendar'&&(!Array.isArray(submitted.events)||submitted.events.some(e=>!years.map(String).includes(e?.date?.slice(0,4)))))storageError('불러오지 않은 연도의 일정은 저장할 수 없어요.');
+  const candidate={...state,...(scope==='all'?submitted:scope==='calendar'?{events:submitted.events}:scope==='notes'?{notes:submitted.notes}:{startDate:submitted.startDate,characters:submitted.characters})};
+  const next=memberState(state,candidate,role);
+  if(scope==='all'||scope==='calendar')home=calendarRewards(home,state,next,now(),{actor:{role,character:state.characters?.[role]}});
+  state=next;core.revision++;save();
+ }
+ function readCalendar(body,role){calendar([String(body.year||body.date?.slice(0,4)||'')]);home=calendarRewards(home,state,state,now(),{readRole:role,eventId:body.eventId,actor:{role,character:state.characters?.[role]}});save();}
+ function petAction(body,role){
+  // Care/claims need only the wallet; furniture needs layout, games need profile.
+  if(body.type?.startsWith('adventure'))content('adventure');
+  else if(['buy','place','store','applyFloor','placeWall','placeOnTable'].includes(body.type))content('housing');
+  home=changePetHome(home,body,now(),idFactory,{role,character:state.characters?.[role]});save();
+ }
+ return {content,history,snapshot,updateState,readCalendar,petAction,save};
+}
+
 // Generated Code.gs also includes the same validation, pet economy and geometry as Node.
 const GITHUB_OWNER='SerenLucent';
 const GITHUB_REPO='APP';
@@ -658,7 +782,7 @@ function github_(path,method,payload){
 }
 function roomPath_(code){if(!/^\d{12}$/.test(code))fail_(400,'방 코드를 확인해 주세요.');return ROOM_PREFIX+code+'/room.json';}
 function validPath_(path){
-  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|places\.json|backups\/[a-zA-Z0-9_-]+\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
+  if(typeof path!=='string'||!/^TwoPlace\/remote-data\/couples\/\d{12}\/(room\.json|places\.json|backups\/[a-zA-Z0-9_-]+\.json|wallet\/current\.json|housing\/layout\.json|adventure\/profile\.json|notes\/notes\.json|calendar\/calendar_\d{4}\.json|(heart-history|game-history)\/\d{4}\/\d{2}\/(heart|clear)_\d{4}_\d{2}_\d{2}\.json)$/.test(path))fail_(400,'TwoPlace 저장 경로만 사용할 수 있어요.');
   return path.split('/').map(encodeURIComponent).join('/');
 }
 function readRoom_(path){
@@ -674,7 +798,7 @@ function writeJson_(path,room,sha,message){
   return result.content.sha;
 }
 function saveRoom_(entry){entry.room.updatedAt=Date.now();entry.sha=writeJson_(entry.path,entry.room,entry.sha);}
-function snapshot_(room,role){return {code:room.code,role,recoveryEnabled:!!room.recovery,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
+function snapshot_(room,role){if(room.storageVersion===2){const entry={room:room,head:github_('/git/ref/heads/'+GITHUB_BRANCH,'GET').object.sha},session=storageSession_(entry);storageAll_(session,room);return session.snapshot(role);}return {code:room.code,role,recoveryEnabled:!!room.recovery,memberCount:room.members.length,revision:room.revision,state:room.state,petHome:petSnapshot(room.petHome),catalog:CATALOG};}
 function recoveryHash_(code,password,salt){
   if(typeof password!=='string'||password.length<8||password.length>128)fail_(400,'복구 암호는 8~128자로 입력해 주세요.');
   let pepper=props_().getProperty('RECOVERY_PEPPER');
@@ -694,6 +818,7 @@ function member_(token){
   if(!fileId)fail_(401,'커플방에 다시 입장해 주세요.');
   const entry=readRoom_(fileId),member=entry.room.members.find(m=>m.hash===hashed);
   if(!member)fail_(401,'입장 정보를 확인해 주세요.');
+  if(entry.room.storageVersion===2)return {...entry,role:member.role};
   const remodeled=remodelPetHome(entry.room.petHome);if(remodeled!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/remodel-v1_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before home remodel');entry.room.petHome=remodeled;saveRoom_(entry);}
   const credited=backfillCalendarRewards(entry.room.petHome,entry.room.state);if(credited!==entry.room.petHome){writeJson_(ROOM_PREFIX+entry.room.code+'/backups/calendar-rewards_'+Date.now()+'_'+Utilities.getUuid()+'.json',entry.room,null,'Back up TwoPlace before calendar reward backfill');entry.room.petHome=credited;saveRoom_(entry);}
   return {...entry,role:member.role};
@@ -724,7 +849,10 @@ function doPost(e){
   finally{if(locked)lock.releaseLock();}
 }
 function route_(req){
+  const partitioned=routePartitioned_(req);if(partitioned)return partitioned.data;
   const body=req.body||{},path=req.path,method=req.method||'GET';
+  // Old clients must update before mutating a migrated room; never write over split state.
+  if(req.storageProtocol!==2&&['/room/state','/room/calendar/read','/room/pets'].includes(path)){const old=member_(req.token);if(old.room.storageVersion===2)fail_(409,'저장 방식이 업데이트되었어요. 최신 버전으로 다시 열어 주세요.');}
   if(path==='/health')return {ok:true};
   if(path==='/room/places/map-config'&&method==='GET'){member_(req.token);return pmNaverConfig_();}
   if(path==='/room/places/search'&&method==='POST'){const e=member_(req.token);return pmNaverSearch_(body.query,e.room.code+':'+e.role);}
@@ -818,6 +946,7 @@ function route_(req){
     if(!/^\d{12}$/.test(body.code))fail_(400,'방 코드를 확인해 주세요.');
     const id=props_().getProperty('github-room:'+body.code);if(!id)fail_(404,'방이 없어요.');
     const e=readRoom_(id);
+    if(e.room.storageVersion===2&&method==='PUT')fail_(409,'분리 저장된 방은 최신 관리 기능으로 수정해 주세요.');
     if(method==='PUT'){
       if(body.revision!==e.room.revision||body.petVersion!==e.room.petHome.version)fail_(409,'방 데이터가 바뀌었어요. 다시 불러와 주세요.');
       const state=cleanState(body.state),pets=cleanAdminPets_(body.petHome);
@@ -851,6 +980,51 @@ function cleanAdminPets_(data){
   // Validate all pairs, independent of input ordering (rugs are allowed underneath).
   for(const item of items){if(isTabletop(item.product)){if(item.space){const parent=items.find(p=>p.id===item.parentId),point=tableSlot(parent,item.slot);if(!point||point.space!==item.space||Math.abs(point.x-item.x)>1e-6||Math.abs(point.y-item.y)>1e-6||!availableTableSlot(items,item.parentId,item.slot,item.id))fail_(400,'음식의 식탁 위치를 확인해 주세요.');}else if(item.parentId!==undefined)fail_(400,'보관한 음식의 연결을 확인해 주세요.');}else if(item.space&&!isWallProduct(item.product)&&!isFloorProduct(item.product)&&!placementAllowed(items,item,item.space,item,item.rotation))fail_(400,'가구 위치를 확인해 주세요.');}
   return {version:0,hearts:data.hearts,snacks:data.snacks,lastClaim:now,pets,items};
+}
+
+// Git trees publish changed documents + wallet + logs in one atomic commit.
+function storageRead_(code,name,ref){
+ const path=ROOM_PREFIX+code+'/'+name;
+ try{const file=github_('/contents/'+validPath_(path)+'?ref='+ref,'GET');return {data:JSON.parse(Utilities.newBlob(Utilities.base64Decode(file.content.replace(/\s/g,''))).getDataAsString('UTF-8')),sha:file.sha};}
+ catch(error){if(error.status===404)return null;throw error;}
+}
+function storageCommit_(entry,changes){
+ const treeBase=github_('/git/commits/'+entry.head,'GET').tree.sha;
+ const tree=github_('/git/trees','POST',{base_tree:treeBase,tree:Object.entries(changes).map(function(pair){const full=ROOM_PREFIX+entry.room.code+'/'+pair[0];validPath_(full);return {path:full,mode:'100644',type:'blob',content:JSON.stringify(pair[1],null,2)};})});
+ const commit=github_('/git/commits','POST',{message:'Save TwoPlace split room data',tree:tree.sha,parents:[entry.head]});
+ github_('/git/refs/heads/'+GITHUB_BRANCH,'PATCH',{sha:commit.sha,force:false});
+ entry.head=commit.sha;
+}
+function storageSession_(entry){return createRoomDocuments(entry.room,{read:function(name){const file=storageRead_(entry.room.code,name,entry.head);return file?file.data:null;},commit:function(changes){storageCommit_(entry,changes);entry.room=changes['room.json'];},idFactory:function(){return Utilities.getUuid().replace(/-/g,'');}});}
+function storageMember_(token){
+ if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))fail_(401,'커플방에 다시 입장해 주세요.');
+ const hashed=digest_(token),path=props_().getProperty('github-member:'+hashed);if(!path)fail_(401,'커플방에 다시 입장해 주세요.');
+ const head=github_('/git/ref/heads/'+GITHUB_BRANCH,'GET').object.sha;
+ const code=path.split('/').slice(-2)[0],file=storageRead_(code,'room.json',head);
+ if(!file)fail_(404,'커플방을 찾을 수 없어요.');
+ const member=file.data.members.find(function(m){return m.hash===hashed;});if(!member)fail_(401,'입장 정보를 확인해 주세요.');
+ const entry={room:file.data,head:head,role:member.role};
+ if(entry.room.storageVersion!==2){
+  const documents=partitionLegacyRoom(entry.room);
+  // This backup and all split files become visible together. A failed commit leaves the old room intact.
+  documents['backups/storage-v2_'+head+'.json']=entry.room;
+  storageCommit_(entry,documents);entry.room=documents['room.json'];
+ }
+ return entry;
+}
+function storageAll_(session,room){for(const section of ['housing','notes','adventure'])session.content(section);session.content('calendar',room.content.calendarYears);}
+function routePartitioned_(req){
+ const paths=['/room','/room/content','/room/history','/room/state','/room/calendar/read','/room/pets'];
+ if(!paths.includes(req.path)||req.storageProtocol!==2)return null;
+ const entry=storageMember_(req.token),session=storageSession_(entry),body=req.body||{},method=req.method||'GET';
+ if(req.path==='/room'&&method==='GET')return {data:session.snapshot(entry.role)};
+ if(req.path==='/room/content'&&method==='POST'){session.content(body.section,body.years||[]);return {data:session.snapshot(entry.role)};}
+ if(req.path==='/room/history'&&method==='POST'){if(!['heart','clear'].includes(body.kind))fail_(400,'이력 종류를 확인해 주세요.');return {data:session.history(body.kind,body.start,body.end)};}
+ if(req.path==='/room/state'&&method==='PUT')session.updateState(body,entry.role);
+ else if(req.path==='/room/calendar/read'&&method==='POST')session.readCalendar(body,entry.role);
+ else if(req.path==='/room/pets'&&method==='POST')session.petAction(body,entry.role);
+ else fail_(404,'요청한 기능이 없어요.');
+ return {data:session.snapshot(entry.role)};
 }
 
 /** Shared by PlaceMate and TwoPlace. Only the map browser ID is returned to clients. */

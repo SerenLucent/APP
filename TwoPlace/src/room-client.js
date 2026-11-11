@@ -46,7 +46,7 @@ export async function request(path, {token, method='GET', body} = {}) {
   try {
     response = await fetch(`${apiBase}/api${path}`, {
       method, cache:'no-store', signal:AbortSignal.timeout(12000),
-      headers: {...(token ? {Authorization:`Bearer ${token}`} : {}), ...(body ? {'Content-Type':'application/json'} : {})},
+      headers: {'X-TwoPlace-Storage':'2',...(token ? {Authorization:`Bearer ${token}`} : {}), ...(body ? {'Content-Type':'application/json'} : {})},
       ...(body ? {body:JSON.stringify(body)} : {}),
     });
   } catch { throw new Error('서버에 연결할 수 없어요. 인터넷 연결과 서버 주소를 확인해 주세요.'); }
@@ -66,7 +66,7 @@ export async function gasRequest(path,{token,method='GET',body}={}){
   try {
     // A fresh URL also prevents intermediary caches from reusing a redirected
     // health/previous-response body for a different Apps Script POST request.
-    response=await fetch(gasUrl+'?request='+crypto.randomUUID(),{method:'POST',cache:'no-store',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({path,method,token,body}),signal:AbortSignal.timeout(45000)});
+    response=await fetch(gasUrl+'?request='+crypto.randomUUID(),{method:'POST',cache:'no-store',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({path,method,token,body,storageProtocol:2}),signal:AbortSignal.timeout(90000)});
     data=await response.json();
   }catch {throw new Error('저장 서버에 연결하지 못했어요. 인터넷 연결과 GAS 배포 설정을 확인해 주세요.');}
   if(!response.ok||!data||!Number.isInteger(data.status))throw new Error('GAS 서버 응답을 확인해 주세요.');

@@ -42,6 +42,8 @@ export function createDemoClient({storage,now=()=>Date.now()}={}){
     reset(){data=seed();persist();return snapshot();},
     async request(path,{method='GET',body={}}={}){
       if(path==='/room'&&method==='GET')return snapshot();
+      if(path==='/room/content'&&method==='POST')return snapshot();
+      if(path==='/room/history'&&method==='POST'){const entries=body.kind==='heart'?data.petHome.heartHistory||[]:data.petHome.adventure?.history||[];return {entries:entries.filter(e=>{const day=new Date(e.at+9*3600000).toISOString().slice(0,10);return day>=body.start&&day<=body.end;})};}
       if(path==='/room/state'&&method==='PUT'){
         if(body.revision!==data.revision){const e=new Error('모의 데이터를 새로 불러와 주세요.');e.status=409;throw e;}
         const next=memberState(data.state,body.state,'owner');data.petHome=calendarRewards(data.petHome,data.state,next,now(),{actor:{role:'owner',character:data.state.characters?.owner}});data.state=next;data.revision++;persist();return snapshot();

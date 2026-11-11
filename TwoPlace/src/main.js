@@ -1,6 +1,8 @@
 import {installAppTouchPolicy} from './app-touch.js';
 installAppTouchPolicy();
 import {openHeartHistory} from './heart-history-view.js';
+import {contentLoadingMarkup,warmPetAssets} from './pet-loading.js';
+import './content-loading.css';
 import './style.css';
 import './room.css';
 import './calendar.css';
@@ -42,12 +44,28 @@ let bootError = '';
 let saving = false;
 let refreshing = false;
 let connected = true;
+let contentBusy='',contentError='',contentSequence=0;
+const loadedYears=new Set();
+async function loadViewContent(){
+ if(!room||!['calendar','notes','pets'].includes(view))return;
+ const target=view,sequence=++contentSequence;
+ contentBusy=target==='pets'?'방을 로딩 중입니다.':target==='calendar'?'이전 캘린더 데이터를 읽고 있습니다.':'메모를 읽고 있습니다.';contentError='';render();
+ try{
+  const data=await request('/room/content',{token:session.token,method:'POST',body:{section:target==='pets'?'housing':target,years:target==='calendar'?[String(month.getFullYear())]:[]}});
+  if(sequence!==contentSequence||view!==target)return;
+  applyRoom(data);
+  if(target==='pets')await warmPetAssets(petHome);
+ }catch(error){if(sequence===contentSequence)contentError=error.message;}
+ finally{if(sequence===contentSequence){contentBusy='';render();}}
+}
 let view = demoMode ? (['home','pets'].includes(new URLSearchParams(location.search).get('view')) ? new URLSearchParams(location.search).get('view') : 'calendar') : 'home';
 function navigateView(next,replace=false){
+ contentSequence++;contentBusy='';contentError='';
  view=next;
  const entry={...history.state,twoPlaceView:next};
  if(replace)history.replaceState(entry,'');else history.pushState(entry,'');
  render();window.scrollTo(0,0);
+ void loadViewContent();
 }
 window.twoPlaceBack=()=>{
  const dialog=document.querySelector('dialog[open]');
@@ -55,7 +73,7 @@ window.twoPlaceBack=()=>{
  if(view!=='home'){navigateView('home',true);return true;}
  return false;
 };
-window.addEventListener('popstate',()=>{const dialog=document.querySelector('dialog[open]');if(dialog)dialog.close();view=history.state?.twoPlaceView||'home';render();window.scrollTo(0,0);});
+window.addEventListener('popstate',()=>{const dialog=document.querySelector('dialog[open]');if(dialog)dialog.close();contentSequence++;contentBusy='';contentError='';view=history.state?.twoPlaceView||'home';render();window.scrollTo(0,0);void loadViewContent();});
 history.replaceState({...history.state,twoPlaceView:'home'},'');
 if(view!=='home')history.pushState({...history.state,twoPlaceView:view},'');
 let month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -75,21 +93,40 @@ function toast(message) {
   timer = setTimeout(() => document.querySelector('#toast').classList.remove('visible'), 3000);
 }
 function applyRoom(data) {
+  const sameRoom=data.code===room?.code;
+  if(!sameRoom||data.revision>room.revision)loadedYears.clear();
   if (data.petHome && (!petHome || data.code !== room?.code || data.petHome.version >= petHome.version)) {
-    petHome = data.petHome;
+    petHome = sameRoom?{...petHome,...data.petHome}:data.petHome;
     heartClock=data.petHome.serverNow||Date.now();heartClockAt=performance.now();
     petCatalog = data.catalog || [];
   }
   if (room?.code === data.code && data.revision < room.revision) return;
-  room = {code:data.code, role:data.role, recoveryEnabled:data.recoveryEnabled, memberCount:data.memberCount, revision:data.revision};
-  state = data.state;
+  room = {code:data.code, role:data.role, recoveryEnabled:data.recoveryEnabled, memberCount:data.memberCount, revision:data.revision,storageVersion:data.storageVersion,content:data.content};
+  if(data.storageVersion===2){
+    const years=data.sections?.calendarYears||[];years.forEach(year=>loadedYears.add(year));
+    state={...(sameRoom?state:{events:[],notes:[]}),...data.state,events:years.length?[...(sameRoom?state.events:[]).filter(e=>!years.includes(e.date.slice(0,4))),...(data.state.events||[])]:sameRoom?state.events:[],notes:data.sections?.notes?data.state.notes:sameRoom?state.notes:[]};
+  }else{state=data.state;state.events.forEach(e=>loadedYears.add(e.date.slice(0,4)));}
   connected = true;
 }
 async function save(next) {
   if (!room || saving) return false;
   saving = true;
   try {
-    const origin=(modal.querySelector('[type="submit"]')||document.activeElement)?.getBoundingClientRect(),before=petHome?.hearts||0;applyRoom(await request('/room/state', {token:session.token, method:'PUT',body:{state:next,revision:room.revision}}));const gained=petHome.hearts-before;if(gained>0&&origin){modal.close();await flyHearts(origin,gained);}
+    let scope=next.events!==state.events?'calendar':next.notes!==state.notes?'notes':'profile',years=[];
+    const expectedRevision=room.revision;
+    if(scope==='calendar'&&room.storageVersion===2){
+      const oldById=new Map(state.events.map(e=>[e.id,e])),newIds=new Set(next.events.map(e=>e.id));
+      const changed=next.events.filter(e=>JSON.stringify(e)!==JSON.stringify(oldById.get(e.id))),deleted=state.events.filter(e=>!newIds.has(e.id));
+      years=[...new Set([...changed,...deleted,...changed.map(e=>oldById.get(e.id)).filter(Boolean)].map(e=>e.date.slice(0,4)))];
+      const missing=years.filter(y=>!loadedYears.has(y));
+      if(missing.length){toast('이전 캘린더 데이터를 읽고 있습니다.');const data=await request('/room/content',{token:session.token,method:'POST',body:{section:'calendar',years:missing}});if(data.revision!==expectedRevision)throw Object.assign(Error('상대가 먼저 수정했어요. 최신 내용을 확인해 주세요.'),{status:409});applyRoom(data);}
+      const touched=new Set([...changed,...deleted].map(e=>e.id));
+      next={...next,events:[...state.events.filter(e=>years.includes(e.date.slice(0,4))&&!touched.has(e.id)),...changed]};
+      if(!years.length)scope='profile';
+    }else if(scope==='calendar')years=[...loadedYears];
+    const origin=(modal.querySelector('[type="submit"]')||document.activeElement)?.getBoundingClientRect(),before=petHome?.hearts||0;
+    applyRoom(await request('/room/state', {token:session.token, method:'PUT',body:{state:next,scope,years,revision:expectedRevision}}));
+    const gained=petHome.hearts-before;if(gained>0&&origin){modal.close();await flyHearts(origin,gained);}
     return true;
   } catch(error) {
     if (error.status === 409) {
@@ -101,12 +138,12 @@ async function save(next) {
 }
 async function restoreRoom() {
   if (!session) return;
-  booting = true; bootError = ''; render();
+  booting = true; bootError = '';window.dispatchEvent(new Event('twoplace:room-loading')); render();
   try { applyRoom(await request('/room',{token:session.token})); }
   catch(error) {
     if (error.status === 401) { clearSession(); session = null; }
     else bootError = error.message;
-  } finally { booting = false; render(); }
+  } finally { booting = false; render();if(room)void loadViewContent(); }
 }
 async function refreshRoom() {
   if (!session || !room || saving || refreshing || modal.open || document.querySelector('.pet-status-dialog[open]') || document.hidden) return;
@@ -115,7 +152,7 @@ async function refreshRoom() {
     const data = await request('/room',{token:session.token});
     const changed = data.recoveryEnabled !== room.recoveryEnabled || data.revision !== room.revision || data.memberCount !== room.memberCount || data.petHome?.version !== petHome?.version || data.petHome?.claimable !== petHome?.claimable || !connected;
     applyRoom(data);
-    if (changed && !['places','transit'].includes(view)) render();
+    if (changed && !['places','transit'].includes(view)){render();if(!contentBusy)void loadViewContent();}
   } catch(error) {
     if (error.status === 401) { clearSession(); session = null; room = null; render(); toast(error.message); }
     else if (connected) { connected = false; render(); }
@@ -208,8 +245,8 @@ function home() {
   const todayLabel = new Intl.DateTimeFormat('ko-KR', {month:'long', day:'numeric', weekday:'long'}).format(new Date());
   return `<div class="recovery-tools"><span>${room.recoveryEnabled ? '복구 암호가 설정되어 있어요' : '휴대폰을 바꾸기 전에 복구 암호를 설정해 주세요'}</span><button class="text-button" data-action="recovery-settings">${room.recoveryEnabled ? '복구 암호 변경' : '복구 암호 설정'}</button></div>${heartCard()}
   <section class="spaces"><div class="section-head"><div><span class="eyebrow">OUR SPACE</span><h2>둘이 함께 쓰는 공간</h2></div><span class="little-heart">♡</span></div><div class="menu-grid">
-  <button class="menu-card calendar-card" data-view="calendar"><span class="tile-icon">${icon('calendar')}</span><span class="card-title">공유 캘린더</span><span class="card-desc">우리의 다음 약속</span><span class="card-bottom">${state.events.length ? `저장한 일정 ${state.events.length}개` : '함께할 하루를 기록해요'} ${icon('arrow')}</span></button>
-  <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${state.notes.length ? `쌓인 이야기 ${state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
+  <button class="menu-card calendar-card" data-view="calendar"><span class="tile-icon">${icon('calendar')}</span><span class="card-title">공유 캘린더</span><span class="card-desc">우리의 다음 약속</span><span class="card-bottom">${(room?.content?.eventCount??state.events.length) ? `저장한 일정 ${room?.content?.eventCount??state.events.length}개` : '함께할 하루를 기록해요'} ${icon('arrow')}</span></button>
+  <button class="menu-card note-card" data-view="notes"><span class="tile-icon">${icon('note')}</span><span class="card-title">커플 메모장</span><span class="card-desc">잊지 않고 싶은 이야기</span><span class="card-bottom">${(room?.content?.noteCount??state.notes.length) ? `쌓인 이야기 ${room?.content?.noteCount??state.notes.length}개` : '둘만의 생각을 담아요'} ${icon('arrow')}</span></button>
   <button class="menu-card place-card" data-action="place"><span class="tile-icon">${icon('pin')}</span><span class="card-title">플레이스 메이트</span><span class="card-desc">둘만의 맛집 지도</span><span class="card-bottom"><span class="badge">둘만의 공유 플레이스</span> ${icon('arrow')}</span></button>
   <button class="menu-card pet-menu-card" data-view="pets"><span class="tile-icon">${icon('heart')}</span><span class="card-title">펫 키우기</span><span class="card-desc">모모와 쿠키, 둘이 함께 돌봐요</span><span class="card-bottom">우리만의 집 꾸미기 ${icon('arrow')}</span></button>
   <button class="menu-card transit-card" data-view="transit"><span class="tile-icon">${icon('train')}</span><span class="card-title">Transit Live</span><span class="card-desc">우리 만남의 시간을 지켜주는 실시간 지하철 정보</span><span class="card-bottom">수도권 실시간 열차 위치 ${icon('arrow')}</span></button>
@@ -277,9 +314,9 @@ function render() {
     return;
   }
   const header = room ? `<header class="room-header"><button class="header-dday" data-action="dday">${icon('heart')}<span><small>OUR DAYS</small>${state.startDate ? `<strong>함께한 지 ${togetherDays(state.startDate)}일</strong>` : '<strong>커플 디데이 설정하기</strong>'}</span></button><button class="main-heart-wallet" data-action="heart-history" aria-label="보유 하트 ${petHome?.hearts||0}, 획득 및 사용내역 보기"><span aria-hidden="true">♥</span><strong>${petHome?.hearts||0}</strong><small>하트 내역</small></button><button class="room-code" data-action="copy" aria-label="방 코드 ${room.code} 복사하기"><small>${demoMode ? 'DEMO · 모의 테스트' : 'ROOM CODE · 복사하기'}</small><strong>${room.code.match(/.{4}/g).join(' ')} <span aria-hidden="true">⧉</span></strong></button></header><div class="room-status" role="status"><span>${demoMode ? '모의 커플방 · 실제 연결 없이 둘러보기' : connected ? (room.memberCount === 2 ? '♡ 둘이 함께 연결되었어요' : '♡ 상대를 기다리는 중 · 방 코드를 알려 주세요') : '서버 연결을 확인하고 있어요 · 변경 내용을 저장하려면 연결이 필요해요'}</span><button class="my-character" data-action="character">${state.characters?.[room.role]?`<span class="author-dot author-${state.characters[room.role]}"></span>내 캐릭터 · ${state.characters[room.role]==='momo'?'모모':'쿠키'}`:'내 캐릭터 설정'}</button></div>` : `<header><a class="brand" href="#" aria-label="TwoPlace 홈">${icon('heart')}<span>two<span class="brand-light">place</span><span class="brand-dot">.</span></span></a><span class="header-note">우리 둘의 작은 공간</span></header>`;
-  app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 메인화면으로</button>${view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span><span class="copyright">© ${new Date().getFullYear()} LUCENTY LABS. All rights reserved.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
+  app.innerHTML = `<div class="shell">${header}${demoMode ? '<aside class="demo-banner"><div><strong>모의 테스트 · 실제 커플방과 별개예요</strong>일정은 현재 탭에만 저장돼요. 자유롭게 추가·수정해 보세요.</div><button data-action="demo-reset">샘플 초기화</button></aside>' : ''}<main>${!room ? welcome() : view === 'home' ? home() : `<button class="back" data-view="home">${icon('back')} 메인화면으로</button>${contentBusy ? contentLoadingMarkup(contentBusy,view==='pets') : contentError ? `<section class="content-load-error" role="alert"><p>${esc(contentError)}</p><button data-action="retry-content">다시 불러오기</button></section>` : view === 'calendar' ? calendar() : view === 'pets' ? petPage(petHome,petCatalog) : notes()}`}</main><footer><span>MADE OF OUR LITTLE MOMENTS</span><span>two of us, one place.</span><span class="copyright">© ${new Date().getFullYear()} LUCENTY LABS. All rights reserved.</span></footer></div>${room ? `<nav class="bottom-nav" aria-label="주 메뉴">${[['home','home','우리 공간'],['calendar','calendar','캘린더'],['notes','note','메모장'],['pets','heart','펫 키우기']].map(([v,i,t]) => `<button data-view="${v}" class="${view === v ? 'active' : ''}" ${view === v ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></button>`).join('')}</nav>` : ''}`;
   updateHeartCard(petHome,heartNow(),claimingHearts);
-  if(room && view === 'pets' && petHome) mountPets({home:()=>petHome,render,toast,action:async action=>{
+  if(room && view === 'pets' && petHome && !contentBusy && !contentError) mountPets({home:()=>petHome,render,toast,action:async action=>{
     if(saving) throw new Error('이전 동작이 끝나면 다시 시도해 주세요.');
     saving=true;
     try {
@@ -325,9 +362,9 @@ document.addEventListener('click', async e => {
   if (!el) return;
   if (el.matches('.brand')) { e.preventDefault(); navigateView('home'); }
   if (el.dataset.view) { navigateView(el.dataset.view); }
-  if (el.dataset.month) { month = new Date(month.getFullYear(), month.getMonth() + Number(el.dataset.month), 1); render(); }
+  if (el.dataset.month) { month = new Date(month.getFullYear(), month.getMonth() + Number(el.dataset.month), 1); render(); void loadViewContent(); }
   if (el.dataset.date) { selected = el.dataset.date; render(); dayDialog(); }
-  if(el.dataset.readEvent){el.disabled=true;const origin=el.getBoundingClientRect();saving=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent}}));const gained=petHome.hearts-before;modal.close();if(gained>0)await flyHearts(origin,gained);toast(gained>0?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}finally{saving=false;}return;}
+  if(el.dataset.readEvent){el.disabled=true;const origin=el.getBoundingClientRect();saving=true;try{const before=petHome.hearts;applyRoom(await request('/room/calendar/read',{token:session.token,method:'POST',body:{eventId:el.dataset.readEvent,year:state.events.find(e=>e.id===el.dataset.readEvent)?.date.slice(0,4)}}));const gained=petHome.hearts-before;modal.close();if(gained>0)await flyHearts(origin,gained);toast(gained>0?'일정을 확인하고 1하트를 받았어요 ♡':'일정을 확인했어요. 이 날짜의 확인 보상은 이미 받았어요.');modal.close();render();}catch(error){toast(error.message);el.disabled=false;}finally{saving=false;}return;}
   if (el.dataset.detailEvent) eventDetail(el.dataset.detailEvent);
   if (el.dataset.editEvent) eventDialog(el.dataset.editEvent);
   if (el.dataset.editNote) noteDialog(el.dataset.editNote);
@@ -348,7 +385,8 @@ document.addEventListener('click', async e => {
     case 'retry': await restoreRoom(); break;
     case 'dday': dateDialog(); break;
     case 'character': characterDialog();break;
-    case 'heart-history':openHeartHistory({openDialog,modal,home:()=>petHome});break;
+    case 'heart-history':openHeartHistory({openDialog,modal,home:()=>petHome,load:(start,end)=>request('/room/history',{token:session.token,method:'POST',body:{kind:'heart',start,end}})});break;
+    case 'retry-content':void loadViewContent();break;
     case 'note': noteDialog(); break;
     case 'place': navigateView('places');break;
     case 'game': location.assign(import.meta.env.BASE_URL+'adventure-menu.html'+(demoMode?'?demo=1':''));break;
