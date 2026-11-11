@@ -336,6 +336,28 @@
         },
         "stardust": 110
       }
+    },
+    {
+      "runId": "1b632447aac542e5ac992775042b8dfc",
+      "clearNo": 80,
+      "at": 1794406086614,
+      "startedAt": 1794406022559,
+      "durationMs": 50852,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart4",
+        "label": "하트 4개",
+        "hearts": 4,
+        "tier": {
+          "id": "S"
+        },
+        "stardust": 120
+      }
     }
   ]
 }
