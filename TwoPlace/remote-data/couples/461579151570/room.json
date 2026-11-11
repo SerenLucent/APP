@@ -2,8 +2,8 @@
   "schemaVersion": 2,
   "code": "461579151570",
   "createdAt": 1794377167474,
-  "updatedAt": 1794377179583,
-  "revision": 1,
+  "updatedAt": 1794377185403,
+  "revision": 2,
   "state": {
     "startDate": null,
     "characters": {}
@@ -25,7 +25,7 @@
       "2026"
     ],
     "eventCount": 2,
-    "noteCount": 0,
+    "noteCount": 1,
     "heartSince": 1794377179287,
     "clearSince": null
   }

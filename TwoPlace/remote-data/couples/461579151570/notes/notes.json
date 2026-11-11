@@ -1,3 +1,9 @@
 {
-  "notes": []
+  "notes": [
+    {
+      "id": "deployment-test-room",
+      "date": "2026-11-11",
+      "body": "GAS v25 분리 저장·게임 검증용 테스트 방입니다."
+    }
+  ]
 }
