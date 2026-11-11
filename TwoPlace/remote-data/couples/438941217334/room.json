@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "code": "438941217334",
   "createdAt": 1792657952455,
-  "updatedAt": 1794361733043,
+  "updatedAt": 1794361743059,
   "revision": 53,
   "state": {
     "startDate": "2024-08-08",
@@ -607,7 +607,7 @@
     ]
   },
   "petHome": {
-    "version": 1255,
+    "version": 1256,
     "hearts": 13,
     "snacks": 11,
     "lastClaim": 1794361644134,
@@ -957,7 +957,7 @@
         "id": "032d17d53ed6446799dfab6486464dc7",
         "product": "flowerCart",
         "space": "yard",
-        "x": 72,
+        "x": 48,
         "y": 48.225,
         "rotation": 0
       }
