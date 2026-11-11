@@ -649,6 +649,15 @@
       "character": "kuki",
       "product": "bathToilet",
       "quantity": 1
+    },
+    {
+      "at": 1794401020558,
+      "amount": 2,
+      "balance": 6,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
