@@ -13,11 +13,11 @@
   },
   "hpPotions": 1,
   "staminaPotions": 1,
-  "points": 2,
+  "points": 0,
   "totalClears": 9,
   "stats": {
     "momo": {
-      "strength": 0,
+      "strength": 1,
       "vitality": 0,
       "stamina": 0,
       "luck": 0,
@@ -95,7 +95,8 @@
     "deployment-growth-start-6",
     "deployment-growth-finish-6",
     "deployment-growth-buy-statPoint",
-    "deployment-growth-buy-skillPoint"
+    "deployment-growth-buy-skillPoint",
+    "deployment-growth-stats-apply"
   ],
   "bestDurationMs": 0
 }
