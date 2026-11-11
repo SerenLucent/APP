@@ -1,0 +1,16 @@
+{
+  "version": 0,
+  "hearts": 120,
+  "snacks": 4,
+  "lastClaim": 1794377167474,
+  "pets": {
+    "mochi": {
+      "hunger": 75,
+      "updatedAt": 1794377167474
+    },
+    "kuki": {
+      "hunger": 75,
+      "updatedAt": 1794377167474
+    }
+  }
+}
