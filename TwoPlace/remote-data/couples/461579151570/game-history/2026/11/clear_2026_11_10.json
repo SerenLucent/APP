@@ -70,6 +70,28 @@
         },
         "stardust": 120
       }
+    },
+    {
+      "runId": "5b066cbad9cb4c01856db7bd1d4ef0d7",
+      "clearNo": 4,
+      "at": 1794377312383,
+      "startedAt": 1794377307846,
+      "durationMs": 0,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        },
+        "stardust": 120
+      }
     }
   ]
 }
