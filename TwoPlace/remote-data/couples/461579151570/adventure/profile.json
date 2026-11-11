@@ -1,9 +1,9 @@
 {
   "stardust": 94,
-  "skillPoints": 2,
+  "skillPoints": 0,
   "skills": {
     "momo": {
-      "charge": 1,
+      "charge": 2,
       "ultimate": 1
     },
     "kuki": {
@@ -96,7 +96,8 @@
     "deployment-growth-finish-6",
     "deployment-growth-buy-statPoint",
     "deployment-growth-buy-skillPoint",
-    "deployment-growth-stats-apply"
+    "deployment-growth-stats-apply",
+    "deployment-growth-skill-apply"
   ],
   "bestDurationMs": 0
 }
