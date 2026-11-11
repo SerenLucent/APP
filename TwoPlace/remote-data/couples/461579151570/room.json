@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "code": "461579151570",
   "createdAt": 1794377167474,
-  "updatedAt": 1794377204350,
+  "updatedAt": 1794377209477,
   "revision": 2,
   "state": {
     "startDate": null,
@@ -27,6 +27,6 @@
     "eventCount": 2,
     "noteCount": 1,
     "heartSince": 1794377179287,
-    "clearSince": null
+    "clearSince": 1794377208946
   }
 }
