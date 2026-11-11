@@ -1,5 +1,5 @@
 {
-  "stardust": 1054,
+  "stardust": 574,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -13,7 +13,7 @@
   },
   "hpPotions": 1,
   "staminaPotions": 1,
-  "points": 0,
+  "points": 2,
   "totalClears": 9,
   "stats": {
     "momo": {
@@ -93,7 +93,8 @@
     "deployment-growth-start-5",
     "deployment-growth-finish-5",
     "deployment-growth-start-6",
-    "deployment-growth-finish-6"
+    "deployment-growth-finish-6",
+    "deployment-growth-buy-statPoint"
   ],
   "bestDurationMs": 0
 }
