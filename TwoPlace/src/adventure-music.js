@@ -1,4 +1,5 @@
 export const MAP_MUSIC={explore:'bgm_explore.mp3',offense:'bgm_offense.mp3',defense:'bgm_defence.mp3'};
+export function shouldPauseGameMusic({loading=false,loadError=false,paused=false,won=false,hidden=false}){return loading||loadError||hidden||(paused&&!won);}
 export function createGameMusic({base='/',mode='explore',audioFactory=()=>new Audio()}={}){
  const audio=audioFactory();audio.src=base+'audio/'+(MAP_MUSIC[mode]||MAP_MUSIC.explore);audio.preload='auto';audio.loop=true;audio.volume=.25;
  let ready=false,paused=false,muted=false,pending=false;
