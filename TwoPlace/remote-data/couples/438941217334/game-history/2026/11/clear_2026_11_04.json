@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "1814a9c2cded4e9089e7d337a85d40b1",
+      "clearNo": 1,
+      "at": 1793864133750,
+      "startedAt": 1793863737323,
+      "durationMs": 355489,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "add00b2bc1724d3a8d129964d9d1c47f",
+      "clearNo": 2,
+      "at": 1793864625558,
+      "startedAt": 1793864318578,
+      "durationMs": 300279,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "ba4b73333f0a44de93faba565f4a0c52",
+      "clearNo": 3,
+      "at": 1793865287930,
+      "startedAt": 1793864651754,
+      "durationMs": 609955,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "B"
+        }
+      }
+    },
+    {
+      "runId": "5455be9bb2e14774a745751e249a142a",
+      "clearNo": 4,
+      "at": 1793871755648,
+      "startedAt": 1793871454168,
+      "durationMs": 294993,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "70376a4b7b4e4cd682757624f9af6171",
+      "clearNo": 5,
+      "at": 1793872259122,
+      "startedAt": 1793871849227,
+      "durationMs": 403743,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "2d7ab78b5aab4f92aae63685fa13bd2a",
+      "clearNo": 6,
+      "at": 1793877028001,
+      "startedAt": 1793875205980,
+      "durationMs": 375179,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "heart1",
+        "label": "하트 1개",
+        "hearts": 1,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "8c3fa45750c944e0a356dfa40e32d5f4",
+      "clearNo": 7,
+      "at": 1793877561326,
+      "startedAt": 1793866046297,
+      "durationMs": 364575,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "67a1dc9e8bf74bb5bcfa11c1069c95d4",
+      "clearNo": 8,
+      "at": 1793877877066,
+      "startedAt": 1793877532731,
+      "durationMs": 336130,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "f5834034cbf94678b1dc1e7248745156",
+      "clearNo": 9,
+      "at": 1793884884468,
+      "startedAt": 1793877895851,
+      "durationMs": 329556,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "obstacles": 100,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "210d651ee98042deabf8c53212a508af",
+      "clearNo": 10,
+      "at": 1793936047381,
+      "startedAt": 1793884587422,
+      "durationMs": 333069,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "13ac5052cad54833be8c73d5fd186027",
+      "clearNo": 11,
+      "at": 1793936794488,
+      "startedAt": 1793936557457,
+      "durationMs": 225820,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "36fb69c278614cc3b2be55384bc5bbfc",
+      "clearNo": 12,
+      "at": 1793948535851,
+      "startedAt": 1793948341538,
+      "durationMs": 187563,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "c054dc63215145c8908a7059043c48c0",
+      "clearNo": 13,
+      "at": 1793975199488,
+      "startedAt": 1793975043399,
+      "durationMs": 147546,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    }
+  ]
+}

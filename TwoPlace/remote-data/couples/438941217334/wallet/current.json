@@ -1,0 +1,63 @@
+{
+  "version": 1260,
+  "hearts": 31,
+  "snacks": 14,
+  "lastClaim": 1794375947454,
+  "pets": {
+    "mochi": {
+      "hunger": 99,
+      "updatedAt": 1794361685926,
+      "affinity": 100,
+      "affinityAt": 1794361653969,
+      "energy": 100,
+      "energyAt": 1794361660245
+    },
+    "kuki": {
+      "hunger": 99,
+      "updatedAt": 1794361680636,
+      "affinityAt": 1794361667116,
+      "energyAt": 1794361674093,
+      "affinity": 100,
+      "energy": 100
+    }
+  },
+  "careRewards": {
+    "pat": 1792894170177,
+    "sleep": 1792894177497,
+    "kuki": {
+      "pat": 1793061409142,
+      "sleep": 1793061400694
+    },
+    "mochi": {
+      "sleep": 1793061389215,
+      "pat": 1793061381716
+    }
+  },
+  "careBonuses": {
+    "mochi": {
+      "sleep": {
+        "day": "2026-11-11",
+        "count": 5,
+        "lastAt": 1794361660245
+      },
+      "pat": {
+        "day": "2026-11-11",
+        "count": 5,
+        "lastAt": 1794361653969
+      }
+    },
+    "kuki": {
+      "pat": {
+        "day": "2026-11-11",
+        "count": 5,
+        "lastAt": 1794361667116
+      },
+      "sleep": {
+        "day": "2026-11-11",
+        "count": 4,
+        "lastAt": 1794361674093
+      }
+    }
+  },
+  "heartHistorySince": 1793584445635
+}

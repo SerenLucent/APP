@@ -1,0 +1,340 @@
+{
+  "items": [
+    {
+      "id": "fdc98c8be36949b7a7a2c2844ee40cca",
+      "product": "cushion",
+      "space": "momoRoom",
+      "x": 20,
+      "y": 58.975,
+      "rotation": 0
+    },
+    {
+      "id": "6cdab61da13449f2b09d5232d1571bbc",
+      "product": "table",
+      "space": "home",
+      "x": 80,
+      "y": 80.475,
+      "rotation": 0
+    },
+    {
+      "id": "13f9c27ee9364622ad44ea6c8a7cdd31",
+      "product": "plant",
+      "space": "momoRoom",
+      "x": 56,
+      "y": 86.925,
+      "rotation": 0
+    },
+    {
+      "id": "def92f0fde6f4ba2a88c62bfde223551",
+      "product": "rug",
+      "space": "momoRoom",
+      "x": 28,
+      "y": 48.225,
+      "rotation": 0
+    },
+    {
+      "id": "06ccfb9f31864f41a0c4f188d9624c0c",
+      "product": "table",
+      "space": "home",
+      "x": 80,
+      "y": 84.775,
+      "rotation": 90
+    },
+    {
+      "id": "a46958196e67471c9fd6aeaebee1ac32",
+      "product": "lamp",
+      "space": "momoRoom",
+      "x": 12,
+      "y": 80.475,
+      "rotation": 0
+    },
+    {
+      "id": "272c5fab68674f29b77ffd9d83d3c3da",
+      "product": "mealPlate",
+      "space": "home",
+      "x": 78.08,
+      "y": 84.775,
+      "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
+      "slot": 2,
+      "rotation": 90
+    },
+    {
+      "id": "13b0671999614706848d8ee89fa9fde3",
+      "product": "bed",
+      "space": "momoRoom",
+      "x": 16,
+      "y": 84.775,
+      "rotation": 270
+    },
+    {
+      "id": "8cf34c07f48c4d2a8e148d4c72cc1cb0",
+      "product": "diningchair",
+      "space": "home",
+      "x": 88,
+      "y": 84.775,
+      "rotation": 90
+    },
+    {
+      "id": "ec7cc726ee284d58b8dd07b3556c2861",
+      "product": "teaSet",
+      "space": "home",
+      "x": 81.92,
+      "y": 84.775,
+      "rotation": 0,
+      "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
+      "slot": 0
+    },
+    {
+      "id": "91747b5ef9e3441f97c58c8ac39bfe7a",
+      "product": "diningchair",
+      "space": "home",
+      "x": 72,
+      "y": 84.775,
+      "rotation": 270
+    },
+    {
+      "id": "b7b5feacf52345bbab251b20519eb73b",
+      "product": "vanity",
+      "space": "momoRoom",
+      "x": 12,
+      "y": 58.975,
+      "rotation": 270
+    },
+    {
+      "id": "f63647536a404c4f930e6934a9657dff",
+      "product": "mirrorStand",
+      "space": "momoRoom",
+      "x": 48,
+      "y": 86.925,
+      "rotation": 180
+    },
+    {
+      "id": "15cef30e89e24ca4b4781187407e9e7c",
+      "product": "wardrobe",
+      "space": "momoRoom",
+      "x": 24,
+      "y": 78.325,
+      "rotation": 0
+    },
+    {
+      "id": "d49216d63a89495895518bca20413fb2",
+      "product": "bookshelf",
+      "space": "momoRoom",
+      "x": 16,
+      "y": 78.325,
+      "rotation": 0
+    },
+    {
+      "id": "eeb2c8554ff64c3e8277c451ecee88df",
+      "product": "coatRack",
+      "space": "momoRoom",
+      "x": 40,
+      "y": 46.075,
+      "rotation": 0
+    },
+    {
+      "id": "c6c735c1ec6240f19e68a0c8d4c84dc3",
+      "product": "picnicTable",
+      "space": "yard",
+      "x": 52,
+      "y": 67.575,
+      "rotation": 0
+    },
+    {
+      "id": "c6f07fd3ec0946dd9d8260a96e11e155",
+      "product": "barbecue",
+      "space": "yard",
+      "x": 40,
+      "y": 67.575,
+      "rotation": 90
+    },
+    {
+      "id": "b4cff03099fb46f5835de1d0bc840ff4",
+      "product": "bench",
+      "space": "yard",
+      "x": 16,
+      "y": 46.075,
+      "rotation": 0
+    },
+    {
+      "id": "858dde421b4b43fe97b932e9a7d5dfa8",
+      "product": "lantern",
+      "space": "yard",
+      "x": 40,
+      "y": 46.075,
+      "rotation": 0
+    },
+    {
+      "id": "dce83244c3bb44759a887ab5c9680f21",
+      "product": "wallpaperRose",
+      "space": "kukiRoom",
+      "x": 50,
+      "y": 65,
+      "rotation": 0,
+      "wallSide": "right",
+      "wallCol": 2,
+      "wallRow": 0
+    },
+    {
+      "id": "3c58f02062fa42b7b528ae2f97755b02",
+      "product": "wallpaperRose",
+      "space": "momoRoom",
+      "x": 50,
+      "y": 65,
+      "wallSide": "left",
+      "wallCol": 2,
+      "wallRow": 0,
+      "rotation": 0
+    },
+    {
+      "id": "17f90dafc6994de28e10390fdb4f62ca",
+      "product": "wallShelf",
+      "space": "momoRoom",
+      "x": 50,
+      "y": 65,
+      "wallSide": "right",
+      "wallCol": 2,
+      "wallRow": 1,
+      "rotation": 0
+    },
+    {
+      "id": "fbdaba8a6d2549dd81466b205084b7f4",
+      "product": "laundryBasket",
+      "space": "momoRoom",
+      "x": 12,
+      "y": 63.275,
+      "rotation": 90
+    },
+    {
+      "id": "d60d3e6742724d2986e73c1caf973382",
+      "product": "armchair",
+      "space": "kukiRoom",
+      "x": 48,
+      "y": 67.575,
+      "rotation": 0
+    },
+    {
+      "id": "29f06b23d3c041fea9dd4e94507d152e",
+      "product": "sofa",
+      "space": "home",
+      "x": 16,
+      "y": 84.775,
+      "rotation": 270
+    },
+    {
+      "id": "5bbb80286c8c4dc7be09efa433befc89",
+      "product": "coffeeTable",
+      "space": "home",
+      "x": 24,
+      "y": 84.775,
+      "rotation": 90
+    },
+    {
+      "id": "79f594ead64b4b60aa8fcd250d9660cc",
+      "product": "pantry",
+      "space": "home",
+      "x": 60,
+      "y": 46.075,
+      "rotation": 0
+    },
+    {
+      "id": "88bc1a67ff1a42498796a2ad3ef357b8",
+      "product": "pond",
+      "space": "yard",
+      "x": 24,
+      "y": 82.625,
+      "rotation": 0
+    },
+    {
+      "id": "ae7dec8d3b814b4b9689fc13eafb36ca",
+      "product": "floorMeadow",
+      "space": "yard",
+      "x": 50,
+      "y": 65,
+      "rotation": 0
+    },
+    {
+      "id": "6aed4c8c799a41f3853bff0d123057a4",
+      "product": "floorRosewood",
+      "space": "momoRoom",
+      "x": 50,
+      "y": 65,
+      "rotation": 0
+    },
+    {
+      "id": "1b6829d48d4f4832abf7f63bef4edf13",
+      "product": "wallpaperLilac",
+      "space": "momoRoom",
+      "x": 50,
+      "y": 65,
+      "wallSide": "right",
+      "wallCol": 2,
+      "wallRow": 0,
+      "rotation": 0
+    },
+    {
+      "id": "4ab6b4d90a554c47be677adbebf582bf",
+      "product": "bookshelf",
+      "space": "home",
+      "x": 12,
+      "y": 76.175,
+      "rotation": 270
+    },
+    {
+      "id": "908d51fe758048bf9b16473f5d942d2a",
+      "product": "pottedTree",
+      "space": "yard",
+      "x": 40,
+      "y": 84.775,
+      "rotation": 0
+    },
+    {
+      "id": "efc296cd1e5c4acf9e48e8022d8a63ba",
+      "product": "floorRosewood",
+      "space": "home",
+      "x": 50,
+      "y": 65,
+      "rotation": 0
+    },
+    {
+      "id": "f70613d366b24644b99be9684f753e8b",
+      "product": "wallpaperMint",
+      "space": "kukiRoom",
+      "x": 50,
+      "y": 65,
+      "wallSide": "left",
+      "wallCol": 2,
+      "wallRow": 0,
+      "rotation": 0
+    },
+    {
+      "id": "24f68a46281a47ef8e66fc7e6b2e159a",
+      "product": "shoeCabinet",
+      "space": "home",
+      "x": 16,
+      "y": 46.075,
+      "rotation": 0
+    },
+    {
+      "id": "3e45da3e1ba447a78cd3d1d3efd45504",
+      "product": "greenhouse",
+      "space": "yard",
+      "x": 60,
+      "y": 48.225,
+      "rotation": 0
+    },
+    {
+      "id": "032d17d53ed6446799dfab6486464dc7",
+      "product": "flowerCart",
+      "space": "yard",
+      "x": 48,
+      "y": 48.225,
+      "rotation": 0
+    }
+  ],
+  "layoutVersion": 1,
+  "remodel": {
+    "version": 1,
+    "stored": 2
+  }
+}

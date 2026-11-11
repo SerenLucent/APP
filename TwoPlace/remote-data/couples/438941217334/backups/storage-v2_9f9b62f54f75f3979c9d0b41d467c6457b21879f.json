@@ -1,0 +1,7530 @@
+{
+  "schemaVersion": 1,
+  "code": "438941217334",
+  "createdAt": 1792657952455,
+  "updatedAt": 1794375947458,
+  "revision": 53,
+  "state": {
+    "startDate": "2024-08-08",
+    "characters": {
+      "owner": "kuki",
+      "partner": "momo"
+    },
+    "events": [
+      {
+        "id": "35629cf43efc27d4c4c503ca1718b833",
+        "date": "2026-10-23",
+        "title": "성희 공항",
+        "kind": "general",
+        "time": "21:00",
+        "place": "",
+        "details": ""
+      },
+      {
+        "id": "a8e3af337a7a5616e7e2ba417c2ede87",
+        "date": "2026-11-08",
+        "title": "전주1박2일",
+        "kind": "date",
+        "time": "",
+        "place": "전주",
+        "details": ""
+      },
+      {
+        "id": "51e6c2079ca53ffef19a2e3ea5659d5e",
+        "date": "2026-11-09",
+        "title": "전주1박2일",
+        "kind": "date",
+        "time": "",
+        "place": "",
+        "details": ""
+      },
+      {
+        "id": "a87c5469eaa8cd2cf6e81b2df43036d5",
+        "date": "2026-10-24",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "83d2010610c62e3e2d48e4a9e293e79e",
+        "date": "2026-10-25",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "c315c70ddff156ad1f1b293e30e50c56",
+        "date": "2026-10-26",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "15cfc24036a21b670ff0e84b51a9b783",
+        "date": "2026-10-27",
+        "title": "다낭성히여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "e9a877d7044b6da20490ddb1b6b9caa8",
+        "date": "2026-10-28",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "94edeacb7a59e03308377cef477bca5b",
+        "date": "2026-10-29",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "da7cd34bdd42bd8d375766b6813ccc6a",
+        "date": "2026-10-30",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "5e66881acaff0206da17429e1c616956",
+        "date": "2026-10-31",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "20:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "b27a509cdb8745b45139226baadaaa9e",
+        "date": "2026-11-01",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "10:00",
+        "endTime": "19:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "463edad07c62172300b45196dfc61ffb",
+        "date": "2026-12-05",
+        "title": "경식이공옄",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "63df6983fe23cc165c0c09cec7d35a41",
+        "date": "2026-12-06",
+        "title": "생일기념 여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "001b5c919a89c5d7ca59f471fd5b9570",
+        "date": "2026-12-07",
+        "title": "생일기념 여행",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "e0a44c13a7bf8df6c2f1225652e11761",
+        "date": "2027-02-19",
+        "title": "성히생일😘",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "da026eeed254de70161a1c4923bdd8a5",
+        "date": "2026-12-06",
+        "title": "경시기 생일",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "bdd6ebb72a106c0a222e9cf41968b12d",
+        "date": "2027-08-08",
+        "title": "시작일😘",
+        "kind": "date",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "8c442d7bcdd75b1c4a53ad5cd088c402",
+        "date": "2026-10-28",
+        "title": "경시기 강남으로 성히 데릴러오는날",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "29cfc85b8e260737ead18c921b524d81",
+        "date": "2026-10-28",
+        "title": "성히 한국복귀",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "06:00",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "f811167d436f0c081089c0091be6016d",
+        "date": "2026-11-15",
+        "title": "성히 주여니랑강릉",
+        "kind": "trip",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "b255d5f9681872de4b2ffd6e75fa5042",
+        "date": "2026-11-22",
+        "title": "성히결혼식참석이슈",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "1418ba30a731057d0b9cc7b30fe1cdaa",
+        "date": "2026-11-02",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "06:27",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "d3765a86e15cbb074060d1aec53a8081",
+        "date": "2026-11-03",
+        "title": "휴무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "off"
+      },
+      {
+        "id": "c110192cb3821601dd508f55784ffb5e",
+        "date": "2026-11-04",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "06:30",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "68d1d664250d34d0852b9a7368b66751",
+        "date": "2026-11-05",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "06:30",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "7e4fca7c82e36b44300afb00d15678cd",
+        "date": "2026-11-06",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "12:00",
+        "endTime": "23:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "091f0e3662bd4fb6be6a4a5770484ed7",
+        "date": "2026-11-07",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "12:00",
+        "endTime": "23:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "637af44ae3ed76f7a320774a0edbdb2f",
+        "date": "2026-11-23",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "성히 회식",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "47ead44a224c41e772ae5f64dfe32f60",
+        "date": "2026-11-04",
+        "title": "성히 운동시작",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "주3회 27.2월까지",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "996f99af86683b31939928cfa7553514",
+        "date": "2026-11-05",
+        "title": "성히 운동시작",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "주3회 27.2월까지",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "fde229e7a3c591e69ad69b0a8275187e",
+        "date": "2026-11-06",
+        "title": "성히 운동시작",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "주3회 27.2월까지",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "3ea17807b6dad87500849eecd748e7f1",
+        "date": "2026-12-15",
+        "title": "성히한테중요한날",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "874b049e765ba51f9eac443189560413",
+        "date": "2027-12-06",
+        "title": "갱식이 생일",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "da7cd02249f63eb3814084b252f77074",
+        "date": "2027-12-15",
+        "title": "성히한테중요한날",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "2a9f4f1e1e40cd3f579dc2b0adfa523f",
+        "date": "2026-11-07",
+        "title": "성히 매장사람들이랑 점심",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      },
+      {
+        "id": "657a2c679da1a015500e9755019d5d12",
+        "date": "2026-11-10",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "12fdbb1b1621a1612aac560aaca09f13",
+        "date": "2026-11-11",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "ae00f38401f189b23611b65de536f9d9",
+        "date": "2026-11-12",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "034ad872465c06bb934a354fe4968b22",
+        "date": "2026-11-13",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "32a2822b10919220019bfb365de99248",
+        "date": "2026-11-14",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "12:00",
+        "endTime": "23:00",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "25eb3f323ab3e7a886a749285fa90146",
+        "date": "2026-11-16",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "a3a4ab4487a3ad81ff59cb4d17311655",
+        "date": "2026-11-17",
+        "title": "근무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "09:00",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "shift"
+      },
+      {
+        "id": "1a89fe6b480c4ff389e23403e4aca5db",
+        "date": "2026-11-24",
+        "title": "휴무",
+        "kind": "work",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner",
+        "workType": "off"
+      },
+      {
+        "id": "e5a7e0a965de1b2298bb73c5e89267b6",
+        "date": "2026-11-23",
+        "title": "저녁회식",
+        "kind": "general",
+        "time": "",
+        "place": "",
+        "details": "",
+        "startTime": "",
+        "endTime": "",
+        "authorRole": "partner"
+      }
+    ],
+    "notes": [
+      {
+        "id": "6ad9b20ee73ceb33a0d4369dcd71f317",
+        "date": "2026-11-05",
+        "body": "바보야 ><"
+      },
+      {
+        "id": "d55ad9b8cea1e921122f9455cbd2e61b",
+        "date": "2026-10-31",
+        "body": "문득 오늘 밥이랑 음료 보며 느끼는거지만\n꿈에서 봤다던 귀인이 성희가 아닌가싶네\n지금이 내 인생에서 가장 바닥일때\n아무말 없이 묵묵히 믿어주고 기다려주는 사람은 성희뿐인거 같다\n늘 고마워"
+      },
+      {
+        "id": "95e2f4e860197c6fa938118735897534",
+        "date": "2026-10-26",
+        "body": "히히 꼭 나중에 여행가자  \n\n일본도 가고  베트남도 가고  등등 이곳저곳 다니자  \n\n\n약속이야 알겠지이 ❣️💋"
+      },
+      {
+        "id": "f0e9c09807881941eabbc3ba271fef67",
+        "date": "2026-10-26",
+        "body": "성희씨 여행가고나니 허전하구만\n잠깐 자기전에 메모 남겨요\n담엔 꼭 우리도 해외여행가서 재밌게 놀자\n모모랑 쿠키도 꾸준히 키우고\n재밌게 놀다와~  보고싶습니다"
+      },
+      {
+        "id": "7b18e89c7343208f6aa3132e2f06280d",
+        "date": "2026-10-23",
+        "body": "성히떠나요  \n\n잘지내구있어  😘"
+      },
+      {
+        "id": "bbb89e3c1f63d8fd065f492a60115256",
+        "date": "2026-10-23",
+        "body": "이런편지말고!!!!‘"
+      },
+      {
+        "id": "8efc05b82072230a689947f4e505827b",
+        "date": "2026-10-23",
+        "body": "케케 성희에게 쓰는 편지\n하트 내가 다 써부러야쥐 낄낄"
+      },
+      {
+        "id": "9a8e2d1a84837d0c7bdf6ab09a0ae472",
+        "date": "2026-10-22",
+        "body": "경식이 숙제  \n일요일까지 성히한테 메모편지써주기"
+      }
+    ]
+  },
+  "petHome": {
+    "version": 1260,
+    "hearts": 31,
+    "snacks": 14,
+    "lastClaim": 1794375947454,
+    "pets": {
+      "mochi": {
+        "hunger": 99,
+        "updatedAt": 1794361685926,
+        "affinity": 100,
+        "affinityAt": 1794361653969,
+        "energy": 100,
+        "energyAt": 1794361660245
+      },
+      "kuki": {
+        "hunger": 99,
+        "updatedAt": 1794361680636,
+        "affinityAt": 1794361667116,
+        "energyAt": 1794361674093,
+        "affinity": 100,
+        "energy": 100
+      }
+    },
+    "items": [
+      {
+        "id": "fdc98c8be36949b7a7a2c2844ee40cca",
+        "product": "cushion",
+        "space": "momoRoom",
+        "x": 20,
+        "y": 58.975,
+        "rotation": 0
+      },
+      {
+        "id": "6cdab61da13449f2b09d5232d1571bbc",
+        "product": "table",
+        "space": "home",
+        "x": 80,
+        "y": 80.475,
+        "rotation": 0
+      },
+      {
+        "id": "13f9c27ee9364622ad44ea6c8a7cdd31",
+        "product": "plant",
+        "space": "momoRoom",
+        "x": 56,
+        "y": 86.925,
+        "rotation": 0
+      },
+      {
+        "id": "def92f0fde6f4ba2a88c62bfde223551",
+        "product": "rug",
+        "space": "momoRoom",
+        "x": 28,
+        "y": 48.225,
+        "rotation": 0
+      },
+      {
+        "id": "06ccfb9f31864f41a0c4f188d9624c0c",
+        "product": "table",
+        "space": "home",
+        "x": 80,
+        "y": 84.775,
+        "rotation": 90
+      },
+      {
+        "id": "a46958196e67471c9fd6aeaebee1ac32",
+        "product": "lamp",
+        "space": "momoRoom",
+        "x": 12,
+        "y": 80.475,
+        "rotation": 0
+      },
+      {
+        "id": "272c5fab68674f29b77ffd9d83d3c3da",
+        "product": "mealPlate",
+        "space": "home",
+        "x": 78.08,
+        "y": 84.775,
+        "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
+        "slot": 2,
+        "rotation": 90
+      },
+      {
+        "id": "13b0671999614706848d8ee89fa9fde3",
+        "product": "bed",
+        "space": "momoRoom",
+        "x": 16,
+        "y": 84.775,
+        "rotation": 270
+      },
+      {
+        "id": "8cf34c07f48c4d2a8e148d4c72cc1cb0",
+        "product": "diningchair",
+        "space": "home",
+        "x": 88,
+        "y": 84.775,
+        "rotation": 90
+      },
+      {
+        "id": "ec7cc726ee284d58b8dd07b3556c2861",
+        "product": "teaSet",
+        "space": "home",
+        "x": 81.92,
+        "y": 84.775,
+        "rotation": 0,
+        "parentId": "06ccfb9f31864f41a0c4f188d9624c0c",
+        "slot": 0
+      },
+      {
+        "id": "91747b5ef9e3441f97c58c8ac39bfe7a",
+        "product": "diningchair",
+        "space": "home",
+        "x": 72,
+        "y": 84.775,
+        "rotation": 270
+      },
+      {
+        "id": "b7b5feacf52345bbab251b20519eb73b",
+        "product": "vanity",
+        "space": "momoRoom",
+        "x": 12,
+        "y": 58.975,
+        "rotation": 270
+      },
+      {
+        "id": "f63647536a404c4f930e6934a9657dff",
+        "product": "mirrorStand",
+        "space": "momoRoom",
+        "x": 48,
+        "y": 86.925,
+        "rotation": 180
+      },
+      {
+        "id": "15cef30e89e24ca4b4781187407e9e7c",
+        "product": "wardrobe",
+        "space": "momoRoom",
+        "x": 24,
+        "y": 78.325,
+        "rotation": 0
+      },
+      {
+        "id": "d49216d63a89495895518bca20413fb2",
+        "product": "bookshelf",
+        "space": "momoRoom",
+        "x": 16,
+        "y": 78.325,
+        "rotation": 0
+      },
+      {
+        "id": "eeb2c8554ff64c3e8277c451ecee88df",
+        "product": "coatRack",
+        "space": "momoRoom",
+        "x": 40,
+        "y": 46.075,
+        "rotation": 0
+      },
+      {
+        "id": "c6c735c1ec6240f19e68a0c8d4c84dc3",
+        "product": "picnicTable",
+        "space": "yard",
+        "x": 52,
+        "y": 67.575,
+        "rotation": 0
+      },
+      {
+        "id": "c6f07fd3ec0946dd9d8260a96e11e155",
+        "product": "barbecue",
+        "space": "yard",
+        "x": 40,
+        "y": 67.575,
+        "rotation": 90
+      },
+      {
+        "id": "b4cff03099fb46f5835de1d0bc840ff4",
+        "product": "bench",
+        "space": "yard",
+        "x": 16,
+        "y": 46.075,
+        "rotation": 0
+      },
+      {
+        "id": "858dde421b4b43fe97b932e9a7d5dfa8",
+        "product": "lantern",
+        "space": "yard",
+        "x": 40,
+        "y": 46.075,
+        "rotation": 0
+      },
+      {
+        "id": "dce83244c3bb44759a887ab5c9680f21",
+        "product": "wallpaperRose",
+        "space": "kukiRoom",
+        "x": 50,
+        "y": 65,
+        "rotation": 0,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 0
+      },
+      {
+        "id": "3c58f02062fa42b7b528ae2f97755b02",
+        "product": "wallpaperRose",
+        "space": "momoRoom",
+        "x": 50,
+        "y": 65,
+        "wallSide": "left",
+        "wallCol": 2,
+        "wallRow": 0,
+        "rotation": 0
+      },
+      {
+        "id": "17f90dafc6994de28e10390fdb4f62ca",
+        "product": "wallShelf",
+        "space": "momoRoom",
+        "x": 50,
+        "y": 65,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 1,
+        "rotation": 0
+      },
+      {
+        "id": "fbdaba8a6d2549dd81466b205084b7f4",
+        "product": "laundryBasket",
+        "space": "momoRoom",
+        "x": 12,
+        "y": 63.275,
+        "rotation": 90
+      },
+      {
+        "id": "d60d3e6742724d2986e73c1caf973382",
+        "product": "armchair",
+        "space": "kukiRoom",
+        "x": 48,
+        "y": 67.575,
+        "rotation": 0
+      },
+      {
+        "id": "29f06b23d3c041fea9dd4e94507d152e",
+        "product": "sofa",
+        "space": "home",
+        "x": 16,
+        "y": 84.775,
+        "rotation": 270
+      },
+      {
+        "id": "5bbb80286c8c4dc7be09efa433befc89",
+        "product": "coffeeTable",
+        "space": "home",
+        "x": 24,
+        "y": 84.775,
+        "rotation": 90
+      },
+      {
+        "id": "79f594ead64b4b60aa8fcd250d9660cc",
+        "product": "pantry",
+        "space": "home",
+        "x": 60,
+        "y": 46.075,
+        "rotation": 0
+      },
+      {
+        "id": "88bc1a67ff1a42498796a2ad3ef357b8",
+        "product": "pond",
+        "space": "yard",
+        "x": 24,
+        "y": 82.625,
+        "rotation": 0
+      },
+      {
+        "id": "ae7dec8d3b814b4b9689fc13eafb36ca",
+        "product": "floorMeadow",
+        "space": "yard",
+        "x": 50,
+        "y": 65,
+        "rotation": 0
+      },
+      {
+        "id": "6aed4c8c799a41f3853bff0d123057a4",
+        "product": "floorRosewood",
+        "space": "momoRoom",
+        "x": 50,
+        "y": 65,
+        "rotation": 0
+      },
+      {
+        "id": "1b6829d48d4f4832abf7f63bef4edf13",
+        "product": "wallpaperLilac",
+        "space": "momoRoom",
+        "x": 50,
+        "y": 65,
+        "wallSide": "right",
+        "wallCol": 2,
+        "wallRow": 0,
+        "rotation": 0
+      },
+      {
+        "id": "4ab6b4d90a554c47be677adbebf582bf",
+        "product": "bookshelf",
+        "space": "home",
+        "x": 12,
+        "y": 76.175,
+        "rotation": 270
+      },
+      {
+        "id": "908d51fe758048bf9b16473f5d942d2a",
+        "product": "pottedTree",
+        "space": "yard",
+        "x": 40,
+        "y": 84.775,
+        "rotation": 0
+      },
+      {
+        "id": "efc296cd1e5c4acf9e48e8022d8a63ba",
+        "product": "floorRosewood",
+        "space": "home",
+        "x": 50,
+        "y": 65,
+        "rotation": 0
+      },
+      {
+        "id": "f70613d366b24644b99be9684f753e8b",
+        "product": "wallpaperMint",
+        "space": "kukiRoom",
+        "x": 50,
+        "y": 65,
+        "wallSide": "left",
+        "wallCol": 2,
+        "wallRow": 0,
+        "rotation": 0
+      },
+      {
+        "id": "24f68a46281a47ef8e66fc7e6b2e159a",
+        "product": "shoeCabinet",
+        "space": "home",
+        "x": 16,
+        "y": 46.075,
+        "rotation": 0
+      },
+      {
+        "id": "3e45da3e1ba447a78cd3d1d3efd45504",
+        "product": "greenhouse",
+        "space": "yard",
+        "x": 60,
+        "y": 48.225,
+        "rotation": 0
+      },
+      {
+        "id": "032d17d53ed6446799dfab6486464dc7",
+        "product": "flowerCart",
+        "space": "yard",
+        "x": 48,
+        "y": 48.225,
+        "rotation": 0
+      }
+    ],
+    "layoutVersion": 1,
+    "remodel": {
+      "version": 1,
+      "stored": 2
+    },
+    "calendarRewards": {
+      "registration": {
+        "2026-10-23": true,
+        "2026-11-08": true,
+        "2026-11-09": true,
+        "2026-10-24": true,
+        "2026-10-25": true,
+        "2026-10-26": true,
+        "2026-10-27": true,
+        "2026-10-28": true,
+        "2026-10-29": true,
+        "2026-10-30": true,
+        "2026-10-31": true,
+        "2026-11-01": true,
+        "2026-11-02": true,
+        "2026-12-05": true,
+        "2026-12-06": true,
+        "2026-12-07": true,
+        "2027-02-19": true,
+        "2027-08-08": true,
+        "2026-11-15": true,
+        "2026-11-22": true,
+        "2026-11-03": true,
+        "2026-11-04": true,
+        "2026-11-05": true,
+        "2026-11-06": true,
+        "2026-11-07": true,
+        "2026-11-23": true,
+        "2026-12-15": true,
+        "2027-12-06": true,
+        "2027-12-15": true,
+        "2026-11-10": true,
+        "2026-11-11": true,
+        "2026-11-12": true,
+        "2026-11-13": true,
+        "2026-11-14": true,
+        "2026-11-16": true,
+        "2026-11-17": true,
+        "2026-11-24": true
+      },
+      "reads": {
+        "2026-10-24": true,
+        "2026-10-25": true,
+        "2026-10-26": true,
+        "2026-10-27": true,
+        "2026-10-28": true,
+        "2026-10-29": true,
+        "2026-10-30": true,
+        "2026-10-31": true,
+        "2026-11-01": true,
+        "2026-11-02": true,
+        "2026-11-03": true,
+        "2026-11-04": true,
+        "2026-11-05": true,
+        "2026-11-06": true,
+        "2026-11-07": true,
+        "2026-11-15": true
+      },
+      "seen": [
+        "owner:2026-10-24:a87c5469eaa8cd2cf6e81b2df43036d5",
+        "owner:2026-10-25:83d2010610c62e3e2d48e4a9e293e79e",
+        "owner:2026-10-26:c315c70ddff156ad1f1b293e30e50c56",
+        "owner:2026-10-27:15cfc24036a21b670ff0e84b51a9b783",
+        "owner:2026-10-28:e9a877d7044b6da20490ddb1b6b9caa8",
+        "owner:2026-10-29:94edeacb7a59e03308377cef477bca5b",
+        "owner:2026-10-30:da7cd34bdd42bd8d375766b6813ccc6a",
+        "owner:2026-10-31:5e66881acaff0206da17429e1c616956",
+        "owner:2026-11-01:b27a509cdb8745b45139226baadaaa9e",
+        "owner:2026-11-02:d8abf50649d13773387e23422cc5ef4c",
+        "owner:2026-11-03:d3765a86e15cbb074060d1aec53a8081",
+        "owner:2026-11-04:c110192cb3821601dd508f55784ffb5e",
+        "owner:2026-11-05:68d1d664250d34d0852b9a7368b66751",
+        "owner:2026-11-06:7e4fca7c82e36b44300afb00d15678cd",
+        "owner:2026-11-07:091f0e3662bd4fb6be6a4a5770484ed7",
+        "owner:2026-11-15:f811167d436f0c081089c0091be6016d"
+      ],
+      "backfilled": true
+    },
+    "careRewards": {
+      "pat": 1792894170177,
+      "sleep": 1792894177497,
+      "kuki": {
+        "pat": 1793061409142,
+        "sleep": 1793061400694
+      },
+      "mochi": {
+        "sleep": 1793061389215,
+        "pat": 1793061381716
+      }
+    },
+    "careBonuses": {
+      "mochi": {
+        "sleep": {
+          "day": "2026-11-11",
+          "count": 5,
+          "lastAt": 1794361660245
+        },
+        "pat": {
+          "day": "2026-11-11",
+          "count": 5,
+          "lastAt": 1794361653969
+        }
+      },
+      "kuki": {
+        "pat": {
+          "day": "2026-11-11",
+          "count": 5,
+          "lastAt": 1794361667116
+        },
+        "sleep": {
+          "day": "2026-11-11",
+          "count": 4,
+          "lastAt": 1794361674093
+        }
+      }
+    },
+    "heartHistory": [
+      {
+        "at": 1793584445635,
+        "amount": 10,
+        "balance": 40,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793584450401,
+        "amount": 1,
+        "balance": 41,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793584455529,
+        "amount": 1,
+        "balance": 42,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793584461343,
+        "amount": 1,
+        "balance": 43,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793584474267,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793588187930,
+        "amount": 10,
+        "balance": 54,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793591936485,
+        "amount": 10,
+        "balance": 64,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793591961719,
+        "amount": -40,
+        "balance": 24,
+        "kind": "purchase",
+        "label": "로즈 밀크 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperRose",
+        "quantity": 1
+      },
+      {
+        "at": 1793597136200,
+        "amount": 10,
+        "balance": 34,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793601294500,
+        "amount": 10,
+        "balance": 44,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793602304382,
+        "amount": -40,
+        "balance": 4,
+        "kind": "purchase",
+        "label": "로즈 밀크 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperRose",
+        "quantity": 1
+      },
+      {
+        "at": 1793605009791,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793608362824,
+        "amount": 1,
+        "balance": 15,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608370820,
+        "amount": 1,
+        "balance": 16,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608380628,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608388612,
+        "amount": 1,
+        "balance": 18,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608398062,
+        "amount": 1,
+        "balance": 19,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793608408610,
+        "amount": 1,
+        "balance": 20,
+        "kind": "earn",
+        "label": "일정 확인 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793612219712,
+        "amount": 10,
+        "balance": 30,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793616449967,
+        "amount": 10,
+        "balance": 40,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793623682477,
+        "amount": 10,
+        "balance": 50,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793635988331,
+        "amount": 10,
+        "balance": 60,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793635994877,
+        "amount": 1,
+        "balance": 61,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793636001113,
+        "amount": 1,
+        "balance": 62,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793636006346,
+        "amount": 1,
+        "balance": 63,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793636011776,
+        "amount": 1,
+        "balance": 64,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793649514376,
+        "amount": 10,
+        "balance": 74,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793649528621,
+        "amount": 1,
+        "balance": 75,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793649534336,
+        "amount": 1,
+        "balance": 76,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793649576169,
+        "amount": 1,
+        "balance": 77,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793649582440,
+        "amount": 1,
+        "balance": 78,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793658785055,
+        "amount": 10,
+        "balance": 88,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793658798401,
+        "amount": 1,
+        "balance": 89,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793658803044,
+        "amount": 1,
+        "balance": 90,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793658808210,
+        "amount": 1,
+        "balance": 91,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793658813270,
+        "amount": 1,
+        "balance": 92,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793658822922,
+        "amount": -65,
+        "balance": 27,
+        "kind": "purchase",
+        "label": "작은 벽걸이 선반 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallShelf",
+        "quantity": 1
+      },
+      {
+        "at": 1793658909570,
+        "amount": -24,
+        "balance": 3,
+        "kind": "purchase",
+        "label": "별사탕 먹이 6개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 6
+      },
+      {
+        "at": 1793662577360,
+        "amount": 10,
+        "balance": 13,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793662584221,
+        "amount": 1,
+        "balance": 14,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793662589449,
+        "amount": 1,
+        "balance": 15,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793662595298,
+        "amount": 1,
+        "balance": 16,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793662600612,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793666181029,
+        "amount": 10,
+        "balance": 27,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793666190875,
+        "amount": 1,
+        "balance": 28,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793666195767,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793666202240,
+        "amount": 1,
+        "balance": 30,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793666207615,
+        "amount": 1,
+        "balance": 31,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793671267277,
+        "amount": 10,
+        "balance": 41,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793676118757,
+        "amount": 10,
+        "balance": 51,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793676171780,
+        "amount": -35,
+        "balance": 16,
+        "kind": "purchase",
+        "label": "담요 빨래 바구니 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "laundryBasket",
+        "quantity": 1
+      },
+      {
+        "at": 1793680774989,
+        "amount": 10,
+        "balance": 26,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793684394436,
+        "amount": 10,
+        "balance": 36,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793691015984,
+        "amount": 10,
+        "balance": 46,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691087570,
+        "amount": 5,
+        "balance": 51,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691250820,
+        "amount": 5,
+        "balance": 56,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691287227,
+        "amount": 5,
+        "balance": 61,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691343350,
+        "amount": 5,
+        "balance": 66,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793691358756,
+        "amount": -65,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "폭신한 독서 의자 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "armchair",
+        "quantity": 1
+      },
+      {
+        "at": 1793695377797,
+        "amount": 10,
+        "balance": 11,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793702393373,
+        "amount": 10,
+        "balance": 21,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793706134580,
+        "amount": 10,
+        "balance": 31,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793710130686,
+        "amount": 10,
+        "balance": 41,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793714146421,
+        "amount": 10,
+        "balance": 51,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793718036384,
+        "amount": 10,
+        "balance": 61,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793724700219,
+        "amount": 10,
+        "balance": 71,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793724711298,
+        "amount": 1,
+        "balance": 72,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793724716713,
+        "amount": 1,
+        "balance": 73,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793724723250,
+        "amount": 1,
+        "balance": 74,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793724728734,
+        "amount": 1,
+        "balance": 75,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793742154100,
+        "amount": 10,
+        "balance": 85,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793742163585,
+        "amount": 1,
+        "balance": 86,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793742169517,
+        "amount": 1,
+        "balance": 87,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793742183286,
+        "amount": 1,
+        "balance": 88,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793742190834,
+        "amount": 1,
+        "balance": 89,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793742216491,
+        "amount": -80,
+        "balance": 9,
+        "kind": "purchase",
+        "label": "둘이 앉는 소파 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "sofa",
+        "quantity": 1
+      },
+      {
+        "at": 1793746207360,
+        "amount": 10,
+        "balance": 19,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793746218971,
+        "amount": 1,
+        "balance": 20,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793746225436,
+        "amount": 1,
+        "balance": 21,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793746232268,
+        "amount": 1,
+        "balance": 22,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793746237787,
+        "amount": 1,
+        "balance": 23,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793750133251,
+        "amount": 10,
+        "balance": 33,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793750138719,
+        "amount": 1,
+        "balance": 34,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793750144944,
+        "amount": 1,
+        "balance": 35,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793750152023,
+        "amount": 1,
+        "balance": 36,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793750157427,
+        "amount": 1,
+        "balance": 37,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793753471638,
+        "amount": 1,
+        "balance": 38,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793753477539,
+        "amount": 1,
+        "balance": 39,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793753483539,
+        "amount": 1,
+        "balance": 40,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793753488862,
+        "amount": 1,
+        "balance": 41,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793753741348,
+        "amount": 10,
+        "balance": 51,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793758215946,
+        "amount": 10,
+        "balance": 61,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793762932188,
+        "amount": 10,
+        "balance": 71,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793764642976,
+        "amount": -60,
+        "balance": 11,
+        "kind": "purchase",
+        "label": "서랍 소파 테이블 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "coffeeTable",
+        "quantity": 1
+      },
+      {
+        "at": 1793767498947,
+        "amount": 10,
+        "balance": 21,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793773103823,
+        "amount": 10,
+        "balance": 31,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793776909727,
+        "amount": 10,
+        "balance": 41,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793780980991,
+        "amount": 10,
+        "balance": 51,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793786013846,
+        "amount": 10,
+        "balance": 61,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793789814389,
+        "amount": 10,
+        "balance": 71,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793795118948,
+        "amount": 10,
+        "balance": 81,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793798934995,
+        "amount": 10,
+        "balance": 91,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793798955232,
+        "amount": -85,
+        "balance": 6,
+        "kind": "purchase",
+        "label": "유리문 식료품장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "pantry",
+        "quantity": 1
+      },
+      {
+        "at": 1793802541487,
+        "amount": 10,
+        "balance": 16,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793802559900,
+        "amount": -16,
+        "balance": 0,
+        "kind": "purchase",
+        "label": "별사탕 먹이 4개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 4
+      },
+      {
+        "at": 1793824028286,
+        "amount": 10,
+        "balance": 10,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793824039784,
+        "amount": 1,
+        "balance": 11,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793824045345,
+        "amount": 1,
+        "balance": 12,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793824051567,
+        "amount": 1,
+        "balance": 13,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793824061871,
+        "amount": 1,
+        "balance": 14,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793830216868,
+        "amount": 10,
+        "balance": 24,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793830228715,
+        "amount": 1,
+        "balance": 25,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793830235362,
+        "amount": 1,
+        "balance": 26,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793830242139,
+        "amount": 1,
+        "balance": 27,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793830249258,
+        "amount": 1,
+        "balance": 28,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793836614718,
+        "amount": 10,
+        "balance": 38,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793836631503,
+        "amount": 1,
+        "balance": 39,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793836638369,
+        "amount": 1,
+        "balance": 40,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793836644354,
+        "amount": 1,
+        "balance": 41,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793836649478,
+        "amount": 1,
+        "balance": 42,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793838691528,
+        "amount": 1,
+        "balance": 43,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793838698025,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793838709908,
+        "amount": 1,
+        "balance": 45,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793838716267,
+        "amount": 1,
+        "balance": 46,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793840733297,
+        "amount": 1,
+        "balance": 47,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793840746762,
+        "amount": 1,
+        "balance": 48,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793840753943,
+        "amount": 10,
+        "balance": 58,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793840760345,
+        "amount": 1,
+        "balance": 59,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793840765665,
+        "amount": 1,
+        "balance": 60,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793845544508,
+        "amount": 10,
+        "balance": 70,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793845588060,
+        "amount": -68,
+        "balance": 2,
+        "kind": "purchase",
+        "label": "별사탕 먹이 17개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 17
+      },
+      {
+        "at": 1793849455739,
+        "amount": 10,
+        "balance": 12,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793853599457,
+        "amount": 10,
+        "balance": 22,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793860072446,
+        "amount": 10,
+        "balance": 32,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793863759489,
+        "amount": 10,
+        "balance": 42,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793864133750,
+        "amount": 5,
+        "balance": 47,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793865287930,
+        "amount": 5,
+        "balance": 52,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793870491561,
+        "amount": 10,
+        "balance": 62,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793874967270,
+        "amount": 10,
+        "balance": 72,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793877028001,
+        "amount": 1,
+        "balance": 73,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793877561326,
+        "amount": 3,
+        "balance": 76,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793881356335,
+        "amount": 10,
+        "balance": 86,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793884970223,
+        "amount": 10,
+        "balance": 96,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793888589307,
+        "amount": 10,
+        "balance": 106,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793888607749,
+        "amount": -100,
+        "balance": 6,
+        "kind": "purchase",
+        "label": "조약돌 연못 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "pond",
+        "quantity": 1
+      },
+      {
+        "at": 1793922574385,
+        "amount": 10,
+        "balance": 16,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793922583865,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793922591770,
+        "amount": 1,
+        "balance": 18,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793922599330,
+        "amount": 1,
+        "balance": 19,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793922604724,
+        "amount": 1,
+        "balance": 20,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793924524365,
+        "amount": 1,
+        "balance": 21,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793924529889,
+        "amount": 1,
+        "balance": 22,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793924551770,
+        "amount": 1,
+        "balance": 23,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793924557962,
+        "amount": 1,
+        "balance": 24,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793927369660,
+        "amount": 10,
+        "balance": 34,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793927375595,
+        "amount": 1,
+        "balance": 35,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793927380516,
+        "amount": 1,
+        "balance": 36,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793927403994,
+        "amount": 1,
+        "balance": 37,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793927409084,
+        "amount": 1,
+        "balance": 38,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793932561048,
+        "amount": 10,
+        "balance": 48,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793935665344,
+        "amount": 1,
+        "balance": 49,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793935671571,
+        "amount": 1,
+        "balance": 50,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793935677986,
+        "amount": 1,
+        "balance": 51,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793935683327,
+        "amount": 1,
+        "balance": 52,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793936047381,
+        "amount": 5,
+        "balance": 57,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793936164581,
+        "amount": 10,
+        "balance": 67,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793945565993,
+        "amount": 10,
+        "balance": 77,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793945573102,
+        "amount": 1,
+        "balance": 78,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793945581034,
+        "amount": 1,
+        "balance": 79,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793945592810,
+        "amount": 1,
+        "balance": 80,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793945598310,
+        "amount": 1,
+        "balance": 81,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793951374894,
+        "amount": 10,
+        "balance": 91,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793961330888,
+        "amount": 10,
+        "balance": 101,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793971542570,
+        "amount": 10,
+        "balance": 111,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793971604430,
+        "amount": -80,
+        "balance": 31,
+        "kind": "purchase",
+        "label": "포근한 잔디밭 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "floorMeadow",
+        "quantity": 1
+      },
+      {
+        "at": 1793975146699,
+        "amount": 10,
+        "balance": 41,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793975199488,
+        "amount": 3,
+        "balance": 44,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793978749070,
+        "amount": 10,
+        "balance": 54,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793979198187,
+        "amount": 1,
+        "balance": 55,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793979203963,
+        "amount": 1,
+        "balance": 56,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793979209671,
+        "amount": 1,
+        "balance": 57,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793979214480,
+        "amount": 1,
+        "balance": 58,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793979346877,
+        "amount": 5,
+        "balance": 63,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793979394933,
+        "amount": 5,
+        "balance": 68,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793979721128,
+        "amount": 3,
+        "balance": 71,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1793980857630,
+        "amount": 5,
+        "balance": 76,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981091380,
+        "amount": 3,
+        "balance": 79,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981117464,
+        "amount": 1,
+        "balance": 80,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981123024,
+        "amount": 1,
+        "balance": 81,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981130771,
+        "amount": 1,
+        "balance": 82,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981136444,
+        "amount": 1,
+        "balance": 83,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981330589,
+        "amount": 20,
+        "balance": 103,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981361891,
+        "amount": 5,
+        "balance": 108,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981405052,
+        "amount": 5,
+        "balance": 113,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981880594,
+        "amount": 5,
+        "balance": 118,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981957038,
+        "amount": 5,
+        "balance": 123,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981968312,
+        "amount": 5,
+        "balance": 128,
+        "kind": "earn",
+        "label": "일정 등록 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1793981982873,
+        "amount": -120,
+        "balance": 8,
+        "kind": "purchase",
+        "label": "내추럴 월넛 마루 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "floorRosewood",
+        "quantity": 1
+      },
+      {
+        "at": 1793982352358,
+        "amount": 10,
+        "balance": 18,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794007156986,
+        "amount": 10,
+        "balance": 28,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794007391803,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794007397735,
+        "amount": 1,
+        "balance": 30,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794007404604,
+        "amount": 1,
+        "balance": 31,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794007410879,
+        "amount": 1,
+        "balance": 32,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794011168154,
+        "amount": 10,
+        "balance": 42,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794011176953,
+        "amount": 1,
+        "balance": 43,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794011182287,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794011188094,
+        "amount": 1,
+        "balance": 45,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794011194113,
+        "amount": 1,
+        "balance": 46,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794011217646,
+        "amount": -40,
+        "balance": 6,
+        "kind": "purchase",
+        "label": "라벤더 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperLilac",
+        "quantity": 1
+      },
+      {
+        "at": 1794015527180,
+        "amount": 10,
+        "balance": 16,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794015534480,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794015540341,
+        "amount": 1,
+        "balance": 18,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794015547242,
+        "amount": 1,
+        "balance": 19,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794016321468,
+        "amount": 3,
+        "balance": 22,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794016415805,
+        "amount": 5,
+        "balance": 27,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794020329719,
+        "amount": 10,
+        "balance": 37,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794023933078,
+        "amount": 10,
+        "balance": 47,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794031012378,
+        "amount": 10,
+        "balance": 57,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794031170593,
+        "amount": 3,
+        "balance": 60,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794037140820,
+        "amount": 10,
+        "balance": 70,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794042120199,
+        "amount": 10,
+        "balance": 80,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794046749950,
+        "amount": 10,
+        "balance": 90,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794050418335,
+        "amount": 10,
+        "balance": 100,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794054976396,
+        "amount": 10,
+        "balance": 110,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794057388742,
+        "amount": 1,
+        "balance": 111,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794057424519,
+        "amount": -65,
+        "balance": 46,
+        "kind": "purchase",
+        "label": "이야기 책장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "bookshelf",
+        "quantity": 1
+      },
+      {
+        "at": 1794057456232,
+        "amount": -44,
+        "balance": 2,
+        "kind": "purchase",
+        "label": "별사탕 먹이 11개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 11
+      },
+      {
+        "at": 1794059624651,
+        "amount": 10,
+        "balance": 12,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794064848689,
+        "amount": 10,
+        "balance": 22,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794064858899,
+        "amount": 1,
+        "balance": 23,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794064863916,
+        "amount": 1,
+        "balance": 24,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794064869465,
+        "amount": 1,
+        "balance": 25,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794064874439,
+        "amount": 1,
+        "balance": 26,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794067330307,
+        "amount": 1,
+        "balance": 27,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794067336074,
+        "amount": 1,
+        "balance": 28,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794067342088,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794067348334,
+        "amount": 1,
+        "balance": 30,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794084597111,
+        "amount": 10,
+        "balance": 40,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794084607700,
+        "amount": 1,
+        "balance": 41,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794084614133,
+        "amount": 1,
+        "balance": 42,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794084620095,
+        "amount": 1,
+        "balance": 43,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794084625167,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794089021148,
+        "amount": 10,
+        "balance": 54,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794090054202,
+        "amount": 5,
+        "balance": 59,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794090447008,
+        "amount": 5,
+        "balance": 64,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794090830015,
+        "amount": 3,
+        "balance": 67,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794092414405,
+        "amount": 1,
+        "balance": 68,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794092437497,
+        "amount": 1,
+        "balance": 69,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794092446210,
+        "amount": 1,
+        "balance": 70,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794092451556,
+        "amount": 1,
+        "balance": 71,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794092490297,
+        "amount": -70,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "레몬 나무 화분 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "pottedTree",
+        "quantity": 1
+      },
+      {
+        "at": 1794092650069,
+        "amount": 10,
+        "balance": 11,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794093301437,
+        "amount": 5,
+        "balance": 16,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794096739718,
+        "amount": 10,
+        "balance": 26,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794103765234,
+        "amount": 10,
+        "balance": 36,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794103775354,
+        "amount": 1,
+        "balance": 37,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794103781658,
+        "amount": 1,
+        "balance": 38,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794103788063,
+        "amount": 1,
+        "balance": 39,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794103794209,
+        "amount": 1,
+        "balance": 40,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794105906046,
+        "amount": 3,
+        "balance": 43,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794108033533,
+        "amount": 10,
+        "balance": 53,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794112826226,
+        "amount": 10,
+        "balance": 63,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794113554907,
+        "amount": 5,
+        "balance": 68,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794117199091,
+        "amount": 10,
+        "balance": 78,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794126356549,
+        "amount": 10,
+        "balance": 88,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794130423326,
+        "amount": 10,
+        "balance": 98,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794132083955,
+        "amount": 5,
+        "balance": 103,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794137893714,
+        "amount": 10,
+        "balance": 113,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794143267264,
+        "amount": 10,
+        "balance": 123,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794157801196,
+        "amount": 10,
+        "balance": 133,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175111045,
+        "amount": 10,
+        "balance": 143,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175151758,
+        "amount": 1,
+        "balance": 144,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175157615,
+        "amount": 1,
+        "balance": 145,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175163379,
+        "amount": 1,
+        "balance": 146,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175169405,
+        "amount": 1,
+        "balance": 147,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794175785944,
+        "amount": 5,
+        "balance": 152,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794176073533,
+        "amount": -120,
+        "balance": 32,
+        "kind": "purchase",
+        "label": "내추럴 월넛 마루 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "floorRosewood",
+        "quantity": 1
+      },
+      {
+        "at": 1794176082659,
+        "amount": -4,
+        "balance": 28,
+        "kind": "purchase",
+        "label": "별사탕 먹이 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 1
+      },
+      {
+        "at": 1794176092218,
+        "amount": -28,
+        "balance": 0,
+        "kind": "purchase",
+        "label": "별사탕 먹이 7개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 7
+      },
+      {
+        "at": 1794177868352,
+        "amount": 1,
+        "balance": 1,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794177873874,
+        "amount": 1,
+        "balance": 2,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794177880479,
+        "amount": 1,
+        "balance": 3,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794177885280,
+        "amount": 1,
+        "balance": 4,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794180595395,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794180600979,
+        "amount": 1,
+        "balance": 15,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794180606438,
+        "amount": 1,
+        "balance": 16,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794180614744,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794180620566,
+        "amount": 1,
+        "balance": 18,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794183429308,
+        "amount": 1,
+        "balance": 19,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794183434871,
+        "amount": 1,
+        "balance": 20,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794183445212,
+        "amount": 1,
+        "balance": 21,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794183451191,
+        "amount": 1,
+        "balance": 22,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794185065452,
+        "amount": 10,
+        "balance": 32,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794186551797,
+        "amount": 1,
+        "balance": 33,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794186557186,
+        "amount": 1,
+        "balance": 34,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794186563016,
+        "amount": 1,
+        "balance": 35,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794186568121,
+        "amount": 1,
+        "balance": 36,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794189123622,
+        "amount": 10,
+        "balance": 46,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794192428506,
+        "amount": 5,
+        "balance": 51,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794192746037,
+        "amount": 3,
+        "balance": 54,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794192755281,
+        "amount": 10,
+        "balance": 64,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794192860625,
+        "amount": 5,
+        "balance": 69,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794193101193,
+        "amount": 5,
+        "balance": 74,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794198038650,
+        "amount": 10,
+        "balance": 84,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794198318901,
+        "amount": 5,
+        "balance": 89,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794198572192,
+        "amount": 3,
+        "balance": 92,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794198786334,
+        "amount": 3,
+        "balance": 95,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794199691363,
+        "amount": 5,
+        "balance": 100,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794199769336,
+        "amount": -40,
+        "balance": 60,
+        "kind": "purchase",
+        "label": "민트 리넨 벽지 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "wallpaperMint",
+        "quantity": 1
+      },
+      {
+        "at": 1794199811928,
+        "amount": -60,
+        "balance": 0,
+        "kind": "purchase",
+        "label": "현관 신발장 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "shoeCabinet",
+        "quantity": 1
+      },
+      {
+        "at": 1794202752232,
+        "amount": 10,
+        "balance": 10,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794203279682,
+        "amount": 5,
+        "balance": 15,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794206527589,
+        "amount": 10,
+        "balance": 25,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794211190548,
+        "amount": 10,
+        "balance": 35,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794219013739,
+        "amount": 10,
+        "balance": 45,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794223114880,
+        "amount": 10,
+        "balance": 55,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794227261283,
+        "amount": 10,
+        "balance": 65,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794228738264,
+        "amount": -64,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "별사탕 먹이 16개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 16
+      },
+      {
+        "at": 1794228813737,
+        "amount": 3,
+        "balance": 4,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794257762523,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794258259754,
+        "amount": 1,
+        "balance": 15,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794258265541,
+        "amount": 1,
+        "balance": 16,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794258281893,
+        "amount": 1,
+        "balance": 17,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794258287606,
+        "amount": 1,
+        "balance": 18,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794262263167,
+        "amount": 10,
+        "balance": 28,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794262269605,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794262276964,
+        "amount": 1,
+        "balance": 30,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794262283014,
+        "amount": 1,
+        "balance": 31,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794262288646,
+        "amount": 1,
+        "balance": 32,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794276991895,
+        "amount": 10,
+        "balance": 42,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794276999724,
+        "amount": 1,
+        "balance": 43,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794277005673,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794277011820,
+        "amount": 1,
+        "balance": 45,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794277018263,
+        "amount": 1,
+        "balance": 46,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794282944959,
+        "amount": 10,
+        "balance": 56,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794282953393,
+        "amount": 1,
+        "balance": 57,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794282959190,
+        "amount": 1,
+        "balance": 58,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794282996863,
+        "amount": 1,
+        "balance": 59,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794283005214,
+        "amount": 1,
+        "balance": 60,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794288856018,
+        "amount": 10,
+        "balance": 70,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794288865968,
+        "amount": 1,
+        "balance": 71,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794288872073,
+        "amount": 1,
+        "balance": 72,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794288878168,
+        "amount": 1,
+        "balance": 73,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794288883954,
+        "amount": 1,
+        "balance": 74,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794298330061,
+        "amount": 10,
+        "balance": 84,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794306779026,
+        "amount": 10,
+        "balance": 94,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794311116412,
+        "amount": 10,
+        "balance": 104,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794311128949,
+        "amount": -100,
+        "balance": 4,
+        "kind": "purchase",
+        "label": "작은 온실 선반 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "greenhouse",
+        "quantity": 1
+      },
+      {
+        "at": 1794319341854,
+        "amount": 10,
+        "balance": 14,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341504147,
+        "amount": 10,
+        "balance": 24,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341510582,
+        "amount": 1,
+        "balance": 25,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341515847,
+        "amount": 1,
+        "balance": 26,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341534641,
+        "amount": 1,
+        "balance": 27,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794341544198,
+        "amount": 1,
+        "balance": 28,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794343731770,
+        "amount": 1,
+        "balance": 29,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794343738804,
+        "amount": 1,
+        "balance": 30,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794343744828,
+        "amount": 1,
+        "balance": 31,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794343751032,
+        "amount": 1,
+        "balance": 32,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794347309320,
+        "amount": 1,
+        "balance": 33,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794347315682,
+        "amount": 10,
+        "balance": 43,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794347321418,
+        "amount": 1,
+        "balance": 44,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794347327930,
+        "amount": 1,
+        "balance": 45,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794349728013,
+        "amount": 1,
+        "balance": 46,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794349737795,
+        "amount": 1,
+        "balance": 47,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794349743346,
+        "amount": 1,
+        "balance": 48,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794349748745,
+        "amount": 1,
+        "balance": 49,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794350039675,
+        "amount": 5,
+        "balance": 54,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794350270244,
+        "amount": 5,
+        "balance": 59,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794350407327,
+        "amount": 5,
+        "balance": 64,
+        "kind": "earn",
+        "label": "별잠산 룰렛 보상",
+        "role": "owner",
+        "character": "kuki"
+      },
+      {
+        "at": 1794357875946,
+        "amount": 10,
+        "balance": 74,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361644134,
+        "amount": 10,
+        "balance": 84,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361653969,
+        "amount": 1,
+        "balance": 85,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361660245,
+        "amount": 1,
+        "balance": 86,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361667116,
+        "amount": 1,
+        "balance": 87,
+        "kind": "earn",
+        "label": "애정 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361674093,
+        "amount": 1,
+        "balance": 88,
+        "kind": "earn",
+        "label": "휴식 보너스",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794361718731,
+        "amount": -75,
+        "balance": 13,
+        "kind": "purchase",
+        "label": "꽃 수레 1개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "flowerCart",
+        "quantity": 1
+      },
+      {
+        "at": 1794361763813,
+        "amount": -12,
+        "balance": 1,
+        "kind": "purchase",
+        "label": "별사탕 먹이 3개 구매",
+        "role": "partner",
+        "character": "momo",
+        "product": "snack",
+        "quantity": 3
+      },
+      {
+        "at": 1794367412470,
+        "amount": 10,
+        "balance": 11,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794372032948,
+        "amount": 10,
+        "balance": 21,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "partner",
+        "character": "momo"
+      },
+      {
+        "at": 1794375947454,
+        "amount": 10,
+        "balance": 31,
+        "kind": "earn",
+        "label": "시간 하트",
+        "role": "owner",
+        "character": "kuki"
+      }
+    ],
+    "heartHistorySince": 1793584445635,
+    "adventure": {
+      "hpPotions": 8,
+      "staminaPotions": 7,
+      "points": 0,
+      "totalClears": 71,
+      "history": [
+        {
+          "runId": "1814a9c2cded4e9089e7d337a85d40b1",
+          "clearNo": 1,
+          "at": 1793864133750,
+          "startedAt": 1793863737323,
+          "durationMs": 355489,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "add00b2bc1724d3a8d129964d9d1c47f",
+          "clearNo": 2,
+          "at": 1793864625558,
+          "startedAt": 1793864318578,
+          "durationMs": 300279,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "ba4b73333f0a44de93faba565f4a0c52",
+          "clearNo": 3,
+          "at": 1793865287930,
+          "startedAt": 1793864651754,
+          "durationMs": 609955,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "staminaPotion",
+              "heart3",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "staminaPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "B",
+              "label": "B · 12분 이내"
+            }
+          }
+        },
+        {
+          "runId": "5455be9bb2e14774a745751e249a142a",
+          "clearNo": 4,
+          "at": 1793871755648,
+          "startedAt": 1793871454168,
+          "durationMs": 294993,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 0,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "70376a4b7b4e4cd682757624f9af6171",
+          "clearNo": 5,
+          "at": 1793872259122,
+          "startedAt": 1793871849227,
+          "durationMs": 403743,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "2d7ab78b5aab4f92aae63685fa13bd2a",
+          "clearNo": 6,
+          "at": 1793877028001,
+          "startedAt": 1793875205980,
+          "durationMs": 375179,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "heart1",
+            "label": "하트 1개",
+            "hearts": 1,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "8c3fa45750c944e0a356dfa40e32d5f4",
+          "clearNo": 7,
+          "at": 1793877561326,
+          "startedAt": 1793866046297,
+          "durationMs": 364575,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "67a1dc9e8bf74bb5bcfa11c1069c95d4",
+          "clearNo": 8,
+          "at": 1793877877066,
+          "startedAt": 1793877532731,
+          "durationMs": 336130,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "f5834034cbf94678b1dc1e7248745156",
+          "clearNo": 9,
+          "at": 1793884884468,
+          "startedAt": 1793877895851,
+          "durationMs": 329556,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "obstacles": 100,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 0,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "210d651ee98042deabf8c53212a508af",
+          "clearNo": 10,
+          "at": 1793936047381,
+          "startedAt": 1793884587422,
+          "durationMs": 333069,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "13ac5052cad54833be8c73d5fd186027",
+          "clearNo": 11,
+          "at": 1793936794488,
+          "startedAt": 1793936557457,
+          "durationMs": 225820,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "36fb69c278614cc3b2be55384bc5bbfc",
+          "clearNo": 12,
+          "at": 1793948535851,
+          "startedAt": 1793948341538,
+          "durationMs": 187563,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "c054dc63215145c8908a7059043c48c0",
+          "clearNo": 13,
+          "at": 1793975199488,
+          "startedAt": 1793975043399,
+          "durationMs": 147546,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "01bd8c57ea8d41faa56bbdd2a127c9ca",
+          "clearNo": 14,
+          "at": 1793979346877,
+          "startedAt": 1793936946378,
+          "durationMs": 103455,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 1,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "c784ef75000a4b258420e5135b2d922c",
+          "clearNo": 15,
+          "at": 1793979394933,
+          "startedAt": 1793979258174,
+          "durationMs": 128816,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 1,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "50b4e3220256459aa7ce1534b6dbc26e",
+          "clearNo": 16,
+          "at": 1793979699632,
+          "startedAt": 1793979366645,
+          "durationMs": 325277,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "983e570d5f1f4653b3afea582cfdd339",
+          "clearNo": 17,
+          "at": 1793979721128,
+          "startedAt": 1793979444517,
+          "durationMs": 268635,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 24,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "6cbfd46b36e14463b6e42937e6a9ac32",
+          "clearNo": 18,
+          "at": 1793980857630,
+          "startedAt": 1793980715218,
+          "durationMs": 135295,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "028f2d31ca7f41a484a7a63dd6804b62",
+          "clearNo": 19,
+          "at": 1793981091380,
+          "startedAt": 1793980968867,
+          "durationMs": 115157,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "c33320b747f54a9a95811f8a2347e002",
+          "clearNo": 20,
+          "at": 1793981647690,
+          "startedAt": 1793981550183,
+          "durationMs": 89662,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 6,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "e90119db9bb44b5bbe24319eae8afe59",
+          "clearNo": 21,
+          "at": 1793981762928,
+          "startedAt": 1793981662909,
+          "durationMs": 93024,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 6,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "3e136454c8c640d1aeac396c9e11d4b6",
+          "clearNo": 22,
+          "at": 1793981880594,
+          "startedAt": 1793981780139,
+          "durationMs": 93152,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "02cb7c35eeaf476c9e4d01a76d57723a",
+          "clearNo": 23,
+          "at": 1794007358383,
+          "startedAt": 1794007178767,
+          "durationMs": 172140,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 9,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "765f17a1dd544a1582a3888902ff09dd",
+          "clearNo": 24,
+          "at": 1794016321468,
+          "startedAt": 1794015972401,
+          "durationMs": 145739,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "faab784cc1eb4be38cc51fad57285189",
+          "clearNo": 25,
+          "at": 1794016415805,
+          "startedAt": 1794016302999,
+          "durationMs": 105954,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "74ff19d869c84f059dcbe53e5a65eb0f",
+          "clearNo": 26,
+          "at": 1794016830952,
+          "startedAt": 1794016425602,
+          "durationMs": 396967,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 9,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "076e979227c04fe1a11ad9fa119ca422",
+          "clearNo": 27,
+          "at": 1794031170593,
+          "startedAt": 1794031051952,
+          "durationMs": 112055,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "53ca9757067b4cccb4fd1cc2c21ff7e0",
+          "clearNo": 28,
+          "at": 1794037580101,
+          "startedAt": 1794037197565,
+          "durationMs": 306721,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "c9c68ac7b704488195e13c0df5023ba9",
+          "clearNo": 29,
+          "at": 1794046906885,
+          "startedAt": 1794046768257,
+          "durationMs": 130729,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 0,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "d0f63adac0c745608e7dddf4f114aeb3",
+          "clearNo": 30,
+          "at": 1794052277239,
+          "startedAt": 1794052089186,
+          "durationMs": 179566,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "d3c63ba6fcc94d70848fe43d0644f019",
+          "clearNo": 31,
+          "at": 1794090054202,
+          "startedAt": 1794089821447,
+          "durationMs": 226037,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 1,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "572d6a4db9564176baf683311d352e2a",
+          "clearNo": 32,
+          "at": 1794090447008,
+          "startedAt": 1794090154685,
+          "durationMs": 285180,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "14e989c7ca5a429db56e7f1fad2ce5b6",
+          "clearNo": 33,
+          "at": 1794090830015,
+          "startedAt": 1794090479146,
+          "durationMs": 342197,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart3",
+              "point",
+              "heart1",
+              "heart5"
+            ],
+            "tier": {
+              "id": "A",
+              "label": "A · 8분 이내"
+            }
+          }
+        },
+        {
+          "runId": "7ed5d47132d54c619c34f262ba775c5f",
+          "clearNo": 34,
+          "at": 1794092635232,
+          "startedAt": 1794092522849,
+          "durationMs": 105918,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "f1d4a66dde9645debcd1818626e10902",
+          "clearNo": 35,
+          "at": 1794092967948,
+          "startedAt": 1794092700017,
+          "durationMs": 129727,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "d508b239c98c451f9fc05460d03d73a5",
+          "clearNo": 36,
+          "at": 1794093301437,
+          "startedAt": 1794092987010,
+          "durationMs": 254651,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "7d87eb308736477ea471ebaeeb4b7865",
+          "clearNo": 37,
+          "at": 1794105582694,
+          "startedAt": 1794105401647,
+          "durationMs": 174611,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 0,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "4ed5022604b6471387d24eb2dda2f584",
+          "clearNo": 38,
+          "at": 1794105906046,
+          "startedAt": 1794105603332,
+          "durationMs": 294022,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 28,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "55cad295ab3542c1936c9bf3a33da686",
+          "clearNo": 39,
+          "at": 1794113554907,
+          "startedAt": 1794113418652,
+          "durationMs": 129204,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "00a0cd0c9dcc44fa9c335e21b77762f9",
+          "clearNo": 40,
+          "at": 1794113865578,
+          "startedAt": 1794113723580,
+          "durationMs": 132372,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "27d5386282d14a60a6633e32db817daa",
+          "clearNo": 41,
+          "at": 1794117494830,
+          "startedAt": 1794117372600,
+          "durationMs": 115367,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "abb955fb79734a1a8a7150bf359b8e09",
+          "clearNo": 42,
+          "at": 1794126576873,
+          "startedAt": 1794126475630,
+          "durationMs": 94733,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "9228c92785404707834d58658742fec9",
+          "clearNo": 43,
+          "at": 1794127608387,
+          "startedAt": 1794126603560,
+          "durationMs": 241211,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "51f050c2ff774fb4a068659882e12ea9",
+          "clearNo": 44,
+          "at": 1794132083955,
+          "startedAt": 1794131911739,
+          "durationMs": 165224,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "75ed2ffb184c485192ba008b9fb2c3d3",
+          "clearNo": 45,
+          "at": 1794175444113,
+          "startedAt": 1794175340449,
+          "durationMs": 97014,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 6,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "6c996b3436434ee59429ef47f8fd0a05",
+          "clearNo": 46,
+          "at": 1794175785944,
+          "startedAt": 1794175543508,
+          "durationMs": 235954,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "5b1c735dc53e4e7ca7cd251d7f66c75b",
+          "clearNo": 47,
+          "at": 1794192428506,
+          "startedAt": 1794192232172,
+          "durationMs": 189221,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "a59d9123a5204ffc809351aa9c9ed7a4",
+          "clearNo": 48,
+          "at": 1794192746037,
+          "startedAt": 1794031720038,
+          "durationMs": 94892,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "53ddb129495148158bea94c2a9c021dd",
+          "clearNo": 49,
+          "at": 1794192860625,
+          "startedAt": 1794192789101,
+          "durationMs": 64278,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 8,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "db0c30c02d01436a8274abe91af93931",
+          "clearNo": 50,
+          "at": 1794192885805,
+          "startedAt": 1794192782924,
+          "durationMs": 80559,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 6,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "858581b48e6a402ab0852acb12232f03",
+          "clearNo": 51,
+          "at": 1794193089592,
+          "startedAt": 1794192907167,
+          "durationMs": 175236,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "d67f47d3afcd471a9263999e1599335d",
+          "clearNo": 52,
+          "at": 1794193101193,
+          "startedAt": 1794192913502,
+          "durationMs": 180406,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 1,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "190c63e14da3422f8b36c27a60a7c29b",
+          "clearNo": 53,
+          "at": 1794198159404,
+          "startedAt": 1794193149031,
+          "durationMs": 92991,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "8b71b850fbf5492eadd69779163c30e7",
+          "clearNo": 54,
+          "at": 1794198318901,
+          "startedAt": 1794198268151,
+          "durationMs": 43540,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 1,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "714533538f0a408bb4de1ceeb3348162",
+          "clearNo": 55,
+          "at": 1794198348151,
+          "startedAt": 1794193136478,
+          "durationMs": 56511,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "1f12f6bc2f9246449e4c2379f7c31fe1",
+          "clearNo": 56,
+          "at": 1794198538005,
+          "startedAt": 1794198368807,
+          "durationMs": 161198,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 0,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "a9f6ae152d164d719b358494f941c6b2",
+          "clearNo": 57,
+          "at": 1794198572192,
+          "startedAt": 1794198375839,
+          "durationMs": 188901,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 32,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "d16583687c154ec2a10406d1bdfabaca",
+          "clearNo": 58,
+          "at": 1794198786334,
+          "startedAt": 1794198687107,
+          "durationMs": 91628,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 2,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "52b090cf8dfd44bab805e2a8b7254e9c",
+          "clearNo": 59,
+          "at": 1794199691363,
+          "startedAt": 1794199600926,
+          "durationMs": 77958,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "29226250410a4202b20a7dfc5124c8cb",
+          "clearNo": 60,
+          "at": 1794199719476,
+          "startedAt": 1794199607165,
+          "durationMs": 95803,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "7297cc4d79334d12bff23aa23840c9cb",
+          "clearNo": 61,
+          "at": 1794203027398,
+          "startedAt": 1794202952121,
+          "durationMs": 67293,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 9,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "17ded15a55ce424e842239f156e1087f",
+          "clearNo": 62,
+          "at": 1794203279682,
+          "startedAt": 1794203043215,
+          "durationMs": 168266,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 36,
+          "mode": "explore",
+          "obstacles": 100,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "ae8a762646cc44139ab01548241d8728",
+          "clearNo": 63,
+          "at": 1794228813737,
+          "startedAt": 1794228758473,
+          "durationMs": 47845,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart3",
+            "label": "하트 3개",
+            "hearts": 3,
+            "index": 10,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "dd731bf7e87d445387847243f551bec1",
+          "clearNo": 64,
+          "at": 1794228904079,
+          "startedAt": 1794228829627,
+          "durationMs": 66397,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "16e5c96d5476461ab1254ec5e3206cd7",
+          "clearNo": 65,
+          "at": 1794288999771,
+          "startedAt": 1794288929292,
+          "durationMs": 62646,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "bb516ace132e4bf392787d9eb2a400fd",
+          "clearNo": 66,
+          "at": 1794298470643,
+          "startedAt": 1794298357441,
+          "durationMs": 102447,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 58,
+          "mode": "defense",
+          "obstacles": 0,
+          "houses": 0,
+          "reward": {
+            "id": "staminaPotion",
+            "label": "스태미나 회복약 1개",
+            "field": "staminaPotions",
+            "index": 4,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "b49f176a3cd4456dbeec8d5cb15771c9",
+          "clearNo": 67,
+          "at": 1794300387769,
+          "startedAt": 1794300313983,
+          "durationMs": 65320,
+          "role": "partner",
+          "character": "momo",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "point",
+            "label": "스테이터스 포인트 2개",
+            "field": "points",
+            "amount": 2,
+            "index": 3,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "9fe7857beaff4c69bdfa233dd0710e2a",
+          "clearNo": 68,
+          "at": 1794300538514,
+          "startedAt": 1794300402888,
+          "durationMs": 129045,
+          "role": "partner",
+          "character": "kuki",
+          "enemyCount": 36,
+          "mode": "explore",
+          "obstacles": 80,
+          "trees": 50,
+          "rocks": 30,
+          "houses": 0,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "c467f0861994459784274987bd51a2ec",
+          "clearNo": 69,
+          "at": 1794350039675,
+          "startedAt": 1794349918031,
+          "durationMs": 109996,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 58,
+          "mode": "defense",
+          "obstacles": 0,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "8518773a3e09456fa20a7963bb13d8b3",
+          "clearNo": 70,
+          "at": 1794350270244,
+          "startedAt": 1794350109231,
+          "durationMs": 153253,
+          "role": "owner",
+          "character": "momo",
+          "enemyCount": 36,
+          "mode": "explore",
+          "obstacles": 80,
+          "trees": 50,
+          "rocks": 30,
+          "houses": 0,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 5,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        },
+        {
+          "runId": "87883a1a006a4e98a45aacf553972e40",
+          "clearNo": 71,
+          "at": 1794350407327,
+          "startedAt": 1794350333640,
+          "durationMs": 64871,
+          "role": "owner",
+          "character": "kuki",
+          "enemyCount": 0,
+          "mode": "offense",
+          "obstacles": 0,
+          "houses": 1,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          }
+        }
+      ],
+      "stats": {
+        "momo": {
+          "strength": 14,
+          "vitality": 2,
+          "stamina": 3,
+          "luck": 0,
+          "dexterity": 0
+        },
+        "kuki": {
+          "strength": 7,
+          "vitality": 1,
+          "stamina": 11,
+          "luck": 0,
+          "dexterity": 0
+        }
+      },
+      "runs": {
+        "owner": {
+          "id": "87883a1a006a4e98a45aacf553972e40",
+          "seed": 2273851930,
+          "mode": "offense",
+          "fieldVersion": 1,
+          "requestId": "a2c955ee-6b73-472c-8220-4815f4a3beeb",
+          "startedAt": 1794350333640,
+          "enemyCount": 0,
+          "finishedAt": 1794350407327,
+          "reward": {
+            "id": "heart5",
+            "label": "하트 5개",
+            "hearts": 5,
+            "index": 11,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 71,
+          "cleared": [
+            "outpost-house"
+          ]
+        },
+        "partner": {
+          "id": "9fe7857beaff4c69bdfa233dd0710e2a",
+          "seed": 2682750331,
+          "mode": "explore",
+          "fieldVersion": 2,
+          "requestId": "0350469a-f312-4631-aced-9bdba4326117",
+          "startedAt": 1794300402888,
+          "enemyCount": 36,
+          "finishedAt": 1794300538514,
+          "reward": {
+            "id": "hpPotion",
+            "label": "HP 회복약 1개",
+            "field": "hpPotions",
+            "index": 7,
+            "segments": [
+              "point",
+              "heart5",
+              "heart3",
+              "point",
+              "staminaPotion",
+              "heart5",
+              "point",
+              "hpPotion",
+              "heart5",
+              "point",
+              "heart3",
+              "heart5"
+            ],
+            "tier": {
+              "id": "S",
+              "label": "S · 5분 이내"
+            }
+          },
+          "clearNo": 68,
+          "cleared": [
+            "field-0",
+            "field-2",
+            "field-4",
+            "field-5",
+            "field-10",
+            "field-12",
+            "field-13",
+            "field-14",
+            "field-15",
+            "field-16",
+            "field-18",
+            "field-20",
+            "field-24",
+            "field-26",
+            "field-27",
+            "field-28",
+            "field-29",
+            "field-30",
+            "field-33",
+            "field-34",
+            "field-36",
+            "field-37",
+            "field-40",
+            "field-41",
+            "field-42",
+            "field-44",
+            "field-45",
+            "field-49",
+            "field-64",
+            "field-66",
+            "field-68",
+            "field-72",
+            "field-74",
+            "field-75",
+            "field-80",
+            "field-81",
+            "field-86",
+            "field-87",
+            "field-95",
+            "field-98",
+            "field-102",
+            "field-104",
+            "field-105",
+            "field-108",
+            "field-109",
+            "field-114",
+            "field-117",
+            "field-119",
+            "field-120",
+            "field-126",
+            "field-1",
+            "field-3",
+            "field-6",
+            "field-7",
+            "field-8",
+            "field-9",
+            "field-11",
+            "field-17",
+            "field-19",
+            "field-22",
+            "field-23",
+            "field-25",
+            "field-31",
+            "field-32",
+            "field-35",
+            "field-67",
+            "field-73",
+            "field-78",
+            "field-84",
+            "field-90",
+            "field-96",
+            "field-101",
+            "field-106",
+            "field-111",
+            "field-125",
+            "field-130",
+            "field-132",
+            "field-140",
+            "field-141",
+            "field-145"
+          ]
+        }
+      },
+      "operations": [
+        "db324fe5-b231-4f6a-87a9-9dacf6b13635",
+        "d41e3843-0b15-4f2d-91f7-3c09601db77e",
+        "5442cb36-0083-441c-b6d4-676777bff801",
+        "f5b5215b-3fc1-4d6c-8c91-2dc0aea17aac",
+        "b4592e92-6754-425f-8527-0f1bd7a6b95f",
+        "135cf5f5-6b24-426c-b06b-1a8f8fa21f1c",
+        "c1a3e39a-679d-42a5-ba9c-63b7cfbebf59",
+        "a968faae-94d1-47f6-b031-369b5f56d1c0",
+        "adf9a2a3-5ad5-407f-a80d-c835ebe863cb",
+        "6a92c6ce-be74-45c0-9c74-8d029306fc84",
+        "0f29b2aa-69e1-46ac-935e-1f3e8e55e2e4",
+        "602fd9dc-ac9f-4050-b370-e9e7067d0f23",
+        "36ce24aa-8101-4dc8-8b5c-2e8326b50f40",
+        "f515b381-0af9-4a90-b6b5-b5b0d741e4ae",
+        "aee98b6a-6cad-4b48-af70-fb408f9302b4",
+        "12f42c0e-135f-497a-9fc4-0cc57583e705",
+        "07642b54-aea3-444a-8825-0a3d86e4537f",
+        "baf8bf03-0b78-48ef-88d5-4f26e9884176",
+        "17b96d3f-e8c9-49b2-a175-3ec0fba8ef44",
+        "510c6163-c291-47aa-bbe6-a893bbbd8e8d",
+        "0f1074b5-f301-4ae5-b085-c9e05d508b60",
+        "625bbae7-f226-4d86-8ae1-98cee2e0322d",
+        "4240b9fa-39a4-49dc-9ccf-58da3d861052",
+        "5f1605ff-775f-49cf-85b2-ad7e17eb8f92",
+        "9fdba352-f6d3-4372-aec5-9d7ddc891cd5",
+        "b6dcaddc-8a3e-4e7f-84cd-4c9ccafdd9bf",
+        "e9359c21-3098-4add-b2ae-fdd07e26c1be",
+        "b72b5794-b5cc-4bb6-a8cd-27bc0bb992de",
+        "ccf2a6ca-85dc-43c2-9cb7-dc0711084858",
+        "b75d4057-e0a9-4c74-8717-2443c30cf358",
+        "9647810c-75aa-4700-b179-edcf272d6d27",
+        "8c1646f6-ba24-44b4-9207-b22e58294af5",
+        "48238557-edaf-4df1-8803-edd180ecd6ce",
+        "8e096cf3-ae9a-4538-9593-e77fb6b6912d",
+        "1a456d09-0bd3-4505-acd6-31f1767b4f4e",
+        "af96796c-f4b3-4e21-a555-431ff0a8cc39",
+        "0afddd21-6886-4176-8db6-f04a4490eb64",
+        "af6fe308-b0e1-40eb-afa0-3f3bd492010e",
+        "aba71dc7-877e-4504-87fd-e3682561c833",
+        "2959631a-2986-4c75-888d-f75e928a28b5",
+        "462952de-c2bf-4627-9369-aa8c92340ce5",
+        "cdd5edcc-3c1c-4706-8a53-8b94e76d8639",
+        "47349103-a1de-4c31-a781-89ade6d055c7",
+        "18155546-889c-4ae6-ac1f-a1da67de14d6",
+        "88ebdad1-2e77-449a-93da-e8d190a821e5",
+        "eec77262-ff81-4e3a-ac73-0692f0b7bc1c",
+        "dec5c6e0-db02-4d63-be46-91906b12e801",
+        "6192400e-94a0-4d8f-8d58-9d0b4fb02829",
+        "98ef18d8-59a5-4981-9ec3-420cfdd0e8e7",
+        "20d7dc8d-e592-4128-9d4c-feb472208a64",
+        "fb34157b-6d1e-433f-9b80-7de0e4d67d75",
+        "cac4fdd9-c7ed-4987-8d2e-b2caab6b516e",
+        "bd5ea283-f412-4524-8dd8-4d64ac8a502a",
+        "91ed2fa9-9a1d-4ada-8f01-eb18d35cc735",
+        "cd8d3c04-ebe4-438b-af6c-b0eb4eddd245",
+        "ca380fd4-f72b-48b2-b63f-7d6ec0a543ee",
+        "6ad5e1b5-6f11-4679-8058-c45e5c958296",
+        "177c9bd0-6619-43f1-8afc-b9272247d4ea",
+        "7065fafb-0b88-42c7-bed7-fb4cb4c3acb3",
+        "f632ba98-0f6a-4596-8748-648b9f50e66f",
+        "f46db7c8-dc15-4e45-8f6d-4392115077d9",
+        "15ac567b-6cc5-4f08-81cd-ce70b8441d9b",
+        "4f227ab0-129f-4f10-8d7c-59f4454eb0f4",
+        "7a6af8c0-974b-4c42-ada2-ab0a922e55e7",
+        "0b7845da-5cb8-489a-8cc2-364fa1b0a41e",
+        "ae264863-b035-4001-ace5-613d60c517fc",
+        "dcb5253d-2587-43ea-bff1-b11b1d9eff13",
+        "41553242-d413-4320-ae41-72ce1c3f61df",
+        "851f0570-b5e6-408c-8a22-ad206c3629d6",
+        "9a82afa3-3a23-40ea-bdc2-ae26a47e0154",
+        "061a9eb5-9c5b-4abb-8526-614507baf21b",
+        "36624d1b-cd77-4a34-a11a-362c9d4f8b00",
+        "d2315e22-a791-4111-938a-6d140f4ee971",
+        "77bb4b59-0938-46a0-a9db-17417d22bab4",
+        "173811d2-3e8f-47a7-b6d2-e01dae0dc389",
+        "8f022d9f-d0e6-4299-b1b3-2d6cd54d2917",
+        "86bebce2-76c1-4357-b68c-cf7625da9e06",
+        "8e0ac4e4-d207-4ca3-8266-58a087a4c3cb",
+        "3724d3db-60fc-49f0-b427-9626f35c9ad9",
+        "a1ef43ba-596b-4494-9881-55313683f27a",
+        "14c842a9-ef83-4bdc-9b47-49366289a8b2",
+        "8c17652c-881c-44c1-91fa-89b36b6929b5",
+        "19368055-056c-41d2-a655-f8c55e0dfe0b",
+        "e680819f-b487-4edb-9109-adc185bdd5b1",
+        "430e708b-8fb0-4a97-ae6f-ee93c2d61313",
+        "b1612a40-bb15-4611-8f2c-79b5e3b004ad",
+        "9c6116c6-78ec-4480-8f57-26b1bd832c95",
+        "5ae775be-93ac-4a0b-9442-da3c46c1b79e",
+        "33323821-b013-4c7f-8b0a-6d87157e0465",
+        "893f7d8c-9d22-4290-ac86-015b40e0477c",
+        "ad34c3f7-0dc5-4cc6-8735-4c7faa2fb2d4",
+        "ecc66183-176e-4a43-9eb9-b09833487dbb",
+        "3238a1fb-52d5-4c79-b847-e5731479e840",
+        "8584109f-da38-44f5-b43c-ba9253989bd4",
+        "ca0c0a15-4642-48c6-9595-81144c17a713",
+        "3dafd943-a8a4-4f56-8dc4-aab2271e5ab5",
+        "987a65d4-0bdc-4f4d-b28e-4ed60ed1a864",
+        "562098a8-78f3-4519-aec7-18c947e7b258",
+        "2db1ca00-30ae-40d2-945a-388a9cc56b87",
+        "6c001f22-a43a-4c54-88d3-c317985425a5",
+        "49e31b3c-fbee-4a67-a7bd-28da81abd683",
+        "56c86e5d-0355-4682-8ad4-e3b653bf8047",
+        "c64f4ee4-770f-4218-8c46-e0b88586a851",
+        "dd719dd0-2a6f-4cec-826b-6089cb37d18c",
+        "50bcd7e0-4795-4295-b619-edc056737278",
+        "f6466578-8d90-48d6-9e5f-386ac5022393",
+        "3d8e6d4d-5f7d-4b22-acd9-3086d248fb09",
+        "cfb176a1-5f7e-4b5f-be2b-ccb23b565459",
+        "8d5a9a66-8e04-4fc1-8497-5806c7aa728a",
+        "a29a6340-3612-46a5-8c13-0f96b24f7b82",
+        "c549dd62-e437-42ea-a3f3-b59e87d297af",
+        "85468d00-665f-45e1-86d2-326139c82e9f",
+        "ffcf4a59-ab42-4759-bef3-5acd6a183728",
+        "ccac96c5-612d-4cf5-ba67-7c27533b2491",
+        "6607e103-d86c-4b89-9fb6-f7b385c9d394",
+        "8bcfa8b0-8494-4a35-9d42-0cbde8617d8d",
+        "ba573534-0a36-4e22-866a-507500d71749",
+        "499543ad-4213-40cf-99b4-d7a23b988491",
+        "0350469a-f312-4631-aced-9bdba4326117",
+        "a595474c-bbf6-4fbf-a37c-18e9eb897084",
+        "11c03df4-5123-42fa-aa25-f3b6f0f3e7b9",
+        "ff899795-e253-4811-9ffe-14caebc1fd19",
+        "696fd318-1ee7-41f4-9eea-f2dd2506fa51",
+        "cb347878-f74e-451c-a101-ca837f88c78d",
+        "747eabc9-42ee-4d01-a2df-2066ecc5de14",
+        "0642c683-eb7a-4d28-8248-69212b2b8af2",
+        "a2c955ee-6b73-472c-8220-4815f4a3beeb",
+        "c56b64be-c296-4e6f-bbd4-beb2b2be2780"
+      ]
+    }
+  },
+  "members": [
+    {
+      "hash": "736bf53682d07c8d0697b4dc830a560a249a2e5ef77c81a76892dd9294fd8780",
+      "role": "owner"
+    },
+    {
+      "hash": "c590b225e13d6e7fc7be3fda9d38729e686bba6763fc6693b6dfb118eeec2ca9",
+      "role": "partner"
+    }
+  ],
+  "recovery": {
+    "salt": "efe0c4d6-ecb0-44bc-a05f-59b332b94036",
+    "hash": "8d49a852c2086cefe275d3c973043cc56273ce7b7287d93b0d15a33006facd20"
+  }
+}

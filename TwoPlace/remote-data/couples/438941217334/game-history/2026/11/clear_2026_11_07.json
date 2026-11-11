@@ -1,0 +1,1091 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "01bd8c57ea8d41faa56bbdd2a127c9ca",
+      "clearNo": 14,
+      "at": 1793979346877,
+      "startedAt": 1793936946378,
+      "durationMs": 103455,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "c784ef75000a4b258420e5135b2d922c",
+      "clearNo": 15,
+      "at": 1793979394933,
+      "startedAt": 1793979258174,
+      "durationMs": 128816,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "50b4e3220256459aa7ce1534b6dbc26e",
+      "clearNo": 16,
+      "at": 1793979699632,
+      "startedAt": 1793979366645,
+      "durationMs": 325277,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "983e570d5f1f4653b3afea582cfdd339",
+      "clearNo": 17,
+      "at": 1793979721128,
+      "startedAt": 1793979444517,
+      "durationMs": 268635,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "6cbfd46b36e14463b6e42937e6a9ac32",
+      "clearNo": 18,
+      "at": 1793980857630,
+      "startedAt": 1793980715218,
+      "durationMs": 135295,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "028f2d31ca7f41a484a7a63dd6804b62",
+      "clearNo": 19,
+      "at": 1793981091380,
+      "startedAt": 1793980968867,
+      "durationMs": 115157,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "c33320b747f54a9a95811f8a2347e002",
+      "clearNo": 20,
+      "at": 1793981647690,
+      "startedAt": 1793981550183,
+      "durationMs": 89662,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "e90119db9bb44b5bbe24319eae8afe59",
+      "clearNo": 21,
+      "at": 1793981762928,
+      "startedAt": 1793981662909,
+      "durationMs": 93024,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "3e136454c8c640d1aeac396c9e11d4b6",
+      "clearNo": 22,
+      "at": 1793981880594,
+      "startedAt": 1793981780139,
+      "durationMs": 93152,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "02cb7c35eeaf476c9e4d01a76d57723a",
+      "clearNo": 23,
+      "at": 1794007358383,
+      "startedAt": 1794007178767,
+      "durationMs": 172140,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "765f17a1dd544a1582a3888902ff09dd",
+      "clearNo": 24,
+      "at": 1794016321468,
+      "startedAt": 1794015972401,
+      "durationMs": 145739,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "faab784cc1eb4be38cc51fad57285189",
+      "clearNo": 25,
+      "at": 1794016415805,
+      "startedAt": 1794016302999,
+      "durationMs": 105954,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "74ff19d869c84f059dcbe53e5a65eb0f",
+      "clearNo": 26,
+      "at": 1794016830952,
+      "startedAt": 1794016425602,
+      "durationMs": 396967,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "076e979227c04fe1a11ad9fa119ca422",
+      "clearNo": 27,
+      "at": 1794031170593,
+      "startedAt": 1794031051952,
+      "durationMs": 112055,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "53ca9757067b4cccb4fd1cc2c21ff7e0",
+      "clearNo": 28,
+      "at": 1794037580101,
+      "startedAt": 1794037197565,
+      "durationMs": 306721,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "c9c68ac7b704488195e13c0df5023ba9",
+      "clearNo": 29,
+      "at": 1794046906885,
+      "startedAt": 1794046768257,
+      "durationMs": 130729,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "d0f63adac0c745608e7dddf4f114aeb3",
+      "clearNo": 30,
+      "at": 1794052277239,
+      "startedAt": 1794052089186,
+      "durationMs": 179566,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "d3c63ba6fcc94d70848fe43d0644f019",
+      "clearNo": 31,
+      "at": 1794090054202,
+      "startedAt": 1794089821447,
+      "durationMs": 226037,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "572d6a4db9564176baf683311d352e2a",
+      "clearNo": 32,
+      "at": 1794090447008,
+      "startedAt": 1794090154685,
+      "durationMs": 285180,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "14e989c7ca5a429db56e7f1fad2ce5b6",
+      "clearNo": 33,
+      "at": 1794090830015,
+      "startedAt": 1794090479146,
+      "durationMs": 342197,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "7ed5d47132d54c619c34f262ba775c5f",
+      "clearNo": 34,
+      "at": 1794092635232,
+      "startedAt": 1794092522849,
+      "durationMs": 105918,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "f1d4a66dde9645debcd1818626e10902",
+      "clearNo": 35,
+      "at": 1794092967948,
+      "startedAt": 1794092700017,
+      "durationMs": 129727,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "d508b239c98c451f9fc05460d03d73a5",
+      "clearNo": 36,
+      "at": 1794093301437,
+      "startedAt": 1794092987010,
+      "durationMs": 254651,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "7d87eb308736477ea471ebaeeb4b7865",
+      "clearNo": 37,
+      "at": 1794105582694,
+      "startedAt": 1794105401647,
+      "durationMs": 174611,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "4ed5022604b6471387d24eb2dda2f584",
+      "clearNo": 38,
+      "at": 1794105906046,
+      "startedAt": 1794105603332,
+      "durationMs": 294022,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 28,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "55cad295ab3542c1936c9bf3a33da686",
+      "clearNo": 39,
+      "at": 1794113554907,
+      "startedAt": 1794113418652,
+      "durationMs": 129204,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "00a0cd0c9dcc44fa9c335e21b77762f9",
+      "clearNo": 40,
+      "at": 1794113865578,
+      "startedAt": 1794113723580,
+      "durationMs": 132372,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "27d5386282d14a60a6633e32db817daa",
+      "clearNo": 41,
+      "at": 1794117494830,
+      "startedAt": 1794117372600,
+      "durationMs": 115367,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "abb955fb79734a1a8a7150bf359b8e09",
+      "clearNo": 42,
+      "at": 1794126576873,
+      "startedAt": 1794126475630,
+      "durationMs": 94733,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "9228c92785404707834d58658742fec9",
+      "clearNo": 43,
+      "at": 1794127608387,
+      "startedAt": 1794126603560,
+      "durationMs": 241211,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "51f050c2ff774fb4a068659882e12ea9",
+      "clearNo": 44,
+      "at": 1794132083955,
+      "startedAt": 1794131911739,
+      "durationMs": 165224,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "75ed2ffb184c485192ba008b9fb2c3d3",
+      "clearNo": 45,
+      "at": 1794175444113,
+      "startedAt": 1794175340449,
+      "durationMs": 97014,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "6c996b3436434ee59429ef47f8fd0a05",
+      "clearNo": 46,
+      "at": 1794175785944,
+      "startedAt": 1794175543508,
+      "durationMs": 235954,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "5b1c735dc53e4e7ca7cd251d7f66c75b",
+      "clearNo": 47,
+      "at": 1794192428506,
+      "startedAt": 1794192232172,
+      "durationMs": 189221,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "a59d9123a5204ffc809351aa9c9ed7a4",
+      "clearNo": 48,
+      "at": 1794192746037,
+      "startedAt": 1794031720038,
+      "durationMs": 94892,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "53ddb129495148158bea94c2a9c021dd",
+      "clearNo": 49,
+      "at": 1794192860625,
+      "startedAt": 1794192789101,
+      "durationMs": 64278,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "db0c30c02d01436a8274abe91af93931",
+      "clearNo": 50,
+      "at": 1794192885805,
+      "startedAt": 1794192782924,
+      "durationMs": 80559,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "858581b48e6a402ab0852acb12232f03",
+      "clearNo": 51,
+      "at": 1794193089592,
+      "startedAt": 1794192907167,
+      "durationMs": 175236,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "d67f47d3afcd471a9263999e1599335d",
+      "clearNo": 52,
+      "at": 1794193101193,
+      "startedAt": 1794192913502,
+      "durationMs": 180406,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "190c63e14da3422f8b36c27a60a7c29b",
+      "clearNo": 53,
+      "at": 1794198159404,
+      "startedAt": 1794193149031,
+      "durationMs": 92991,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "8b71b850fbf5492eadd69779163c30e7",
+      "clearNo": 54,
+      "at": 1794198318901,
+      "startedAt": 1794198268151,
+      "durationMs": 43540,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "714533538f0a408bb4de1ceeb3348162",
+      "clearNo": 55,
+      "at": 1794198348151,
+      "startedAt": 1794193136478,
+      "durationMs": 56511,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "1f12f6bc2f9246449e4c2379f7c31fe1",
+      "clearNo": 56,
+      "at": 1794198538005,
+      "startedAt": 1794198368807,
+      "durationMs": 161198,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "a9f6ae152d164d719b358494f941c6b2",
+      "clearNo": 57,
+      "at": 1794198572192,
+      "startedAt": 1794198375839,
+      "durationMs": 188901,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 32,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "d16583687c154ec2a10406d1bdfabaca",
+      "clearNo": 58,
+      "at": 1794198786334,
+      "startedAt": 1794198687107,
+      "durationMs": 91628,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "52b090cf8dfd44bab805e2a8b7254e9c",
+      "clearNo": 59,
+      "at": 1794199691363,
+      "startedAt": 1794199600926,
+      "durationMs": 77958,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "29226250410a4202b20a7dfc5124c8cb",
+      "clearNo": 60,
+      "at": 1794199719476,
+      "startedAt": 1794199607165,
+      "durationMs": 95803,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "hpPotion",
+        "label": "HP 회복약 1개",
+        "field": "hpPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "7297cc4d79334d12bff23aa23840c9cb",
+      "clearNo": 61,
+      "at": 1794203027398,
+      "startedAt": 1794202952121,
+      "durationMs": 67293,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "point",
+        "label": "스테이터스 포인트 2개",
+        "field": "points",
+        "amount": 2,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "17ded15a55ce424e842239f156e1087f",
+      "clearNo": 62,
+      "at": 1794203279682,
+      "startedAt": 1794203043215,
+      "durationMs": 168266,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 36,
+      "mode": "explore",
+      "obstacles": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "ae8a762646cc44139ab01548241d8728",
+      "clearNo": 63,
+      "at": 1794228813737,
+      "startedAt": 1794228758473,
+      "durationMs": 47845,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        }
+      }
+    },
+    {
+      "runId": "dd731bf7e87d445387847243f551bec1",
+      "clearNo": 64,
+      "at": 1794228904079,
+      "startedAt": 1794228829627,
+      "durationMs": 66397,
+      "role": "partner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "staminaPotion",
+        "label": "스태미나 회복약 1개",
+        "field": "staminaPotions",
+        "tier": {
+          "id": "S"
+        }
+      }
+    }
+  ]
+}

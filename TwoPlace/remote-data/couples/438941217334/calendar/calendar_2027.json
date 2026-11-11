@@ -1,0 +1,63 @@
+{
+  "events": [
+    {
+      "id": "e0a44c13a7bf8df6c2f1225652e11761",
+      "date": "2027-02-19",
+      "title": "성히생일😘",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "partner"
+    },
+    {
+      "id": "bdd6ebb72a106c0a222e9cf41968b12d",
+      "date": "2027-08-08",
+      "title": "시작일😘",
+      "kind": "date",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "partner"
+    },
+    {
+      "id": "874b049e765ba51f9eac443189560413",
+      "date": "2027-12-06",
+      "title": "갱식이 생일",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "partner"
+    },
+    {
+      "id": "da7cd02249f63eb3814084b252f77074",
+      "date": "2027-12-15",
+      "title": "성히한테중요한날",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "partner"
+    }
+  ],
+  "rewards": {
+    "registration": {
+      "2027-02-19": true,
+      "2027-08-08": true,
+      "2027-12-06": true,
+      "2027-12-15": true
+    },
+    "reads": {},
+    "seen": [],
+    "backfilled": true
+  }
+}
