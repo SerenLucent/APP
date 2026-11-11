@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "5e2d2b1dd28e402eaf58a11db0a5d4c2",
+      "product": "barbecue",
+      "space": "yard",
+      "x": 56,
+      "y": 54.675,
+      "rotation": 0
+    }
+  ],
+  "layoutVersion": 1,
+  "remodel": {
+    "version": 1,
+    "stored": 0
+  }
+}

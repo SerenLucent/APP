@@ -1,0 +1,91 @@
+{
+  "events": [
+    {
+      "id": "91a51f11b853702525a97749178c6b40",
+      "date": "2026-11-01",
+      "title": "두두 배드민턴 대회",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "owner"
+    },
+    {
+      "id": "5db9cba8f8d581b4835bcd985ffab548",
+      "date": "2026-11-07",
+      "title": "목동동 성당 피정",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "점심 제공",
+      "startTime": "11:00",
+      "endTime": "03:00",
+      "authorRole": "owner"
+    },
+    {
+      "id": "d3c59fe2a5b24ca91aa6dd08aeb79eed",
+      "date": "2026-10-31",
+      "title": "Reading club",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "owner"
+    },
+    {
+      "id": "bfe4aff223159a56dc35a9f4f7e69779",
+      "date": "2026-11-05",
+      "title": "교육",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "partner"
+    },
+    {
+      "id": "653e82b4c77457e8baf7dc7ea6361ba4",
+      "date": "2026-11-02",
+      "title": "서울 가족 저녁식사",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "",
+      "endTime": "",
+      "authorRole": "owner"
+    }
+  ],
+  "rewards": {
+    "registration": {
+      "2026-10-31": true,
+      "2026-11-01": true,
+      "2026-11-07": true,
+      "2026-11-09": true,
+      "2026-11-10": true,
+      "2026-11-05": true,
+      "2026-11-02": true,
+      "2026-11-11": true,
+      "2026-11-12": true,
+      "2026-11-13": true,
+      "2026-11-14": true,
+      "2026-11-15": true,
+      "2026-11-16": true,
+      "2026-11-17": true,
+      "2026-11-18": true,
+      "2026-11-19": true,
+      "2026-11-20": true,
+      "2026-11-21": true,
+      "2026-11-22": true,
+      "2026-11-23": true
+    },
+    "reads": {},
+    "seen": [],
+    "backfilled": true
+  }
+}

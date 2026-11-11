@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "kind": "heart",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "at": 1793782537375,
+      "amount": 5,
+      "balance": 31,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793782543515,
+      "amount": 1,
+      "balance": 32,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793782549550,
+      "amount": 1,
+      "balance": 33,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793782564519,
+      "amount": 1,
+      "balance": 34,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793782570262,
+      "amount": 1,
+      "balance": 35,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793782580255,
+      "amount": -24,
+      "balance": 11,
+      "kind": "purchase",
+      "label": "별사탕 먹이 6개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 6
+    },
+    {
+      "at": 1793840135183,
+      "amount": 10,
+      "balance": 21,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793840144504,
+      "amount": 1,
+      "balance": 22,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793840150609,
+      "amount": 1,
+      "balance": 23,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793840156468,
+      "amount": 1,
+      "balance": 24,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793840162056,
+      "amount": 1,
+      "balance": 25,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793840171805,
+      "amount": -8,
+      "balance": 17,
+      "kind": "purchase",
+      "label": "별사탕 먹이 2개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 2
+    },
+    {
+      "at": 1793927373273,
+      "amount": 5,
+      "balance": 22,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793927385115,
+      "amount": -16,
+      "balance": 6,
+      "kind": "purchase",
+      "label": "별사탕 먹이 4개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 4
+    },
+    {
+      "at": 1793927406054,
+      "amount": 1,
+      "balance": 7,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793927411249,
+      "amount": 1,
+      "balance": 8,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793927431591,
+      "amount": 1,
+      "balance": 9,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793927437163,
+      "amount": 1,
+      "balance": 10,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960079938,
+      "amount": 10,
+      "balance": 20,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960251338,
+      "amount": 1,
+      "balance": 21,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960257498,
+      "amount": 1,
+      "balance": 22,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960266657,
+      "amount": 1,
+      "balance": 23,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960271196,
+      "amount": 1,
+      "balance": 24,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
+    },
+    {
+      "at": 1793960362599,
+      "amount": -16,
+      "balance": 8,
+      "kind": "purchase",
+      "label": "별사탕 먹이 4개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 4
+    }
+  ]
+}

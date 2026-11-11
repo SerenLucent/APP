@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "4a8f74c6e1ae4e24a8a14cce4b8a21b6",
+      "clearNo": 1,
+      "at": 1794303245446,
+      "startedAt": 1794302825517,
+      "durationMs": 370215,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 80,
+      "trees": 50,
+      "rocks": 30,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "A"
+        }
+      }
+    },
+    {
+      "runId": "16ba0e3826ac44a086bfd2fbfd1e7e76",
+      "clearNo": 2,
+      "at": 1794304102259,
+      "startedAt": 1794303512539,
+      "durationMs": 583159,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "B"
+        }
+      }
+    },
+    {
+      "runId": "b68e83b6cbeb488b963b7d273ce64d6d",
+      "clearNo": 3,
+      "at": 1794315052613,
+      "startedAt": 1794314853783,
+      "durationMs": 192659,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 80,
+      "trees": 50,
+      "rocks": 30,
+      "houses": 0,
+      "reward": {
+        "id": "heart5",
+        "label": "하트 5개",
+        "hearts": 5,
+        "tier": {
+          "id": "S"
+        }
+      }
+    }
+  ]
+}
