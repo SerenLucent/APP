@@ -1,5 +1,5 @@
 {
-  "stardust": 120,
+  "stardust": 240,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -14,7 +14,7 @@
   "hpPotions": 0,
   "staminaPotions": 0,
   "points": 0,
-  "totalClears": 1,
+  "totalClears": 2,
   "stats": {
     "momo": {
       "strength": 0,
@@ -40,14 +40,42 @@
       "requestId": "deployment-v25-offense-start",
       "startedAt": 1794377213711,
       "enemyCount": 0,
-      "finishedAt": null,
-      "reward": null
+      "finishedAt": 1794377218981,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "index": 8,
+        "segments": [
+          "heart2",
+          "heart3",
+          "heart2",
+          "heart4",
+          "heart2",
+          "heart3",
+          "heart4",
+          "heart2",
+          "heart3",
+          "heart5"
+        ],
+        "tier": {
+          "id": "S",
+          "label": "S",
+          "stardust": 120
+        },
+        "stardust": 120
+      },
+      "clearNo": 2,
+      "cleared": [
+        "outpost-house"
+      ]
     }
   },
   "operations": [
     "deployment-v25-explore-start",
     "deployment-v25-explore-finish",
-    "deployment-v25-offense-start"
+    "deployment-v25-offense-start",
+    "deployment-v25-offense-finish"
   ],
   "bestDurationMs": 0
 }

@@ -26,6 +26,28 @@
         },
         "stardust": 120
       }
+    },
+    {
+      "runId": "1c313dc426824841a154a4eebbb84ea1",
+      "clearNo": 2,
+      "at": 1794377218981,
+      "startedAt": 1794377213711,
+      "durationMs": 0,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "S"
+        },
+        "stardust": 120
+      }
     }
   ]
 }
