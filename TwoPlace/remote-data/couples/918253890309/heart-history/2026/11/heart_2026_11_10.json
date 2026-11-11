@@ -334,6 +334,17 @@
       "label": "별잠산 룰렛 보상",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794378943155,
+      "amount": -12,
+      "balance": 55,
+      "kind": "purchase",
+      "label": "별사탕 먹이 3개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 3
     }
   ]
 }
