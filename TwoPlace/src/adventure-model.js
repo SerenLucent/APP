@@ -1,12 +1,16 @@
-export const CHARGE_DELAY=1;
-export const CHARGE_FILL=2.4;
+import {skillBalance} from './adventure-skills.js';
+export const CHARGE_DELAY=.5;
+export const CHARGE_FILL=3;
 export const MAX_CHARGE=CHARGE_DELAY+CHARGE_FILL;
 export const SPIN_TICK=.32;
-export function skillPlan(id,seconds,stamina=100){
+export function skillPlan(id,seconds,stamina=100,level=1){
  const power=Math.max(0,Math.min(1,(seconds-CHARGE_DELAY)/CHARGE_FILL)),available=Math.max(0,stamina);
  if(seconds<=CHARGE_DELAY)return {ready:false,power:0,cost:0,requiredCost:0,duration:0,usableDuration:0,damage:0,drainRate:0};
- const requiredCost=8+52*power,cost=Math.min(requiredCost,available),ratio=cost/requiredCost,duration=id==='momo'?.65+4.35*power:.48;
- return {ready:true,power,cost,requiredCost,duration,usableDuration:id==='momo'?duration*ratio:duration,drainRate:id==='momo'?requiredCost/duration:0,damage:id==='momo'?7:15*(1+19*power)*ratio};
+ const balance=skillBalance(level);
+ const requiredCost=8+62*power,cost=Math.min(requiredCost,available),ratio=cost/requiredCost;
+ const duration=id==='momo'?.65+(balance.spinDuration-.65)*power:.48;
+ const multiplier=1+(balance.tailMultiplier-1)*power;
+ return {ready:true,power,cost,requiredCost,duration,multiplier,usableDuration:id==='momo'?duration*ratio:duration,drainRate:id==='momo'?requiredCost/duration:0,damage:id==='momo'?7:15*multiplier*ratio};
 }
 export function advanceSpin(attack,pet,dt){
  const activeDt=Math.max(0,Math.min(dt,attack.duration-attack.t,pet.sp/attack.drainRate));attack.t+=activeDt;pet.sp=Math.max(0,pet.sp-attack.drainRate*activeDt);if(pet.sp<1e-8)pet.sp=0;
