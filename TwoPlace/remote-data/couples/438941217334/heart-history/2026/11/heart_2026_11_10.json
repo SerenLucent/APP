@@ -1168,6 +1168,17 @@
       "label": "별잠산 룰렛 보상",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794484682210,
+      "amount": -35,
+      "balance": 13,
+      "kind": "purchase",
+      "label": "보송 수건 걸이 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bathTowelRail",
+      "quantity": 1
     }
   ]
 }
