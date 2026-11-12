@@ -365,7 +365,7 @@
       "x": 50,
       "y": 65,
       "wallSide": "left",
-      "wallCol": 2,
+      "wallCol": 1.8,
       "wallRow": 1,
       "rotation": 0
     }
