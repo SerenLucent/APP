@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "457d70795d3940819738d9e76c857db6",
+      "clearNo": 104,
+      "at": 1794513162483,
+      "startedAt": 1794513108638,
+      "durationMs": 43647,
+      "role": "partner",
+      "character": "kuki",
+      "enemyCount": 0,
+      "mode": "offense",
+      "obstacles": 0,
+      "houses": 1,
+      "reward": {
+        "id": "heart4",
+        "label": "하트 4개",
+        "hearts": 4,
+        "tier": {
+          "id": "S"
+        },
+        "stardust": 168
+      }
+    }
+  ]
+}

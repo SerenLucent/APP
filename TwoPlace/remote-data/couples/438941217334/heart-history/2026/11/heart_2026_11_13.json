@@ -92,6 +92,15 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794513162483,
+      "amount": 4,
+      "balance": 94,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
