@@ -6,7 +6,7 @@ async function decodedImage(url){const image=new Image();image.src=url;await ima
 const backgrounds=createRenderCache({limit:24,dispose:entry=>URL.revokeObjectURL(entry.url),build:async markup=>{
  const holder=document.createElement('div');holder.innerHTML=markup;const svg=holder.querySelector('svg');
  svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width','1280');svg.setAttribute('height','1280');
- for(const image of svg.querySelectorAll('image'))image.setAttribute('href',await texture(image.getAttribute('href')));
+ await Promise.all([...svg.querySelectorAll('image')].map(async image=>image.setAttribute('href',await texture(image.getAttribute('href')))));
  const source=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));let url;
  try{
   const image=await decodedImage(source),canvas=document.createElement('canvas');canvas.width=canvas.height=1280;

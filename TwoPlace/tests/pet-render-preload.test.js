@@ -23,3 +23,9 @@ test('leaving the pet page stops preparing subsequent rooms and errors reach the
  assert.equal(await preparePetScenes({items:[{product:'bed'}]},opts),false);assert.equal(calls,1);
  await assert.rejects(preparePetScenes({items:[]},{...opts,isCurrent:()=>true,prepareBackground:async()=>{throw Error('background decode');}}),/background decode/);
 });
+
+test('background preparation overlaps two rooms at most and waits for every room',async()=>{
+ let active=0,peak=0,completed=0;
+ const result=await preparePetScenes({items:[]},{spaces:['yard','home','upperFloor','shower'],backgroundConcurrency:2,prepareFurniture:async()=>{},prepareBackground:async()=>{active++;peak=Math.max(peak,active);await new Promise(resolve=>setTimeout(resolve,5));active--;completed++;},yieldControl:async()=>{}});
+ assert.equal(result,true);assert.equal(peak,2);assert.equal(completed,4);assert.equal(active,0);
+});

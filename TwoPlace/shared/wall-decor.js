@@ -15,17 +15,22 @@ export const WALL_PRODUCTS=[
 ].map(p=>({...p,type:'wall',surface:p.color?'wallpaper':'wall',spaces:p.spaces||['home','upperFloor','momoRoom','kukiRoom'],description:p.color?'좌우 벽면에 따로 적용하는 벽지':'벽 전용 칸에 거는 물건 · 바닥에 놓지 않아요'}));
 export function wallProduct(id){return WALL_PRODUCTS.find(p=>p.id===id);}
 export function isWallProduct(id){return !!wallProduct(id);}
+export const wallColumns=space=>space==='toilet'?Array.from({length:16},(_,i)=>i/5):[0,1,2,3];
+export const wallRows=space=>space==='toilet'?[1]:[0,1,2];
+export const wallDisplayRow=(space,row)=>space==='toilet'?1:row;
 export function wallSlotAllowed(items,item,space,side,col,row){
  const product=wallProduct(item?.product);if(!product||!product.spaces.includes(space)||!['left','right'].includes(side))return false;
  if(product.surface==='wallpaper')return true;
- if(!Number.isInteger(col)||!Number.isInteger(row)||col<0||col>3||row<0||row>2)return false;
- if(['toilet','shower'].includes(space)&&side==='right'&&col===0&&row>0)return false;
+ if(!wallColumns(space).some(c=>Math.abs(c-col)<1e-8)||!Number.isInteger(row)||row<0||row>2)return false;
+ if(!wallRows(space).includes(row))return false;
+ if(space==='toilet'&&side==='right'&&col*11+1.5<14&&col*11+10.5>5)return false;
+ if(space==='shower'&&side==='right'&&col===0&&row>0)return false;
  if(['home','upperFloor'].includes(space)){
   if(side==='left'&&col===2&&row>0||side==='right'&&(col===1&&row>0||col===3))return false;
  }
  // Preserve the built-in window on the left and the exit door on the right.
  if(['momoRoom','kukiRoom'].includes(space)&&(side==='left'&&col<3||side==='right'&&col<2))return false;
- return !items.some(i=>i.id!==item.id&&i.space===space&&wallProduct(i.product)?.surface==='wall'&&i.wallSide===side&&i.wallCol===col&&i.wallRow===row);
+ return !items.some(i=>i.id!==item.id&&i.space===space&&wallProduct(i.product)?.surface==='wall'&&i.wallSide===side&&(space==='toilet'?Math.abs(i.wallCol-col)*11<9:i.wallCol===col)&&wallDisplayRow(space,i.wallRow)===row);
 }
 export function applyWallPlacement(home,item,space,side,col=0,row=0){
  if(!wallSlotAllowed(home.items,item,space,side,col,row))throw Object.assign(new Error('창문·문 또는 다른 장식과 겹치지 않는 벽 칸을 골라 주세요.'),{status:400});

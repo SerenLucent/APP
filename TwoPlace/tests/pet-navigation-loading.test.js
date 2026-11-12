@@ -10,7 +10,7 @@ function harness(){
  const context=vm.createContext({room:{},session:{token:'test'},petCatalog:[],petHome:{version:0},view:'home',contentSequence:0,contentBusy:'',contentError:'',month:new Date(2026,10,1),history:{state:{},pushState(){},replaceState(){}},window:{scrollTo(){}},
   request(path,options){requests.push({path,options});return new Promise((yes,no)=>{resolve=yes;reject=no;});},
   render(){if(context.view==='pets'&&!context.contentBusy&&!context.contentError&&!Array.isArray(context.petHome.items))throw Error('Rendered pet room before layout loaded');renders.push(context.contentBusy?'loading':context.contentError?'error':'ready');},
-  applyRoom(data){context.petHome=data.petHome;},async warmPetAssets(home){assert.ok(Array.isArray(home.items));order.push('assets');}});
+  async warmPetCharacters(){},applyRoom(data){context.petHome=data.petHome;},async warmPetAssets(home){assert.ok(Array.isArray(home.items));order.push('assets');}});
  vm.runInContext(loader+'\n'+navigation,context);
  return {context,renders,requests,order,resolve:data=>resolve(data),reject:error=>reject(error)};
 }

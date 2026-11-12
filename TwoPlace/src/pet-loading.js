@@ -14,12 +14,16 @@ function decodeAsset(url){
  }).catch(error=>{petAssetPromises.delete(url);throw error;}));
  return petAssetPromises.get(url);
 }
-export async function warmPetAssets(home,{catalog=[],isCurrent=()=>true,onProgress=()=>{}}={}){
+export function warmPetCharacters(){
  const base=import.meta.env?.BASE_URL||'/',urls=new Set(['mochi','kuki'].flatMap(id=>PET_POSES.map(pose=>petImage(id,pose))));
  for(const file of ['furniture-poses-v1.png','interaction-poses-v1.png'])urls.add(base+'pets/'+file);
- const assets=Promise.all([...urls].map(decodeAsset));
+ return Promise.all([...urls].map(decodeAsset));
+}
+export async function warmPetAssets(home,{catalog=[],isCurrent=()=>true,onProgress=()=>{}}={}){
+ const base=import.meta.env?.BASE_URL||'/';
+ const assets=warmPetCharacters();
  const houseReady=catalog.some(p=>p.id==='bathStool'),spaces=houseReady?['yard','home','upperFloor','momoRoom','kukiRoom','toilet','shower']:['yard','home','momoRoom','kukiRoom'];
- const render=preparePetScenes(home,{spaces,isCurrent,onProgress,yieldControl:()=>new Promise(resolve=>setTimeout(resolve,0)),
+ const render=preparePetScenes(home,{spaces,backgroundConcurrency:2,isCurrent,onProgress,yieldControl:()=>new Promise(resolve=>setTimeout(resolve,0)),
   async prepareFurniture({product,rotation}){
    const model=furnishingModel(product,rotation);if(!model){const sprite=furnitureSprites[product];if(sprite?.url)await decodeAsset(base+sprite.url);return;}
    const images=[furnishingImage(model)];furnitureForeground(product,rotation);if(model.foregroundImage)images.push(model.foregroundImage);

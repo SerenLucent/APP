@@ -1,7 +1,7 @@
 import {installAppTouchPolicy} from './app-touch.js';
 installAppTouchPolicy();
 import {openHeartHistory} from './heart-history-view.js';
-import {contentLoadingMarkup,warmPetAssets} from './pet-loading.js';
+import {contentLoadingMarkup,warmPetAssets,warmPetCharacters} from './pet-loading.js';
 import './content-loading.css';
 import './style.css';
 import './room.css';
@@ -51,7 +51,7 @@ async function loadViewContent(){
  const target=view,sequence=++contentSequence;
  contentBusy=target==='pets'?'방을 로딩 중입니다.':target==='calendar'?'이전 캘린더 데이터를 읽고 있습니다.':'메모를 읽고 있습니다.';contentError='';render();
  try{
-  const data=await request('/room/content',{token:session.token,method:'POST',body:{section:target==='pets'?'housing':target,years:target==='calendar'?[String(month.getFullYear())]:[]}});
+  const [data]=await Promise.all([request('/room/content',{token:session.token,method:'POST',body:{section:target==='pets'?'housing':target,years:target==='calendar'?[String(month.getFullYear())]:[]}}),target==='pets'?warmPetCharacters():Promise.resolve()]);
   if(sequence!==contentSequence||view!==target)return;
   applyRoom(data);
   if(target==='pets')await warmPetAssets(petHome,{catalog:petCatalog,isCurrent:()=>sequence===contentSequence&&view===target,onProgress:(label,done,total)=>{if(sequence!==contentSequence||view!==target)return;const message=document.querySelector('.content-loading p');if(message)message.textContent=label+' ('+done+'/'+total+')';}});

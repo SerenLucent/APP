@@ -30,7 +30,12 @@ export function skillHits(player,target,id){
 }
 export {createObstacles} from '../shared/adventure-field.js';
 
-export function gainBasicGauge(pet,hit){if(hit)pet.gauge=Math.min(100,(pet.gauge||0)+10);}
+export function basicGaugeGain(damage,min,max){
+ const fraction=max>min?Math.max(0,Math.min(1,(damage-min)/(max-min))):1;
+ const band=Math.min(4,Math.floor(fraction*5));
+ return Math.round(5+band*5/4);
+}
+export function gainBasicGauge(pet,hit,amount=10){if(hit)pet.gauge=Math.min(100,(pet.gauge||0)+amount);}
 export function spendGauge(pet){if((pet.gauge||0)<100)return false;pet.gauge=0;return true;}
 export function eatPowerHeart(pet){pet.powerTime=Math.min(90,(pet.powerTime||0)+10);}
 export function powerMultiplier(id,pet){return id==='kuki'&&pet.powerTime>0?1.2:1;}

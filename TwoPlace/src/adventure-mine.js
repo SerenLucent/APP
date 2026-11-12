@@ -17,9 +17,9 @@ export function scatterMineShards(mine,ore,damage,random=Math.random){
  if(ore.hp<=0){count+=MINE_BREAK_SHARDS;cave.broken++;mine.broken++;}
  for(let i=0;i<count;i++){const angle=random()*Math.PI*2,distance=45+random()*55;cave.drops.push({oreId:ore.id,x:ore.x+Math.cos(angle)*distance,y:ore.y+Math.sin(angle)*distance*.65,age:0,value:1});}
 }
-export function stepMine(mine,player,dt){
+export function stepMine(mine,player,dt,onCollect=()=>{}){
  mine.travelLock=Math.max(0,mine.travelLock-dt);if(mine.finished)return null;
- if(mine.room>=0){const cave=mine.caves[mine.room];for(const d of cave.drops){d.age+=dt;if(d.value&&d.age>.35&&Math.hypot(player.x-d.x,player.y-d.y)<48){mine.total+=d.value;mine.collectedByOre[d.oreId]=(mine.collectedByOre[d.oreId]||0)+d.value;d.value=0;}}cave.drops=cave.drops.filter(d=>d.value);if(!mine.travelLock&&Math.hypot(player.x-MINE_EXIT.x,player.y-MINE_EXIT.y)<MINE_EXIT.radius)return -1;}
+ if(mine.room>=0){const cave=mine.caves[mine.room];for(const d of cave.drops){d.age+=dt;if(d.value&&d.age>.35&&Math.hypot(player.x-d.x,player.y-d.y)<48){mine.total+=d.value;mine.collectedByOre[d.oreId]=(mine.collectedByOre[d.oreId]||0)+d.value;onCollect(d);d.value=0;}}cave.drops=cave.drops.filter(d=>d.value);if(!mine.travelLock&&Math.hypot(player.x-MINE_EXIT.x,player.y-MINE_EXIT.y)<MINE_EXIT.radius)return -1;}
  else if(!mine.travelLock){const i=MINE_PORTALS.findIndex(p=>Math.hypot(player.x-p.x,player.y-p.y)<62);if(i>=0)return i;}
  return null;
 }
