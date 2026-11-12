@@ -54,6 +54,8 @@ const defenseMode=modeParams.get('mode')==='defense';
 document.documentElement.classList.toggle('offense-mode',offenseMode||defenseMode);
 const wallet=createAdventureWallet();
 const demoParams=new URLSearchParams(location.search);
+const joltDemo=wallet.local&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&demoParams.get('demo')==='1'&&demoParams.get('hitJoltTest')==='1';
+let joltScale=3;
 const heartMeteorDemo=!offenseMode&&!defenseMode&&demoParams.get('demo')==='1'&&demoParams.get('heartMeteorTest')==='1';
 const kukiSlamDemo=!offenseMode&&!defenseMode&&demoParams.get('demo')==='1'&&demoParams.get('kukiSlamTest')==='1';
 const skillDemo=heartMeteorDemo||kukiSlamDemo;
@@ -229,7 +231,7 @@ function draw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);const s
  for(const particle of state.particles){
   if(particle.groundWave)drawGroundWave(ctx,particle.x,particle.y,1-particle.t/particle.life,particle.size,'pink');
  }
- const visible=state.objects.filter(o=>o.x>camera.x-130&&o.x<camera.x+w/scale+130&&o.y>camera.y-50&&o.y<camera.y+h/scale+180);const entities=visible.map(o=>({y:o.y,target:o,draw:()=>offenseMode?drawOutpostPart(ctx,o):o.type==='tree'?tree(o):rock(o)}));for(const drop of state.weaponDrops)entities.push({y:drop.y,draw:()=>drawWeaponDrop(drop)});for(const heart of state.hearts)entities.push({y:heartPose(heart).y,draw:()=>drawHeart(heart)});for(const e of state.enemies)if(e.hp>0&&Math.abs(e.x-state.p.x)<w/camera.scale&&Math.abs(e.y-state.p.y)<h/camera.scale)entities.push({y:e.y,target:e,draw:()=>drawEnemy(e)});entities.push({y:state.p.y,draw:drawPlayer},offenseMode?{y:OFFENSE_BASE.y,target:state.objects.find(o=>o.type==='house'),draw:()=>drawOutpost(ctx,offenseProgress(state.objects),clock,state.clearAge)}:defenseMode?{y:DEFENSE_HOME.y,target:state.defense.house,draw:drawDefenseHome}:{y:465,draw:house});entities.sort((a,b)=>a.y-b.y);for(const e of entities)drawWithHitJolt(ctx,e.target,e.draw);
+ const visible=state.objects.filter(o=>o.x>camera.x-130&&o.x<camera.x+w/scale+130&&o.y>camera.y-50&&o.y<camera.y+h/scale+180);const entities=visible.map(o=>({y:o.y,target:o,draw:()=>offenseMode?drawOutpostPart(ctx,o):o.type==='tree'?tree(o):rock(o)}));for(const drop of state.weaponDrops)entities.push({y:drop.y,draw:()=>drawWeaponDrop(drop)});for(const heart of state.hearts)entities.push({y:heartPose(heart).y,draw:()=>drawHeart(heart)});for(const e of state.enemies)if(e.hp>0&&Math.abs(e.x-state.p.x)<w/camera.scale&&Math.abs(e.y-state.p.y)<h/camera.scale)entities.push({y:e.y,target:e,draw:()=>drawEnemy(e)});entities.push({y:state.p.y,draw:drawPlayer},offenseMode?{y:OFFENSE_BASE.y,target:state.objects.find(o=>o.type==='house'),draw:()=>drawOutpost(ctx,offenseProgress(state.objects),clock,state.clearAge)}:defenseMode?{y:DEFENSE_HOME.y,target:state.defense.house,draw:drawDefenseHome}:{y:465,draw:house});entities.sort((a,b)=>a.y-b.y);for(const e of entities)drawWithHitJolt(ctx,e.target,e.draw,joltScale);
  if(state.heartMeteor)drawHeartMeteor(state.heartMeteor);
  for(const o of visible)if(o.type!=='core'&&o.hp>0&&Math.hypot(o.x-state.p.x,o.y-state.p.y)<190){const yy=o.y-(o.type==='tree'?142:o.type==='wall'?110:78);ctx.fillStyle='#2f4439cc';ctx.fillRect(o.x-29,yy,58,6);ctx.fillStyle=o.type==='tree'?'#d0dba1':'#cad2bd';ctx.fillRect(o.x-29,yy,58*o.hp/o.max,6);ctx.font='10px sans-serif';ctx.fillStyle='#fff4d8';ctx.textAlign='center';ctx.fillText(`${o.name||(o.type==='tree'?'나무':'바위')} ${Math.ceil(o.hp)}/${o.max}`,o.x,yy-5);}
  for(const q of state.particles){if(q.groundWave)continue;ctx.globalAlpha=Math.min(1,q.t*2);if(q.star)drawStar(q);else if(q.burst){const age=1-q.t/q.life;ctx.strokeStyle=q.color;ctx.lineWidth=3*(1-age);ctx.beginPath();ctx.ellipse(q.x,q.y,q.size*(.3+age),q.size*(.3+age)*.65,0,0,Math.PI*2);ctx.stroke();}else{ctx.fillStyle=q.color;ctx.fillRect(q.x,q.y,q.size,q.size);}}ctx.globalAlpha=1;for(const q of state.texts){ctx.globalAlpha=Math.min(1,q.t*2);ctx.font='900 '+(q.critical?35:20)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle=q.color;ctx.strokeStyle='#263629';ctx.lineJoin='round';ctx.lineWidth=q.critical?6:4;ctx.strokeText(q.text,q.x,q.y);ctx.fillText(q.text,q.x,q.y);}ctx.globalAlpha=1;
@@ -395,3 +397,9 @@ if(skillTest){
 }
 
 if(wallet.local&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&demoParams.get('knockoutTest')==='1'){const test=document.createElement('button');test.textContent='쓰러짐 테스트';test.onclick=()=>{if(loading||paused||state.knockout||state.dead||state.won||state.switching)return;state.invuln=0;hurtPlayer(state.pets[state.active].hp);};$('.top-actions').append(test);}
+
+if(joltDemo){
+ const compare=document.createElement('button');compare.textContent='오브젝트 흔들림: 3배';compare.onclick=()=>{joltScale=joltScale===3?1:3;compare.textContent='오브젝트 흔들림: '+joltScale+'배';status('화면 흔들림은 그대로 · 오브젝트 흔들림 '+joltScale+'배');};
+ const replay=document.createElement('button');replay.textContent='주변 물체 흔들림 재생';replay.onclick=()=>{for(const target of combatTargets())if(target.hp>0)triggerHitJolt(target);if(state.defense)triggerHitJolt(state.defense.house);};
+ $('.top-actions').append(compare,replay);status('타격 흔들림 비교 · 오브젝트만 3배, 화면 흔들림은 기존 그대로예요.');
+}

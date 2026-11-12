@@ -9,8 +9,8 @@ export function hitJoltOffset(target){
  const age=HIT_JOLT_DURATION-remaining,fade=remaining/HIT_JOLT_DURATION,phase=target.hitJoltPhase||0;
  return {x:Math.sin(age*Math.PI*2*22+phase)*2.6*fade,y:Math.sin(age*Math.PI*2*29+phase)*.65*fade};
 }
-export function drawWithHitJolt(ctx,target,draw){
+export function drawWithHitJolt(ctx,target,draw,scale=1){
  const offset=hitJoltOffset(target);
  if(!offset.x&&!offset.y){draw();return;}
- ctx.save();try{ctx.translate(offset.x,offset.y);draw();}finally{ctx.restore();}
+ ctx.save();try{ctx.translate(offset.x*scale,offset.y*scale);draw();}finally{ctx.restore();}
 }
