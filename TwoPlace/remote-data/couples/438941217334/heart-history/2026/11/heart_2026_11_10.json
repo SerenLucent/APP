@@ -993,6 +993,17 @@
       "label": "별잠산 룰렛 보상",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794448231917,
+      "amount": -55,
+      "balance": 3,
+      "kind": "purchase",
+      "label": "동그란 욕실 거울 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bathMirror",
+      "quantity": 1
     }
   ]
 }
