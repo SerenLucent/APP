@@ -13,13 +13,13 @@
   },
   "hpPotions": 8,
   "staminaPotions": 7,
-  "points": 10,
+  "points": 6,
   "totalClears": 95,
   "stats": {
     "momo": {
       "strength": 14,
       "vitality": 2,
-      "stamina": 3,
+      "stamina": 5,
       "luck": 0,
       "dexterity": 0
     },
@@ -118,7 +118,6 @@
     }
   },
   "operations": [
-    "cd8d3c04-ebe4-438b-af6c-b0eb4eddd245",
     "ca380fd4-f72b-48b2-b63f-7d6ec0a543ee",
     "6ad5e1b5-6f11-4679-8058-c45e5c958296",
     "177c9bd0-6619-43f1-8afc-b9272247d4ea",
@@ -245,7 +244,8 @@
     "d42b2afc-2d19-4839-a804-ebe071ed0d8e",
     "847e127a-0f41-417b-9db1-cdd0c3998ee4",
     "818dbd13-bb2f-4c65-8fc6-7855c77ee4ba",
-    "efdf8fe2-4dbb-459b-87bb-a55d1427ddbb"
+    "efdf8fe2-4dbb-459b-87bb-a55d1427ddbb",
+    "5120a09a-b886-469d-984b-4cba8a8402c2"
   ],
   "bestDurationMs": 30385,
   "totalMines": 2
