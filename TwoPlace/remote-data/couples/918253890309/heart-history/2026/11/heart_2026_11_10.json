@@ -473,6 +473,17 @@
       "label": "시간 하트",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794486207257,
+      "amount": -32,
+      "balance": 43,
+      "kind": "purchase",
+      "label": "별사탕 먹이 8개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 8
     }
   ]
 }
