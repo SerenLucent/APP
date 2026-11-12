@@ -350,9 +350,13 @@
     {
       "id": "3d47b7ace1b74d40a29a30d3dc0cb962",
       "product": "bathMirror",
-      "space": null,
+      "space": "toilet",
       "x": 50,
-      "y": 65
+      "y": 65,
+      "wallSide": "right",
+      "wallCol": 2,
+      "wallRow": 1,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
