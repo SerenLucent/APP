@@ -1,10 +1,11 @@
+import {mineOreLimits} from '../shared/adventure-mine-field.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {createHash,randomUUID} from 'node:crypto';
 import {initialPetHome} from '../server/pets.js';
-function storageGas(){
+function storageGas(clock=()=>Date.now()){
  const code='123456789012',token='a'.repeat(64),base='TwoPlace/remote-data/couples/'+code+'/',hash=createHash('sha256').update(token).digest('hex');
  const home=initialPetHome();home.heartHistory=[{at:Date.now(),amount:1,balance:120,label:'기존'}];
  const legacy={code,revision:0,members:[{hash,role:'owner'}],state:{startDate:null,events:[],notes:[]},petHome:home};
@@ -28,7 +29,7 @@ function storageGas(){
   if(endpoint.startsWith('/contents/')){const [part,query]=endpoint.slice(10).split('?'),name=decodeURIComponent(part),ref=new URLSearchParams(query).get('ref'),text=snapshots.get(ref)?.get(name);reads.push(name);return text?response(200,{sha:'blob',content:Buffer.from(text).toString('base64')}):response(404,{});}
   throw Error('Unexpected '+endpoint);
  };
- const context=vm.createContext({Date,Set,Map,console,PropertiesService:{getScriptProperties:()=>({getProperty:key=>properties[key]||null})},UrlFetchApp:{fetch},Utilities:{getUuid:randomUUID,Charset:{UTF_8:'utf8'},DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_,text)=>[...createHash('sha256').update(text).digest()],base64Decode:text=>Buffer.from(text,'base64'),newBlob:value=>({getDataAsString:()=>Buffer.from(value).toString('utf8')})}});
+ const context=vm.createContext({Date:class extends Date {static now(){return clock();}},Set,Map,console,PropertiesService:{getScriptProperties:()=>({getProperty:key=>properties[key]||null})},UrlFetchApp:{fetch},Utilities:{getUuid:randomUUID,Charset:{UTF_8:'utf8'},DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_,text)=>[...createHash('sha256').update(text).digest()],base64Decode:text=>Buffer.from(text,'base64'),newBlob:value=>({getDataAsString:()=>Buffer.from(value).toString('utf8')})}});
  vm.runInContext(fs.readFileSync('gas/Code.gs','utf8'),context);
  return {base,token,reads,get files(){return snapshots.get(head);},set failRef(value){failRef=value;},call:(path,method='GET',body)=>JSON.parse(JSON.stringify(context.route_({path,method,body,token,storageProtocol:2})))};
 }
@@ -43,3 +44,5 @@ test('GAS migrates with original backup, reads no logs on home, and atomically c
  assert.throws(()=>h.call('/room/pets','POST',{type:'sleep',pet:'mochi',version:saved.petHome.version}),e=>e.status===409);assert.equal(JSON.stringify([...h.files]),before);
  h.failRef=false;assert.equal(h.call('/room/pets','POST',{type:'sleep',pet:'mochi',version:saved.petHome.version}).petHome.hearts,122);
 });
+
+test('GAS mine reward and split clear history commit atomically and retries do not duplicate shards',()=>{let now=1000000;const h=storageGas(()=>now),first=h.call('/room');const started=h.call('/room/pets','POST',{type:'adventureStart',mode:'mine',actionId:'gas-mine-start-000000',version:first.petHome.version});const run=started.petHome.adventure.runs.owner,[ore,max]=[...mineOreLimits(run.seed)][0],amount=Math.min(5,max),action={type:'adventureFinish',actionId:'gas-mine-finish-00000',runId:run.id,version:started.petHome.version,playTimeMs:180000,mineProof:{[ore]:amount},brokenOres:[],pet:'momo'};now+=180000;const before=JSON.stringify([...h.files]);h.failRef=true;assert.throws(()=>h.call('/room/pets','POST',action));assert.equal(JSON.stringify([...h.files]),before);h.failRef=false;const saved=h.call('/room/pets','POST',action);assert.equal(saved.petHome.adventure.stardust,amount);assert.equal(saved.petHome.hearts,120);const repeated=h.call('/room/pets','POST',{...action,version:saved.petHome.version,actionId:'gas-mine-retry-000000'});assert.equal(repeated.petHome.adventure.stardust,amount);const profile=JSON.parse(h.files.get(h.base+'adventure/profile.json'));assert.equal(profile.totalMines,1);assert.equal(profile.history,undefined);assert.equal(profile.totalClears,0);const histories=[...h.files].filter(([key])=>key.includes('/game-history/')).flatMap(([,text])=>JSON.parse(text).entries);assert.equal(histories.filter(row=>row.mode==='mine').length,1);});

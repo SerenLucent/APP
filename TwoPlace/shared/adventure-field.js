@@ -11,10 +11,10 @@ export function createObstacles(initialSeed=74129,fieldVersion=1){
  for(let i=0;i<400&&items.length<158;i++){
   const x=210+rand()*2160,y=190+rand()*1390;
   if(Math.hypot(x-550,y-1040)<240||Math.hypot(x-2070,y-420)<200)continue;
-  const type=rand()<.56?'tree':'rock',hp=type==='tree'?45:160;
+  const type=rand()<.56?'tree':'rock',hp=type==='tree'?60:200;
   items.push({id:i,x,y,type,hp,max:hp,radius:type==='tree'?26:32,flash:0});
  }
- items.unshift({id:'first-tree',x:680,y:1040,type:'tree',hp:45,max:45,radius:26,flash:0},{id:'first-rock',x:490,y:860,type:'rock',hp:160,max:160,radius:32,flash:0});
+ items.unshift({id:'first-tree',x:680,y:1040,type:'tree',hp:60,max:60,radius:26,flash:0},{id:'first-rock',x:490,y:860,type:'rock',hp:200,max:200,radius:32,flash:0});
  return items;
 }
 
@@ -24,7 +24,7 @@ function createMixedField(initialSeed){
  const items=[];
  const remaining={tree:100,rock:60};
  function add(type,x,y){
-  const hp=type==='tree'?45:160;
+  const hp=type==='tree'?60:200;
   items.push({id:'field-'+items.length,x,y,type,hp,max:hp,radius:type==='tree'?26:32,flash:0});
   remaining[type]--;
  }

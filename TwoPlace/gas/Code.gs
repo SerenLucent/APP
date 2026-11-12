@@ -43,10 +43,10 @@ function createObstacles(initialSeed=74129,fieldVersion=1){
  for(let i=0;i<400&&items.length<158;i++){
   const x=210+rand()*2160,y=190+rand()*1390;
   if(Math.hypot(x-550,y-1040)<240||Math.hypot(x-2070,y-420)<200)continue;
-  const type=rand()<.56?'tree':'rock',hp=type==='tree'?45:160;
+  const type=rand()<.56?'tree':'rock',hp=type==='tree'?60:200;
   items.push({id:i,x,y,type,hp,max:hp,radius:type==='tree'?26:32,flash:0});
  }
- items.unshift({id:'first-tree',x:680,y:1040,type:'tree',hp:45,max:45,radius:26,flash:0},{id:'first-rock',x:490,y:860,type:'rock',hp:160,max:160,radius:32,flash:0});
+ items.unshift({id:'first-tree',x:680,y:1040,type:'tree',hp:60,max:60,radius:26,flash:0},{id:'first-rock',x:490,y:860,type:'rock',hp:200,max:200,radius:32,flash:0});
  return items;
 }
 
@@ -56,7 +56,7 @@ function createMixedField(initialSeed){
  const items=[];
  const remaining={tree:100,rock:60};
  function add(type,x,y){
-  const hp=type==='tree'?45:160;
+  const hp=type==='tree'?60:200;
   items.push({id:'field-'+items.length,x,y,type,hp,max:hp,radius:type==='tree'?26:32,flash:0});
   remaining[type]--;
  }
@@ -90,10 +90,38 @@ function skillBalance(level=1){
  return {
   level:current,
   spinDuration:3.5+(current-1)*.5,
-  tailMultiplier:10+(current-1)*.5+(current===10?.5:0),
+  tailMultiplier:30+(current-1)*.5+(current===10?.5:0),
   ultimateMultiplier:1+(current-1)*.03+(current===10?.03:0),
  };
 }
+
+const MINE_SECONDS=180;
+const MINE_FIELD_VERSION=1;
+const MINE_CAVE_NAMES=['반짝 동굴','푸른 동굴','깊은 동굴','비밀 동굴'];
+const MINE_DAMAGE_PER_SHARD=50;
+const MINE_BREAK_SHARDS=2;
+function createMine(random=Math.random){
+ const caves=MINE_CAVE_NAMES.map((name,c)=>{
+  const rich=random()<.12,groups=[1,2,3,...(rich?[4,5]:[])],extra=rich?2:3+Math.floor(random()*2);
+  for(let i=0;i<extra;i++){const roll=random();groups.push(rich?(roll<.4?3:roll<.75?4:5):(roll<.24?1:roll<.65?2:roll<.98?3:4));}
+  // Separate veins leave walking lanes; stones within a vein touch without sharing collision centers.
+  const centers=[],ores=[];
+  for(let g=0;g<groups.length;g++){
+   let x=g===0?1560:g===1?1300:650+random()*1300,y=g===0?1290:g===1?1170:530+random()*650;
+   for(let attempt=0;g>1&&centers.some(p=>Math.hypot(p.x-x,p.y-y)<245)&&attempt<60;attempt++){x=650+random()*1300;y=530+random()*650;}
+   if(centers.some(p=>Math.hypot(p.x-x,p.y-y)<220)){const slots=[[740,650],[1060,650],[1380,650],[1730,650],[740,970],[1740,990],[1020,960],[1950,1240]];const slot=slots.find(([sx,sy])=>centers.every(p=>Math.hypot(p.x-sx,p.y-sy)>=220));if(slot)[x,y]=slot;}
+   centers.push({x,y});
+   const count=groups[g],rotation=random()*Math.PI*2,offsets=count===1?[[0,0]]:count===2?[[-42,0],[42,0]]:count===3?[[-42,0],[42,0],[0,-73]]:count===4?[[-42,-42],[42,-42],[-42,42],[42,42]]:[[-84,0],[0,0],[84,0],[-42,-73],[42,-73]];
+   const veinHp=160+random()*520;
+   for(const [dx,dy] of offsets){const hp=Math.round((veinHp*(.8+random()*.4))/10)*10;ores.push({id:'ore-'+c+'-'+ores.length,type:'ore',name:'별조각 원석',vein:g,veinSize:count,x:x+dx*Math.cos(rotation)-dy*Math.sin(rotation),y:y+dx*Math.sin(rotation)+dy*Math.cos(rotation),radius:32,hp,max:hp,flash:0,harvest:0,tint:random()});}
+  }
+  return {name,rich,veins:groups,ores,drops:[],broken:0};
+ });
+ return {room:-1,caves,total:0,collectedByOre:{},broken:0,travelLock:0,finished:false};
+}
+
+function createSeededMine(seed){let value=seed>>>0;return createMine(()=>((value=(Math.imul(value,1664525)+1013904223)>>>0)/4294967296));}
+function mineOreLimits(seed){return new Map(createSeededMine(seed).caves.flatMap(c=>c.ores.map(o=>[o.id,Math.floor(o.hp/MINE_DAMAGE_PER_SHARD)+MINE_BREAK_SHARDS])));}
 
 const ADVENTURE_STATS={strength:{name:'힘',description:'공격력 최소 +1 · 최대 +2'},vitality:{name:'체력',description:'최대 HP +5'},stamina:{name:'스태미나',description:'최대 스태미나 +5'},luck:{name:'운',description:'치명타 확률 +0.5%'},dexterity:{name:'손재주',description:'최대 피해 쪽으로 보정 · 100이면 항상 최대 피해'}};
 function initialAdventure(){const stat=()=>Object.fromEntries(Object.keys(ADVENTURE_STATS).map(k=>[k,0]));return {stardust:0,skillPoints:0,skills:{momo:{charge:1,ultimate:1},kuki:{charge:1,ultimate:1}},hpPotions:0,staminaPotions:0,points:0,totalClears:0,history:[],stats:{momo:stat(),kuki:stat()},runs:{}};}
@@ -158,17 +186,20 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
  let data=adventureState(home.adventure);data.runs={...data.runs};data.operations=[...(data.operations||[])];
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
-  const mode=action.mode??'explore';if(!['explore','offense','defense'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
-  const fieldVersion=mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
+  const mode=action.mode??'explore';if(!['explore','offense','defense','mine'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
+  const fieldVersion=mode==='mine'?MINE_FIELD_VERSION:mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion){home.adventure=data;return;}
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
-  const enemyCount=mode==='defense'?DEFENSE_TOTAL:mode==='offense'?0:24+Math.floor((data.totalClears||0)/20)*4;
+  const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:24+Math.floor((data.totalClears||0)/20)*4;
   data.runs[role]={id,seed,mode,fieldVersion,requestId:action.actionId,startedAt:now,enemyCount,finishedAt:null,reward:null};
  }else if(action.type==='adventureFinish'){
   const run=data.runs[role];if(!run||run.id!==action.runId)adventureFail('현재 탐험 기록이 아니에요. 새 탐험을 시작해 주세요.',409);
   if(run.finishedAt){home.adventure=data;return;}
   const mode=run.mode||'explore',ids=action.cleared;
+  if(mode==='mine'){
+   finishMineAdventure(home,data,run,action,now,role);data.operations=[...data.operations,action.actionId].slice(-128);home.adventure=data;return;
+  }
   if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
   else if(mode==='defense'){
    const defeated=new Set(Array.isArray(ids)?ids:[]);
@@ -218,6 +249,19 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
   const field=action.potion==='hp'?'hpPotions':'staminaPotions';if(data[field]<1)adventureFail('보유한 회복약이 없어요.');data[field]--;
  }else adventureFail('탐험 동작을 확인해 주세요.');
  data.operations=[...(data.operations||[]),action.actionId].slice(-128);home.adventure=data;
+}
+
+function finishMineAdventure(home,data,run,action,now,role){
+ if(run.fieldVersion!==MINE_FIELD_VERSION)adventureFail('광산이 업데이트됐어요. 새 채굴을 시작해 주세요.',409);
+ if(!Number.isFinite(action.playTimeMs)||action.playTimeMs<MINE_SECONDS*1000||now-run.startedAt<MINE_SECONDS*1000)adventureFail('3분 채굴이 끝난 뒤 저장할 수 있어요.');
+ const proof=action.mineProof;if(!proof||typeof proof!=='object'||Array.isArray(proof)||Object.keys(proof).length>200)adventureFail('별조각 수집 기록을 확인해 주세요.');
+ const limits=mineOreLimits(run.seed);let amount=0;
+ for(const [id,count] of Object.entries(proof)){if(!limits.has(id)||!Number.isSafeInteger(count)||count<1||count>limits.get(id))adventureFail('원석별 별조각 수집 기록을 확인해 주세요.');amount+=count;}
+ const broken=action.brokenOres;if(!Array.isArray(broken)||new Set(broken).size!==broken.length||broken.some(id=>!limits.has(id)))adventureFail('광산 원석 기록을 확인해 주세요.');
+ if(!Number.isSafeInteger(data.stardust+amount))adventureFail('별조각 수량을 확인해 주세요.');
+ const reward={id:'mine-stardust',label:'광산 채굴',stardust:amount,hearts:0};data.stardust+=amount;data.totalMines=(data.totalMines||0)+1;
+ data.history=[...(data.history||[]),{runId:run.id,mineNo:data.totalMines,at:now,startedAt:run.startedAt,durationMs:MINE_SECONDS*1000,role,character:action.pet==='kuki'?'kuki':'momo',mode:'mine',obstacles:broken.length,reward}];
+ data.runs[role]={...run,finishedAt:now,reward,cleared:broken};
 }
 
 const WALL_ROOMS=['home','upperFloor','momoRoom','kukiRoom','toilet','shower'];

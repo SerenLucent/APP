@@ -1,5 +1,5 @@
 export const OFFENSE_BASE={x:1500,y:860,spawn:{x:1500,y:965},start:{x:1500,y:1120}};
-export const OUTPOST_MAX_HP=3000;
+export const OUTPOST_MAX_HP=4000;
 export function createOffense(){
  const house={id:'outpost-house',type:'house',x:OFFENSE_BASE.x,y:OFFENSE_BASE.y,hp:OUTPOST_MAX_HP,max:OUTPOST_MAX_HP,radius:64,name:'방울이 산채 본체',flash:0};
  return {objects:[house],wave:0,nextWave:2,elapsed:0,spawned:0};
