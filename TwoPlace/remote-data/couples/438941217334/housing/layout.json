@@ -357,6 +357,13 @@
       "wallCol": 0.6,
       "wallRow": 1,
       "rotation": 0
+    },
+    {
+      "id": "b4c3860581f248be829b7810d0b11a40",
+      "product": "bathShelf",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
