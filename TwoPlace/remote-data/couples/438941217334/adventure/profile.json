@@ -13,7 +13,7 @@
   },
   "hpPotions": 8,
   "staminaPotions": 7,
-  "points": 3,
+  "points": 1,
   "totalClears": 100,
   "stats": {
     "momo": {
@@ -25,7 +25,7 @@
     },
     "kuki": {
       "strength": 10,
-      "vitality": 1,
+      "vitality": 2,
       "stamina": 11,
       "luck": 0,
       "dexterity": 0
@@ -118,7 +118,6 @@
     }
   },
   "operations": [
-    "14c842a9-ef83-4bdc-9b47-49366289a8b2",
     "8c17652c-881c-44c1-91fa-89b36b6929b5",
     "19368055-056c-41d2-a655-f8c55e0dfe0b",
     "e680819f-b487-4edb-9109-adc185bdd5b1",
@@ -245,7 +244,8 @@
     "67308fdb-9d4d-4801-af43-840c18837da9",
     "c3719532-c0d0-4127-ba29-c761ddc94a18",
     "960655ac-6f46-4e2f-9a1d-d1791a6ea19a",
-    "789637b0-6301-467a-b812-935c8dafb78f"
+    "789637b0-6301-467a-b812-935c8dafb78f",
+    "9e8446b0-065f-4fb7-b259-d820aa4ae746"
   ],
   "bestDurationMs": 30385,
   "totalMines": 6
