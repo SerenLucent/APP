@@ -24,4 +24,9 @@ export function createMine(random=Math.random){
 }
 
 export function createSeededMine(seed){let value=seed>>>0;return createMine(()=>((value=(Math.imul(value,1664525)+1013904223)>>>0)/4294967296));}
-export function mineOreLimits(seed,level=1){return new Map(createSeededMine(seed).caves.flatMap(c=>c.ores.map(o=>[o.id,Math.floor(Math.round(o.hp*(1+.2*Math.max(0,level-1)))/MINE_DAMAGE_PER_SHARD)+MINE_BREAK_SHARDS])));}
+export function mineOreBudget(ore,level=1){
+ const baseHp=ore.baseHp??ore.max??ore.hp,factor=1+.2*Math.max(0,level-1),baseDeposit=Math.floor(baseHp/MINE_DAMAGE_PER_SHARD)+MINE_BREAK_SHARDS;
+ return {baseHp,hp:Math.round(baseHp*factor),deposit:Math.floor(baseDeposit*factor)};
+}
+export function prepareMineLevel(mine,level=1){for(const cave of mine.caves)for(const ore of cave.ores){const b=mineOreBudget(ore,level);Object.assign(ore,{baseHp:b.baseHp,hp:b.hp,max:b.hp,deposit:b.deposit,emitted:0,harvest:0});}return mine;}
+export function mineOreLimits(seed,level=1){return new Map(createSeededMine(seed).caves.flatMap(c=>c.ores.map(o=>[o.id,mineOreBudget(o,level).deposit])));}

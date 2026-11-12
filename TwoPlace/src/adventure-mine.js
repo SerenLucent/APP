@@ -1,5 +1,5 @@
-import {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS} from '../shared/adventure-mine-field.js';
-export {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS};
+import {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS,prepareMineLevel} from '../shared/adventure-mine-field.js';
+export {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS,prepareMineLevel};
 const mineArt={};let mineArtReady;
 export function loadMineArt(){return mineArtReady||=Promise.all(['entrance','ore','mountain','interior'].map(async id=>{const image=new Image();image.src=import.meta.env.BASE_URL+'adventure/mine/'+id+(['entrance','mountain','interior'].includes(id)?'-v2.png':'-v1.png');try{await image.decode();const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;const c=canvas.getContext('2d',{willReadFrequently:true});c.drawImage(image,0,0);const pixels=c.getImageData(0,0,canvas.width,canvas.height).data;let left=canvas.width,top=canvas.height,right=0,bottom=0;for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++)if(pixels[(y*canvas.width+x)*4+3]>30){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}if(right>left)mineArt[id]={image,x:left,y:top,w:right-left+1,h:bottom-top+1};}catch{}}));}
 function drawMineArt(ctx,id,x,y,width,height,anchor){const a=mineArt[id];if(!a)return false;const scale=Math.min(width/a.w,height/a.h),w=a.w*scale,h=a.h*scale;ctx.drawImage(a.image,a.x,a.y,a.w,a.h,x-w/2,y-h+anchor,w,h);return true;}
@@ -13,6 +13,14 @@ export function configureMineHub(viewWidth){Object.assign(MINE_HUB_BOUNDS,{left:
 
 export function scatterMineShards(mine,ore,damage,random=Math.random){
  const cave=mine.caves[mine.room];if(!cave)return;
+ if(ore.deposit!==undefined){
+  ore.harvest=Math.min(ore.max,ore.harvest+Math.max(0,damage));
+  const earned=ore.hp<=0?ore.deposit:Math.floor(ore.harvest/ore.max*Math.max(0,ore.deposit-MINE_BREAK_SHARDS));
+  const count=Math.max(0,earned-(ore.emitted||0));ore.emitted=(ore.emitted||0)+count;
+  if(ore.hp<=0&&!ore.mineBroken){ore.mineBroken=true;cave.broken++;mine.broken++;}
+  for(let i=0;i<count;i++){const angle=random()*Math.PI*2,distance=45+random()*55;cave.drops.push({oreId:ore.id,x:ore.x+Math.cos(angle)*distance,y:ore.y+Math.sin(angle)*distance*.65,age:0,value:1});}
+  return;
+ }
  ore.harvest+=damage;let count=Math.floor(ore.harvest/MINE_DAMAGE_PER_SHARD);ore.harvest%=MINE_DAMAGE_PER_SHARD;
  if(ore.hp<=0){count+=MINE_BREAK_SHARDS;cave.broken++;mine.broken++;}
  for(let i=0;i<count;i++){const angle=random()*Math.PI*2,distance=45+random()*55;cave.drops.push({oreId:ore.id,x:ore.x+Math.cos(angle)*distance,y:ore.y+Math.sin(angle)*distance*.65,age:0,value:1});}

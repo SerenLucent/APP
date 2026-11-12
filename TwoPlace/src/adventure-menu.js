@@ -1,4 +1,4 @@
-import {recommendedMapLevel,mapScaling,adventureLevel} from '../shared/adventure-progression.js';
+import {recommendedMapLevel,mapScaling,adventureLevel,minimumMapLevel,mapRewardFactor} from '../shared/adventure-progression.js';
 import {mountBattleShop} from './adventure-battle-shop.js';
 import {createAdventureWallet} from './adventure-wallet.js';
 import {DEFENSE_WAVES} from './adventure-defense.js';
@@ -36,9 +36,9 @@ function updateLevelChoices(){
   const mode=['explore','offense','defense','mine'].find(id=>card.classList.contains(id));
   let picker=card.querySelector('.map-level-picker');
   if(!picker){picker=document.createElement('div');picker.className='map-level-picker';card.querySelector('h2').after(picker);}
-  const level=Math.min(max,chosenLevels.get(mode)??max);chosenLevels.set(mode,level);const factors=mapScaling(level),low=level<max;
-  picker.innerHTML='<button type="button" data-level-step="-1" aria-label="맵 레벨 낮추기" '+(level===1?'disabled':'')+'>‹</button><strong>Lv '+level+'</strong><button type="button" data-level-step="1" aria-label="맵 레벨 높이기" '+(level===max?'disabled':'')+'>›</button><small>HP '+Math.round(factors.hp*100)+'% · 적 피해 '+Math.round(factors.damage*100)+'%<br>'+(low?'하위 레벨 · 별조각 50%'+(mode==='mine'?'':' · 하트 2개'):mode==='mine'?'적정 레벨 · 별조각 100%':'적정 레벨 · 별조각 100% · 하트 3·4·5·6')+'</small>';
-  for(const button of picker.querySelectorAll('button'))button.onclick=event=>{event.preventDefault();event.stopPropagation();chosenLevels.set(mode,Math.max(1,Math.min(max,level+Number(button.dataset.levelStep))));updateLevelChoices();};
+  const min=minimumMapLevel(max),level=Math.max(min,Math.min(max,chosenLevels.get(mode)??max));chosenLevels.set(mode,level);const factors=mapScaling(level),low=level<max;
+  picker.innerHTML='<button type="button" data-level-step="-1" aria-label="맵 레벨 낮추기" '+(level===min?'disabled':'')+'>‹</button><strong>Lv '+level+'</strong><button type="button" data-level-step="1" aria-label="맵 레벨 높이기" '+(level===max?'disabled':'')+'>›</button><small>HP '+Math.round(factors.hp*100)+'% · 적 피해 '+Math.round(factors.damage*100)+'%<br>'+(low?'하위 레벨 · 별조각 '+(mapRewardFactor(level,max)*100)+'%'+(mode==='mine'?'':' · 하트 '+(max-level===1?2:1)+'개'):mode==='mine'?'적정 레벨 · 매장량 '+Math.round(factors.hp*100)+'%':'적정 레벨 · 별조각 '+Math.round(factors.hp*100)+'% · 하트 3·4·5·6')+'</small>';
+  for(const button of picker.querySelectorAll('button'))button.onclick=event=>{event.preventDefault();event.stopPropagation();chosenLevels.set(mode,Math.max(min,Math.min(max,level+Number(button.dataset.levelStep))));updateLevelChoices();};
   const url=new URL('adventure.html',location.href);url.searchParams.set('mode',mode);url.searchParams.set('level',level);if(demo)url.searchParams.set('demo','1');if(test)url.searchParams.set('mapTest','1');card.href=url.href;
  }
  balance.dataset.recommendedLevel=max;
