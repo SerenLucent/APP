@@ -33,42 +33,15 @@
   },
   "runs": {
     "owner": {
-      "id": "b83a0d86ae324666826ec570c2936ca2",
-      "seed": 3090812294,
-      "mode": "offense",
+      "id": "6ad150eaa623496488efe279eb9ec0b7",
+      "seed": 1792102634,
+      "mode": "mine",
       "fieldVersion": 1,
-      "requestId": "deployment-growth-start-6",
-      "startedAt": 1794377358711,
+      "requestId": "a8009120-4ecd-4fb9-b1de-9450c5e099ee",
+      "startedAt": 1794465997849,
       "enemyCount": 0,
-      "finishedAt": 1794377363011,
-      "reward": {
-        "id": "heart2",
-        "label": "하트 2개",
-        "hearts": 2,
-        "index": 4,
-        "segments": [
-          "heart2",
-          "heart3",
-          "heart2",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart5"
-        ],
-        "tier": {
-          "id": "S",
-          "label": "S",
-          "stardust": 120
-        },
-        "stardust": 120
-      },
-      "clearNo": 9,
-      "cleared": [
-        "outpost-house"
-      ]
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
@@ -97,7 +70,8 @@
     "deployment-growth-buy-statPoint",
     "deployment-growth-buy-skillPoint",
     "deployment-growth-stats-apply",
-    "deployment-growth-skill-apply"
+    "deployment-growth-skill-apply",
+    "a8009120-4ecd-4fb9-b1de-9450c5e099ee"
   ],
   "bestDurationMs": 0
 }
