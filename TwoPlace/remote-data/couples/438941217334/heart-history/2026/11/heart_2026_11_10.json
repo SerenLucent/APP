@@ -1179,6 +1179,15 @@
       "character": "momo",
       "product": "bathTowelRail",
       "quantity": 1
+    },
+    {
+      "at": 1794484807503,
+      "amount": 6,
+      "balance": 19,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
