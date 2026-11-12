@@ -1,6 +1,6 @@
 {
-  "stardust": 1741,
-  "skillPoints": 0,
+  "stardust": 301,
+  "skillPoints": 6,
   "skills": {
     "momo": {
       "charge": 1,
@@ -122,7 +122,6 @@
     }
   },
   "operations": [
-    "0b7845da-5cb8-489a-8cc2-364fa1b0a41e",
     "ae264863-b035-4001-ace5-613d60c517fc",
     "dcb5253d-2587-43ea-bff1-b11b1d9eff13",
     "41553242-d413-4320-ae41-72ce1c3f61df",
@@ -249,7 +248,8 @@
     "57ac00eb-2f82-45b7-88a7-61614eacb82b",
     "9f148ef1-2db2-489c-b180-0a5d13d21629",
     "0e364ab7-6c54-4dbd-aced-f89c974bc925",
-    "828cc9be-fc70-4d52-bff6-fac9e90852ad"
+    "828cc9be-fc70-4d52-bff6-fac9e90852ad",
+    "13806bd2-e0bc-4b52-ad7c-26cfb3b4ce27"
   ],
   "bestDurationMs": 30385,
   "totalMines": 4
