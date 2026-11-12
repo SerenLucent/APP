@@ -1004,6 +1004,15 @@
       "character": "momo",
       "product": "bathMirror",
       "quantity": 1
+    },
+    {
+      "at": 1794453461110,
+      "amount": 10,
+      "balance": 13,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
