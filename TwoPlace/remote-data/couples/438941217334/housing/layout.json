@@ -343,9 +343,9 @@
       "id": "a78f12bed5b64a44a736d552d59de46d",
       "product": "bathBasin",
       "space": "toilet",
-      "x": 44,
-      "y": 48.225,
-      "rotation": 0
+      "x": 16,
+      "y": 71.875,
+      "rotation": 270
     },
     {
       "id": "3d47b7ace1b74d40a29a30d3dc0cb962",
