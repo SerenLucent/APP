@@ -1,5 +1,5 @@
 {
-  "stardust": 3249,
+  "stardust": 849,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -13,7 +13,7 @@
   },
   "hpPotions": 8,
   "staminaPotions": 7,
-  "points": 0,
+  "points": 10,
   "totalClears": 95,
   "stats": {
     "momo": {
@@ -118,7 +118,6 @@
     }
   },
   "operations": [
-    "91ed2fa9-9a1d-4ada-8f01-eb18d35cc735",
     "cd8d3c04-ebe4-438b-af6c-b0eb4eddd245",
     "ca380fd4-f72b-48b2-b63f-7d6ec0a543ee",
     "6ad5e1b5-6f11-4679-8058-c45e5c958296",
@@ -245,7 +244,8 @@
     "152472a3-6321-400f-b948-21c6b458ca79",
     "d42b2afc-2d19-4839-a804-ebe071ed0d8e",
     "847e127a-0f41-417b-9db1-cdd0c3998ee4",
-    "818dbd13-bb2f-4c65-8fc6-7855c77ee4ba"
+    "818dbd13-bb2f-4c65-8fc6-7855c77ee4ba",
+    "efdf8fe2-4dbb-459b-87bb-a55d1427ddbb"
   ],
   "bestDurationMs": 30385,
   "totalMines": 2
