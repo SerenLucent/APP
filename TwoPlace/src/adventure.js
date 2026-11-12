@@ -1,7 +1,7 @@
 import {beginKnockout,stepKnockout,drawKnockedOut} from './adventure-knockout.js';
 import {createGameMusic,shouldPauseGameMusic} from './adventure-music.js';
 import {createCombatAudio} from './adventure-audio.js';
-import {drawChargeGather} from './adventure-charge-art.js';
+import {drawChargeGather,drawPowerNeon,weaponPowerFocus} from './adventure-charge-art.js';
 import {ultimateEnemyDelta,KUKI_SLAM_IMPACT_TIME} from './adventure-cinematics.js';
 import {triggerHitJolt,stepHitJolt,drawWithHitJolt} from './adventure-hit-jolt.js';
 import {drawStunStars} from './adventure-stun.js';
@@ -89,6 +89,11 @@ function starBurst(x,y,power=0){
  for(let i=0;i<count;i++){const angle=i/count*Math.PI*2+Math.random()*.3,speed=65+Math.random()*100+power*75,life=.45+Math.random()*.35;state.particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-30,t:life,life,color:colors[i%colors.length],size:4+Math.random()*5+power*4,star:true,spark:i%3===0,angle:Math.random()*6.28,spin:(Math.random()-.5)*10});}
  state.particles.push({x,y,vx:0,vy:0,t:.22,life:.22,color:'#fff1b5',size:23+power*26,burst:true});
  if(state.particles.length>300)state.particles.splice(0,state.particles.length-300);
+}
+function meteorBurst(x,y,scale=1){
+ const start=state.particles.length;starBurst(x,y,1);
+ for(let i=0;i<12;i++){const angle=i/12*Math.PI*2,speed=160+(i%3)*42,life=.9+(i%4)*.12;state.particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed*.75-35,t:life,life,color:i%2?'#ffe8a2':'#ffd26b',size:19+(i%3)*6,star:true,spark:false,angle:angle+.3,spin:(i%2?1:-1)*3});}
+ for(const q of state.particles.slice(start)){q.size*=scale;q.vx*=scale;q.vy*=scale;}
 }
 function heartPose(heart){
  const age=heart.age??2,angle=heart.phase/5*Math.PI*2+Math.min(age,1)*Math.PI*2*1.25,ox=heart.originX??heart.x,oy=heart.originY??heart.y;
@@ -212,7 +217,7 @@ function drawPlayer(){const p=state.p,id=state.active,a=state.attack;if(state.kn
  const [pose,flip]=poseForAngle(angle),im=images[id+'-'+pose];ellipse(p.x,p.y+5,28,10,'#253d3440');
  if(state.charge){const q=skillPlan(id,state.charge.time,state.pets[id].sp,skillLevel(id,'charge')).power;ctx.strokeStyle=id==='momo'?'#ffbed7':'#ffe59a';ctx.lineWidth=3+q*3;ctx.beginPath();ctx.ellipse(p.x,p.y,36+q*16,14+q*6,0,0,Math.PI*2);ctx.stroke();for(let i=0;i<5;i++){const an=clock*3+i*1.256;ellipse(p.x+Math.cos(an)*(30+q*17),p.y-30+Math.sin(an)*25,2+q*2,2+q*2,'#fff2b7');}}
  if(a){ctx.strokeStyle=id==='momo'?'#ffd4e4bb':'#ffe1a4cc';ctx.lineWidth=id==='momo'?9:13;for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(p.x,p.y-28,84-i*7,33-i*3,0,angle+i*.7,angle+i*.7+2.1);ctx.stroke();}}
- if(!state.invuln||Math.floor(clock*12)%2){ctx.save();ctx.translate(p.x,p.y+(state.charge?3:0)+(state.burst?.id==='kuki'&&state.burst.t<KUKI_SLAM_IMPACT_TIME?-Math.sin(state.burst.t/KUKI_SLAM_IMPACT_TIME*Math.PI)*105:0));ctx.scale(flip?-1:1,state.charge?.94:1);const bounce=a&&id==='momo'?Math.sin(a.t*25)*4:!state.charge&&p.walking?-Math.abs(Math.sin(clock*15))*5:0;if((state.pets[id].weaponDurability>0||state.basic&&state.basicWeapon)&&!a&&!state.burst&&!state.charge&&weaponImages[id]?.naturalWidth){ctx.save();ctx.scale(flip?-1:1,1);ctx.translate(-54,-104+bounce);const direction=weaponDirection(p.fx,p.fy);drawWeaponPose(ctx,weaponImages[id],direction,state.basic?'strike':'idle',id,state.basic?(.28-state.basic)/.28:-1,108,108);ctx.restore();}else if(a?.id==='momo'&&momoSpin.complete&&momoSpin.naturalWidth){const cellW=momoSpin.naturalWidth/2,cellH=momoSpin.naturalHeight,back=Math.sin(angle)<0?1:0;ctx.scale((Math.cos(angle)<0?-1:1)*(flip?-1:1),1);ctx.drawImage(momoSpin,back*cellW,0,cellW,cellH,-70,-126+bounce,140,140);}else if(im?.complete&&im.naturalWidth)ctx.drawImage(im,-54,-104+bounce,108,108);if(state.charge)drawChargeGather(ctx,{id,pose,time:clock,power:skillPlan(id,state.charge.time,state.pets[id].sp,skillLevel(id,'charge')).power});if(id==='kuki'&&state.pets.kuki.powerTime>0){const anchors={front:[.925,.595],side:[.14,.57],back:[.105,.61],'diagonal-front':[.125,.615],'diagonal-back':[.14,.625]},anchor=anchors[pose]||anchors.front,tx=-54+108*anchor[0],ty=-104+bounce+108*anchor[1],r=19+Math.sin(clock*5)*1.5,glow=ctx.createRadialGradient(tx-r*.2,ty-r*.2,1,tx,ty,r);glow.addColorStop(0,'#fff9dc80');glow.addColorStop(.65,'#ffe8a84d');glow.addColorStop(1,'#ffe09500');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(tx,ty,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff0b080';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(tx,ty,r*.8,0,Math.PI*2);ctx.stroke();}ctx.restore();}
+ if(!state.invuln||Math.floor(clock*12)%2){ctx.save();ctx.translate(p.x,p.y+(state.charge?3:0)+(state.burst?.id==='kuki'&&state.burst.t<KUKI_SLAM_IMPACT_TIME?-Math.sin(state.burst.t/KUKI_SLAM_IMPACT_TIME*Math.PI)*105:0));ctx.scale(flip?-1:1,state.charge?.94:1);const bounce=a&&id==='momo'?Math.sin(a.t*25)*4:!state.charge&&p.walking?-Math.abs(Math.sin(clock*15))*5:0;const usingWeapon=(state.pets[id].weaponDurability>0||state.basic&&state.basicWeapon)&&!a&&!state.burst&&!state.charge&&weaponImages[id]?.naturalWidth;if(usingWeapon){ctx.save();ctx.scale(flip?-1:1,1);ctx.translate(-54,-104+bounce);const direction=weaponDirection(p.fx,p.fy);drawWeaponPose(ctx,weaponImages[id],direction,state.basic?'strike':'idle',id,state.basic?(.28-state.basic)/.28:-1,108,108);ctx.restore();}else if(a?.id==='momo'&&momoSpin.complete&&momoSpin.naturalWidth){const cellW=momoSpin.naturalWidth/2,cellH=momoSpin.naturalHeight,back=Math.sin(angle)<0?1:0;ctx.scale((Math.cos(angle)<0?-1:1)*(flip?-1:1),1);ctx.drawImage(momoSpin,back*cellW,0,cellW,cellH,-70,-126+bounce,140,140);}else if(im?.complete&&im.naturalWidth)ctx.drawImage(im,-54,-104+bounce,108,108);if(state.charge)drawChargeGather(ctx,{id,pose,time:clock,power:skillPlan(id,state.charge.time,state.pets[id].sp,skillLevel(id,'charge')).power});if(state.pets[id].powerTime>0)drawPowerNeon(ctx,{id,pose,time:clock,bounce,focus:usingWeapon?weaponPowerFocus(id,weaponDirection(p.fx,p.fy),!!state.basic,flip):null});ctx.restore();}
  if(state.pets[id].weaponDurability>0){ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffe9b6';ctx.strokeStyle='#3e5842';ctx.lineWidth=3;const label='×1.5 · '+state.pets[id].weaponDurability+'/10';ctx.strokeText(label,p.x,p.y-112);ctx.fillText(label,p.x,p.y-112);}
  ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff8df';ctx.strokeStyle='#3e5842';ctx.lineWidth=3;ctx.strokeText(id==='momo'?'모모':'쿠키',p.x,p.y+24);ctx.fillText(id==='momo'?'모모':'쿠키',p.x,p.y+24);
 }
@@ -227,7 +232,7 @@ function draw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);const s
  const visible=state.objects.filter(o=>o.x>camera.x-130&&o.x<camera.x+w/scale+130&&o.y>camera.y-50&&o.y<camera.y+h/scale+180);const entities=visible.map(o=>({y:o.y,target:o,draw:()=>offenseMode?drawOutpostPart(ctx,o):o.type==='tree'?tree(o):rock(o)}));for(const drop of state.weaponDrops)entities.push({y:drop.y,draw:()=>drawWeaponDrop(drop)});for(const heart of state.hearts)entities.push({y:heartPose(heart).y,draw:()=>drawHeart(heart)});for(const e of state.enemies)if(e.hp>0&&Math.abs(e.x-state.p.x)<w/camera.scale&&Math.abs(e.y-state.p.y)<h/camera.scale)entities.push({y:e.y,target:e,draw:()=>drawEnemy(e)});entities.push({y:state.p.y,draw:drawPlayer},offenseMode?{y:OFFENSE_BASE.y,target:state.objects.find(o=>o.type==='house'),draw:()=>drawOutpost(ctx,offenseProgress(state.objects),clock,state.clearAge)}:defenseMode?{y:DEFENSE_HOME.y,target:state.defense.house,draw:drawDefenseHome}:{y:465,draw:house});entities.sort((a,b)=>a.y-b.y);for(const e of entities)drawWithHitJolt(ctx,e.target,e.draw);
  if(state.heartMeteor)drawHeartMeteor(state.heartMeteor);
  for(const o of visible)if(o.type!=='core'&&o.hp>0&&Math.hypot(o.x-state.p.x,o.y-state.p.y)<190){const yy=o.y-(o.type==='tree'?142:o.type==='wall'?110:78);ctx.fillStyle='#2f4439cc';ctx.fillRect(o.x-29,yy,58,6);ctx.fillStyle=o.type==='tree'?'#d0dba1':'#cad2bd';ctx.fillRect(o.x-29,yy,58*o.hp/o.max,6);ctx.font='10px sans-serif';ctx.fillStyle='#fff4d8';ctx.textAlign='center';ctx.fillText(`${o.name||(o.type==='tree'?'나무':'바위')} ${Math.ceil(o.hp)}/${o.max}`,o.x,yy-5);}
- for(const q of state.particles){if(q.groundWave)continue;ctx.globalAlpha=Math.min(1,q.t*2);if(q.star)drawStar(q);else if(q.burst){const age=1-q.t/q.life;ctx.strokeStyle=q.color;ctx.lineWidth=3*(1-age);ctx.beginPath();ctx.ellipse(q.x,q.y,q.size*(.3+age),q.size*(.3+age)*.65,0,0,Math.PI*2);ctx.stroke();}else{ctx.fillStyle=q.color;ctx.fillRect(q.x,q.y,q.size,q.size);}}ctx.globalAlpha=1;for(const q of state.texts){ctx.globalAlpha=Math.min(1,q.t*2);ctx.font='900 '+(q.critical?30:15)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle=q.color;ctx.strokeStyle='#263629';ctx.lineJoin='round';ctx.lineWidth=q.critical?5:3;ctx.strokeText(q.text,q.x,q.y);ctx.fillText(q.text,q.x,q.y);}ctx.globalAlpha=1;
+ for(const q of state.particles){if(q.groundWave)continue;ctx.globalAlpha=Math.min(1,q.t*2);if(q.star)drawStar(q);else if(q.burst){const age=1-q.t/q.life;ctx.strokeStyle=q.color;ctx.lineWidth=3*(1-age);ctx.beginPath();ctx.ellipse(q.x,q.y,q.size*(.3+age),q.size*(.3+age)*.65,0,0,Math.PI*2);ctx.stroke();}else{ctx.fillStyle=q.color;ctx.fillRect(q.x,q.y,q.size,q.size);}}ctx.globalAlpha=1;for(const q of state.texts){ctx.globalAlpha=Math.min(1,q.t*2);ctx.font='900 '+(q.critical?35:20)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle=q.color;ctx.strokeStyle='#263629';ctx.lineJoin='round';ctx.lineWidth=q.critical?6:4;ctx.strokeText(q.text,q.x,q.y);ctx.fillText(q.text,q.x,q.y);}ctx.globalAlpha=1;
  ctx.restore();
  if(paused){ctx.fillStyle='#172d2888';ctx.fillRect(0,0,w,h);ctx.fillStyle='#fff1c6';ctx.font='bold 23px sans-serif';ctx.textAlign='center';ctx.fillText(loading?'게임을 로딩중입니다':loadError?'게임을 불러오지 못했어요':'잠깐 쉬는 중',w/2,h/2);}
 }
@@ -258,7 +263,7 @@ function impactHeartMeteor(impact,index,final){
   damageObject(target,hit.damage*multiplier,hit.critical,'momo');
  }
  state.particles.push({x:impact.x,y:impact.y,vx:0,vy:0,t:.6,life:.6,size:HEART_IMPACT_RADIUS,burst:true,groundWave:true});
- starBurst(impact.x,impact.y-9,.32);shake=Math.max(shake,4);
+ meteorBurst(impact.x,impact.y-9,.5);shake=Math.max(shake,4);
  status(final?'하트 팡! 쿠키로 교체해 떨어진 하트 5개를 주워 보세요.':`하트 운석 착지 ${index}/5`);
  if(final)dropHearts(impact,true);
 }
@@ -285,7 +290,7 @@ function impactKukiSlam(origin){
   damageObject(target,hit.damage*multiplier,hit.critical,'kuki');
   if(target.type==='enemy'&&target.hp>0){target.stun=3;target.windup=0;}
  }
- state.kukiWave={x,y,start:clock};shake=12;dropHearts(origin,true,'star');
+ state.kukiWave={x,y,start:clock};meteorBurst(x,y-15);shake=12;dropHearts(origin,true,'star');
  status('별똥별 쿵! 모모로 교체해 노란 별 5개를 주워 보세요.');
 }
 
@@ -341,7 +346,7 @@ function updateDefense(dt){
 function drawDefenseHome(){
  const house=state.defense.house;
  ellipse(house.x,house.y+8,99,43,house.flash?'#ffd1b072':'#d7f1c657');
- if(house.hp>0)drawEnvironmentProp(ctx,'house',house,{width:175,height:165,anchor:26});
+ if(house.hp>0)drawEnvironmentProp(ctx,'house',house,{width:250,height:225,anchor:55});
  else for(let i=0;i<7;i++)ellipse(house.x+(i-3)*17,house.y+i%2*10,14,6,'#97794d');
 }
 

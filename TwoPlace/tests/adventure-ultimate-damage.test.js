@@ -13,7 +13,7 @@ function setup(name,randomValues,targets){
  const context=vm.createContext({combatAudio:{play(){}},wallet:{profile:{stats:{momo:{},kuki:{}}}},state:{active:name==='impactHeartMeteor'?'kuki':'momo',particles:[]},clock:0,shake:0,Math,
   rollAttack(id,stats){rolls++;return rollAttack(id,stats,()=>{assert.ok(randomValues.length);return randomValues.shift();});},
   damageMultiplier:()=>1.2*1.5,skillBalance,skillLevel:()=>10,combatTargets:()=>targets,heartImpactTargets,HEART_IMPACT_RADIUS:112,KUKI_SLAM_RADIUS,KUKI_SLAM_MULTIPLIER,
-  damageObject(target,damage,critical,owner){hits.push({target:target.id,damage,critical,owner});target.hp=Math.max(0,target.hp-damage);},starBurst(){},status(){},dropHearts(){}});
+  damageObject(target,damage,critical,owner){hits.push({target:target.id,damage,critical,owner});target.hp=Math.max(0,target.hp-damage);},starBurst(){},meteorBurst(){},status(){},dropHearts(){}});
  vm.runInContext(source.slice(start,end),context);
  return {context,hits,get rolls(){return rolls;}};
 }

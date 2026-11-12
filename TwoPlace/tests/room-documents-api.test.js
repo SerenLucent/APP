@@ -17,7 +17,8 @@ test('split SQL API loads content on demand, shares calendar rewards and history
   const read=await call('/room/calendar/read','POST',{year:'2026',eventId:'event'},partner.token);assert.equal(read.data.petHome.hearts,126);
   const notes=await call('/room/state','PUT',{revision:1,scope:'notes',state:{notes:[{id:'memo',date:'2026-11-11',body:'따로 저장'}]}},owner.token);assert.equal(notes.status,200);
   const layout=await call('/room/content','POST',{section:'housing'},owner.token);assert.deepEqual(layout.data.petHome.items,[]);
-  const history=(await call('/room/history','POST',{kind:'heart',start:'2026-11-11',end:'2026-11-11'},owner.token)).data;assert.equal(history.entries.reduce((n,e)=>n+e.amount,0),6);
+  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const history=(await call('/room/history','POST',{kind:'heart',start:today,end:today},owner.token)).data;assert.equal(history.entries.reduce((n,e)=>n+e.amount,0),6);
   const empty=await call('/room/content','POST',{section:'calendar',years:['2026']},foreign.token);assert.deepEqual(empty.data.state.events,[]);
   assert.equal((await call('/room/content','POST',{section:'housing'})).status,401);
   assert.equal((await call('/room/content','POST',{section:'calendar',years:['../../']},owner.token)).status,400);
