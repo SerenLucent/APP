@@ -71,46 +71,20 @@
       ]
     },
     "partner": {
-      "id": "497676f725524c83bcdcfe4b245767a0",
-      "seed": 1232500471,
+      "id": "d42d14ee8e584aebb39bc8fd7d7989a6",
+      "seed": 3559724270,
       "mode": "offense",
       "fieldVersion": 1,
-      "requestId": "c2dc8363-182a-421a-b1d3-6fcc2652ff8d",
-      "startedAt": 1794448151307,
+      "level": 2,
+      "recommendedLevel": 2,
+      "requestId": "7069358d-3e08-42fe-ab78-7aad355ddb93",
+      "startedAt": 1794474326212,
       "enemyCount": 0,
-      "finishedAt": 1794448201609,
-      "reward": {
-        "id": "heart4",
-        "label": "하트 4개",
-        "hearts": 4,
-        "index": 3,
-        "segments": [
-          "heart2",
-          "heart3",
-          "heart2",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart4",
-          "heart2",
-          "heart3",
-          "heart5"
-        ],
-        "tier": {
-          "id": "S",
-          "label": "S",
-          "stardust": 120
-        },
-        "stardust": 120
-      },
-      "clearNo": 90,
-      "cleared": [
-        "outpost-house"
-      ]
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
-    "cdd5edcc-3c1c-4706-8a53-8b94e76d8639",
     "47349103-a1de-4c31-a781-89ade6d055c7",
     "18155546-889c-4ae6-ac1f-a1da67de14d6",
     "88ebdad1-2e77-449a-93da-e8d190a821e5",
@@ -237,7 +211,8 @@
     "c2dc8363-182a-421a-b1d3-6fcc2652ff8d",
     "88a186f7-021a-4e5c-a2d5-1673a28438f3",
     "d08e140c-fc6c-4aa7-88f6-f3c24694e79c",
-    "32c38526-27bc-4467-b197-9dc59760b40a"
+    "32c38526-27bc-4467-b197-9dc59760b40a",
+    "7069358d-3e08-42fe-ab78-7aad355ddb93"
   ],
   "bestDurationMs": 30385
 }
