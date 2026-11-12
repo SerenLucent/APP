@@ -748,6 +748,23 @@
         },
         "stardust": 112
       }
+    },
+    {
+      "runId": "cd40da2f6bfe4f1a86bee1e664a81cf9",
+      "mineNo": 3,
+      "at": 1794483892170,
+      "startedAt": 1794483677776,
+      "durationMs": 180000,
+      "role": "owner",
+      "character": "kuki",
+      "mode": "mine",
+      "obstacles": 30,
+      "reward": {
+        "id": "mine-stardust",
+        "label": "광산 채굴",
+        "stardust": 361,
+        "hearts": 0
+      }
     }
   ]
 }
