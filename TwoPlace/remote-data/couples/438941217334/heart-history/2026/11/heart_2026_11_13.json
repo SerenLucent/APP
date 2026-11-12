@@ -121,6 +121,15 @@
       "character": "momo",
       "product": "bathShower",
       "quantity": 1
+    },
+    {
+      "at": 1794516548192,
+      "amount": 1,
+      "balance": 1,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
