@@ -361,9 +361,13 @@
     {
       "id": "b4c3860581f248be829b7810d0b11a40",
       "product": "bathShelf",
-      "space": null,
+      "space": "toilet",
       "x": 50,
-      "y": 65
+      "y": 65,
+      "wallSide": "left",
+      "wallCol": 2,
+      "wallRow": 1,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
