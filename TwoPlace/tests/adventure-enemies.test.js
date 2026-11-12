@@ -1,3 +1,4 @@
+import {blocksPoint} from '../src/adventure-collision.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createEnemies,enemyMode,enemyPath,stepEnemy,ENEMY_RULES} from '../src/adventure-enemies.js';
@@ -22,7 +23,7 @@ test('defense hunter reaches a player across the house without clipping the wall
  let hit=false;
  for(let frame=0;frame<480&&!hit;frame++){
   hit=stepEnemy(hunter,player,[defense.house],1/60);
-  assert.ok(Math.hypot(hunter.x-defense.house.x,hunter.y-defense.house.y)>=defense.house.radius+18);
+  assert.ok(!blocksPoint(defense.house,hunter.x,hunter.y,18));
  }
  assert.ok(hit);
 });

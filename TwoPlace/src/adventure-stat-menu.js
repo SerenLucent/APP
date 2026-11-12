@@ -110,6 +110,7 @@ export function mountAdventureStatMenu(button){
      draft.momo={};
      draft.kuki={};
      message='스테이터스를 적용했어요.';
+     window.dispatchEvent(new Event('adventure-wallet-change'));
     }catch(error){
      message=error.message;
     }finally{

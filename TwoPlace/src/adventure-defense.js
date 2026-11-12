@@ -1,6 +1,6 @@
 import {DEFENSE_WAVES,DEFENSE_TOTAL} from '../shared/adventure-field.js';
 export {DEFENSE_WAVES,DEFENSE_TOTAL};
-export const DEFENSE_HOME={x:1300,y:900,radius:62,max:1000};
+export const DEFENSE_HOME={x:1300,y:900,radius:105,halfWidth:105,halfDepth:33,collisionY:22,max:1000};
 export const DEFENSE_START={x:1300,y:1010};
 
 export function createDefense(){
@@ -23,8 +23,9 @@ export function stepDefense(defense,enemies,dt){
    continue;
   }
   enemy.cooldown=Math.max(0,enemy.cooldown-dt);
-  const dx=house.x-enemy.x,dy=house.y-enemy.y,distance=Math.hypot(dx,dy);
-  const reach=house.radius+enemy.radius+6;
+  const nearestX=Math.max(house.x-house.halfWidth,Math.min(house.x+house.halfWidth,enemy.x)),centerY=house.y+(house.collisionY||0),nearestY=Math.max(centerY-house.halfDepth,Math.min(centerY+house.halfDepth,enemy.y));
+  const dx=nearestX-enemy.x,dy=nearestY-enemy.y,distance=Math.hypot(dx,dy);
+  const reach=enemy.radius+6;
   // The last movement step can leave the enemy a fraction past the attack boundary.
   if(distance>reach+1e-6){
    const travel=Math.min(distance-reach,enemy.speed*dt);
@@ -36,7 +37,7 @@ export function stepDefense(defense,enemies,dt){
   if(!enemy.windup){enemy.windup=.45;continue;}
   enemy.windup=Math.max(0,enemy.windup-dt);
   if(enemy.windup===0){
-   damage+=5;
+   damage+=5*(defense.damageScale||1);
    enemy.cooldown=1.15;
   }
  }
