@@ -906,6 +906,30 @@
         },
         "stardust": 168
       }
+    },
+    {
+      "runId": "a891d01a3d2c4c2a862d44014489e67c",
+      "clearNo": 101,
+      "at": 1794488832760,
+      "startedAt": 1794488341734,
+      "durationMs": 144828,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 44,
+      "mode": "explore",
+      "obstacles": 80,
+      "trees": 50,
+      "rocks": 30,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "B"
+        },
+        "stardust": 133
+      }
     }
   ]
 }
