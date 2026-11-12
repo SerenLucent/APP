@@ -353,9 +353,9 @@
       "space": "toilet",
       "x": 50,
       "y": 65,
-      "wallSide": "right",
+      "wallSide": "left",
       "wallCol": 1,
-      "wallRow": 2,
+      "wallRow": 1,
       "rotation": 0
     }
   ],
