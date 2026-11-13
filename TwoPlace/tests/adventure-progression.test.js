@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {initialAdventure,characterStats,rollAttack,investAdventurePoint} from '../shared/adventure-progression.js';
-test('independent stats have requested bases, point increments and 100-point caps',()=>{assert.deepEqual(characterStats('momo'),{maxHp:100,maxSp:100,minAttack:8,maxAttack:15,critical:.1,dexterity:0});assert.equal(characterStats('kuki').critical,.05);const max=characterStats('kuki',{strength:100,vitality:100,stamina:100,luck:100,dexterity:100});assert.equal(max.maxHp,600);assert.equal(max.maxSp,600);assert.equal(max.minAttack,110);assert.equal(max.maxAttack,220);assert.equal(max.critical,.55);let p=initialAdventure();p.points=2;p=investAdventurePoint(p,'momo','strength');assert.equal(p.stats.momo.strength,1);assert.equal(p.stats.kuki.strength,0);p.stats.momo.strength=100;assert.throws(()=>investAdventurePoint(p,'momo','strength'));});
+test('independent stats have requested bases, point increments and 100-point caps',()=>{assert.deepEqual(characterStats('momo'),{maxHp:100,maxSp:100,minAttack:8,maxAttack:15,critical:.1,dexterity:0});assert.equal(characterStats('kuki').critical,.05);const max=characterStats('kuki',{strength:100,vitality:100,stamina:100,luck:100,dexterity:100});assert.equal(max.maxHp,600);assert.equal(max.maxSp,600);assert.equal(max.minAttack,110);assert.equal(max.maxAttack,220);assert.ok(Math.abs(max.critical-.75)<1e-9);let p=initialAdventure();p.points=2;p=investAdventurePoint(p,'momo','strength');assert.equal(p.stats.momo.strength,1);assert.equal(p.stats.kuki.strength,0);p.stats.momo.strength=100;assert.throws(()=>investAdventurePoint(p,'momo','strength'));});
 test('dexterity biases damage toward maximum and is exactly max at 100, crit is separate',()=>{const rng=()=>.5;assert.ok(rollAttack('momo',{dexterity:70},rng).base>rollAttack('momo',{},rng).base);assert.equal(rollAttack('kuki',{dexterity:100},rng).base,20);let n=0;const crit=rollAttack('momo',{},()=>n++===0?.5:0);assert.equal(crit.critical,true);assert.equal(crit.damage,crit.base*2);});
 import {applyAdventureAction,adventureState,ADVENTURE_REWARDS,rouletteTable,rouletteTier} from '../shared/adventure-progression.js';
 import {adventureLevel} from '../shared/adventure-progression.js';
@@ -18,8 +18,8 @@ test('batch applies both friends in one version, rejects the whole invalid batch
  const updated=apply(home,action);
  assert.equal(updated.version,home.version+1);
  assert.equal(updated.adventure.points,0);
- assert.deepEqual(adventureLevel(updated.adventure.stats.momo),{level:2,progress:0});
- assert.deepEqual(adventureLevel(updated.adventure.stats.kuki),{level:1,progress:2});
+ assert.deepEqual(adventureLevel(updated.adventure.stats.momo),{level:3,progress:0,required:1000,invested:2000});
+ assert.deepEqual(adventureLevel(updated.adventure.stats.kuki),{level:1,progress:400,required:1000,invested:400});
  assert.deepEqual(apply(updated,{...action,version:updated.version}).adventure,updated.adventure);
 });
 import {createObstacles,EXPLORATION_FIELD_VERSION,explorationProof} from '../shared/adventure-field.js';

@@ -17,9 +17,9 @@ function screen(run){
  vm.runInContext(source.slice(start,end).replaceAll('import.meta.env.BASE_URL',"'/'"),context);context.roulette('run',[]);
  return {clear:dialogs[1],roulette:dialogs[0],timers,requests,time:value=>{now=value;}};
 }
-const reward={id:'heart3',label:'하트 3개',hearts:3,index:0,segments:['heart3','heart2'],stardust:110};
+const reward={id:'heart3',label:'하트 3개',hearts:3,index:0,segments:['heart3','heart2'],stardust:50};
 test('clear immediately shows readable amount and starts network preparation, but waits at least three seconds',async()=>{
- const h=screen();assert.ok(h.clear.innerHTML.includes('별조각 +110 획득'));assert.ok(!h.clear.innerHTML.includes('확인 중'));assert.ok(h.clear.innerHTML.includes('보상 룰렛을 준비 중입니다.'));
+ const h=screen();assert.ok(h.clear.innerHTML.includes('별조각 +50 획득'));assert.ok(!h.clear.innerHTML.includes('확인 중'));assert.ok(h.clear.innerHTML.includes('보상 룰렛을 준비 중입니다.'));
  assert.equal(h.clear.open,true);assert.equal(h.roulette.open,false);assert.equal(h.requests.length,1);assert.equal(h.timers[0].delay,3000);
  h.requests[0].resolve(reward);await tick();assert.equal(h.roulette.open,false);
  h.time(3000);h.timers[0].resolve();await tick();assert.equal(h.roulette.open,true);assert.equal(h.clear.open,false);assert.equal(h.roulette.querySelector('.roulette-spin').disabled,false);

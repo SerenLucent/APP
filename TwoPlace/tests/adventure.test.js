@@ -23,8 +23,8 @@ test('Kuki charge scales to the skill level cap before stamina scaling',()=>{
  assert.equal(half.damage/15,15.5);
  assert.equal(full.damage/15,30);
  assert.ok(Math.abs(skillPlan('kuki',MAX_CHARGE,35).damage/15-15)<1e-9);
- assert.equal(skillPlan('kuki',MAX_CHARGE,100,9).multiplier,34);
- assert.equal(skillPlan('kuki',MAX_CHARGE,100,10).multiplier,35);
+ assert.equal(skillPlan('kuki',MAX_CHARGE,100,9).multiplier,46);
+ assert.equal(skillPlan('kuki',MAX_CHARGE,100,10).multiplier,50);
 });
 import {skillBalance} from '../src/adventure-skills.js';
 test('skill level endpoints and final level bonuses follow the balance plan',()=>{
@@ -40,8 +40,8 @@ test('skill level endpoints and final level bonuses follow the balance plan',()=
    assert.ok(Math.abs(pet.sp-30)<1e-8);
   }
  }
- assert.ok(Math.abs(skillBalance(9).ultimateMultiplier-1.24)<1e-9);
- assert.ok(Math.abs(skillBalance(10).ultimateMultiplier-1.3)<1e-9);
+ assert.ok(Math.abs(skillBalance(9).ultimateMultiplier-1.8)<1e-9);
+ assert.ok(Math.abs(skillBalance(10).ultimateMultiplier-1.9)<1e-9);
 });
 
 test('level-one charge balance targets 450 damage, retains stat scaling and costs 70 SP',()=>{for(const fps of [30,60,120]){const a={...skillPlan('momo',MAX_CHARGE),t:0,tick:0},pet={sp:100};let hits=0;for(let i=0;i<2000;i++){const step=advanceSpin(a,pet,1/fps);a.tick-=step.activeDt;if(step.activeDt>0&&a.tick<=0){hits++;a.tick=.32;}if(step.done)break;}assert.ok(Math.abs(hits*a.damage-450)<1e-7);assert.ok(Math.abs(pet.sp-30)<1e-7);}const full=skillPlan('kuki',MAX_CHARGE);assert.equal(full.damage,450);assert.equal(full.multiplier,30);assert.equal(full.cost,70);});

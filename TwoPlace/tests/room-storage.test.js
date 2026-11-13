@@ -93,13 +93,13 @@ test('all three current modes award split currency, then battle purchases, stat/
   const objects=createObstacles(run.seed,EXPLORATION_FIELD_VERSION),cleared=mode==='explore'?[...objects.filter(o=>o.type==='tree').slice(0,50),...objects.filter(o=>o.type==='rock').slice(0,30)].map(o=>o.id):mode==='offense'?['outpost-house']:DEFENSE_WAVES.flatMap((count,wave)=>Array.from({length:count},(_,i)=>`defense-${wave+1}-${i}`));
   const completed=act({type:'adventureFinish',runId:run.id,cleared,pet:'kuki',playTimeMs:0});
   assert.ok(completed.petHome.adventure.runs.owner.reward.hearts>=2);assert.ok(completed.petHome.adventure.runs.owner.reward.hearts<=5);
-  assert.equal(completed.petHome.adventure.runs.owner.reward.stardust,120);
+  assert.equal(completed.petHome.adventure.runs.owner.reward.stardust,60);
  }
- assert.equal(s.files['adventure/profile.json'].totalClears,3);assert.equal(s.files['adventure/profile.json'].stardust,1360);
+ assert.equal(s.files['adventure/profile.json'].totalClears,3);assert.equal(s.files['adventure/profile.json'].stardust,1180);
  for(const [product,quantity] of [['statPoint',2],['skillPoint',2],['hpPotion',2],['spPotion',2]])act({type:'adventurePurchase',product,quantity});
  act({type:'adventureInvestBatch',allocations:{momo:{strength:1}}});act({type:'adventureSkillInvestBatch',allocations:{momo:{charge:1}}});
  assert.equal(s.files['adventure/profile.json'].points,0);assert.equal(s.files['adventure/profile.json'].skillPoints,0);assert.equal(s.files['adventure/profile.json'].stats.momo.strength,1);assert.equal(s.files['adventure/profile.json'].skills.momo.charge,2);
  act({type:'adventurePotion',pet:'momo',potion:'hp'});act({type:'adventurePotion',pet:'kuki',potion:'stamina'});
- assert.equal(s.files['adventure/profile.json'].hpPotions,1);assert.equal(s.files['adventure/profile.json'].staminaPotions,1);assert.equal(s.files['adventure/profile.json'].stardust,374);
+ assert.equal(s.files['adventure/profile.json'].hpPotions,1);assert.equal(s.files['adventure/profile.json'].staminaPotions,1);assert.equal(s.files['adventure/profile.json'].stardust,194);
  const history=s.open().history('clear','2026-11-11','2026-11-11');assert.deepEqual(history.entries.map(e=>e.mode).sort(),['defense','explore','offense']);
 });

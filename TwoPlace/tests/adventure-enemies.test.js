@@ -10,8 +10,8 @@ test('each first-wave house attacker strikes after reaching the house',()=>{
  for(const enemy of fresh.filter(enemy=>enemy.defenseTarget==='house')){
   const defense=createDefense();
   let damage=0;
-  for(let frame=0;frame<300&&!damage;frame++)damage=stepDefense(defense,[enemy],1/60).damage;
-  assert.equal(damage,5,enemy.id);
+  for(let frame=0;frame<300&&!damage;frame++)damage=stepDefense(defense,[enemy],1/60,()=>.5).damage;
+  assert.equal(damage,6,enemy.id);
  }
 });
 

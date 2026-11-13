@@ -5,8 +5,9 @@ export const MAX_CHARGE=CHARGE_DELAY+CHARGE_FILL;
 export const SPIN_TICK=.32;
 // Level-1 full spin: 11 contacts, about 450 total against one target at base attack.
 export const SPIN_HIT_MULTIPLIER=450/(11*11.5);
-export function skillPlan(id,seconds,stamina=100,level=1){
- const power=Math.max(0,Math.min(1,(seconds-CHARGE_DELAY)/CHARGE_FILL)),available=Math.max(0,stamina);
+export function chargeFillSeconds(dexterity=0){return CHARGE_FILL-2*Math.max(0,Math.min(100,dexterity))/100;}
+export function skillPlan(id,seconds,stamina=100,level=1,dexterity=0){
+ const power=Math.max(0,Math.min(1,(seconds-CHARGE_DELAY)/chargeFillSeconds(dexterity))),available=Math.max(0,stamina);
  if(seconds<=CHARGE_DELAY)return {ready:false,power:0,cost:0,requiredCost:0,duration:0,usableDuration:0,damage:0,drainRate:0};
  const balance=skillBalance(level);
  const requiredCost=8+62*power,cost=Math.min(requiredCost,available),ratio=cost/requiredCost;
@@ -30,12 +31,12 @@ export function skillHits(player,target,id){
 }
 export {createObstacles} from '../shared/adventure-field.js';
 
-export function basicGaugeGain(damage,min,max){
+export function basicGaugeGain(damage,min,max,dexterity=0){
  const fraction=max>min?Math.max(0,Math.min(1,(damage-min)/(max-min))):1;
  const band=Math.min(4,Math.floor(fraction*5));
- return Math.round(5+band*5/4);
+ return Math.round(Math.round(5+band*5/4)*(1+Math.max(0,Math.min(100,dexterity))/100)*100)/100;
 }
-export function gainBasicGauge(pet,hit,amount=10){if(hit)pet.gauge=Math.min(100,(pet.gauge||0)+amount);}
+export function gainBasicGauge(pet,hit,amount=10){if(hit)pet.gauge=Math.min(100,Math.round(((pet.gauge||0)+amount)*100)/100);}
 export function spendGauge(pet){if((pet.gauge||0)<100)return false;pet.gauge=0;return true;}
 export function eatPowerHeart(pet){pet.powerTime=Math.min(90,(pet.powerTime||0)+10);}
 export function powerMultiplier(id,pet){return id==='kuki'&&pet.powerTime>0?1.2:1;}

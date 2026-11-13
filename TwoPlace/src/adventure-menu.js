@@ -14,12 +14,13 @@ mountAdventureStatMenu(root.querySelector('[data-adventure-stats]'));
 
 const battleWallet=createAdventureWallet();
 const balance=document.createElement('p');
+balance.className='mode-shard-balance';
 balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0 0 18px';
 root.querySelector('.mode-intro').after(balance);
 let balanceRefresh=0;
 const refreshBattleBalance=async()=>{
  const sequence=++balanceRefresh;balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
- try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.textContent='✦ 별조각 '+battleWallet.profile.stardust.toLocaleString()+' · 스탯포인트 : '+battleWallet.profile.points+' · 스킬포인트 : '+battleWallet.profile.skillPoints;}
+ try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');}
  catch(error){if(sequence===balanceRefresh)balance.textContent=error.message;}
  finally{if(sequence===balanceRefresh)root.querySelector('.mode-list').removeAttribute('aria-busy');}
 };
@@ -37,7 +38,7 @@ function updateLevelChoices(){
   let picker=card.querySelector('.map-level-picker');
   if(!picker){picker=document.createElement('div');picker.className='map-level-picker';card.querySelector('h2').after(picker);}
   const min=minimumMapLevel(max),level=Math.max(min,Math.min(max,chosenLevels.get(mode)??max));chosenLevels.set(mode,level);const factors=mapScaling(level),low=level<max;
-  picker.innerHTML='<button type="button" data-level-step="-1" aria-label="맵 레벨 낮추기" '+(level===min?'disabled':'')+'>‹</button><strong>Lv '+level+'</strong><button type="button" data-level-step="1" aria-label="맵 레벨 높이기" '+(level===max?'disabled':'')+'>›</button><small>HP '+Math.round(factors.hp*100)+'% · 적 피해 '+Math.round(factors.damage*100)+'%<br>'+(low?'하위 레벨 · 별조각 '+(mapRewardFactor(level,max)*100)+'%'+(mode==='mine'?'':' · 하트 '+(max-level===1?2:1)+'개'):mode==='mine'?'적정 레벨 · 매장량 '+Math.round(factors.hp*100)+'%':'적정 레벨 · 별조각 '+Math.round(factors.hp*100)+'% · 하트 3·4·5·6')+'</small>';
+  picker.innerHTML='<button type="button" data-level-step="-1" aria-label="맵 레벨 낮추기" '+(level===min?'disabled':'')+'>‹</button><strong>Lv '+level+'</strong><button type="button" data-level-step="1" aria-label="맵 레벨 높이기" '+(level===max?'disabled':'')+'>›</button><small>HP '+Math.round(factors.hp*100)+'% · 적 피해 '+Math.round(factors.damage*100)+'%<br>'+(low?'하위 레벨 · 별조각 '+(mapRewardFactor(level,max)*100)+'%'+(mode==='mine'?'':' · 하트 '+(max-level===1?2:1)+'개'):mode==='mine'?'적정 레벨 · 매장량 '+Math.round((1+.5*Math.floor((level-1)/10))*100)+'%':'적정 레벨 · 별조각 '+Math.round((1+.5*Math.floor((level-1)/10))*100)+'% · 하트 3·4·5·6')+'</small>';
   for(const button of picker.querySelectorAll('button'))button.onclick=event=>{event.preventDefault();event.stopPropagation();chosenLevels.set(mode,Math.max(min,Math.min(max,level+Number(button.dataset.levelStep))));updateLevelChoices();};
   const url=new URL('adventure.html',location.href);url.searchParams.set('mode',mode);url.searchParams.set('level',level);if(demo)url.searchParams.set('demo','1');if(test)url.searchParams.set('mapTest','1');card.href=url.href;
  }

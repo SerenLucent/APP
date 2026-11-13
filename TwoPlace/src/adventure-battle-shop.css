@@ -24,3 +24,14 @@
 .skill-controls button{width:44px;min-height:44px;font-size:20px}
 .skill-cost{font-size:12px;color:#ffe2a0;white-space:nowrap;margin-right:5px}
 .stats-skill-button{display:block;width:100%;margin-top:14px;padding:13px!important;border-color:#e8ce88!important;color:#ffe2a0!important;font-weight:700}
+.battle-potion-image{display:block;width:100px;height:105px;margin:0 auto 6px;background-repeat:no-repeat;background-size:200% 100%;background-position:calc(0% - 5px) center}.battle-potion-image.sp{background-position:calc(100% + 5px) center}
+.battle-products .battle-product-title{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;white-space:nowrap;color:#f7efd8;font-size:14px}
+.battle-shard-price{display:inline-flex;align-items:center;gap:2px;white-space:nowrap;vertical-align:middle}
+.battle-shard-price img{display:block;width:25px;height:25px;object-fit:contain;flex:none}
+.battle-products .battle-shard-price{color:#ffe2a0}
+.battle-shop .battle-primary{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.battle-primary .battle-shard-price{color:inherit}
+.battle-wallet .battle-wallet-balance{display:inline-flex;align-items:center;gap:5px}.battle-wallet-balance .battle-shard-price{font-size:21px;color:#ffe2a0}.battle-wallet-balance .battle-shard-price img{width:30px;height:30px}.battle-wallet-balance>span:last-child{font-size:21px;font-weight:700;color:#ffe2a0}
+.skill-wallet-after,.character-skills .skill-cost{display:inline-flex;align-items:center;gap:4px}.skill-wallet-after .battle-shard-price img,.character-skills .skill-cost .battle-shard-price img{width:22px;height:22px}.skill-wallet-after .battle-shard-price b{font-size:13px}
+.skill-character-level{display:grid;justify-items:center;gap:7px;margin:-3px 0 18px}.skill-character-level>strong{font-size:20px;color:#f7efd8}.skill-character-level>small{display:flex;align-items:center;gap:4px;color:#e4cba7;font-size:13px}.skill-character-level progress{width:min(230px,85%);height:5px;border:0;border-radius:6px;overflow:hidden;accent-color:#ffcb98}.skill-character-level progress::-webkit-progress-bar{background:#122a22}.skill-character-level progress::-webkit-progress-value{background:#ffcb98}.skill-character-level .battle-shard-price img{width:25px;height:25px}
+.character-upgrade-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.character-upgrade-actions>button{padding:14px;font:inherit;border-radius:12px;cursor:pointer}.character-reset{width:100%;margin-top:24px;padding:12px;border:1px solid #af9380!important;border-radius:12px;background:#493d32!important;color:#f3d4b9!important;font:inherit;cursor:pointer}.character-reset:disabled{opacity:.45;cursor:default}.character-skill-summary article{padding:12px 0;border-bottom:1px solid #627b6755}.character-skill-summary p{font-size:13px;margin:7px 0;color:#d4dfc8}

@@ -5,10 +5,10 @@ export const HEART_IMPACT_INTERVAL=.5;
 export const HEART_FALL_TIME=.42;
 export const HEART_IMPACT_RADIUS=112;
 const offsets=[[-48,-30],[54,-27],[-52,29],[55,27],[0,-38]];
-export function createHeartMeteor(origin){
- return {origin:{x:origin.x,y:origin.y},age:0,next:0,impacts:offsets.map(([dx,dy],i)=>({
+export function createHeartMeteor(origin,count=5){
+ return {origin:{x:origin.x,y:origin.y},age:0,next:0,impacts:Array.from({length:count},(_,i)=>{const [dx,dy]=offsets[i%offsets.length];return ({
   x:Math.max(90,Math.min(2510,origin.x+dx)),y:Math.max(160,Math.min(1710,origin.y+dy)),at:HEART_FIRST_IMPACT+i*HEART_IMPACT_INTERVAL,
- }))};
+ });})};
 }
 export function stepHeartMeteor(sequence,dt,onImpact){
  sequence.age+=dt;

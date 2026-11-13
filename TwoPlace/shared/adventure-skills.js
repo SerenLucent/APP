@@ -3,7 +3,10 @@ export function skillBalance(level=1){
  return {
   level:current,
   spinDuration:3.5+(current-1)*.5,
-  tailMultiplier:30+(current-1)*.5+(current===10?.5:0),
-  ultimateMultiplier:1+(current-1)*.03+(current===10?.03:0),
+  tailMultiplier:30+(current-1)*2+(current===10?2:0),
+  tailStunChance:current/10,
+  meteorCount:current+4,
+  slamCoverage:.5+(current-1)/18,
+  ultimateMultiplier:1+(current-1)*.1,
  };
 }

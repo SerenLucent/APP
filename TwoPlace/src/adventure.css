@@ -30,3 +30,30 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none;touch-action:auto
 .mine-options{position:relative;z-index:8;flex-shrink:0}.mine-options summary{list-style:none;cursor:pointer;padding:9px 15px;background:#314e40;border:1px solid #66816c;border-radius:10px;color:#e7ead4;font-size:12px}.mine-options .top-actions{position:absolute;right:0;top:42px;width:280px;max-width:85vw;padding:10px;background:#243d34;border:1px solid #66816c;border-radius:12px;display:flex;flex-wrap:wrap;box-shadow:0 5px 20px #0005}.mine-mode .adventure-balance,.mine-mode .prototype-note{display:none}.mine-mode .stage{min-height:230px}.mine-mode .mine-routes{position:static;max-width:100%;display:grid;grid-template-columns:repeat(4,1fr);margin-top:6px;flex-shrink:0}.mine-mode .mine-routes button{font-size:10px;padding:7px 3px}.mine-mode .mine-routes button[data-mine-route=exit]{grid-column:1/-1}.mine-mode .adventure-top{flex-wrap:nowrap}.mine-mode .adventure-top>div:first-child{min-width:0}.mine-mode .adventure-potions{bottom:6px}.mine-mode .under-stage{font-size:9px}@media(max-width:650px){.mine-mode .adventure-app{padding-top:6px;padding-bottom:6px}.mine-mode .adventure-top h1{font-size:19px}.mine-mode .duo-hud{gap:6px;margin-bottom:6px}.mine-mode .fighter{min-height:70px;padding:5px}.mine-mode .fighter img{width:32px;height:38px}.mine-mode .meter-row{grid-template-columns:36px 1fr 40px;gap:3px;font-size:9px}.mine-mode .fighter-title strong{font-size:13px}.mine-mode .fighter-title span{font-size:8px}.mine-mode .play-controls{padding:7px 9px;row-gap:4px}.mine-mode .action-buttons{grid-template-rows:repeat(3,42px)}.mine-mode .joystick{width:90px;height:90px}.mine-mode .mine-live-hud{gap:7px;padding:6px 8px}.mine-mode .mine-time strong{font-size:23px}.mine-mode .mine-collected strong{font-size:20px}.mine-mode .mine-collected img{width:30px;height:30px}}
 
 .mine-mode .adventure-potions button[data-potion=hp]{display:none}
+/* SP and skill energy use distinct colors matching their potion and action. */
+.meter-row.stamina .meter i{background:#c6b1e5}
+.skill-meter .meter i,.skill-track i,.gauge-panel.ready .skill-track i{background:#e7ce86}
+.potion-bottle{display:inline-block;width:40px;height:42px;flex:0 0 40px;background-repeat:no-repeat;background-size:200% 100%;background-position:left center}
+.potion-bottle.potion-sp{background-position:right center}
+.adventure-potions button{display:flex;align-items:center;gap:7px;padding:5px 9px;min-width:174px}
+.adventure-potions button b{flex:1;text-align:left;white-space:nowrap}
+.adventure-potions button>span:last-child{white-space:nowrap;font-weight:800}
+@media(max-width:650px){.adventure-potions button{min-width:145px;font-size:10px;padding:3px 7px}.potion-bottle{width:32px;height:35px;flex-basis:32px}}
+.adventure-potions{align-items:flex-start}
+.adventure-potions button{min-width:0;width:max-content;justify-content:flex-start;gap:4px;padding:4px 7px;font-size:15px}
+.adventure-potions button b{flex:none;font-size:inherit}
+.adventure-potions button>span:last-child{font-size:inherit;margin-left:1px}
+@media(max-width:650px){.adventure-potions button{min-width:0;padding:3px 6px;font-size:15px;gap:3px}}
+/* The two sprites have different transparent side margins. */
+.potion-bottle.potion-hp{background-position:calc(0% - 2px) center}
+.potion-bottle.potion-sp{background-position:calc(100% + 2px) center}
+.adventure-potions button{display:grid;grid-template-columns:40px 58px auto;justify-content:start;align-items:center;column-gap:4px}
+.adventure-potions button b{width:58px;line-height:1.2}
+.adventure-potions button [data-potion-count]{min-width:3ch;margin-left:0;text-align:left;font-variant-numeric:tabular-nums}
+@media(max-width:650px){.adventure-potions button{grid-template-columns:32px 58px auto;column-gap:3px}.potion-bottle.potion-hp{background-position:calc(0% - 1.6px) center}.potion-bottle.potion-sp{background-position:calc(100% + 1.6px) center}}
+.mine-mode .stage-clear-dialog [data-mine-menu]{display:block;width:100%;margin:18px 0 0;padding:13px 18px;box-sizing:border-box;font-weight:700}
+@keyframes skill-ready-button-glow{0%,100%{box-shadow:0 0 5px #ffe6a44d,inset 0 0 0 1px #fff1c044;filter:brightness(1)}50%{box-shadow:0 0 18px #ffe7a8cc,inset 0 0 11px #fff7dc88;filter:brightness(1.16)}}
+@keyframes skill-ready-gauge-glow{0%,100%{box-shadow:0 0 3px #ffe49a55;filter:brightness(1)}50%{box-shadow:0 0 12px #ffe49ae6;filter:brightness(1.35)}}
+.play-controls .gauge-panel.ready .skill-track{animation:skill-ready-gauge-glow 1.2s ease-in-out infinite}
+.play-controls .action-buttons [data-gauge-skill].skill-ready:not(:disabled){animation:skill-ready-button-glow 1.2s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.play-controls .gauge-panel.ready .skill-track,.play-controls .action-buttons [data-gauge-skill].skill-ready:not(:disabled){animation:none;box-shadow:0 0 10px #ffe49aaa}}

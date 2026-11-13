@@ -1,29 +1,47 @@
 import {MINE_SECONDS,MINE_FIELD_VERSION,mineOreLimits} from './adventure-mine-field.js';
 import {skillBalance} from './adventure-skills.js';
-export const ADVENTURE_STATS={strength:{name:'힘',description:'공격력 최소 +1 · 최대 +2'},vitality:{name:'체력',description:'최대 HP +5'},stamina:{name:'스태미나',description:'최대 스태미나 +5'},luck:{name:'운',description:'치명타 확률 +0.5%'},dexterity:{name:'손재주',description:'최대 피해 쪽으로 보정 · 100이면 항상 최대 피해'}};
+export const ADVENTURE_STATS={strength:{name:'힘',description:'공격력 최소 +1 · 최대 +2'},vitality:{name:'체력',description:'최대 HP +5'},stamina:{name:'기력',description:'최대 SP +5'},dexterity:{name:'재주',description:'최대 피해 확률·스킬 충전량·차지 속도 증가'},luck:{name:'운',description:'치명타 확률 +0.7%'}};
 export function initialAdventure(){const stat=()=>Object.fromEntries(Object.keys(ADVENTURE_STATS).map(k=>[k,0]));return {stardust:0,skillPoints:0,skills:{momo:{charge:1,ultimate:1},kuki:{charge:1,ultimate:1}},hpPotions:0,staminaPotions:0,points:0,totalClears:0,history:[],stats:{momo:stat(),kuki:stat()},runs:{}};}
-export function adventureState(saved){const fresh=initialAdventure();if(!saved)return fresh;return {...fresh,...saved,history:[...(saved.history||[])],skills:{momo:{charge:skillBalance(saved.skills?.momo?.charge).level,ultimate:skillBalance(saved.skills?.momo?.ultimate).level},kuki:{charge:skillBalance(saved.skills?.kuki?.charge).level,ultimate:skillBalance(saved.skills?.kuki?.ultimate).level}},stats:{momo:{...fresh.stats.momo,...saved.stats?.momo},kuki:{...fresh.stats.kuki,...saved.stats?.kuki}},runs:{...saved.runs}};}
-export function characterStats(id,points={}){const strength=points.strength||0,vitality=points.vitality||0,stamina=points.stamina||0,luck=points.luck||0,dexterity=points.dexterity||0;return {maxHp:100+vitality*5,maxSp:100+stamina*5,minAttack:(id==='momo'?8:10)+strength,maxAttack:(id==='momo'?15:20)+strength*2,critical:(id==='momo'?.1:.05)+luck*.005,dexterity};}
+export function adventureState(saved){const fresh=initialAdventure();if(!saved)return fresh;return {...fresh,...saved,investmentIncludesSkills:true,statInvestment:{momo:(saved.statInvestment?.momo??statInvestmentTotal(saved.stats?.momo))+(saved.investmentIncludesSkills?0:skillInvestmentTotal(saved.skills?.momo)),kuki:(saved.statInvestment?.kuki??statInvestmentTotal(saved.stats?.kuki))+(saved.investmentIncludesSkills?0:skillInvestmentTotal(saved.skills?.kuki))},history:[...(saved.history||[])],skills:{momo:{charge:skillBalance(saved.skills?.momo?.charge).level,ultimate:skillBalance(saved.skills?.momo?.ultimate).level},kuki:{charge:skillBalance(saved.skills?.kuki?.charge).level,ultimate:skillBalance(saved.skills?.kuki?.ultimate).level}},stats:{momo:{...fresh.stats.momo,...saved.stats?.momo},kuki:{...fresh.stats.kuki,...saved.stats?.kuki}},runs:{...saved.runs}};}
+export function characterStats(id,points={}){const strength=points.strength||0,vitality=points.vitality||0,stamina=points.stamina||0,luck=points.luck||0,dexterity=points.dexterity||0;return {maxHp:100+vitality*5,maxSp:100+stamina*5,minAttack:(id==='momo'?8:10)+strength,maxAttack:(id==='momo'?15:20)+strength*2,critical:(id==='momo'?.1:.05)+luck*.007,dexterity};}
 export function rollAttack(id,points={},random=Math.random){const stats=characterStats(id,points),bias=stats.dexterity/100,roll=Math.max(0,Math.min(.999999999,random())),raw=stats.minAttack+Math.floor((stats.maxAttack-stats.minAttack+1)*(bias+(1-bias)*roll)),damage=Math.min(stats.maxAttack,raw),critical=random()<stats.critical;return {damage:damage*(critical?2:1),base:damage,critical};}
 export function statPointCost(current,amount=1){
  let cost=0;
  for(let i=0;i<amount;i++)cost+=2+Math.floor((current+i)/10);
  return cost;
 }
+export function statStardustCost(current,amount=1){let cost=0;for(let i=0;i<amount;i++)cost+=200+100*Math.floor((current+i)/10);return cost;}
+export function availableStatStardust(profile){return (profile.stardust||0)+((profile.points||0)+(profile.skillPoints||0))*240;}
+export function convertAdventurePoints(current){const data=adventureState(current),total=availableStatStardust(data);if(!Number.isSafeInteger(total))adventureFail('별조각 수량을 확인해 주세요.');data.stardust=total;data.points=0;data.skillPoints=0;return data;}
+export function investAdventureStardust(current,allocations){
+ if(!allocations||typeof allocations!=='object'||Array.isArray(allocations))adventureFail('배분할 능력치를 확인해 주세요.');
+ const data=adventureState(current);let cost=0;
+ for(const [pet,stats] of Object.entries(allocations)){
+  if(!['momo','kuki'].includes(pet)||!stats||typeof stats!=='object'||Array.isArray(stats))adventureFail('배분할 친구를 확인해 주세요.');
+  for(const [key,amount] of Object.entries(stats)){
+   if(!Object.prototype.hasOwnProperty.call(ADVENTURE_STATS,key)||!Number.isInteger(amount)||amount<1||amount>100)adventureFail('배분할 능력치를 확인해 주세요.');
+   const old=data.stats[pet][key];if(old+amount>100)adventureFail('능력치는 최대 100까지 강화할 수 있어요.');
+   const paid=statStardustCost(old,amount);cost+=paid;data.statInvestment = data.statInvestment || {momo:0,kuki:0};data.statInvestment[pet]+=paid;data.stats[pet][key]+=amount;
+  }
+ }
+ if(!cost)adventureFail('배분할 능력치를 선택해 주세요.');
+ const available=availableStatStardust(data);if(!Number.isSafeInteger(available)||available<cost)adventureFail('별조각이 부족해요.');
+ data.stardust=available-cost;data.points=0;data.skillPoints=0;return data;
+}
 export function investAdventurePoint(current,id,key){
  return investAdventurePoints(current,{[id]:{[key]:1}});
 }
 
-export function adventureLevel(stats){
- const spent=Object.keys(ADVENTURE_STATS).reduce((sum,key)=>sum+(stats?.[key]??0),0);
- return {level:1+Math.floor(spent/10),progress:spent%10};
-}
+export function skillInvestmentTotal(skills){return ['charge','ultimate'].reduce((sum,key)=>{const level=skillBalance(skills?.[key]).level;return sum+(level*(level+1)/2-1)*240;},0);}
+export function statInvestmentTotal(stats){return Object.keys(ADVENTURE_STATS).reduce((sum,key)=>sum+statStardustCost(0,stats?.[key]??0),0);}
+export function investmentLevel(total=0){let level=1,progress=Math.max(0,Math.floor(total)),required=1000;while(progress>=required){progress-=required;level++;required=1000+500*Math.floor((level-1)/10);}return {level,progress,required,invested:Math.max(0,Math.floor(total))};}
+export function adventureLevel(stats,investment){return investmentLevel(investment??statInvestmentTotal(stats));}
 
-export function recommendedMapLevel(profile){return Math.max(1,Math.floor((adventureLevel(profile?.stats?.momo).level+adventureLevel(profile?.stats?.kuki).level)/2));}
-export function mapScaling(level=1){const n=Math.max(0,level-1);return {hp:1+n*.2,damage:1+n*.1};}
+export function recommendedMapLevel(profile){return Math.max(1,Math.floor((adventureLevel(profile?.stats?.momo,profile?.statInvestment?.momo).level+adventureLevel(profile?.stats?.kuki,profile?.statInvestment?.kuki).level)/2));}
+export function mapScaling(level=1){const n=Math.max(0,level-1);return {hp:1+n*.25,damage:1+n*.2};}
 export const minimumMapLevel=recommended=>Math.max(1,recommended-2);
 export const mapRewardFactor=(level,recommended)=>.5**Math.max(0,recommended-level);
-export function mapStardustReward(base,level=1,recommended=1){return Math.floor(base*mapScaling(level).hp*mapRewardFactor(level,recommended));}
+export function mapStardustReward(base,level=1,recommended=1){return Math.floor(base*(1+.5*Math.floor(Math.max(0,level-1)/10))*mapRewardFactor(level,recommended));}
 export function scaleMapTarget(target,level=1){if(target.mapScaled)return target;const factor=mapScaling(level).hp;target.hp=Math.round(target.hp*factor);target.max=Math.round(target.max*factor);target.mapScaled=true;return target;}
 export function investAdventurePoints(current,allocations){
  if(!allocations||typeof allocations!=='object'||Array.isArray(allocations))adventureFail('배분할 능력치를 확인해 주세요.');
@@ -35,7 +53,7 @@ export function investAdventurePoints(current,allocations){
    if(!Object.prototype.hasOwnProperty.call(ADVENTURE_STATS,key)||!Number.isInteger(amount)||amount<1||amount>100)adventureFail('배분할 능력치를 확인해 주세요.');
    const next=data.stats[pet][key]+amount;
    if(next>100)adventureFail(ADVENTURE_STATS[key].name+'은 최대 100포인트까지 배분할 수 있어요.');
-   data.stats[pet][key]=next;
+   data.stats[pet][key]=next;data.statInvestment = data.statInvestment || {momo:0,kuki:0};data.statInvestment[pet]+=statStardustCost(next-amount,amount);
    spent+=statPointCost(data.stats[pet][key]-amount,amount);
   }
  }
@@ -54,10 +72,10 @@ export const BATTLE_PRODUCTS=[
 export const ADVENTURE_REWARDS=[2,3,4,5].map(hearts=>({id:'heart'+hearts,label:'하트 '+hearts+'개',hearts}));
 export function rouletteTier(durationMs,mode='explore'){
  const baseline=mode==='defense'?150000:120000;
- return durationMs<=baseline*.85?{id:'S',label:'S',stardust:120}
-  :durationMs<=baseline?{id:'A',label:'A',stardust:110}
-  :durationMs<=baseline*1.25?{id:'B',label:'B',stardust:95}
-  :{id:'C',label:'C',stardust:80};
+ return durationMs<=baseline*.85?{id:'S',label:'S',stardust:60}
+  :durationMs<=baseline?{id:'A',label:'A',stardust:50}
+  :durationMs<=baseline*1.25?{id:'B',label:'B',stardust:45}
+  :{id:'C',label:'C',stardust:40};
 }
 export function rouletteTable(durationMs,level=null,recommended=1){
  if(level!==null)return Array.from({length:12},(_,i)=>level<recommended?(recommended-level===1?'heart2':'heart1'):['heart3','heart4','heart5','heart6'][i%4]);
@@ -106,6 +124,21 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){
   data=investAdventurePoint(data,action.pet,action.stat);
+  }else if(action.type==='adventureReset'){
+  const {pet,kind}=action;
+  if(!['momo','kuki'].includes(pet)||!['stats','skills'].includes(kind))adventureFail('초기화 항목을 확인해 주세요.');
+  data=convertAdventurePoints(data);
+  if(data.stardust<500)adventureFail('초기화에는 별조각 500개가 필요해요.');
+  const refund=kind==='stats'?statInvestmentTotal(data.stats[pet]):skillInvestmentTotal(data.skills[pet]);
+  if(!refund)adventureFail('초기화할 강화 내역이 없어요.');
+  data.stardust+=refund-500;
+  data.statInvestment[pet]=Math.max(0,data.statInvestment[pet]-refund);
+  if(kind==='stats')data.stats[pet]=initialAdventure().stats[pet];
+  else data.skills[pet]={charge:1,ultimate:1};
+ }else if(action.type==='adventureConvertPoints') {
+  data=convertAdventurePoints(data);
+ }else if(action.type==='adventureInvestStardustBatch'){
+  data=investAdventureStardust(data,action.allocations);
  }else if(action.type==='adventureInvestBatch'){
   data=investAdventurePoints(data,action.allocations);
  }else if(action.type==='adventurePurchase'){
@@ -116,7 +149,7 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
   if(!Number.isSafeInteger(data[product.field]+quantity))adventureFail('보유 수량을 확인해 주세요.');
   data.stardust-=total;
   data[product.field]+=quantity;
- }else if(action.type==='adventureSkillInvestBatch'){
+ }else if(action.type==='adventureSkillInvestBatch'||action.type==='adventureSkillInvestStardustBatch'){
   const allocations=action.allocations;
   if(!allocations||typeof allocations!=='object'||Array.isArray(allocations))adventureFail('강화할 스킬을 확인해 주세요.');
   let cost=0;
@@ -124,12 +157,11 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
    if(!['momo','kuki'].includes(pet)||!skills||typeof skills!=='object'||Array.isArray(skills))adventureFail('강화할 친구를 확인해 주세요.');
    for(const [key,amount] of Object.entries(skills)){
     if(!['charge','ultimate'].includes(key)||!Number.isInteger(amount)||amount<1||data.skills[pet][key]+amount>10)adventureFail('스킬은 10레벨까지 강화할 수 있어요.');
-    for(let i=1;i<=amount;i++)cost+=data.skills[pet][key]+i;
+    let paid=0;for(let i=1;i<=amount;i++)paid+=data.skills[pet][key]+i;cost+=paid;data.statInvestment = data.statInvestment || {momo:0,kuki:0};data.statInvestment[pet]+=paid*240;
     data.skills[pet][key]+=amount;
    }
   }
-  if(!cost||cost>data.skillPoints)adventureFail('스킬 포인트가 부족해요.');
-  data.skillPoints-=cost;
+  if(action.type==='adventureSkillInvestStardustBatch'){data=convertAdventurePoints(data);if(!cost||cost*240>data.stardust)adventureFail('별조각이 부족해요.');data.stardust-=cost*240;}else{if(!cost||cost>data.skillPoints)adventureFail('스킬 포인트가 부족해요.');data.skillPoints-=cost;}
  }else if(action.type==='adventurePotion'){
   if(!['momo','kuki'].includes(action.pet)||!['hp','stamina'].includes(action.potion))adventureFail('회복할 친구와 물약을 확인해 주세요.');
   const field=action.potion==='hp'?'hpPotions':'staminaPotions';if(data[field]<1)adventureFail('보유한 회복약이 없어요.');data[field]--;

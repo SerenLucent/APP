@@ -1,20 +1,21 @@
+import {rollEnemyAttack} from './adventure-enemy-attack.js';
 import {DEFENSE_WAVES,DEFENSE_TOTAL} from '../shared/adventure-field.js';
 export {DEFENSE_WAVES,DEFENSE_TOTAL};
-export const DEFENSE_HOME={x:1300,y:900,radius:105,halfWidth:105,halfDepth:33,collisionY:22,max:1000};
+export const DEFENSE_HOME={x:1300,y:900,radius:105,halfWidth:105,halfDepth:33,collisionY:22,max:2000};
 export const DEFENSE_START={x:1300,y:1010};
 
 export function createDefense(){
  return {house:{...DEFENSE_HOME,hp:DEFENSE_HOME.max,flash:0},wave:0,nextWave:2};
 }
 
-export function stepDefense(defense,enemies,dt){
+export function stepDefense(defense,enemies,dt,random=Math.random){
  const house=defense.house;
  if(house.hp<=0)return {fresh:[],damage:0,complete:false};
  const living=enemies.filter(enemy=>enemy.hp>0);
  const finalWave=defense.wave===DEFENSE_WAVES.length;
  if(finalWave&&!living.length)return {fresh:[],damage:0,complete:true};
 
- let damage=0;
+ let damage=0;const hits=[];
  for(const enemy of living){
   if(enemy.defenseTarget==='player')continue;
   if(enemy.stun>0){
@@ -37,13 +38,13 @@ export function stepDefense(defense,enemies,dt){
   if(!enemy.windup){enemy.windup=.45;continue;}
   enemy.windup=Math.max(0,enemy.windup-dt);
   if(enemy.windup===0){
-   damage+=5*(defense.damageScale||1);
+   const hit=rollEnemyAttack(1,random,4,7);damage+=hit.damage;hits.push(hit);
    enemy.cooldown=1.15;
   }
  }
  house.hp=Math.max(0,house.hp-damage);
  house.flash=damage?.16:Math.max(0,house.flash-dt);
- if(finalWave||house.hp<=0)return {fresh:[],damage,complete:false};
+ if(finalWave||house.hp<=0)return {fresh:[],damage,hits,complete:false};
 
  defense.nextWave=Math.min(defense.nextWave,living.length?Infinity:1.5)-dt;
  if(defense.nextWave>0)return {fresh:[],damage,complete:false};
@@ -61,5 +62,5 @@ export function stepDefense(defense,enemies,dt){
    speed:73+strengthStep*9,cooldown:0,windup:0,flash:0,
   };
  });
- return {fresh,damage,complete:false};
+ return {fresh,damage,hits,complete:false};
 }

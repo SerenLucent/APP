@@ -4,3 +4,11 @@
 .map-level-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}.map-level-picker button{width:38px;height:38px;border:1px solid #9fac91;border-radius:12px;background:#fff8e7;color:#304a3c;font-size:25px;cursor:pointer}.map-level-picker button:disabled{opacity:.35;cursor:default}.map-level-picker strong{font-size:20px;min-width:52px;text-align:center}.map-level-picker small{flex-basis:100%;line-height:1.7}
 .mode-card .map-level-picker button{display:grid;place-items:center;padding:0;margin:0;line-height:1;flex:0 0 38px;align-self:center}
 .mode-list[aria-busy="true"]{pointer-events:none;opacity:.65}
+#mode-menu>header>a,#mode-menu>header>.mode-stats-button{font-weight:800;border-width:1px;border-bottom-width:4px;box-shadow:0 3px 8px #0b211b33;transition:filter .12s,transform .12s}
+#mode-menu>header>a{background:#f2dfbb;color:#5c4b33;border-color:#d9c09a}
+#mode-menu>header>[data-battle-shop]{background:#f5c9b9;color:#754c43;border-color:#d69d8b}
+#mode-menu>header>[data-adventure-stats]{background:#f1dfa0;color:#62542b;border-color:#ceba74}
+#mode-menu>header>a:hover,#mode-menu>header>.mode-stats-button:hover{filter:brightness(1.06)}
+#mode-menu>header>a:active,#mode-menu>header>.mode-stats-button:active{transform:translateY(2px)}
+#mode-menu>header>.mode-stats-button.has-points{box-shadow:0 0 0 2px #ffe082,0 3px 8px #0b211b33}
+.mode-shard-balance{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}.mode-shard-balance .mode-shard-icon{width:28px;height:28px;object-fit:contain;flex:none}.mode-shard-balance strong{font-size:inherit}

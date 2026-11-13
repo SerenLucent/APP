@@ -9,7 +9,9 @@ const waveColors = {
 
 export function drawGroundWave(ctx,x,y,t,radius=KUKI_SLAM_RADIUS,color='blue'){
  if(t<0||t>=1)return;
- const fade=(1-t)**1.65,spread=1-(1-t)**2.15,r=radius*(.12+.88*spread);
+ // The blue wave reaches the actual hit boundary while still clearly visible.
+ const spread=color==='blue'?1-(1-Math.min(1,t/.6))**2.15:1-(1-t)**2.15;
+ const fade=color==='blue'?(t<=.6?1:(1-(t-.6)/.4)**1.65):(1-t)**1.65,r=radius*(.12+.88*spread);
  const palette=waveColors[color];
  ctx.save();ctx.translate(x,y);ctx.scale(1,.43);
  const glow=ctx.createRadialGradient(0,0,0,0,0,r);
@@ -20,7 +22,7 @@ export function drawGroundWave(ctx,x,y,t,radius=KUKI_SLAM_RADIUS,color='blue'){
  glow.addColorStop(1,`rgba(${palette.edge},0)`);
  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();
  for(let i=0;i<2;i++){
-  const radius=r*(.94-i*.22),width=(18-i*5)*(1-t)+2;
+  const radius=r*((color==='blue'?1:.94)-i*.22),width=(18-i*5)*(1-t)+2;
   ctx.globalAlpha=fade*(i?.58:1);ctx.strokeStyle=palette.ring;ctx.lineWidth=width;ctx.shadowColor=palette.halo;ctx.shadowBlur=12;
   ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.stroke();
   ctx.shadowBlur=0;ctx.strokeStyle=palette.core;ctx.lineWidth=width*.34;ctx.stroke();
