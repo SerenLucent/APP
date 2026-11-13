@@ -13,8 +13,8 @@ test('native exit requires the Yes button and missing game handlers load the hom
 });
 test('adventure selection back closes its dialog or returns to the main page without exiting',()=>{
  const source=fs.readFileSync('src/adventure-menu.js','utf8'),hook=source.slice(source.indexOf('window.twoPlaceBack='),source.indexOf('\nroot.innerHTML'));
- let closed=0,url;const context=vm.createContext({window:{},base:'/APP/TwoPlace/',demo:false,document:{querySelector:()=>({close(){closed++;}})},location:{replace(value){url=value;}}});
- vm.runInContext(hook,context);assert.equal(context.window.twoPlaceBack(),true);assert.equal(closed,1);assert.equal(url,undefined);context.document.querySelector=()=>null;assert.equal(context.window.twoPlaceBack(),true);assert.equal(url,'/APP/TwoPlace/index.html');
+ let closed=0,url,confirmation;const context=vm.createContext({confirmAdventureExit:options=>{confirmation=options;},window:{},base:'/APP/TwoPlace/',demo:false,document:{querySelector:()=>({close(){closed++;}})},location:{replace(value){url=value;}}});
+ vm.runInContext(hook,context);assert.equal(context.window.twoPlaceBack(),true);assert.equal(closed,1);assert.equal(url,undefined);context.document.querySelector=()=>null;assert.equal(context.window.twoPlaceBack(),true);assert.equal(url,undefined);confirmation.leave();assert.equal(url,'/APP/TwoPlace/index.html');
 });
 test('the actual web hook sends pets to home first, then permits the native home confirmation',()=>{
  const source=fs.readFileSync('src/main.js','utf8'),hook=source.slice(source.indexOf('window.twoPlaceBack='),source.indexOf("\nwindow.addEventListener('popstate'"));
