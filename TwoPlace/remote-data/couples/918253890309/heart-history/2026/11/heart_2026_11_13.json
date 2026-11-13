@@ -47,6 +47,17 @@
       "label": "휴식 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794550417161,
+      "amount": -8,
+      "balance": 53,
+      "kind": "purchase",
+      "label": "별사탕 먹이 2개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "snack",
+      "quantity": 2
     }
   ]
 }
