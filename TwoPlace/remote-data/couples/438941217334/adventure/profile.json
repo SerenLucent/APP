@@ -33,15 +33,15 @@
   },
   "runs": {
     "owner": {
-      "id": "665e6cb172e840e4b8ccab8a89289cce",
-      "seed": 1717464241,
-      "mode": "offense",
-      "fieldVersion": 1,
+      "id": "e0e3a4569eb74b98b02981b21565457b",
+      "seed": 3773015126,
+      "mode": "explore",
+      "fieldVersion": 2,
       "level": 7,
       "recommendedLevel": 7,
-      "requestId": "d027adab-b4e4-4744-bac3-a808fb9ee8c4",
-      "startedAt": 1794575146006,
-      "enemyCount": 0,
+      "requestId": "7b0fd632-2a25-4881-8bf4-ed56eb60aae0",
+      "startedAt": 1794575170488,
+      "enemyCount": 44,
       "finishedAt": null,
       "reward": null
     },
@@ -89,7 +89,6 @@
     }
   },
   "operations": [
-    "ccac96c5-612d-4cf5-ba67-7c27533b2491",
     "6607e103-d86c-4b89-9fb6-f7b385c9d394",
     "8bcfa8b0-8494-4a35-9d42-0cbde8617d8d",
     "ba573534-0a36-4e22-866a-507500d71749",
@@ -216,7 +215,8 @@
     "5f59e26a-f4d4-463e-9662-91daee333f9b",
     "203031bf-ab44-4cd6-af00-3d47f7b1fd29",
     "9a5288d7-966b-412f-97a7-4ff81e13587e",
-    "d027adab-b4e4-4744-bac3-a808fb9ee8c4"
+    "d027adab-b4e4-4744-bac3-a808fb9ee8c4",
+    "7b0fd632-2a25-4881-8bf4-ed56eb60aae0"
   ],
   "bestDurationMs": 30385,
   "totalMines": 9,
