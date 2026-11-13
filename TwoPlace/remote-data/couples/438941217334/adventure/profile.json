@@ -1,5 +1,5 @@
 {
-  "stardust": 1701,
+  "stardust": 1941,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -13,22 +13,22 @@
   },
   "hpPotions": 8,
   "staminaPotions": 7,
-  "points": 1,
+  "points": 0,
   "totalClears": 105,
   "stats": {
     "momo": {
       "strength": 14,
       "vitality": 2,
       "stamina": 6,
-      "luck": 0,
-      "dexterity": 0
+      "dexterity": 0,
+      "luck": 0
     },
     "kuki": {
       "strength": 10,
       "vitality": 2,
       "stamina": 11,
-      "luck": 0,
-      "dexterity": 0
+      "dexterity": 0,
+      "luck": 0
     }
   },
   "runs": {
@@ -125,7 +125,6 @@
     }
   },
   "operations": [
-    "3dafd943-a8a4-4f56-8dc4-aab2271e5ab5",
     "987a65d4-0bdc-4f4d-b28e-4ed60ed1a864",
     "562098a8-78f3-4519-aec7-18c947e7b258",
     "2db1ca00-30ae-40d2-945a-388a9cc56b87",
@@ -252,8 +251,14 @@
     "9fdafd1d-e53e-491b-ad17-823a1b255ed2",
     "ad11b594-67e5-4eb5-a1fe-85012db181ec",
     "7bed21a0-0c6c-41a3-b587-43684f1a7b12",
-    "58dadc03-fd6f-4846-a341-c6054db1e68d"
+    "58dadc03-fd6f-4846-a341-c6054db1e68d",
+    "368467d3-bae5-46e6-ac1f-822c232127cd"
   ],
   "bestDurationMs": 30385,
-  "totalMines": 8
+  "totalMines": 8,
+  "investmentIncludesSkills": true,
+  "statInvestment": {
+    "momo": 5760,
+    "kuki": 5180
+  }
 }
