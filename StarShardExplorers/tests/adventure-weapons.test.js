@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {rollWeaponDrop,collectWeapon,wearWeapon,weaponMultiplier,weaponDirection} from '../src/adventure-weapons.js';
+test('2 percent drops are character specific and refill rather than stack',()=>{assert.equal(rollWeaponDrop('kuki',1,2,()=>.02),null);const drop=rollWeaponDrop('kuki',1,2,()=>.019),pet={weaponDurability:3};assert.equal(collectWeapon(pet,drop,'momo'),false);assert.equal(pet.weaponDurability,3);assert.equal(collectWeapon(pet,drop,'kuki'),true);assert.equal(pet.weaponDurability,10);wearWeapon(pet,false);assert.equal(pet.weaponDurability,10);for(let i=0;i<10;i++)wearWeapon(pet,true);assert.equal(weaponMultiplier(pet),1);collectWeapon(pet,drop,'kuki');assert.equal(weaponMultiplier(pet),1.5);});
+test('weapon facing follows eight movement directions',()=>{assert.equal(weaponDirection(-1,-1),'upLeft');assert.equal(weaponDirection(1,0),'right');assert.equal(weaponDirection(0,1),'down');});

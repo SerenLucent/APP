@@ -1,0 +1,19 @@
+{
+  "name": "star-shard-explorers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "node server/dev.js",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "test": "node --test tests/*.test.js",
+    "build:gas": "node scripts/build-gas.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}

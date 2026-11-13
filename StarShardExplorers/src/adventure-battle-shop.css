@@ -1,0 +1,39 @@
+.battle-shop{width:min(580px,calc(100% - 28px));max-height:calc(100dvh - 32px);overflow:auto;border:1px solid #789179;border-radius:22px;padding:22px;background:#20382f;color:#f7efd8;font:inherit;touch-action:pan-y}
+.battle-shop::backdrop{background:#0e211ccc}
+.battle-shop header,.battle-wallet,.battle-shop nav,.battle-quantity{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.battle-shop h2{margin:0;font-size:24px}.battle-shop h3{font-size:16px;margin:18px 0 8px}
+.battle-shop button,.battle-shop input{font:inherit;color:inherit;border:1px solid #71866e;border-radius:12px;background:#304d3f;padding:11px;cursor:pointer}
+.battle-shop button:disabled{opacity:.4;cursor:default}
+.battle-shop button[aria-pressed=true]{border-color:#f5d98b;background:#45533b;box-shadow:inset 0 0 0 1px #f5d98b}
+.battle-wallet{margin:18px 0;padding:15px;background:#152c23;border-radius:14px;flex-wrap:wrap}.battle-wallet strong{color:#ffe2a0;font-size:21px}.battle-wallet span{color:#d0d9bd;font-size:13px}
+.battle-shop nav{justify-content:start;margin-bottom:15px}.battle-shop nav button{flex:1}
+.battle-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.battle-products button{text-align:left;min-height:140px;display:flex;flex-direction:column;gap:9px}.battle-products span{color:#ffe2a0}.battle-products small,.battle-skills small{font-size:12px;color:#cfdbc0;line-height:1.5}
+.battle-quantity{justify-content:center;margin:18px 0}.battle-quantity button,.battle-skills article>button{min-width:44px;min-height:44px;font-size:20px}.battle-quantity input{width:80px;text-align:center}
+.battle-shop .battle-primary{width:100%;background:#edc97f;color:#293f31;border-color:#edc97f;font-weight:700;min-height:48px}
+.battle-skills article{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #6e886344}.battle-skills article>div{flex:1}.battle-skills small{display:block;margin-top:6px}
+.battle-feedback{min-height:20px;line-height:1.5;color:#ffe3a9;font-size:13px}
+.stage-clear-dialog{color:#9b7457}
+.stage-clear-dialog h2{font-size:clamp(28px,5vw,44px);font-weight:900;color:#9b7457;letter-spacing:-1px}
+.clear-stardust{color:#9b7457;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:12px;margin:20px 0;padding:12px 16px;background:#f3ecde;border-radius:16px}.clear-stardust img{width:72px;height:72px;object-fit:contain;flex-shrink:0}.clear-stardust strong{font-size:inherit;font-weight:inherit}
+.stage-clear-dialog [data-clear-preparing]{color:#9b7457;line-height:1.6;font-size:16px}
+.stage-clear-dialog [data-clear-retry]{font:inherit;padding:12px 22px;border-radius:14px;background:#eadfc8;color:#9b7457;border:1px solid #cabb9a}
+.skill-portrait{display:block;width:100px;height:110px;object-fit:contain;margin:10px auto}
+.character-skills .skill-upgrade-row{flex-wrap:wrap;gap:12px;padding:18px 0}
+.character-skills .skill-description{flex:1 1 175px}
+.character-skills .skill-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex:0 1 auto}
+.skill-controls button{width:44px;min-height:44px;font-size:20px}
+.skill-cost{font-size:12px;color:#ffe2a0;white-space:nowrap;margin-right:5px}
+.stats-skill-button{display:block;width:100%;margin-top:14px;padding:13px!important;border-color:#e8ce88!important;color:#ffe2a0!important;font-weight:700}
+.battle-potion-image{display:block;width:100px;height:105px;margin:0 auto 6px;background-repeat:no-repeat;background-size:200% 100%;background-position:calc(0% - 5px) center}.battle-potion-image.sp{background-position:calc(100% + 5px) center}
+.battle-products .battle-product-title{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;white-space:nowrap;color:#f7efd8;font-size:14px}
+.battle-shard-price{display:inline-flex;align-items:center;gap:2px;white-space:nowrap;vertical-align:middle}
+.battle-shard-price img{display:block;width:25px;height:25px;object-fit:contain;flex:none}
+.battle-products .battle-shard-price{color:#ffe2a0}
+.battle-shop .battle-primary{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.battle-primary .battle-shard-price{color:inherit}
+.battle-wallet .battle-wallet-balance{display:inline-flex;align-items:center;gap:5px}.battle-wallet-balance .battle-shard-price{font-size:21px;color:#ffe2a0}.battle-wallet-balance .battle-shard-price img{width:30px;height:30px}.battle-wallet-balance>span:last-child{font-size:21px;font-weight:700;color:#ffe2a0}
+.skill-wallet-after,.character-skills .skill-cost{display:inline-flex;align-items:center;gap:4px}.skill-wallet-after .battle-shard-price img,.character-skills .skill-cost .battle-shard-price img{width:22px;height:22px}.skill-wallet-after .battle-shard-price b{font-size:13px}
+.skill-character-level{display:grid;justify-items:center;gap:7px;margin:-3px 0 18px}.skill-character-level>strong{font-size:20px;color:#f7efd8}.skill-character-level>small{display:flex;align-items:center;gap:4px;color:#e4cba7;font-size:13px}.skill-character-level progress{width:min(230px,85%);height:5px;border:0;border-radius:6px;overflow:hidden;accent-color:#ffcb98}.skill-character-level progress::-webkit-progress-bar{background:#122a22}.skill-character-level progress::-webkit-progress-value{background:#ffcb98}.skill-character-level .battle-shard-price img{width:25px;height:25px}
+.character-upgrade-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.character-upgrade-actions>button{padding:14px;font:inherit;border-radius:12px;cursor:pointer}.character-reset{width:100%;margin-top:24px;padding:12px;border:1px solid #af9380!important;border-radius:12px;background:#493d32!important;color:#f3d4b9!important;font:inherit;cursor:pointer}.character-reset:disabled{opacity:.45;cursor:default}.character-skill-summary article{padding:12px 0;border-bottom:1px solid #627b6755}.character-skill-summary p{font-size:13px;margin:7px 0;color:#d4dfc8}
+
+.save-code-label{display:grid;gap:8px;margin:18px 0;color:#d9e3cd}.save-code-label input{box-sizing:border-box;width:100%;min-width:0;border:1px solid #789179;background:#172d28;color:#fff3dc;padding:12px;border-radius:10px;font:inherit}.mode-menu header{flex-wrap:wrap}
