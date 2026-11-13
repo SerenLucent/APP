@@ -1,8 +1,9 @@
+import {openEmailMenu} from './email-menu.js';
 import {exportPlayer,restorePlayer} from './adventure-wallet.js';
 import {lockDialogScroll} from './dialog-scroll-lock.js';
 export function mountSaveMenu(parent){
- const button=document.createElement('button');button.className='mode-stats-button';button.textContent='저장 관리';parent.append(button);
- button.onclick=()=>{
+ const button=document.createElement('button');button.className='mode-stats-button';button.textContent='이메일 연동';parent.append(button);
+ const recovery=()=>{
   const dialog=document.createElement('dialog');dialog.className='battle-shop';dialog.setAttribute('aria-label','개인 저장 관리');
   dialog.innerHTML='<header><h2>개인 저장 관리</h2><button data-close aria-label="닫기">×</button></header><p>진행과 재화는 이 플레이어의 서버 저장에 자동 반영돼요.</p><p>복구코드는 저장에 접근하는 열쇠예요. 다른 사람에게 공개하지 말고 따로 보관해 주세요.</p><button class="battle-primary" data-export>복구 파일 내려받기</button><label class="save-code-label">복구코드<input data-code type="password" autocomplete="off" placeholder="보관한 복구코드 입력"></label><label class="save-code-label">복구 파일 선택<input type="file" data-file accept="application/json,.json"></label><button class="battle-primary" data-restore>저장 연결 복구</button><p class="battle-feedback" role="status"></p>';
   document.body.append(dialog);dialog.showModal();lockDialogScroll(dialog);let busy=false;
@@ -16,4 +17,5 @@ export function mountSaveMenu(parent){
    status.textContent='저장 정보를 확인하고 있어요…';await restorePlayer(token);location.reload();
   });
  };
+ button.onclick=()=>openEmailMenu({mode:'link',onAdvanced:recovery});
 }

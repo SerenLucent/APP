@@ -43,3 +43,13 @@ export function createAdventureWallet(){
   reset:(pet,kind)=>mutate('adventureReset',{pet,kind}),purchase:(product,quantity)=>mutate('adventurePurchase',{product,quantity}),investStardust:allocations=>mutate('adventureInvestStardustBatch',{allocations}),investSkillsStardust:allocations=>mutate('adventureSkillInvestStardustBatch',{allocations}),potion:(pet,potion)=>mutate('adventurePotion',{pet,potion}),
  };
 }
+
+export async function emailAccountStatus(){await ensurePlayer();return saveRequest('account');}
+export async function requestEmailCode(email,purpose,requestId){if(purpose==='link')await ensurePlayer();return saveRequest('email/request',{method:'POST',token:purpose==='link'?localStorage.getItem(TOKEN_KEY):null,body:{email,purpose,requestId}});}
+export async function verifyEmailCode(email,purpose,challengeId,code){
+ if(purpose==='login'&&localStorage.getItem(PENDING_KEY))throw Error('이전 게임 저장을 먼저 완료한 뒤 이어하기를 이용해 주세요.');
+ const key=TOKEN_KEY+':email-login';let pending;try{pending=JSON.parse(localStorage.getItem(key)||'null');}catch{}
+ if(purpose==='login'&&(!pending||pending.challengeId!==challengeId)){pending={challengeId,deviceToken:newToken()};localStorage.setItem(key,JSON.stringify(pending));}
+ const result=await saveRequest('email/verify',{method:'POST',token:purpose==='link'?localStorage.getItem(TOKEN_KEY):null,body:{email,purpose,challengeId,code,...(purpose==='login'?{deviceToken:pending.deviceToken}:{})}});
+ if(purpose==='login'){await restorePlayer(pending.deviceToken);localStorage.removeItem(key);}return result;
+}

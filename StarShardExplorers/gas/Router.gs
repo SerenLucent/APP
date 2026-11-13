@@ -18,7 +18,7 @@ function explorerPlayer_(token,create){
  if(typeof token!=='string'||! /^[a-f0-9]{64}$/.test(token))explorerFail_(401,'저장 복구코드를 확인해 주세요.');
  const hash=explorerDigest_(token),cache=CacheService.getScriptCache(),key='player:'+hash;
  let folder,id=cache.get(key);if(id){try{folder=DriveApp.getFolderById(id);folder.getName();}catch(e){folder=null;cache.remove(key);}}
- if(!folder){folder=explorerChild_(explorerRoot_(),hash,false);if(!folder&&create){const admission='create:'+Math.floor(Date.now()/60000),count=Number(cache.get(admission)||0);if(count>=30)explorerFail_(429,'새 플레이어 생성이 많아요. 잠시 후 다시 시도해 주세요.');cache.put(admission,String(count+1),120);folder=explorerChild_(explorerRoot_(),hash,true);}if(folder)cache.put(key,folder.getId(),21600);}
+ if(!folder){folder=explorerChild_(explorerRoot_(),hash,false)||explorerSessionFolder_(hash);if(!folder&&create){const admission='create:'+Math.floor(Date.now()/60000),count=Number(cache.get(admission)||0);if(count>=30)explorerFail_(429,'새 플레이어 생성이 많아요. 잠시 후 다시 시도해 주세요.');cache.put(admission,String(count+1),120);folder=explorerChild_(explorerRoot_(),hash,true);}if(folder)cache.put(key,folder.getId(),21600);}
  if(!folder)explorerFail_(401,'저장 정보를 찾을 수 없어요. 복구코드를 확인해 주세요.');
  let file=explorerFile_(folder,'profile.json');if(!file){if(!create)explorerFail_(401,'저장 정보를 찾을 수 없어요.');file=explorerWrite_(folder,'profile.json',{schema:1,createdAt:Date.now(),state:{version:0,hearts:0,adventure:initialAdventure()},historySince:null,historyOutbox:[]});}
  const record=explorerRead_(file),entry={folder:folder,file:file,record:record};explorerFlush_(entry);return entry;
@@ -39,6 +39,7 @@ function explorerHistory_(entry,query){
 }
 function explorerRoute_(request){
  const path=request.path,method=request.method||'GET';
+ if(path==='/api/account'||path==='/api/email/request'||path==='/api/email/verify')return explorerEmailRoute_(request);
  if(path==='/api/health')return {game:'StarShardExplorers',storage:'private-drive-json',version:1};
  if(!['/api/player','/api/save','/api/action','/api/history'].includes(path))explorerFail_(404,'요청한 기능을 찾을 수 없어요.');
  if(path==='/api/player'&&method!=='POST'||['/api/save','/api/history'].includes(path)&&method!=='GET'||path==='/api/action'&&method!=='POST')explorerFail_(405,'지원하지 않는 요청이에요.');

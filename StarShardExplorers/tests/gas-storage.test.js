@@ -1,12 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import fs from 'node:fs';import {createHash,randomUUID} from 'node:crypto';
-function fixture(){
- let now=1000,failHistory=false;const folders=new Map(),props=new Map(),cache=new Map();
- const iterator=items=>{let i=0;return {hasNext:()=>i<items.length,next:()=>items[i++]};};
- class Folder{constructor(name){this.name=name;this.id=randomUUID();this.children=[];this.files=[];folders.set(this.id,this);}getId(){return this.id;}getName(){return this.name;}getFoldersByName(name){return iterator(this.children.filter(f=>f.name===name));}createFolder(name){const f=new Folder(name);this.children.push(f);return f;}getFilesByName(name){return iterator(this.files.filter(f=>f.name===name));}createFile(name,text){if(failHistory&&name.startsWith('clear_')){failHistory=false;throw Error('simulated Drive failure');}const f={name,text,getBlob(){return {getDataAsString:()=>this.text};},setContent(text){this.text=text;}};this.files.push(f);return f;}}
- const context=vm.createContext({console:{log(){}},Date:class extends Date{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}},Utilities:{getUuid:randomUUID,DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},computeDigest:(_,text)=>[...createHash('sha256').update(text).digest()],formatDate:(date)=>new Date(Number(date)+9*3600000).toISOString().slice(0,10)},PropertiesService:{getScriptProperties:()=>({getProperty:k=>props.get(k),setProperty:(k,v)=>props.set(k,v)})},CacheService:{getScriptCache:()=>({get:k=>cache.get(k),put:(k,v)=>cache.set(k,v),remove:k=>cache.delete(k)})},DriveApp:{createFolder:name=>new Folder(name),getFolderById:id=>{if(!folders.has(id))throw Error('missing folder');return folders.get(id);}},MimeType:{PLAIN_TEXT:'text/plain'},ContentService:{MimeType:{JSON:'json'},createTextOutput:text=>({setMimeType(){return JSON.parse(text);}})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})}});
- vm.runInContext(fs.readFileSync('gas/Code.gs','utf8'),context);context.setupStarShardExplorers();
- return {context,folders,call:(path,token,method='GET',body,query)=>context.doPost({postData:{contents:JSON.stringify({path,token,method,body,query})}}),time:v=>now=v,failHistory:()=>failHistory=true};
-}
+import test from 'node:test';import assert from 'node:assert/strict';import {fixture} from './helpers/gas-fixture.js';
 test('GAS private saves isolate players and allow recovery by the same code without exposing raw codes in Drive',()=>{
  const f=fixture(),a='a'.repeat(64),b='b'.repeat(64);
  assert.equal(f.call('/api/save',a).status,401);assert.equal(f.call('/api/player',a,'POST').status,200);f.call('/api/player',b,'POST');
