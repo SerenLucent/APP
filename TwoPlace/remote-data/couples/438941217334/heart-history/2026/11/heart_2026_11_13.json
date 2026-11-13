@@ -413,6 +413,17 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794579325964,
+      "amount": -56,
+      "balance": 0,
+      "kind": "purchase",
+      "label": "별사탕 먹이 14개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "snack",
+      "quantity": 14
     }
   ]
 }
