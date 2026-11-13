@@ -33,55 +33,17 @@
   },
   "runs": {
     "owner": {
-      "id": "681257aa3c23421a9c43529a5a662f78",
-      "seed": 1746032554,
-      "mode": "mine",
+      "id": "1319185e0c794205b001c06014516d82",
+      "seed": 320411742,
+      "mode": "offense",
       "fieldVersion": 1,
-      "level": 6,
-      "recommendedLevel": 6,
-      "requestId": "9c42b73b-1cc8-4c48-9e46-5f86d21a2351",
-      "startedAt": 1794555882847,
+      "level": 7,
+      "recommendedLevel": 7,
+      "requestId": "69216e7d-7af5-41ec-a284-9eefe6ee559d",
+      "startedAt": 1794573787339,
       "enemyCount": 0,
-      "finishedAt": 1794556088740,
-      "reward": {
-        "id": "mine-stardust",
-        "label": "광산 채굴",
-        "stardust": 162,
-        "hearts": 0
-      },
-      "cleared": [
-        "ore-1-0",
-        "ore-1-1",
-        "ore-1-2",
-        "ore-1-3",
-        "ore-1-4",
-        "ore-1-5",
-        "ore-1-6",
-        "ore-1-7",
-        "ore-1-9",
-        "ore-1-10",
-        "ore-1-11",
-        "ore-2-1",
-        "ore-2-2",
-        "ore-2-6",
-        "ore-2-7",
-        "ore-2-8",
-        "ore-2-9",
-        "ore-2-10",
-        "ore-2-11",
-        "ore-2-12",
-        "ore-2-13",
-        "ore-2-14",
-        "ore-2-15",
-        "ore-2-16",
-        "ore-2-17",
-        "ore-2-18",
-        "ore-2-19",
-        "ore-2-20",
-        "ore-2-21",
-        "ore-2-22",
-        "ore-2-23"
-      ]
+      "finishedAt": null,
+      "reward": null
     },
     "partner": {
       "id": "5f919e485d92460db6df2e5310ae03a0",
@@ -127,7 +89,6 @@
     }
   },
   "operations": [
-    "f6466578-8d90-48d6-9e5f-386ac5022393",
     "3d8e6d4d-5f7d-4b22-acd9-3086d248fb09",
     "cfb176a1-5f7e-4b5f-be2b-ccb23b565459",
     "8d5a9a66-8e04-4fc1-8497-5806c7aa728a",
@@ -254,7 +215,8 @@
     "b1ea6696-8b5b-4601-bd40-4e47cc52f09d",
     "4bb9ba38-eb2d-4fc4-a64d-43436a325ac1",
     "ecaf91f5-67ed-447b-b1ca-97b151ea485d",
-    "5a06d933-9cda-4c57-b1d0-fa1d83e7b7bd"
+    "5a06d933-9cda-4c57-b1d0-fa1d83e7b7bd",
+    "69216e7d-7af5-41ec-a284-9eefe6ee559d"
   ],
   "bestDurationMs": 30385,
   "totalMines": 9,
