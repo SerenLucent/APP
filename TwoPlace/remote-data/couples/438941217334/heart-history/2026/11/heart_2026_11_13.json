@@ -350,6 +350,15 @@
       "character": "momo",
       "product": "kitchencounter",
       "quantity": 1
+    },
+    {
+      "at": 1794560522145,
+      "amount": 10,
+      "balance": 13,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
