@@ -339,6 +339,17 @@
       "label": "별잠산 룰렛 보상",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794557469026,
+      "amount": -70,
+      "balance": 3,
+      "kind": "purchase",
+      "label": "원목 조리대 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "kitchencounter",
+      "quantity": 1
     }
   ]
 }

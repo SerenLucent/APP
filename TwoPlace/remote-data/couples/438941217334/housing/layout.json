@@ -390,6 +390,13 @@
       "wallCol": 1,
       "wallRow": 1,
       "rotation": 0
+    },
+    {
+      "id": "5b7e8793a5f9476db73855d699776d35",
+      "product": "kitchencounter",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
