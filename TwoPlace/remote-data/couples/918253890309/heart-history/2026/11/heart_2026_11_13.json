@@ -58,6 +58,15 @@
       "character": "kuki",
       "product": "snack",
       "quantity": 2
+    },
+    {
+      "at": 1794569758479,
+      "amount": 10,
+      "balance": 63,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
