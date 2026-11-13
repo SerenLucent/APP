@@ -19,7 +19,7 @@ function screen(run){
 }
 const reward={id:'heart3',label:'하트 3개',hearts:3,index:0,segments:['heart3','heart2'],stardust:50};
 test('clear immediately shows readable amount and starts network preparation, but waits at least three seconds',async()=>{
- const h=screen();assert.ok(h.clear.innerHTML.includes('별조각 +50 획득'));assert.ok(!h.clear.innerHTML.includes('확인 중'));assert.ok(h.clear.innerHTML.includes('보상 룰렛을 준비 중입니다.'));
+ const h=screen();assert.ok(!h.clear.innerHTML.includes('data-clear-stars'));assert.ok(!h.clear.innerHTML.includes('확인 중'));assert.ok(h.clear.innerHTML.includes('보상 룰렛을 준비 중입니다.'));
  assert.equal(h.clear.open,true);assert.equal(h.roulette.open,false);assert.equal(h.requests.length,1);assert.equal(h.timers[0].delay,3000);
  h.requests[0].resolve(reward);await tick();assert.equal(h.roulette.open,false);
  h.time(3000);h.timers[0].resolve();await tick();assert.equal(h.roulette.open,true);assert.equal(h.clear.open,false);assert.equal(h.roulette.querySelector('.roulette-spin').disabled,false);
@@ -36,13 +36,6 @@ test('save failure stays on clear with retry, and retry does not require another
 });
 
 
-test('fixed lower-level hearts skip the wheel and immediately offer confirmation after saving',async()=>{
- for(const hearts of [1,2]){
-  const h=screen({level:1,recommendedLevel:hearts===2?2:3});
-  assert.equal(h.clear.querySelector('[data-clear-preparing]').textContent,'획득 보상을 준비 중입니다.');
-  h.requests[0].resolve({id:'heart'+hearts,hearts,stardust:30,segments:Array(12).fill('heart'+hearts)});h.timers[0].resolve();await tick();
-  assert.equal(h.roulette.open,true);assert.equal(h.roulette.querySelector('.wheel-wrap').hidden,true);
-  assert.equal(h.roulette.querySelector('h2').textContent,'하트 '+hearts+'개 획득!');
-  assert.equal(h.roulette.querySelector('.roulette-spin').textContent,'확인');
- }
+test('lower levels also prepare a shard roulette without a fixed heart payout',async()=>{
+ const h=screen({level:1,recommendedLevel:2});h.requests[0].resolve({id:'shard180',label:'별조각 90개',hearts:0,stardust:90,index:0,segments:['shard180','shard200','shard220','shard240']});h.timers[0].resolve();await tick();assert.equal(h.roulette.open,true);assert.notEqual(h.roulette.querySelector('.wheel-wrap').hidden,true);assert.equal(h.roulette.querySelector('.roulette-spin').textContent,'룰렛 돌리기');
 });

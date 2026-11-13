@@ -168,7 +168,8 @@ const BATTLE_PRODUCTS=[
  {id:'hpPotion',name:'HP 회복약',price:5,field:'hpPotions',description:'현재 캐릭터의 HP를 20 회복해요.'},
  {id:'spPotion',name:'SP 회복약',price:8,field:'staminaPotions',description:'현재 캐릭터의 SP를 20 회복해요.'},
 ];
-const ADVENTURE_REWARDS=[2,3,4,5].map(hearts=>({id:'heart'+hearts,label:'하트 '+hearts+'개',hearts}));
+const ADVENTURE_COOLDOWNS={explore:600000,offense:600000,defense:600000,mine:300000};
+const ADVENTURE_REWARDS=[180,200,220,240].map(stardust=>({id:'shard'+stardust,label:'별조각 '+stardust+'개',stardust,hearts:0}));
 function rouletteTier(durationMs,mode='explore'){
  const baseline=mode==='defense'?150000:120000;
  return durationMs<=baseline*.85?{id:'S',label:'S',stardust:60}
@@ -177,8 +178,7 @@ function rouletteTier(durationMs,mode='explore'){
   :{id:'C',label:'C',stardust:40};
 }
 function rouletteTable(durationMs,level=null,recommended=1){
- if(level!==null)return Array.from({length:12},(_,i)=>level<recommended?(recommended-level===1?'heart2':'heart1'):['heart3','heart4','heart5','heart6'][i%4]);
- return ['heart2','heart3','heart2','heart4','heart2','heart3','heart4','heart2','heart3','heart5'];
+ return Array.from({length:12},(_,i)=>ADVENTURE_REWARDS[i%4].id);
 }
 
 function adventureFail(message,status=400){const error=new Error(message);error.status=status;throw error;}
@@ -193,6 +193,7 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
   const recommendedLevel=recommendedMapLevel(data),level=action.level??1;if(!Number.isInteger(level)||level<minimumMapLevel(recommendedLevel)||level>recommendedLevel)adventureFail('선택 가능한 맵 레벨을 확인해 주세요.');
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion&&(previous.level??1)===level){home.adventure=data;return;}
+  const remaining=(data.cooldowns?.[mode]||0)-now;if(remaining>0)adventureFail('재건중이에요. '+Math.ceil(remaining/1000)+'초 후 입장할 수 있어요.',429);
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
   const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:24+Math.floor((data.totalClears||0)/20)*4;
   data.runs[role]={id,seed,mode,fieldVersion,level:action.level===undefined?undefined:level,recommendedLevel,requestId:action.actionId,startedAt:now,enemyCount,finishedAt:null,reward:null};
@@ -217,9 +218,10 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
    if(ids.some(id=>!valid.has(id)))adventureFail('필드의 장애물 기록을 확인해 주세요.');
    if(mixed&&ids.filter(id=>valid.get(id)==='tree').length!==EXPLORATION_GOALS.tree)adventureFail('나무 50개와 바위 30개를 정리해야 해요.');
   }
-  const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs,run.level??null,run.recommendedLevel??1),tier=rouletteTier(durationMs,mode),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),reward={...[...ADVENTURE_REWARDS,{id:'heart1',label:'하트 1개',hearts:1},{id:'heart6',label:'하트 6개',hearts:6}].find(r=>r.id===segments[index]),index,segments,tier,stardust:mapStardustReward(tier.stardust,run.level??1,run.recommendedLevel??1)};home.hearts+=reward.hearts;data.stardust+=reward.stardust;
+  const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs,run.level??null,run.recommendedLevel??1),tier=rouletteTier(durationMs,mode),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),selected=ADVENTURE_REWARDS.find(r=>r.id===segments[index]),amount=mapStardustReward(selected.stardust,run.level??1,run.recommendedLevel??1),reward={...selected,label:'별조각 '+amount+'개',index,segments,tier,stardust:amount};data.stardust+=reward.stardust;
   const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
   data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.length:0,...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
+  data.cooldowns={...data.cooldowns,[mode]:now+ADVENTURE_COOLDOWNS[mode]};
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){
   data=investAdventurePoint(data,action.pet,action.stat);
@@ -279,6 +281,7 @@ function finishMineAdventure(home,data,run,action,now,role){
  amount=Math.floor(amount*mapRewardFactor(run.level??1,run.recommendedLevel??1));
  const reward={id:'mine-stardust',label:'광산 채굴',stardust:amount,hearts:0};data.stardust+=amount;data.totalMines=(data.totalMines||0)+1;
  data.history=[...(data.history||[]),{runId:run.id,mineNo:data.totalMines,at:now,startedAt:run.startedAt,durationMs:MINE_SECONDS*1000,role,character:action.pet==='kuki'?'kuki':'momo',mode:'mine',obstacles:broken.length,reward}];
+ data.cooldowns={...data.cooldowns,mine:now+ADVENTURE_COOLDOWNS.mine};
  data.runs[role]={...run,finishedAt:now,reward,cleared:broken};
 }
 

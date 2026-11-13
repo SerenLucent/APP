@@ -14,3 +14,5 @@
 .mode-shard-balance{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}.mode-shard-balance .mode-shard-icon{width:28px;height:28px;object-fit:contain;flex:none}.mode-shard-balance strong{font-size:inherit}
 
 .mode-menu header{flex-wrap:wrap}.standalone-footer{text-align:center;margin:32px 0 8px;font-size:11px;color:#a6b8a5}
+
+.map-rebuild{margin-top:16px;padding-top:12px;border-top:1px solid #f4ead12b;font-size:13px}.map-rebuild>div{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}.map-rebuild time{font-variant-numeric:tabular-nums;color:#ffe4a4}.map-rebuild progress{display:block;appearance:none;width:100%;height:7px;border:0;border-radius:8px;overflow:hidden;background:#152b23}.map-rebuild progress::-webkit-progress-bar{background:#152b23}.map-rebuild progress::-webkit-progress-value{background:#ecd58d;border-radius:8px}.map-rebuild progress::-moz-progress-bar{background:#ecd58d}.mode-card.rebuilding>b{opacity:.45;filter:grayscale(.7)}.mode-card.rebuilding{cursor:default}
