@@ -705,6 +705,15 @@
       "character": "momo",
       "product": "sinkunit",
       "quantity": 1
+    },
+    {
+      "at": 1794645553229,
+      "amount": 10,
+      "balance": 32,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
