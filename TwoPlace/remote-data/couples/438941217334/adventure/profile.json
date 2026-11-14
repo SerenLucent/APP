@@ -11,7 +11,7 @@
       "ultimate": 1
     }
   },
-  "hpPotions": 7,
+  "hpPotions": 6,
   "staminaPotions": 7,
   "points": 0,
   "totalClears": 112,
@@ -60,7 +60,6 @@
     }
   },
   "operations": [
-    "696fd318-1ee7-41f4-9eea-f2dd2506fa51",
     "cb347878-f74e-451c-a101-ca837f88c78d",
     "747eabc9-42ee-4d01-a2df-2066ecc5de14",
     "0642c683-eb7a-4d28-8248-69212b2b8af2",
@@ -187,7 +186,8 @@
     "34015333-5e6e-4cea-8532-bedd37dff7f0",
     "78f6c1ca-c167-40f9-ad69-d57050956a1d",
     "412f732c-1683-4f31-9ee2-39a5d1d329db",
-    "d72cb20d-91c5-4cb3-8761-af5f72f52e5a"
+    "d72cb20d-91c5-4cb3-8761-af5f72f52e5a",
+    "b04d20eb-f41d-413d-b9f7-32cda0381faf"
   ],
   "bestDurationMs": 30385,
   "totalMines": 9,
