@@ -406,6 +406,13 @@
       "x": 12,
       "y": 80.475,
       "rotation": 270
+    },
+    {
+      "id": "c9513e8b32ef4ebba7e7672df0379469",
+      "product": "fridge",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
