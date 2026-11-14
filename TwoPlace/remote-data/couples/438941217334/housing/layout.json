@@ -402,9 +402,10 @@
     {
       "id": "fd3dc0e907ed44f3b6a744b7251c0beb",
       "product": "sinkunit",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "home",
+      "x": 12,
+      "y": 80.475,
+      "rotation": 270
     }
   ],
   "layoutVersion": 2,
