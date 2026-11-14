@@ -869,6 +869,15 @@
       "character": "momo",
       "product": "fridge",
       "quantity": 1
+    },
+    {
+      "at": 1794676213530,
+      "amount": 1,
+      "balance": 5,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
