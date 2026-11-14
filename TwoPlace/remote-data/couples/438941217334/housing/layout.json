@@ -398,6 +398,13 @@
       "x": 12,
       "y": 84.775,
       "rotation": 270
+    },
+    {
+      "id": "fd3dc0e907ed44f3b6a744b7251c0beb",
+      "product": "sinkunit",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
