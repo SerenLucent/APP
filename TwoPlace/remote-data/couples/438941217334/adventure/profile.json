@@ -1,5 +1,5 @@
 {
-  "stardust": 778,
+  "stardust": 178,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -27,7 +27,7 @@
       "strength": 10,
       "vitality": 5,
       "stamina": 11,
-      "dexterity": 0,
+      "dexterity": 3,
       "luck": 0
     }
   },
@@ -120,7 +120,6 @@
     }
   },
   "operations": [
-    "b870b986-3481-40c0-bd0e-77e7f8e2deb7",
     "c6f1a3d6-df55-49e5-9352-2fd51ef19f86",
     "8f837c2b-126b-47ec-b7d4-4b6181afa793",
     "b67f9295-33d9-42b4-8c73-7f1256e482e6",
@@ -247,13 +246,14 @@
     "d05c287f-dd7c-4e14-9efd-621b082a9e4d",
     "6546dd9b-9e8c-4fd3-a653-aaa0761602b5",
     "4b079dc2-ef21-4bfb-ae6f-82e3749330d4",
-    "d909a36a-fde9-43c5-b5ee-758cd39c2555"
+    "d909a36a-fde9-43c5-b5ee-758cd39c2555",
+    "9d1615d9-31e0-43e4-bea5-af131dd774ab"
   ],
   "bestDurationMs": 30385,
   "totalMines": 12,
   "investmentIncludesSkills": true,
   "statInvestment": {
     "momo": 6560,
-    "kuki": 6500
+    "kuki": 7100
   }
 }
