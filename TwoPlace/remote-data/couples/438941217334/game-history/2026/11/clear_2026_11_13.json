@@ -520,6 +520,23 @@
         },
         "stardust": 50
       }
+    },
+    {
+      "runId": "eb11bdf4f1944b7084734ea11ee1bf45",
+      "mineNo": 17,
+      "at": 1794745406737,
+      "startedAt": 1794745214171,
+      "durationMs": 180000,
+      "role": "owner",
+      "character": "momo",
+      "mode": "mine",
+      "obstacles": 18,
+      "reward": {
+        "id": "mine-stardust",
+        "label": "광산 채굴",
+        "stardust": 75,
+        "hearts": 0
+      }
     }
   ]
 }
