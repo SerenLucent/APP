@@ -1076,6 +1076,15 @@
       "label": "시간 하트",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794734940617,
+      "amount": 5,
+      "balance": 112,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
