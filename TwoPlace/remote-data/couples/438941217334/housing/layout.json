@@ -414,6 +414,13 @@
       "x": 16,
       "y": 84.775,
       "rotation": 270
+    },
+    {
+      "id": "1ef72deed6df48e8a25b1586bfcae8a3",
+      "product": "stove",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,

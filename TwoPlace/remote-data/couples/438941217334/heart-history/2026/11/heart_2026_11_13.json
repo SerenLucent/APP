@@ -1085,6 +1085,17 @@
       "label": "별잠산 룰렛 보상",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794735683014,
+      "amount": -95,
+      "balance": 17,
+      "kind": "purchase",
+      "label": "오븐 가스레인지 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "stove",
+      "quantity": 1
     }
   ]
 }
