@@ -1,6 +1,6 @@
 {
-  "version": 1689,
-  "hearts": 23,
+  "version": 1690,
+  "hearts": 24,
   "snacks": 25,
   "lastClaim": 1794816546151,
   "pets": {
@@ -10,7 +10,7 @@
       "affinity": 100,
       "affinityAt": 1794816564447,
       "energy": 100,
-      "energyAt": 1794803989072
+      "energyAt": 1794816571207
     },
     "kuki": {
       "hunger": 79,
@@ -37,8 +37,8 @@
     "mochi": {
       "sleep": {
         "day": "2026-11-16",
-        "count": 4,
-        "lastAt": 1794803989072
+        "count": 5,
+        "lastAt": 1794816571207
       },
       "pat": {
         "day": "2026-11-16",
