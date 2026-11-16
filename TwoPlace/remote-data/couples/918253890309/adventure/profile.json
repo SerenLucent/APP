@@ -1,6 +1,6 @@
 {
-  "stardust": 80,
-  "skillPoints": 1,
+  "stardust": 560,
+  "skillPoints": 0,
   "skills": {
     "momo": {
       "charge": 1,
@@ -13,22 +13,22 @@
   },
   "hpPotions": 0,
   "staminaPotions": 0,
-  "points": 1,
+  "points": 0,
   "totalClears": 10,
   "stats": {
     "momo": {
       "strength": 0,
       "vitality": 0,
       "stamina": 0,
-      "luck": 0,
-      "dexterity": 0
+      "dexterity": 0,
+      "luck": 0
     },
     "kuki": {
       "strength": 0,
       "vitality": 0,
       "stamina": 0,
-      "luck": 0,
-      "dexterity": 0
+      "dexterity": 0,
+      "luck": 0
     }
   },
   "runs": {
@@ -178,7 +178,13 @@
     "a3a4aaa4-4aed-4d3d-a54d-5c498a5df694",
     "be66c0cc-b2c6-4b3c-bdb1-f116d0bd80b7",
     "78ddd3ba-c44c-4176-9cab-85e92c367417",
-    "ec8cbee9-a2b1-465a-845e-440d536e7302"
+    "ec8cbee9-a2b1-465a-845e-440d536e7302",
+    "ee4058d7-ff6a-4d41-abb1-ce9162ecfeaf"
   ],
-  "bestDurationMs": 192659
+  "bestDurationMs": 192659,
+  "investmentIncludesSkills": true,
+  "statInvestment": {
+    "momo": 0,
+    "kuki": 0
+  }
 }
