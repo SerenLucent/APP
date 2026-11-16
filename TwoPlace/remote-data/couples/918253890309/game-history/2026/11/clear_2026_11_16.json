@@ -111,6 +111,30 @@
         },
         "stardust": 60
       }
+    },
+    {
+      "runId": "41cbae224f6246ecbf6beaf24b4d0841",
+      "clearNo": 15,
+      "at": 1794849138367,
+      "startedAt": 1794848894807,
+      "durationMs": 233285,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 24,
+      "mode": "explore",
+      "obstacles": 80,
+      "trees": 50,
+      "rocks": 30,
+      "houses": 0,
+      "reward": {
+        "id": "heart4",
+        "label": "하트 4개",
+        "hearts": 4,
+        "tier": {
+          "id": "C"
+        },
+        "stardust": 40
+      }
     }
   ]
 }
