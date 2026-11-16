@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "5cedc02363814d1c9806564a25d15479",
+      "mineNo": 18,
+      "at": 1794794253163,
+      "startedAt": 1794794060011,
+      "durationMs": 180000,
+      "role": "owner",
+      "character": "momo",
+      "mode": "mine",
+      "obstacles": 24,
+      "reward": {
+        "id": "mine-stardust",
+        "label": "광산 채굴",
+        "stardust": 101,
+        "hearts": 0
+      }
+    }
+  ]
+}
