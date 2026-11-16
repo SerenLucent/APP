@@ -1,5 +1,5 @@
 {
-  "stardust": 600,
+  "stardust": 640,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -14,7 +14,7 @@
   "hpPotions": 0,
   "staminaPotions": 0,
   "points": 0,
-  "totalClears": 11,
+  "totalClears": 12,
   "stats": {
     "momo": {
       "strength": 0,
@@ -42,8 +42,37 @@
       "requestId": "3a86e526-3467-48b0-89d0-9044d21e3c52",
       "startedAt": 1794847878736,
       "enemyCount": 0,
-      "finishedAt": null,
-      "reward": null
+      "finishedAt": 1794848058648,
+      "reward": {
+        "id": "heart4",
+        "label": "하트 4개",
+        "hearts": 4,
+        "index": 9,
+        "segments": [
+          "heart3",
+          "heart4",
+          "heart5",
+          "heart6",
+          "heart3",
+          "heart4",
+          "heart5",
+          "heart6",
+          "heart3",
+          "heart4",
+          "heart5",
+          "heart6"
+        ],
+        "tier": {
+          "id": "C",
+          "label": "C",
+          "stardust": 40
+        },
+        "stardust": 40
+      },
+      "clearNo": 12,
+      "cleared": [
+        "outpost-house"
+      ]
     }
   },
   "operations": [
@@ -78,9 +107,10 @@
     "ee4058d7-ff6a-4d41-abb1-ce9162ecfeaf",
     "b191c394-2623-4f90-9db8-3104a6222476",
     "2ee3dff4-9e74-491f-8b8a-c239727fb24a",
-    "3a86e526-3467-48b0-89d0-9044d21e3c52"
+    "3a86e526-3467-48b0-89d0-9044d21e3c52",
+    "db14fa77-adfd-4729-82b0-4aca3dbf4f98"
   ],
-  "bestDurationMs": 192659,
+  "bestDurationMs": 170932,
   "investmentIncludesSkills": true,
   "statInvestment": {
     "momo": 0,
