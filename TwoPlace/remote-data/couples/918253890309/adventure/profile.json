@@ -33,47 +33,17 @@
   },
   "runs": {
     "owner": {
-      "id": "4dba96e8c2a340ca90827597021525da",
-      "seed": 1304073960,
+      "id": "39fff32c64d94a48abfe5711e6a85531",
+      "seed": 973075244,
       "mode": "mine",
       "fieldVersion": 1,
       "level": 1,
       "recommendedLevel": 1,
-      "requestId": "eee39514-a052-4c4d-9472-b809a8b66964",
-      "startedAt": 1794850276296,
+      "requestId": "2a871646-ec05-4381-918f-e22fe893a99a",
+      "startedAt": 1794850492337,
       "enemyCount": 0,
-      "finishedAt": 1794850470388,
-      "reward": {
-        "id": "mine-stardust",
-        "label": "광산 채굴",
-        "stardust": 104,
-        "hearts": 0
-      },
-      "cleared": [
-        "ore-0-1",
-        "ore-0-2",
-        "ore-1-0",
-        "ore-1-1",
-        "ore-1-2",
-        "ore-1-3",
-        "ore-1-4",
-        "ore-1-5",
-        "ore-1-6",
-        "ore-1-7",
-        "ore-1-8",
-        "ore-1-9",
-        "ore-1-10",
-        "ore-2-0",
-        "ore-2-1",
-        "ore-2-2",
-        "ore-2-7",
-        "ore-2-8",
-        "ore-2-9",
-        "ore-2-10",
-        "ore-2-11",
-        "ore-2-12",
-        "ore-2-13"
-      ]
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
@@ -132,7 +102,8 @@
     "2ccd86de-678f-4626-93a7-292b3f23ec84",
     "07410a43-33cb-4f02-8190-b37fe5e4ec74",
     "eee39514-a052-4c4d-9472-b809a8b66964",
-    "641224d9-0e37-4a7c-9a8b-fb4b304b9dd2"
+    "641224d9-0e37-4a7c-9a8b-fb4b304b9dd2",
+    "2a871646-ec05-4381-918f-e22fe893a99a"
   ],
   "bestDurationMs": 112971,
   "investmentIncludesSkills": true,
