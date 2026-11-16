@@ -33,48 +33,17 @@
   },
   "runs": {
     "owner": {
-      "id": "5cedc02363814d1c9806564a25d15479",
-      "seed": 1559085091,
-      "mode": "mine",
+      "id": "2f1f2f6b939b4a189fce6701210a79e1",
+      "seed": 790572907,
+      "mode": "offense",
       "fieldVersion": 1,
       "level": 8,
       "recommendedLevel": 8,
-      "requestId": "dbef5ee8-47f1-41ba-9015-8b1647c8e0d7",
-      "startedAt": 1794794060011,
+      "requestId": "3a686fa9-4caf-423c-899e-46b619ddbed4",
+      "startedAt": 1794794298412,
       "enemyCount": 0,
-      "finishedAt": 1794794253163,
-      "reward": {
-        "id": "mine-stardust",
-        "label": "광산 채굴",
-        "stardust": 101,
-        "hearts": 0
-      },
-      "cleared": [
-        "ore-1-0",
-        "ore-1-1",
-        "ore-1-2",
-        "ore-1-3",
-        "ore-1-4",
-        "ore-1-5",
-        "ore-1-6",
-        "ore-1-7",
-        "ore-1-8",
-        "ore-1-9",
-        "ore-1-10",
-        "ore-1-11",
-        "ore-1-12",
-        "ore-1-13",
-        "ore-1-14",
-        "ore-1-15",
-        "ore-1-16",
-        "ore-1-17",
-        "ore-1-18",
-        "ore-1-19",
-        "ore-1-20",
-        "ore-1-21",
-        "ore-2-1",
-        "ore-2-2"
-      ]
+      "finishedAt": null,
+      "reward": null
     },
     "partner": {
       "id": "78e5d7540a1642d9bc708f629acf23df",
@@ -120,7 +89,6 @@
     }
   },
   "operations": [
-    "d5cac5cc-fb1e-4ef8-ab5e-f2d682c348ab",
     "5c62faf6-ea75-4d91-b9c1-2ea05e74e039",
     "cfed91c7-b4dc-4384-a412-9c157603d6cf",
     "99e314e4-1ad4-4f29-8eba-c46e987cce09",
@@ -247,7 +215,8 @@
     "b267710d-b344-49bc-9394-ebc44c56f5f2",
     "a5d371ff-646e-40f8-8d42-5346ce584062",
     "dbef5ee8-47f1-41ba-9015-8b1647c8e0d7",
-    "51e92240-97ef-498d-a19c-312b74002cac"
+    "51e92240-97ef-498d-a19c-312b74002cac",
+    "3a686fa9-4caf-423c-899e-46b619ddbed4"
   ],
   "bestDurationMs": 30385,
   "totalMines": 18,
