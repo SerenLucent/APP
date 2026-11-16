@@ -1,5 +1,5 @@
 {
-  "stardust": 297,
+  "stardust": 392,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -42,8 +42,37 @@
       "requestId": "2a637cee-0839-4b8a-94c3-570a10eb877b",
       "startedAt": 1794849845897,
       "enemyCount": 0,
-      "finishedAt": null,
-      "reward": null
+      "finishedAt": 1794850040548,
+      "reward": {
+        "id": "mine-stardust",
+        "label": "광산 채굴",
+        "stardust": 95,
+        "hearts": 0
+      },
+      "cleared": [
+        "ore-1-1",
+        "ore-1-2",
+        "ore-1-3",
+        "ore-1-4",
+        "ore-1-5",
+        "ore-1-6",
+        "ore-1-7",
+        "ore-1-8",
+        "ore-1-9",
+        "ore-1-11",
+        "ore-1-12",
+        "ore-2-1",
+        "ore-2-2",
+        "ore-2-3",
+        "ore-2-4",
+        "ore-2-5",
+        "ore-2-6",
+        "ore-2-7",
+        "ore-2-8",
+        "ore-2-11",
+        "ore-2-12",
+        "ore-2-13"
+      ]
     }
   },
   "operations": [
@@ -97,7 +126,8 @@
     "7ebe8b26-c0b0-4c2a-bac6-3eb8eeca851b",
     "439590a5-6f07-4af8-bcac-0738f4f57328",
     "8397a8a4-01c7-4f7e-b02b-f71f5c3c4ed6",
-    "2a637cee-0839-4b8a-94c3-570a10eb877b"
+    "2a637cee-0839-4b8a-94c3-570a10eb877b",
+    "d75fc7af-aab8-4e9e-a191-f2c98c80f62c"
   ],
   "bestDurationMs": 112971,
   "investmentIncludesSkills": true,
@@ -105,5 +135,5 @@
     "momo": 600,
     "kuki": 200
   },
-  "totalMines": 2
+  "totalMines": 3
 }
