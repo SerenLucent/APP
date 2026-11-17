@@ -1,12 +1,12 @@
 {
-  "version": 1755,
+  "version": 1756,
   "hearts": 16,
-  "snacks": 14,
+  "snacks": 13,
   "lastClaim": 1794927790215,
   "pets": {
     "mochi": {
-      "hunger": 95,
-      "updatedAt": 1794891410586,
+      "hunger": 80,
+      "updatedAt": 1794928144787,
       "affinity": 100,
       "affinityAt": 1794927885081,
       "energy": 100,
