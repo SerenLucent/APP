@@ -422,6 +422,13 @@
       "x": 16,
       "y": 71.875,
       "rotation": 270
+    },
+    {
+      "id": "a1deb1a6b5e14675aaebdf59851900fc",
+      "product": "coffeestation",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
