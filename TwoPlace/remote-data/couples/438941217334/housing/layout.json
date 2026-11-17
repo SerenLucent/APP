@@ -434,9 +434,10 @@
     {
       "id": "96a52eed350d455fa3798af11a5a9d71",
       "product": "television",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "home",
+      "x": 60,
+      "y": 58.975,
+      "rotation": 180
     }
   ],
   "layoutVersion": 2,
