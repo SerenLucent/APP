@@ -430,6 +430,13 @@
       "x": 80,
       "y": 76.175,
       "rotation": 0
+    },
+    {
+      "id": "96a52eed350d455fa3798af11a5a9d71",
+      "product": "television",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,

@@ -582,6 +582,17 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794922152482,
+      "amount": -100,
+      "balance": 2,
+      "kind": "purchase",
+      "label": "아날로그 TV 세트 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "television",
+      "quantity": 1
     }
   ]
 }
