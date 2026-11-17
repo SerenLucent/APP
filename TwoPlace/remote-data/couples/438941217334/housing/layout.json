@@ -426,9 +426,10 @@
     {
       "id": "a1deb1a6b5e14675aaebdf59851900fc",
       "product": "coffeestation",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "home",
+      "x": 68,
+      "y": 48.225,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
