@@ -7,6 +7,13 @@
       "x": 56,
       "y": 54.675,
       "rotation": 0
+    },
+    {
+      "id": "7cb9ef962e8443b2901e0895a5b840c6",
+      "product": "picnicTable",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
