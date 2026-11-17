@@ -2,7 +2,18 @@ import {blocksPoint} from './adventure-collision.js';
 export const ENEMY_RULES={notice:240,lose:350,leash:440,attack:46,speed:100,windup:.55};
 const CELL=40,COLS=65,ROWS=45;
 function clearAt(x,y,obstacles,radius=18){return x>=80&&x<=2520&&y>=160&&y<=1720&&!obstacles.some(o=>blocksPoint(o,x,y,radius));}
-export function createEnemies(obstacles=[],count=24){return [...[[820,1220],[1060,740],[1340,1100],[1620,500],[1820,1380],[2180,780]],...Array.from({length:Math.max(0,count-6)},(_,i)=>[740+(i%6)*280+(Math.floor(i/18)%2)*60,360+(Math.floor(i/6)%3)*530])].map(([x,y],i)=>{const ox=x,oy=y;for(let t=0;t<100&&(!clearAt(x,y,obstacles,26)||Math.hypot(x-550,y-1040)<310);t++){x=ox+Math.cos(t*2.4)*(50+t*3);y=oy+Math.sin(t*2.4)*(50+t*3);}x=Math.floor(x/CELL)*CELL+20;y=Math.floor(y/CELL)*CELL+20;for(let n=0;n<30&&!clearAt(x,y,obstacles,26);n++)x+=CELL;return {id:'enemy-'+i,type:'enemy',name:'숲 방울이',x,y,homeX:x,homeY:y,hp:90,max:90,radius:22,mode:'idle',flash:0,cooldown:0,windup:0,repath:0,path:[]};});}
+function createLegacyEnemies(obstacles=[],count=24){return [...[[820,1220],[1060,740],[1340,1100],[1620,500],[1820,1380],[2180,780]],...Array.from({length:Math.max(0,count-6)},(_,i)=>[740+(i%6)*280+(Math.floor(i/18)%2)*60,360+(Math.floor(i/6)%3)*530])].map(([x,y],i)=>{const ox=x,oy=y;for(let t=0;t<100&&(!clearAt(x,y,obstacles,26)||Math.hypot(x-550,y-1040)<310);t++){x=ox+Math.cos(t*2.4)*(50+t*3);y=oy+Math.sin(t*2.4)*(50+t*3);}x=Math.floor(x/CELL)*CELL+20;y=Math.floor(y/CELL)*CELL+20;for(let n=0;n<30&&!clearAt(x,y,obstacles,26);n++)x+=CELL;return {id:'enemy-'+i,type:'enemy',name:'숲 방울이',x,y,homeX:x,homeY:y,hp:90,max:90,radius:22,mode:'idle',flash:0,cooldown:0,windup:0,repath:0,path:[]};});}
+export function createEnemies(obstacles=[],count=24){
+ if(count<72)return createLegacyEnemies(obstacles,count);
+ const enemies=[],centers=[[850,1050],[1100,650],[1450,1050],[1800,650],[2000,1200]];
+ for(let i=0;i<count;i++){
+  const [cx,cy]=centers[i%centers.length];let x,y,found=false;
+  for(let t=0;t<1200;t++){const angle=(i*19+t)*2.399963,r=45+Math.sqrt(t)*13;x=Math.round(cx+Math.cos(angle)*r);y=Math.round(cy+Math.sin(angle)*r);
+   if(clearAt(x,y,obstacles,26)&&Math.hypot(x-550,y-1040)>=310&&!enemies.some(e=>Math.hypot(x-e.x,y-e.y)<48)){found=true;break;}}
+  if(!found)throw new Error('뭉치 배치 공간을 찾지 못했어요.');
+  enemies.push({id:'enemy-'+i,type:'enemy',name:'숲 뭉치',x,y,homeX:x,homeY:y,hp:90,max:90,radius:22,mode:'idle',flash:0,cooldown:0,windup:0,repath:0,path:[]});
+ }return enemies;
+}
 export function enemyMode(enemy,player){if(enemy.hp<=0)return 'dead';if(enemy.offense||enemy.defenseTarget==='player')return 'chase';if(enemy.mode==='return')return Math.hypot(enemy.x-enemy.homeX,enemy.y-enemy.homeY)<10?'idle':'return';const homeDistance=Math.hypot(enemy.x-enemy.homeX,enemy.y-enemy.homeY),targetDistance=Math.hypot(player.x-enemy.x,player.y-enemy.y);if(enemy.mode==='chase'&&(homeDistance>ENEMY_RULES.leash||targetDistance>ENEMY_RULES.lose))return 'return';return targetDistance<ENEMY_RULES.notice||enemy.mode==='chase'?'chase':'idle';}
 export function enemyPath(start,goal,obstacles,padding=18){
  const cell=p=>({c:Math.max(2,Math.min(COLS-3,Math.floor(p.x/CELL))),r:Math.max(4,Math.min(ROWS-3,Math.floor(p.y/CELL)))}),a=cell(start),b=cell(goal),key=(c,r)=>r*COLS+c;

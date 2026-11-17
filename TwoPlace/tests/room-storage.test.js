@@ -90,7 +90,7 @@ test('all three current modes award split currency, then battle purchases, stat/
  const act=action=>{const session=s.open();session.petAction({...action,actionId:'release-game-action-'+String(++sequence).padStart(4,'0'),version:s.files['wallet/current.json'].version},'owner');return session.snapshot('owner');};
  for(const mode of ['explore','offense','defense']){
   const started=act({type:'adventureStart',mode,fieldVersion:EXPLORATION_FIELD_VERSION}),run=started.petHome.adventure.runs.owner;
-  const objects=createObstacles(run.seed,EXPLORATION_FIELD_VERSION),cleared=mode==='explore'?[...objects.filter(o=>o.type==='tree').slice(0,50),...objects.filter(o=>o.type==='rock').slice(0,30)].map(o=>o.id):mode==='offense'?['outpost-house']:DEFENSE_WAVES.flatMap((count,wave)=>Array.from({length:count},(_,i)=>`defense-${wave+1}-${i}`));
+  const objects=createObstacles(run.seed,EXPLORATION_FIELD_VERSION),cleared=mode==='explore'?[...objects.filter(o=>o.type==='tree').slice(0,20),...objects.filter(o=>o.type==='rock').slice(0,60)].map(o=>o.id):mode==='offense'?['outpost-house']:DEFENSE_WAVES.flatMap((count,wave)=>Array.from({length:count},(_,i)=>`defense-${wave+1}-${i}`));
   const completed=act({type:'adventureFinish',runId:run.id,cleared,pet:'kuki',playTimeMs:0});
   assert.ok(completed.petHome.adventure.runs.owner.reward.hearts>=2);assert.ok(completed.petHome.adventure.runs.owner.reward.hearts<=5);
   assert.equal(completed.petHome.adventure.runs.owner.reward.stardust,60);

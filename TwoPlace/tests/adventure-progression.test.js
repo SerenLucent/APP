@@ -29,7 +29,7 @@ test('mixed field clears require 50 trees and 30 rocks, including after migratin
  const start=(actionId,fieldVersion,id)=>applyAdventureAction(home,{type:'adventureStart',actionId,fieldVersion},1000,()=>id,'owner');
  start('legacy-start-000000',1,'12345678-1234-1234-1234-123456789012');
  const previous=home.adventure.runs.owner;
- start('mixed-start-0000000',EXPLORATION_FIELD_VERSION,'22345678-1234-1234-1234-123456789012');
+ start('mixed-start-0000000',2,'22345678-1234-1234-1234-123456789012');
  const run=home.adventure.runs.owner;
  assert.notEqual(run.id,previous.id);
  const objects=createObstacles(run.seed,run.fieldVersion);
@@ -39,7 +39,7 @@ test('mixed field clears require 50 trees and 30 rocks, including after migratin
  const finish=cleared=>applyAdventureAction(home,{type:'adventureFinish',actionId:'mixed-finish-000000',runId:run.id,cleared},2000,()=>'', 'owner');
  assert.throws(()=>finish([...trees.slice(0,51),...rocks.slice(0,29)].map(o=>o.id)),/나무 50개와 바위 30개/);
  for(const item of [...trees.slice(0,70),...rocks.slice(0,30)])item.hp=0;
- finish(explorationProof(objects));
+ finish(explorationProof(objects,[],2));
  const [entry]=home.adventure.history;
  assert.deepEqual([entry.obstacles,entry.trees,entry.rocks],[80,50,30]);
 });
@@ -65,9 +65,9 @@ test('defense rewards a complete set of waves once in the room wallet',()=>{
  const random=()=>.99;
  applyAdventureAction(home,start,1000,id,'owner',random);
  const defense=createDefense(),cleared=[];
- for(const count of DEFENSE_WAVES){
+ for(let n=0;n<DEFENSE_TOTAL/2;n++){
   const {fresh}=stepDefense(defense,[],2);
-  assert.equal(fresh.length,count);
+  assert.equal(fresh.length,2);
   cleared.push(...fresh.map(enemy=>enemy.id));
  }
  assert.equal(stepDefense(defense,[],0).complete,true);
@@ -98,4 +98,14 @@ test('offense grants the common roulette once, records the house objective and i
  assert.throws(()=>applyAdventureAction(home,{...finish,actionId:'stale-finish-00000000',runId:explore.id,cleared:['outpost-house']},6000,id,'owner'),e=>e.status===409);
  start('explore');assert.throws(()=>applyAdventureAction(home,{...finish,actionId:'wrong-mode-finish0000',runId:home.adventure.runs.owner.id,cleared:['outpost-house']},6000,id,'owner'));
  assert.equal(home.adventure.history.length,1);
+});
+
+test('gauge exploration validates weighted objects and enemies and records actual counts',()=>{
+ const home={hearts:0};applyAdventureAction(home,{type:'adventureStart',actionId:'gauge-start-000001',fieldVersion:EXPLORATION_FIELD_VERSION},1000,()=> '32345678-1234-1234-1234-123456789012','owner');
+ const run=home.adventure.runs.owner;assert.equal(run.enemyCount,72);
+ const objects=createObstacles(run.seed,run.fieldVersion);assert.equal(objects.length,160);
+ const ids=[...objects.filter(o=>o.type==='tree').slice(0,20).map(o=>o.id),...objects.filter(o=>o.type==='rock').slice(0,40).map(o=>o.id),...Array.from({length:30},(_,i)=>'enemy-'+i)];
+ const finish=cleared=>applyAdventureAction(home,{type:'adventureFinish',actionId:'gauge-finish-00001',runId:run.id,cleared},2000,()=>'', 'owner');
+ assert.throws(()=>finish(ids.slice(1)),/100%/);assert.throws(()=>finish([...ids,ids[0]]));assert.throws(()=>finish([...ids,'enemy-72']));finish(ids);
+ assert.deepEqual([home.adventure.history[0].trees,home.adventure.history[0].rocks,home.adventure.history[0].defeated,home.adventure.history[0].progress],[20,40,30,100]);
 });

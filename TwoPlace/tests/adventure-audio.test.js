@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {createCombatAudio,COMBAT_SOUNDS} from '../src/adventure-audio.js';
 import {chargeFocus} from '../src/adventure-charge-art.js';
-function setup(){const played=[],stopped=[],sources=[];const context={state:'running',destination:{},resume:async()=>{},decodeAudioData:async value=>value,createGain:()=>({gain:{},connect(){},disconnect(){}}),createBufferSource(){return {connect(){},disconnect(){},start(){sources.push(this);played.push({name:this.buffer.name,loop:this.loop});},stop(){stopped.push(this.buffer.name);}};}};return {played,stopped,sources,audio:createCombatAudio({base:'/game/',contextFactory:()=>context,fetchFile:async url=>({ok:true,arrayBuffer:async()=>({name:url.split('/').at(-1).replace('.mp3','')})})})};}
+function setup(){const played=[],stopped=[],sources=[];const context={state:'running',destination:{},resume:async()=>{},decodeAudioData:async value=>value,createGain:()=>({gain:{},connect(){},disconnect(){}}),createBufferSource(){return {playbackRate:{value:1},connect(){},disconnect(){},start(...args){this.startArgs=args;sources.push(this);played.push({name:this.buffer.name,loop:this.loop});},stop(){stopped.push(this.buffer.name);}};}};return {played,stopped,sources,audio:createCombatAudio({base:'/game/',contextFactory:()=>context,fetchFile:async url=>({ok:true,arrayBuffer:async()=>({name:url.split('/').at(-1).replace('.mp3','')})})})};}
 const flush=()=>new Promise(setImmediate);
 test('all supplied MP3 files exist and spin hits cycle 1,2,3,4 only when connected',async()=>{
  for(const name of COMBAT_SOUNDS)assert.ok(fs.statSync('public/audio/'+name+'.mp3').size>0);
@@ -26,3 +26,8 @@ test('a finished charge sound does not restart while held, on another touch, or 
 test('basic hit variants are random with no adjacent repeats',async()=>{
  const {audio,played}=setup();await audio.preload();for(let i=0;i<30;i++)audio.basicHit();await flush();assert.equal(played.length,30);assert.ok(played.every(p=>['hit','hit2','hit3'].includes(p.name)));for(let i=1;i<played.length;i++)assert.notEqual(played[i].name,played[i-1].name);
 });
+
+test('one normal-speed numbered impact fits each 0.2-second tick with no delayed replay',async()=>{const {audio,played,stopped,sources}=setup();await audio.preload();for(let i=0;i<6;i++){audio.turretHit(true);await flush();assert.equal(played.length,i+1);audio.turretHit(true);await flush();assert.equal(played.length,i+1);assert.equal(sources.at(-1).startArgs[2],.19);sources.at(-1).onended();await flush();assert.equal(played.length,i+1);}assert.deepEqual(played.map(p=>p.name),['momo_charge1','momo_charge2','momo_charge3','momo_charge4','momo_charge1','momo_charge2']);assert.equal(stopped.length,0);assert.ok(sources.every(s=>s.playbackRate.value===1));});
+test('pause and mute clear the turret busy gate without stale sounds restarting',async()=>{const {audio,played}=setup();await audio.preload();audio.turretHit(true);audio.stop();await flush();assert.equal(played.length,0);audio.turretHit(true);await flush();assert.equal(played.length,1);audio.setMuted(true);audio.setMuted(false);audio.turretHit(true);await flush();assert.equal(played.length,2);});
+
+test('all effects stay at original playback speed even if a caller supplies an old speed argument',async()=>{const {audio,sources}=setup();await audio.preload();audio.play('charge',2);audio.spinHit(true,2);audio.turretHit(true,2);await flush();assert.equal(sources.length,3);assert.ok(sources.every(s=>s.playbackRate.value===1));});

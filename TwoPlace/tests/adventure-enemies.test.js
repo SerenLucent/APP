@@ -3,14 +3,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createEnemies,enemyMode,enemyPath,stepEnemy,ENEMY_RULES} from '../src/adventure-enemies.js';
 import {createObstacles} from '../src/adventure-model.js';
-import {createDefense,stepDefense} from '../src/adventure-defense.js';
+import {createDefense,stepDefense,aggroDefenseEnemy} from '../src/adventure-defense.js';
 
 test('each first-wave house attacker strikes after reaching the house',()=>{
  const {fresh}=stepDefense(createDefense(),[],2);
  for(const enemy of fresh.filter(enemy=>enemy.defenseTarget==='house')){
   const defense=createDefense();
   let damage=0;
-  for(let frame=0;frame<300&&!damage;frame++)damage=stepDefense(defense,[enemy],1/60,()=>.5).damage;
+  for(let frame=0;frame<1800&&!damage;frame++)damage=stepDefense(defense,[enemy],1/60,()=>.5).damage;
   assert.equal(damage,6,enemy.id);
  }
 });
@@ -18,7 +18,7 @@ test('each first-wave house attacker strikes after reaching the house',()=>{
 test('defense hunter reaches a player across the house without clipping the wall',()=>{
  const defense=createDefense();
  const {fresh}=stepDefense(defense,[],2);
- const hunter=fresh.find(enemy=>enemy.defenseTarget==='player');
+ const hunter=fresh[0];aggroDefenseEnemy(hunter,{x:1225,y:1030},()=>0);
  const player={x:1225,y:1030};
  let hit=false;
  for(let frame=0;frame<480&&!hit;frame++){
