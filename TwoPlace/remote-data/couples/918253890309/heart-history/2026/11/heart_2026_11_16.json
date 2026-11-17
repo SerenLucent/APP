@@ -197,6 +197,15 @@
       "character": "kuki",
       "product": "snack",
       "quantity": 2
+    },
+    {
+      "at": 1794901296388,
+      "amount": 1,
+      "balance": 90,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
