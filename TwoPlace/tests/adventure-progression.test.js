@@ -102,10 +102,10 @@ test('offense grants the common roulette once, records the house objective and i
 
 test('gauge exploration validates weighted objects and enemies and records actual counts',()=>{
  const home={hearts:0};applyAdventureAction(home,{type:'adventureStart',actionId:'gauge-start-000001',fieldVersion:EXPLORATION_FIELD_VERSION},1000,()=> '32345678-1234-1234-1234-123456789012','owner');
- const run=home.adventure.runs.owner;assert.equal(run.enemyCount,72);
+ const run=home.adventure.runs.owner;assert.equal(run.enemyCount,36);
  const objects=createObstacles(run.seed,run.fieldVersion);assert.equal(objects.length,160);
  const ids=[...objects.filter(o=>o.type==='tree').slice(0,20).map(o=>o.id),...objects.filter(o=>o.type==='rock').slice(0,40).map(o=>o.id),...Array.from({length:30},(_,i)=>'enemy-'+i)];
  const finish=cleared=>applyAdventureAction(home,{type:'adventureFinish',actionId:'gauge-finish-00001',runId:run.id,cleared},2000,()=>'', 'owner');
- assert.throws(()=>finish(ids.slice(1)),/100%/);assert.throws(()=>finish([...ids,ids[0]]));assert.throws(()=>finish([...ids,'enemy-72']));finish(ids);
+ assert.throws(()=>finish(ids.slice(1)),/100%/);assert.throws(()=>finish([...ids,ids[0]]));assert.throws(()=>finish([...ids,'enemy-36']));finish(ids);
  assert.deepEqual([home.adventure.history[0].trees,home.adventure.history[0].rocks,home.adventure.history[0].defeated,home.adventure.history[0].progress],[20,40,30,100]);
 });
