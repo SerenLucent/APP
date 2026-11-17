@@ -280,6 +280,15 @@
       "label": "애정 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1794927812571,
+      "amount": 1,
+      "balance": 94,
+      "kind": "earn",
+      "label": "휴식 보너스",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
