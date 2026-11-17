@@ -5,11 +5,30 @@ export function loadMineArt(){return mineArtReady||=Promise.all(['entrance','ore
 function drawMineArt(ctx,id,x,y,width,height,anchor){const a=mineArt[id];if(!a)return false;const scale=Math.min(width/a.w,height/a.h),w=a.w*scale,h=a.h*scale;ctx.drawImage(a.image,a.x,a.y,a.w,a.h,x-w/2,y-h+anchor,w,h);return true;}
 
 export const MINE_EXIT={x:1300,y:1660,radius:80};
-export const MINE_PORTALS=[{x:1105,y:800,name:'반짝 동굴'},{x:1235,y:800,name:'푸른 동굴'},{x:1365,y:800,name:'깊은 동굴'},{x:1495,y:800,name:'비밀 동굴'}];
-export const MINE_HUB_BOUNDS={left:950,right:1650,top:825,bottom:1120};
-const hubArt={spacing:130,mountainWidth:560,entranceWidth:107,entranceHeight:114};
-export function configureMineHub(viewWidth){Object.assign(MINE_HUB_BOUNDS,{left:Math.max(20,1300-viewWidth/2+54),right:Math.min(2580,1300+viewWidth/2-54)});const gap=Math.min(130,Math.max(64,(viewWidth-60)/4));MINE_PORTALS.forEach((p,i)=>{p.x=1300+(i-1.5)*gap;});Object.assign(hubArt,{spacing:gap,mountainWidth:gap*4+40,entranceWidth:gap*.82,entranceHeight:gap*.88});}
-
+export const MINE_HUB_CENTER={x:1300,y:1080};
+export const MINE_PORTALS=[{name:'반짝 동굴'},{name:'푸른 동굴'},{name:'깊은 동굴'},{name:'비밀 동굴'}];
+export const MINE_HUB_BOUNDS={left:950,right:1650,top:800,bottom:1280};
+const hubArt={radius:190,viewWidth:500,entranceWidth:92,entranceHeight:100,background:null};
+export function mineHubRidgeY(x){const dx=Math.min(hubArt.radius,Math.abs(x-MINE_HUB_CENTER.x));return MINE_HUB_CENTER.y-Math.sqrt(Math.max(0,hubArt.radius**2-dx**2))+18;}
+export function mineHubReturnPosition(room){const portal=MINE_PORTALS[room]||MINE_PORTALS[0],dx=MINE_HUB_CENTER.x-portal.x,dy=MINE_HUB_CENTER.y-portal.y,d=Math.hypot(dx,dy);return {x:portal.x+dx/d*82,y:portal.y+dy/d*82};}
+export function configureMineHub(viewWidth){
+ const radius=Math.min(250,Math.max(145,(viewWidth-82)/2));if(hubArt.viewWidth!==viewWidth)hubArt.background=null;
+ Object.assign(hubArt,{radius,viewWidth,entranceWidth:Math.min(106,radius*.49),entranceHeight:Math.min(116,radius*.54)});
+ Object.assign(MINE_HUB_BOUNDS,{left:Math.max(20,1300-viewWidth/2+22),right:Math.min(2580,1300+viewWidth/2-22)});
+ MINE_PORTALS.forEach((p,i)=>{const angle=(-150+i*40)*Math.PI/180;p.x=MINE_HUB_CENTER.x+Math.cos(angle)*radius;p.y=MINE_HUB_CENTER.y+Math.sin(angle)*radius;});
+}
+configureMineHub(500);
+function drawHubRidge(ctx){
+ const width=Math.ceil(Math.max(1000,hubArt.viewWidth+400)),left=1300-width/2,top=580,height=550;
+ if(!hubArt.background&&mineArt.mountain){const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const c=canvas.getContext('2d'),a=mineArt.mountain;
+  for(let x=0;x<width;x+=5){const bottom=mineHubRidgeY(left+x)-top;c.fillStyle='#9991ab';c.fillRect(x,0,6,bottom);c.drawImage(a.image,a.x+x/width*a.w,a.y,Math.max(1,5/width*a.w),a.h,x,bottom-330,6,330);}
+  hubArt.background=canvas;
+ }
+ if(hubArt.background)ctx.drawImage(hubArt.background,left,top);
+ else{ctx.fillStyle='#9991ab';ctx.beginPath();ctx.moveTo(left,0);ctx.lineTo(left+width,0);for(let x=left+width;x>=left;x-=6)ctx.lineTo(x,mineHubRidgeY(x));ctx.closePath();ctx.fill();}
+ ctx.strokeStyle='#54644d33';ctx.lineWidth=10;ctx.beginPath();for(let x=left;x<=left+width;x+=6){const y=mineHubRidgeY(x)+6;x===left?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+ for(const p of MINE_PORTALS){ctx.strokeStyle='#e0d0a37a';ctx.lineWidth=26;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(MINE_HUB_CENTER.x,MINE_HUB_CENTER.y+10);ctx.lineTo(p.x,p.y+25);ctx.stroke();}
+}
 
 export function scatterMineShards(mine,ore,damage,random=Math.random){
  const cave=mine.caves[mine.room];if(!cave)return;
@@ -36,13 +55,10 @@ function crystal(ctx,x,y,size,color){ctx.fillStyle=color;ctx.strokeStyle='#daf6f
 export function drawMineGround(ctx,mine,time){
  if(mine.room>=0){ctx.fillStyle='#3d465d';ctx.fillRect(0,0,2600,1800);const a=mineArt.interior;if(a)ctx.drawImage(a.image,0,0,2600,1800);}
  for(let i=0;i<170;i++){const x=(i*397)%2600,y=(i*223)%1800;oval(ctx,x,y,12+i%7,4,'#ffffff08');}
- if(mine.room<0){// The ridge is the northern field boundary, extending beyond both side edges.
- ctx.fillStyle='#9691aa';ctx.fillRect(-3000,-1800,8600,2595);
- const mountain=mineArt.mountain;if(mountain){const width=2800,height=width*mountain.h/mountain.w;for(const x of [-1500,1300,4100])ctx.drawImage(mountain.image,mountain.x,mountain.y,mountain.w,mountain.h,x-width/2,826-height,width,height);}
- oval(ctx,1300,818,1600,18,'#344e3c20');ctx.strokeStyle='#d5c9a2';ctx.lineWidth=70;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(1300-hubArt.mountainWidth*.65,925);ctx.lineTo(1300+hubArt.mountainWidth*.65,925);ctx.stroke();}else{ctx.strokeStyle='#67758b';ctx.lineWidth=70;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(180,160);ctx.lineTo(2420,160);ctx.stroke();}
+ if(mine.room<0){drawHubRidge(ctx);}else{ctx.strokeStyle='#67758b';ctx.lineWidth=70;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(180,160);ctx.lineTo(2420,160);ctx.stroke();}
  if(mine.room>=0)drawMineExit(ctx,time);
  const gates=mine.room<0?MINE_PORTALS:[];
- for(const [i,p] of gates.entries()){oval(ctx,p.x,p.y+10,mine.room<0?hubArt.entranceWidth*.4:65,14,'#242e4044');if(!drawMineArt(ctx,'entrance',p.x,p.y,mine.room<0?hubArt.entranceWidth:145,mine.room<0?hubArt.entranceHeight:150,18)){ctx.fillStyle='#777d91';ctx.beginPath();ctx.roundRect(p.x-84,p.y-135,168,150,[80,80,12,12]);ctx.fill();ctx.fillStyle='#172238';ctx.beginPath();ctx.roundRect(p.x-60,p.y-114,120,130,[58,58,7,7]);ctx.fill();crystal(ctx,p.x-65,p.y-25,20,'#a8e0f0');crystal(ctx,p.x+68,p.y-56,26,'#d7b9ec');}ctx.font='bold '+(mine.room<0?12:18)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff2d4';ctx.fillText(p.name,p.x,p.y-(mine.room<0?hubArt.entranceHeight+2:155));ctx.font='11px sans-serif';ctx.fillText(mine.room<0?'입장':'입구로 이동해서 나가기',p.x,p.y+35);}
+ for(const [i,p] of gates.entries()){if(mine.lastRoom===i){ctx.save();ctx.strokeStyle='#fff1a4';ctx.lineWidth=3;ctx.setLineDash([5,4]);ctx.beginPath();ctx.ellipse(p.x,p.y+18,hubArt.entranceWidth*.5,16,0,0,Math.PI*2);ctx.stroke();ctx.restore();}oval(ctx,p.x,p.y+10,mine.room<0?hubArt.entranceWidth*.4:65,14,'#242e4044');if(!drawMineArt(ctx,'entrance',p.x,p.y,mine.room<0?hubArt.entranceWidth:145,mine.room<0?hubArt.entranceHeight:150,18)){ctx.fillStyle='#777d91';ctx.beginPath();ctx.roundRect(p.x-84,p.y-135,168,150,[80,80,12,12]);ctx.fill();ctx.fillStyle='#172238';ctx.beginPath();ctx.roundRect(p.x-60,p.y-114,120,130,[58,58,7,7]);ctx.fill();crystal(ctx,p.x-65,p.y-25,20,'#a8e0f0');crystal(ctx,p.x+68,p.y-56,26,'#d7b9ec');}ctx.font='bold '+(mine.room<0?12:18)+'px sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff2d4';ctx.fillText(p.name,p.x,p.y-(mine.room<0?hubArt.entranceHeight+2:155));ctx.font='11px sans-serif';ctx.fillText(mine.room<0?(mine.lastRoom===i?'방금 나온 곳':'입장'):'입구로 이동해서 나가기',p.x,p.y+35);}
 }
 export function drawMineOre(ctx,o){if(o.hp<=0){oval(ctx,o.x,o.y,24,8,'#252c3944');return;}oval(ctx,o.x,o.y+5,44,15,'#202c424d');if(drawMineArt(ctx,'ore',o.x,o.y,112,105,12)){if(o.flash){ctx.strokeStyle='#fff3d7';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(o.x,o.y,40,13,0,0,Math.PI*2);ctx.stroke();}return;}oval(ctx,o.x,o.y-3,31,18,o.flash?'#fff5d5':'#71788d');for(let i=0;i<4;i++)crystal(ctx,o.x-26+i*17,o.y-11-(i%2)*15,22+(i%3)*9,o.flash?'#ffffff':o.tint>.5?'#a0d8f0':'#c8b6ed');}
 export function drawMineDrops(ctx,mine,time,image){if(mine.room<0)return;for(const d of mine.caves[mine.room].drops){const z=d.age<.35?Math.sin(d.age/.35*Math.PI)*25:Math.sin(time*4+d.x)*3;oval(ctx,d.x,d.y+5,10,4,'#16233c44');if(image?.naturalWidth)ctx.drawImage(image,d.x-13,d.y-21-z,26,26);else crystal(ctx,d.x,d.y-10-z,10,'#baeafa');}}

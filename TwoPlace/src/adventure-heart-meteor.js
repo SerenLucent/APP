@@ -1,3 +1,4 @@
+import {targetContact} from './adventure-targeting.js';
 export const HEART_ORBIT_END=1;
 export const HEART_LAUNCH_END=1.24;
 export const HEART_FIRST_IMPACT=1.72;
@@ -17,4 +18,4 @@ export function stepHeartMeteor(sequence,dt,onImpact){
  }
  return sequence.next===sequence.impacts.length;
 }
-export function heartImpactTargets(impact,enemies){return enemies.filter(enemy=>enemy.hp>0&&Math.hypot(enemy.x-impact.x,enemy.y-impact.y)<=HEART_IMPACT_RADIUS+(enemy.radius??0));}
+export function heartImpactTargets(impact,enemies){return enemies.filter(enemy=>enemy.hp>0&&(enemy.hitHalfWidth!==undefined?targetContact(impact,enemy).distance<=HEART_IMPACT_RADIUS:Math.hypot(enemy.x-impact.x,enemy.y-impact.y)<=HEART_IMPACT_RADIUS+(enemy.radius??0)));}

@@ -21,6 +21,8 @@ export function stepEnemy(enemy,player,obstacles,dt){
   return false;
  }
  if(enemy.training)return false;
+ if(enemy.hp<=0)return false;
+ if(enemy.emerging){const exit=enemy.emerging,wait=Math.min(dt,exit.delay||0);exit.delay=Math.max(0,(exit.delay||0)-wait);exit.t=Math.min(1,exit.t+(dt-wait)/.85);enemy.y=exit.startY+(exit.endY-exit.startY)*exit.t;enemy.windup=0;if(exit.t>=1){enemy.emerging=null;enemy.mode='chase';enemy.repath=0;}return false;}
  const before=enemy.mode;enemy.mode=enemyMode(enemy,player);enemy.cooldown=Math.max(0,enemy.cooldown-dt);enemy.repath-=dt;
  if(enemy.mode==='dead'||enemy.mode==='idle'){enemy.windup=0;enemy.path=[];return false;}
  if(before!==enemy.mode){enemy.path=[];enemy.repath=0;enemy.windup=0;}

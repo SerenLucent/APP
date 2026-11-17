@@ -1,3 +1,4 @@
+import {targetContact} from './adventure-targeting.js';
 import {skillBalance} from './adventure-skills.js';
 export const CHARGE_DELAY=.5;
 export const CHARGE_FILL=3;
@@ -25,6 +26,7 @@ export function recoverPet(pet,dt,reserve){
  pet.sp=Math.min(pet.maxSp??100,pet.sp+(reserve?.02:.0025)*(pet.maxSp??100)*dt);
 }
 export function skillHits(player,target,id){
+ if(target.hitHalfWidth!==undefined){const {dx,dy,distance}=targetContact(player,target);return id==='momo'?distance<104:distance<145&&(distance<25||(dx*player.fx+dy*player.fy)/distance>.25);}
  const dx=target.x-player.x,dy=target.y-player.y,d=Math.hypot(dx,dy);
  if(id==='momo')return d<104+target.radius;
  return d<145+target.radius&&(d<25||(dx*player.fx+dy*player.fy)/d>.25);

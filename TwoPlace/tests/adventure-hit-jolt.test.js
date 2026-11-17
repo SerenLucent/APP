@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {dustDirection} from '../src/adventure-dust-goblin.js';
 import {triggerHitJolt,stepHitJolt,hitJoltOffset,drawWithHitJolt,HIT_JOLT_DURATION} from '../src/adventure-hit-jolt.js';
 test('all damageable target kinds get fast bounded visual motion that settles without altering collision coordinates',()=>{
  for(const type of ['tree','rock','enemy','house']){
@@ -21,7 +22,7 @@ test('drawing a hit reaction restores canvas transform even if a renderer throws
 });
 test('shared combat damage path triggers target reactions for attacks, meteors and slams',()=>{
  const source=fs.readFileSync('src/adventure.js','utf8'),start=source.indexOf('function damageObject('),end=source.indexOf('\nfunction ',start+1);
- const context=vm.createContext({state:{active:'momo',weaponDrops:[]},Math,shake:0,rollWeaponDrop:()=>null,offenseMode:false,requestCriticalHitStop(){},triggerHitJolt,float(){},starBurst(){}});
+ const context=vm.createContext({state:{active:'momo',p:{x:100,y:450},weaponDrops:[]},dustDirection,Math,shake:0,rollWeaponDrop:()=>null,offenseMode:false,requestCriticalHitStop(){},triggerHitJolt,float(){},starBurst(){}});
  vm.runInContext(source.slice(start,end),context);
  for(const type of ['tree','rock','enemy','house']){const target={type,x:123,y:456,hp:1000};context.damageObject(target,20,true,'momo');assert.equal(target.hp,980);assert.equal(target.hitJolt,HIT_JOLT_DURATION);}
 });

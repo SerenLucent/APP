@@ -67,3 +67,41 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none;touch-action:auto
 .fighter-body .revival-meter{margin:5px 0 0;font-size:10px;gap:8px;grid-template-columns:44px 1fr 47px}.revival-meter .meter{width:100%;min-width:0}.revival-meter .meter progress{display:block;width:100%;height:100%;margin:0}.revival-meter [data-revival-text]{text-align:right;font-size:10px}@media(max-width:650px){.mine-mode .fighter-body .revival-meter{grid-template-columns:36px 1fr 40px;gap:3px;font-size:9px}.mine-mode .revival-meter [data-revival-text]{font-size:9px}}
 
 @media(max-width:650px){.fighter-body .revival-meter{grid-template-columns:29px 1fr 34px;gap:3px;font-size:8px}.revival-meter [data-revival-text]{font-size:8px}.mine-mode .fighter-body .revival-meter{grid-template-columns:36px 1fr 40px}.mine-mode .revival-meter [data-revival-text]{font-size:9px}}
+
+/* Compact shared mobile play layout preview. */
+.adventure-top .eyebrow,.adventure-top h1>span,.play-controls .control-hint,.gauge-heading [data-gauge-help]{display:none!important}
+.adventure-top h1{white-space:nowrap!important;font-size:20px!important;max-width:none!important;line-height:1.3;margin:0}
+.adventure-top{flex-wrap:nowrap!important;gap:10px!important;align-items:center;margin-bottom:8px}
+.adventure-top>div:first-child{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;min-width:0}
+.adventure-top .mission{grid-column:1;grid-row:2;display:flex;align-items:center;flex-wrap:wrap;gap:3px 9px;padding:0;border:0;min-width:0}
+.adventure-top .mission small{font-size:10px;white-space:nowrap}.adventure-top .mission strong{font-size:11px;line-height:1.4}.adventure-top .mission p{display:none}
+.adventure-top .mine-options{align-self:start}.mine-options summary{min-height:36px;display:flex;align-items:center;padding:7px 12px;font-size:12px}
+.adventure-app .adventure-balance,.adventure-app .prototype-note{display:none}
+.play-controls,.mine-mode .play-controls{display:grid;grid-template-columns:104px minmax(0,1fr);grid-template-rows:auto auto;column-gap:17px;row-gap:8px;padding:10px 12px 14px}
+.play-controls .gauge-panel{grid-column:1/-1;grid-row:1;max-width:none;width:100%;padding:0}
+.play-controls .gauge-heading{display:block;margin:0 0 5px}.play-controls .gauge-heading strong{font-size:12px}
+.gauge-line{display:flex;align-items:center;gap:9px}.gauge-line .skill-track{flex:1;min-width:0;height:7px;margin:0}.gauge-line [data-gauge-value]{font-size:11px;flex:0 0 43px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.play-controls .joystick,.mine-mode .play-controls .joystick{grid-column:1;grid-row:2;align-self:center;justify-self:center;width:104px;height:104px;margin:0;aspect-ratio:1}
+.play-controls .joystick b{width:40%;height:40%;left:30%;top:30%}
+.play-controls .action-buttons,.mine-mode .play-controls .action-buttons{grid-column:2;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,40px);gap:3px 5px;max-width:260px;justify-self:end;width:100%;align-items:center;padding:4px 0}
+.play-controls .action-buttons button{height:48px;max-height:none;width:100%;align-self:center;padding:3px 1px;border-radius:16px;font-size:11px;line-height:1.25;word-break:keep-all}
+.play-controls .action-buttons button small{font-size:8px;line-height:1.2;margin-top:3px}
+.mine-mode .fighter{min-height:84px;padding:8px}.mine-mode .fighter img{width:38px;height:52px}.mine-mode .fighter-title strong{font-size:13px}.mine-mode .meter-row{grid-template-columns:29px 1fr 34px;gap:3px;font-size:8px}.mine-mode .meter-row small{font-size:8px}
+.mine-mode .fighter-body .revival-meter{grid-template-columns:29px 1fr 34px;gap:3px;font-size:8px}
+.mine-mode .stage{height:auto;min-height:120px;flex:1}.mine-mode .under-stage{font-size:8px}
+@media(min-width:651px){.play-controls,.mine-mode .play-controls{grid-template-columns:124px minmax(0,1fr);max-width:100%;column-gap:30px}.play-controls .gauge-panel{max-width:550px}.play-controls .action-buttons,.mine-mode .play-controls .action-buttons{max-width:310px}.play-controls .action-buttons button{font-size:13px}}
+@media(max-width:360px){.play-controls,.mine-mode .play-controls{grid-template-columns:92px minmax(0,1fr);column-gap:10px;padding-inline:9px}.play-controls .joystick,.mine-mode .play-controls .joystick{width:92px;height:92px}.play-controls .action-buttons button{font-size:10px}.play-controls .action-buttons button small{font-size:7px}}
+
+.play-controls .gauge-heading{line-height:16px}.play-controls .gauge-heading strong{line-height:16px}.play-controls .action-buttons,.mine-mode .play-controls .action-buttons{grid-template-rows:repeat(3,34px)}
+
+.adventure-top .mine-options summary{min-width:76px;min-height:46px;justify-content:center;padding:10px 15px;background:#f1dfa0;color:#62542b;border:1px solid #ceba74;border-bottom:4px solid #ac9759;border-radius:13px;font-size:15px;font-weight:800;box-shadow:0 3px 8px #10251b55}.adventure-top .mine-options[open] summary{background:#f5e8ba}.adventure-top .mine-options .top-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(370px,calc(100vw - 20px));max-width:none;gap:6px;top:54px;padding:10px}.adventure-top .mine-options .top-actions button{min-height:44px;font-size:11px;padding:8px 3px;line-height:1.3;border-radius:10px;background:#3c5948;border-color:#82957a;color:#f7efd8}.adventure-top .mine-options .top-actions [data-pause]{background:#e9d69b;color:#5c5132;border-color:#c6ae77}
+
+.adventure-top .mine-options summary{min-width:90px;min-height:52px;padding:11px 18px;font-size:17px;box-sizing:border-box}
+.adventure-top .mine-options .top-actions{top:60px}
+.adventure-top .mine-options .top-actions button{white-space:normal;overflow-wrap:anywhere}
+/* Fortress HP stays above the field so the targets remain visible. */
+.adventure-app>.outpost-health-panel{position:static;flex-shrink:0;margin:0 0 6px;padding:5px 10px;border-radius:10px}.adventure-app>.outpost-health-panel .outpost-health{height:6px;margin-top:3px}
+
+.fortress-test-tools{display:flex;gap:6px;margin:4px 0}.fortress-test-tools button{background:#e7d8b0;color:#644d37;border:1px solid #b5a27b;border-radius:8px;padding:6px 10px;font-size:11px}
+
+.play-header-controls{display:flex;align-items:flex-start;gap:7px;flex-shrink:0}.play-quick-actions{display:flex;gap:6px}.play-quick-actions button{min-height:52px;padding:9px 12px;border-radius:12px;border:1px solid #bca36a;border-bottom:4px solid #9b8556;background:#ead8a1;color:#594c30;font-size:13px;font-weight:700;white-space:nowrap}.play-quick-actions button[aria-pressed]{background:#d8e5d0;color:#3e5944;border-color:#93ae8e;border-bottom-color:#708b6c}@media(max-width:650px){.adventure-top{flex-wrap:wrap!important;gap:6px!important}.adventure-top>div:first-child{flex:1 1 100%}.play-header-controls{width:100%;justify-content:flex-end;gap:6px}.play-quick-actions{flex:1;gap:6px}.play-quick-actions button{flex:1;min-height:42px;font-size:12px;padding:7px 8px}.adventure-top .play-header-controls .mine-options summary{min-width:72px;min-height:42px;padding:7px 12px;font-size:14px}.adventure-top .play-header-controls .mine-options .top-actions{top:49px}}
