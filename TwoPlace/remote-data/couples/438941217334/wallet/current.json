@@ -1,5 +1,5 @@
 {
-  "version": 1706,
+  "version": 1707,
   "hearts": 79,
   "snacks": 19,
   "lastClaim": 1794875325337,
@@ -15,7 +15,7 @@
     "kuki": {
       "hunger": 100,
       "updatedAt": 1794816602879,
-      "affinityAt": 1794875366890,
+      "affinityAt": 1794875377615,
       "energyAt": 1794816585433,
       "affinity": 100,
       "energy": 100
