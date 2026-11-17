@@ -537,6 +537,15 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794903726153,
+      "amount": 3,
+      "balance": 69,
+      "kind": "earn",
+      "label": "별잠산 룰렛 보상",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
