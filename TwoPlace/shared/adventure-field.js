@@ -1,6 +1,6 @@
 export const EXPLORATION_FIELD_VERSION=4;
 export const EXPLORATION_GOALS={tree:50,rock:30};
-export const DEFENSE_WAVES=Array(7).fill(20);
+export const DEFENSE_WAVES=Array(5).fill(25);
 export const DEFENSE_TOTAL=DEFENSE_WAVES.reduce((total,count)=>total+count,0);
 
 export function createObstacles(initialSeed=74129,fieldVersion=1){
@@ -49,7 +49,7 @@ function createMixedField(initialSeed,compact=false,spacious=false){
  return items;
 }
 
-export const EXPLORATION_WEIGHTS={tree:.5,rock:1.5,enemy:1};
-export function explorationPercent(counts){return Math.min(100,(counts.tree||0)*.5+(counts.rock||0)*1.5+(counts.enemy||0));}
+export const EXPLORATION_WEIGHTS={tree:1,rock:2,enemy:2};
+export function explorationPercent(counts){return Math.min(100,(counts.tree||0)*EXPLORATION_WEIGHTS.tree+(counts.rock||0)*EXPLORATION_WEIGHTS.rock+(counts.enemy||0)*EXPLORATION_WEIGHTS.enemy);}
 export function explorationEnemyCount(clears=0){return Math.round((24+Math.floor(clears/20)*4)*1.5);}
 export function explorationProof(objects,enemies=[],version=EXPLORATION_FIELD_VERSION){if(version>=3)return [...objects,...enemies].filter(o=>o.hp<=0&&['tree','rock','enemy'].includes(o.type)).map(o=>o.id);return Object.entries(EXPLORATION_GOALS).flatMap(([type,count])=>objects.filter(item=>item.type===type&&item.hp<=0).slice(0,count).map(item=>item.id));}

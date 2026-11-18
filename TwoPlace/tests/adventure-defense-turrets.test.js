@@ -12,14 +12,14 @@ test('both turret directions remain in forward arc and heart aim is range bounde
 test('heart cannon can spend all five displayed rounds without floating point locking the last one',()=>{const ts=createDefenseTurrets(),t=ts[0];for(let i=0;i<5;i++){assert.equal(fireTurret(t).kind,'heart');stepTurrets(ts,t,1);}assert.equal(Math.round(t.energy),0);assert.equal(fireTurret(t),false);});
 
 test('heart cannon can aim near core and damage every enemy in its actual blast',()=>{const t=createDefenseTurrets()[0];t.rawAim={x:1300,y:1100};aimTurret(t,0,0,0);assert.equal(fireTurret(t).kind,'heart');const e={x:1300,y:1120,hp:100,radius:22};assert.deepEqual(turretTargets(t,[e]),[e]);});
-test('seven waves overlap at five remaining and require all 140 kills to finish',()=>{
+test('five waves of 25 overlap at ten remaining and require all 125 kills to finish',()=>{
  const d=createDefense(),enemies=[];d.house.hp=100000;let previous=0;
- for(let wave=1;wave<=7;wave++){
-  if(wave>1){const alive=enemies.filter(e=>e.hp>0);while(alive.length>6)alive.shift().hp=0;assert.equal(stepDefense(d,enemies,2).fresh.length,0);alive.shift().hp=0;}
-  for(let batch=0;batch<10;batch++){const out=stepDefense(d,enemies,2);assert.equal(out.fresh.length,2);enemies.push(...out.fresh);}
-  assert.equal(d.wave,wave);assert.equal(d.spawned,previous+20);previous=d.spawned;
+ for(let wave=1;wave<=5;wave++){
+  if(wave>1){const alive=enemies.filter(e=>e.hp>0);while(alive.length>11)alive.shift().hp=0;assert.equal(stepDefense(d,enemies,2).fresh.length,0);alive.shift().hp=0;}
+  for(let batch=0;batch<13;batch++){const out=stepDefense(d,enemies,2);assert.equal(out.fresh.length,batch===12?1:2);enemies.push(...out.fresh);}
+  assert.equal(d.wave,wave);assert.equal(d.spawned,previous+25);previous=d.spawned;
  }
- assert.equal(new Set(enemies.map(e=>e.id)).size,140);assert.equal(stepDefense(d,enemies,0).complete,false);enemies.forEach(e=>e.hp=0);assert.equal(stepDefense(d,enemies,0).complete,true);
+ assert.equal(new Set(enemies.map(e=>e.id)).size,125);assert.equal(stepDefense(d,enemies,0).complete,false);enemies.forEach(e=>e.hp=0);assert.equal(stepDefense(d,enemies,0).complete,true);
 });
 
 test('beam stops at first body contact; empty line continues to screen edge',()=>{const t=createDefenseTurrets()[1];t.range=900;t.rayOrigin={x:t.x,y:t.y-40};const front={x:t.x,y:t.y-300,hp:100,radius:22};const contact=laserContact(t,front,{x:t.x,y:t.y-80});assert.equal(contact.hit,true);assert.ok(contact.length<300);assert.equal(laserContact(t,null,{}).length,900);});

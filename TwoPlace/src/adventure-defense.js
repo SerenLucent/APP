@@ -48,7 +48,7 @@ export function stepDefense(defense,enemies,dt,random=Math.random){
  if(finalWave||house.hp<=0)return {fresh:[],damage,hits,complete:false};
 
  let waveLimit=DEFENSE_WAVES.slice(0,Math.max(1,defense.wave)).reduce((a,b)=>a+b,0);
- if(defense.spawned>=waveLimit){if(living.length>5)return {fresh:[],damage,hits,complete:false};waveLimit+=DEFENSE_WAVES[defense.wave]||0;}
+ if(defense.spawned>=waveLimit){if(living.length>10)return {fresh:[],damage,hits,complete:false};waveLimit+=DEFENSE_WAVES[defense.wave]||0;}
  defense.nextWave-=dt;
  if(defense.nextWave>0)return {fresh:[],damage,hits,complete:false};
  const fresh=[];for(let n=0;n<2&&defense.spawned<DEFENSE_TOTAL&&defense.spawned<waveLimit;n++){let offset=defense.spawned,wave=1;while(offset>=DEFENSE_WAVES[wave-1]){offset-=DEFENSE_WAVES[wave-1];wave++;}const index=offset,hp=60+Math.min(wave-1,2)*15,angle=defense.spawned*2.39996;defense.spawned++;defense.wave=wave;fresh.push({id:'defense-'+wave+'-'+index,type:'enemy',mode:'chase',hp,max:hp,radius:22,defenseTarget:'house',repath:0,path:[],x:house.x+Math.sin(angle)*360,y:house.y-430-Math.abs(Math.cos(angle))*100,speed:27.5+Math.min(wave-1,2)*3,cooldown:0,windup:0,flash:0});}defense.nextWave=2;
