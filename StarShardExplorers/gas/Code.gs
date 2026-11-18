@@ -1,11 +1,11 @@
 // GENERATED. Run npm run build:gas. StarShardExplorers only.
-const EXPLORATION_FIELD_VERSION=2;
+const EXPLORATION_FIELD_VERSION=4;
 const EXPLORATION_GOALS={tree:50,rock:30};
-const DEFENSE_WAVES=[4,6,8,4,6,8,4,6,8,4];
+const DEFENSE_WAVES=Array(5).fill(25);
 const DEFENSE_TOTAL=DEFENSE_WAVES.reduce((total,count)=>total+count,0);
 
 function createObstacles(initialSeed=74129,fieldVersion=1){
- if(fieldVersion===EXPLORATION_FIELD_VERSION)return createMixedField(initialSeed);
+ if(fieldVersion>=2)return createMixedField(initialSeed,fieldVersion===3,fieldVersion>=4);
  let seed=initialSeed>>>0;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
  const items=[];
  // A deliberately gentle clearing, then denser woods toward the abandoned house.
@@ -19,7 +19,7 @@ function createObstacles(initialSeed=74129,fieldVersion=1){
  return items;
 }
 
-function createMixedField(initialSeed){
+function createMixedField(initialSeed,compact=false,spacious=false){
  let seed=initialSeed>>>0;
  const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
  const items=[];
@@ -32,27 +32,28 @@ function createMixedField(initialSeed){
  add('tree',680,1040);
  add('rock',490,860);
  const exclusions=[[550,1040,220],[2070,420,200],[1030,1040,102],[1520,690,92],[1870,1040,102]];
- const open=(x,y)=>x>=210&&x<=2370&&y>=190&&y<=1580
+ const bounds=spacious?{left:160,right:2440,top:170,bottom:1640}:compact?{left:450,right:2150,top:350,bottom:1400}:{left:210,right:2370,top:190,bottom:1580};
+ const open=(x,y)=>x>=bounds.left&&x<=bounds.right&&y>=bounds.top&&y<=bounds.bottom
   &&!exclusions.some(([cx,cy,r])=>Math.hypot(x-cx,y-cy)<r)
-  &&!items.some(item=>Math.hypot(x-item.x,y-item.y)<82);
+  &&!items.some(item=>Math.hypot(x-item.x,y-item.y)<(spacious?108:compact?74:82));
  const place=(x,y)=>{if(open(x,y)){add(random()*(remaining.tree+remaining.rock)<remaining.tree?'tree':'rock',x,y);return true;}return false;};
- for(const [cx,cy] of [[470,440],[1030,420],[1320,1300],[1990,1380],[2250,815]]){
-  for(let attempts=0,placed=0;attempts<180&&placed<12;attempts++){
+ for(const [cx,cy] of (compact?[[850,1050],[1100,650],[1450,1050],[1800,650],[2000,1200]]:[[470,440],[1030,420],[1320,1300],[1990,1380],[2250,815]])){
+  for(let attempts=0,placed=0;attempts<180&&placed<(spacious?6:compact?20:12);attempts++){
    const angle=random()*Math.PI*2,r=260*Math.sqrt(random());
    if(place(cx+Math.cos(angle)*r,cy+Math.sin(angle)*r))placed++;
   }
  }
- for(let attempt=0;attempt<4000&&items.length<160;attempt++)place(210+random()*2160,190+random()*1390);
- for(let y=190;y<=1580&&items.length<160;y+=42){
-  for(let x=210;x<=2370&&items.length<160;x+=42)place(x,y);
+ for(let attempt=0;attempt<4000&&items.length<160;attempt++)place(bounds.left+random()*(bounds.right-bounds.left),bounds.top+random()*(bounds.bottom-bounds.top));
+ for(let y=bounds.top;y<=bounds.bottom&&items.length<160;y+=24){
+  for(let x=bounds.left;x<=bounds.right&&items.length<160;x+=24)place(x,y);
  }
  return items;
 }
 
-function explorationProof(objects){
- return Object.entries(EXPLORATION_GOALS).flatMap(([type,count])=>
-  objects.filter(item=>item.type===type&&item.hp<=0).slice(0,count).map(item=>item.id));
-}
+const EXPLORATION_WEIGHTS={tree:1,rock:2,enemy:2};
+function explorationPercent(counts){return Math.min(100,(counts.tree||0)*EXPLORATION_WEIGHTS.tree+(counts.rock||0)*EXPLORATION_WEIGHTS.rock+(counts.enemy||0)*EXPLORATION_WEIGHTS.enemy);}
+function explorationEnemyCount(clears=0){return Math.round((24+Math.floor(clears/20)*4)*1.5);}
+function explorationProof(objects,enemies=[],version=EXPLORATION_FIELD_VERSION){if(version>=3)return [...objects,...enemies].filter(o=>o.hp<=0&&['tree','rock','enemy'].includes(o.type)).map(o=>o.id);return Object.entries(EXPLORATION_GOALS).flatMap(([type,count])=>objects.filter(item=>item.type===type&&item.hp<=0).slice(0,count).map(item=>item.id));}
 
 function skillBalance(level=1){
  const current=Math.max(1,Math.min(10,Math.floor(Number(level)||1)));
@@ -189,13 +190,13 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
   const mode=action.mode??'explore';if(!['explore','offense','defense','mine'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
-  const fieldVersion=mode==='mine'?MINE_FIELD_VERSION:mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
+  const fieldVersion=mode==='mine'?MINE_FIELD_VERSION:mode==='explore'&&[2,EXPLORATION_FIELD_VERSION].includes(action.fieldVersion)?action.fieldVersion:1;
   const recommendedLevel=recommendedMapLevel(data),level=action.level??1;if(!Number.isInteger(level)||level<minimumMapLevel(recommendedLevel)||level>recommendedLevel)adventureFail('선택 가능한 맵 레벨을 확인해 주세요.');
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion&&(previous.level??1)===level){home.adventure=data;return;}
   const remaining=(data.cooldowns?.[mode]||0)-now;if(remaining>0)adventureFail('재건중이에요. '+Math.ceil(remaining/1000)+'초 후 입장할 수 있어요.',429);
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
-  const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:24+Math.floor((data.totalClears||0)/20)*4;
+  const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:fieldVersion>=3?explorationEnemyCount(data.totalClears||0):24+Math.floor((data.totalClears||0)/20)*4;
   data.runs[role]={id,seed,mode,fieldVersion,level:action.level===undefined?undefined:level,recommendedLevel,requestId:action.actionId,startedAt:now,enemyCount,finishedAt:null,reward:null};
  }else if(action.type==='adventureFinish'){
   const run=data.runs[role];if(!run||run.id!==action.runId)adventureFail('현재 탐험 기록이 아니에요. 새 탐험을 시작해 주세요.',409);
@@ -204,6 +205,7 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
   if(mode==='mine'){
    finishMineAdventure(home,data,run,action,now,role);data.operations=[...data.operations,action.actionId].slice(-128);home.adventure=data;return;
   }
+  let explorationCounts;
   if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
   else if(mode==='defense'){
    const defeated=new Set(Array.isArray(ids)?ids:[]);
@@ -211,16 +213,23 @@ function applyAdventureAction(home,action,now,idFactory,role,random=Math.random)
    if(!complete)adventureFail('방울이를 모두 막아야 해요.');
   }
   else{
-   const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
+   if(run.fieldVersion>=3){
+    if(!Array.isArray(ids)||ids.length>160+run.enemyCount||new Set(ids).size!==ids.length)adventureFail('개척 기록을 확인해 주세요.');
+    const valid=new Map(createObstacles(run.seed,run.fieldVersion).map(o=>[o.id,o.type]));for(let i=0;i<run.enemyCount;i++)valid.set('enemy-'+i,'enemy');
+    if(ids.some(id=>!valid.has(id)))adventureFail('필드의 개척 기록을 확인해 주세요.');
+    const counts=explorationCounts={tree:0,rock:0,enemy:0};for(const id of ids)counts[valid.get(id)]++;if(explorationPercent(counts)<100)adventureFail('개척 게이지를 100% 채워야 해요.');
+   }else{
+   const mixed=run.fieldVersion===2;
    const required=mixed?EXPLORATION_GOALS.tree+EXPLORATION_GOALS.rock:100;
    if(!Array.isArray(ids)||ids.length!==required||new Set(ids).size!==required)adventureFail(mixed?'나무 50개와 바위 30개를 정리해야 해요.':'서로 다른 장애물 100개를 정리해야 해요.');
    const valid=new Map(createObstacles(run.seed,run.fieldVersion).map(o=>[o.id,o.type]));
    if(ids.some(id=>!valid.has(id)))adventureFail('필드의 장애물 기록을 확인해 주세요.');
    if(mixed&&ids.filter(id=>valid.get(id)==='tree').length!==EXPLORATION_GOALS.tree)adventureFail('나무 50개와 바위 30개를 정리해야 해요.');
+   }
   }
   const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs,run.level??null,run.recommendedLevel??1),tier=rouletteTier(durationMs,mode),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),selected=ADVENTURE_REWARDS.find(r=>r.id===segments[index]),amount=mapStardustReward(selected.stardust,run.level??1,run.recommendedLevel??1),reward={...selected,label:'별조각 '+amount+'개',index,segments,tier,stardust:amount};data.stardust+=reward.stardust;
-  const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
-  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.length:0,...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
+  const mixed=run.fieldVersion===2;
+  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.filter(id=>!String(id).startsWith('enemy-')).length:0,...(mode==='explore'&&run.fieldVersion>=3?{trees:explorationCounts.tree,rocks:explorationCounts.rock,defeated:explorationCounts.enemy,progress:100}:{}),...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
   data.cooldowns={...data.cooldowns,[mode]:now+ADVENTURE_COOLDOWNS[mode]};
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){

@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {defenseTestConfig} from '../src/adventure-defense-test.js';import {createDefenseTurrets,fireTurret,stepTurrets} from '../src/adventure-defense-turrets.js';
+test('retired test URL no longer enables HP1000 or unlimited energy',()=>{assert.equal(defenseTestConfig({local:true,hostname:'127.0.0.1',search:'?mode=defense&demo=1&defenseTest=1'}),null);});
+test('test cannon and laser retain full energy across repeated shots',()=>{const ts=createDefenseTurrets();for(const t of ts){t.infiniteEnergy=true;for(let i=0;i<100;i++){assert.ok(fireTurret(t));stepTurrets(ts,t,1);}assert.equal(t.energy,100);}});

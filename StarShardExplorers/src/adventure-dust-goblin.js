@@ -9,7 +9,7 @@ export function updateDustFacing(enemy,player){
  const dx=enemy.x-(enemy.drawX??enemy.x),dy=enemy.y-(enemy.drawY??enemy.y);
  enemy.drawX=enemy.x;enemy.drawY=enemy.y;
  if(Math.hypot(dx,dy)>.01)enemy.facing=dustDirection(dx,dy);
- else if(enemy.windup>0)enemy.facing=dustDirection(player.x-enemy.x,player.y-enemy.y);
+ else if(enemy.windup>0||enemy.mode==='chase')enemy.facing=dustDirection(player.x-enemy.x,player.y-enemy.y);
  return Math.hypot(dx,dy)>.01;
 }
 export function loadDustGoblin(){

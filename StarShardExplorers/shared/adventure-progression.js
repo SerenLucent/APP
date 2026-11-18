@@ -62,7 +62,7 @@ export function investAdventurePoints(current,allocations){
  data.points-=spent;
  return data;
 }
-import {createObstacles,DEFENSE_WAVES,DEFENSE_TOTAL,EXPLORATION_FIELD_VERSION,EXPLORATION_GOALS} from './adventure-field.js';
+import {createObstacles,DEFENSE_WAVES,DEFENSE_TOTAL,EXPLORATION_FIELD_VERSION,EXPLORATION_GOALS,explorationPercent,explorationEnemyCount} from './adventure-field.js';
 export const BATTLE_PRODUCTS=[
  {id:'statPoint',name:'스탯 포인트',price:240,field:'points',description:'능력치 강화에 사용해요.'},
  {id:'skillPoint',name:'스킬 포인트',price:240,field:'skillPoints',description:'모모와 쿠키의 스킬을 강화해요.'},
@@ -90,13 +90,13 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
  if(data.operations.includes(action.actionId)){home.adventure=data;return;}
  if(action.type==='adventureStart'){
   const mode=action.mode??'explore';if(!['explore','offense','defense','mine'].includes(mode))adventureFail('모험 종류를 확인해 주세요.');
-  const fieldVersion=mode==='mine'?MINE_FIELD_VERSION:mode==='explore'&&action.fieldVersion===EXPLORATION_FIELD_VERSION?EXPLORATION_FIELD_VERSION:1;
+  const fieldVersion=mode==='mine'?MINE_FIELD_VERSION:mode==='explore'&&[2,EXPLORATION_FIELD_VERSION].includes(action.fieldVersion)?action.fieldVersion:1;
   const recommendedLevel=recommendedMapLevel(data),level=action.level??1;if(!Number.isInteger(level)||level<minimumMapLevel(recommendedLevel)||level>recommendedLevel)adventureFail('선택 가능한 맵 레벨을 확인해 주세요.');
   const previous=data.runs[role];
   if(previous?.requestId===action.actionId||previous&&!previous.finishedAt&&!action.restart&&(previous.mode||'explore')===mode&&(previous.fieldVersion??1)===fieldVersion&&(previous.level??1)===level){home.adventure=data;return;}
   const remaining=(data.cooldowns?.[mode]||0)-now;if(remaining>0)adventureFail('재건중이에요. '+Math.ceil(remaining/1000)+'초 후 입장할 수 있어요.',429);
   const id=idFactory(),seed=Number.parseInt(id.replace(/-/g,'').slice(0,8),16)>>>0;
-  const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:24+Math.floor((data.totalClears||0)/20)*4;
+  const enemyCount=mode==='defense'?DEFENSE_TOTAL:['offense','mine'].includes(mode)?0:fieldVersion>=3?explorationEnemyCount(data.totalClears||0):24+Math.floor((data.totalClears||0)/20)*4;
   data.runs[role]={id,seed,mode,fieldVersion,level:action.level===undefined?undefined:level,recommendedLevel,requestId:action.actionId,startedAt:now,enemyCount,finishedAt:null,reward:null};
  }else if(action.type==='adventureFinish'){
   const run=data.runs[role];if(!run||run.id!==action.runId)adventureFail('현재 탐험 기록이 아니에요. 새 탐험을 시작해 주세요.',409);
@@ -105,6 +105,7 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
   if(mode==='mine'){
    finishMineAdventure(home,data,run,action,now,role);data.operations=[...data.operations,action.actionId].slice(-128);home.adventure=data;return;
   }
+  let explorationCounts;
   if(mode==='offense'){if(!Array.isArray(ids)||ids.length!==1||ids[0]!=='outpost-house')adventureFail('산채 본체를 파괴해야 해요.');}
   else if(mode==='defense'){
    const defeated=new Set(Array.isArray(ids)?ids:[]);
@@ -112,16 +113,23 @@ export function applyAdventureAction(home,action,now,idFactory,role,random=Math.
    if(!complete)adventureFail('방울이를 모두 막아야 해요.');
   }
   else{
-   const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
+   if(run.fieldVersion>=3){
+    if(!Array.isArray(ids)||ids.length>160+run.enemyCount||new Set(ids).size!==ids.length)adventureFail('개척 기록을 확인해 주세요.');
+    const valid=new Map(createObstacles(run.seed,run.fieldVersion).map(o=>[o.id,o.type]));for(let i=0;i<run.enemyCount;i++)valid.set('enemy-'+i,'enemy');
+    if(ids.some(id=>!valid.has(id)))adventureFail('필드의 개척 기록을 확인해 주세요.');
+    const counts=explorationCounts={tree:0,rock:0,enemy:0};for(const id of ids)counts[valid.get(id)]++;if(explorationPercent(counts)<100)adventureFail('개척 게이지를 100% 채워야 해요.');
+   }else{
+   const mixed=run.fieldVersion===2;
    const required=mixed?EXPLORATION_GOALS.tree+EXPLORATION_GOALS.rock:100;
    if(!Array.isArray(ids)||ids.length!==required||new Set(ids).size!==required)adventureFail(mixed?'나무 50개와 바위 30개를 정리해야 해요.':'서로 다른 장애물 100개를 정리해야 해요.');
    const valid=new Map(createObstacles(run.seed,run.fieldVersion).map(o=>[o.id,o.type]));
    if(ids.some(id=>!valid.has(id)))adventureFail('필드의 장애물 기록을 확인해 주세요.');
    if(mixed&&ids.filter(id=>valid.get(id)==='tree').length!==EXPLORATION_GOALS.tree)adventureFail('나무 50개와 바위 30개를 정리해야 해요.');
+   }
   }
   const elapsed=Math.max(0,now-run.startedAt),durationMs=Number.isFinite(action.playTimeMs)&&action.playTimeMs>=0?Math.min(Math.round(action.playTimeMs),elapsed):elapsed,segments=rouletteTable(durationMs,run.level??null,run.recommendedLevel??1),tier=rouletteTier(durationMs,mode),index=Math.min(segments.length-1,Math.floor(Math.max(0,random())*segments.length)),selected=ADVENTURE_REWARDS.find(r=>r.id===segments[index]),amount=mapStardustReward(selected.stardust,run.level??1,run.recommendedLevel??1),reward={...selected,label:'별조각 '+amount+'개',index,segments,tier,stardust:amount};data.stardust+=reward.stardust;
-  const mixed=run.fieldVersion===EXPLORATION_FIELD_VERSION;
-  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.length:0,...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
+  const mixed=run.fieldVersion===2;
+  data.totalClears=(data.totalClears||0)+1;data.history=[...(data.history||[]),{runId:run.id,clearNo:data.totalClears,at:now,startedAt:run.startedAt,durationMs,role,character:['momo','kuki'].includes(action.pet)?action.pet:'momo',enemyCount:run.enemyCount??24,mode,obstacles:mode==='explore'?ids.filter(id=>!String(id).startsWith('enemy-')).length:0,...(mode==='explore'&&run.fieldVersion>=3?{trees:explorationCounts.tree,rocks:explorationCounts.rock,defeated:explorationCounts.enemy,progress:100}:{}),...(mixed?{trees:EXPLORATION_GOALS.tree,rocks:EXPLORATION_GOALS.rock}:{}),houses:mode==='offense'?1:0,reward:{...reward,index}}];
   data.cooldowns={...data.cooldowns,[mode]:now+ADVENTURE_COOLDOWNS[mode]};
   data.runs[role]={...run,clearNo:data.totalClears,finishedAt:now,reward:{...reward,index},cleared:ids};
  }else if(action.type==='adventureInvest'){
