@@ -894,6 +894,17 @@
       "character": "momo",
       "product": "bathStool",
       "quantity": 1
+    },
+    {
+      "at": 1794997889221,
+      "amount": -16,
+      "balance": 0,
+      "kind": "purchase",
+      "label": "별사탕 먹이 4개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "snack",
+      "quantity": 4
     }
   ]
 }
