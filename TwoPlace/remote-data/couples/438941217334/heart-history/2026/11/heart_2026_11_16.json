@@ -905,6 +905,15 @@
       "character": "momo",
       "product": "snack",
       "quantity": 4
+    },
+    {
+      "at": 1795008050730,
+      "amount": 10,
+      "balance": 10,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
