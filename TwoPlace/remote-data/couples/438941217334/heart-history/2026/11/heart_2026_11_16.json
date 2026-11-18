@@ -883,6 +883,17 @@
       "character": "momo",
       "product": "bathBasin",
       "quantity": 1
+    },
+    {
+      "at": 1794997848819,
+      "amount": -35,
+      "balance": 16,
+      "kind": "purchase",
+      "label": "동글 목욕 의자 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bathStool",
+      "quantity": 1
     }
   ]
 }
