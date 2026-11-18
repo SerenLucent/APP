@@ -872,6 +872,17 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1794997837014,
+      "amount": -75,
+      "balance": 51,
+      "kind": "purchase",
+      "label": "물방울 세면대 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bathBasin",
+      "quantity": 1
     }
   ]
 }

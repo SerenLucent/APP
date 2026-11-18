@@ -438,6 +438,13 @@
       "x": 60,
       "y": 58.975,
       "rotation": 180
+    },
+    {
+      "id": "9e788e7f49fa471a9c83eec005f29c47",
+      "product": "bathBasin",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
