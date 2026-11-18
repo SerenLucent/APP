@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "heart",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "at": 1795018509137,
+      "amount": 10,
+      "balance": 30,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
+    }
+  ]
+}
