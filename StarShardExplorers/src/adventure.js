@@ -441,7 +441,7 @@ function finishMine(preview=false){
  d.addEventListener('cancel',e=>e.preventDefault());document.body.append(d);d.showModal();
  const proof={...state.mine.collectedByOre},broken=state.mine.caves.flatMap(c=>c.ores.filter(o=>o.hp<=0).map(o=>o.id)),runId=round?.id,pet=state.active,saveText=d.querySelector('[data-mine-save]'),retry=d.querySelector('[data-mine-retry]');let saving=false;
  const enable=()=>{d.querySelector('[data-mine-menu]').disabled=false;};
- async function save(){if(saving)return;saving=true;retry.hidden=true;saveText.textContent='획득한 별조각을 저장하고 있어요…';try{const reward=await wallet.finishMine(runId,proof,broken,pet);d.querySelector('[data-mine-result]').textContent='별조각 '+reward.stardust+'개 획득';saveText.textContent=wallet.local?'이 브라우저의 테스트 재화에 저장했어요.':'커플방에 별조각을 저장했어요.';enable();progressUI?.refresh();}catch(error){saveText.textContent='저장하지 못했어요. '+error.message+' 아래 버튼으로 다시 시도해 주세요.';retry.hidden=false;}finally{saving=false;}}
+ async function save(){if(saving)return;saving=true;retry.hidden=true;saveText.textContent='획득한 별조각을 저장하고 있어요…';try{const reward=await wallet.finishMine(runId,proof,broken,pet);d.querySelector('[data-mine-result]').textContent='별조각 '+reward.stardust+'개 획득';saveText.textContent=wallet.local?'이 브라우저의 테스트 재화에 저장했어요.':'개인 저장에 별조각을 저장했어요.';enable();progressUI?.refresh();}catch(error){saveText.textContent='저장하지 못했어요. '+error.message+' 아래 버튼으로 다시 시도해 주세요.';retry.hidden=false;}finally{saving=false;}}
  retry.onclick=save;d.querySelector('[data-mine-menu]').onclick=()=>location.href=base+'adventure-menu.html'+(wallet.local?'?demo=1':'');
  if(preview){saveText.textContent='모의 종료 화면이에요. 재화는 지급되지 않아요.';enable();}else void save();hud();
 }
