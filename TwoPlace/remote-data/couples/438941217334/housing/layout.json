@@ -450,9 +450,10 @@
     {
       "id": "ab47747eee2142ec82aa573cc0bd3a39",
       "product": "bathStool",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "shower",
+      "x": 20,
+      "y": 67.575,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
