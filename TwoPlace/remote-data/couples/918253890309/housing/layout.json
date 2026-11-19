@@ -26,9 +26,12 @@
     {
       "id": "f9e5856f1f934de1999e875c573836c6",
       "product": "mealPlate",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "yard",
+      "x": 68,
+      "y": 53.608599999999996,
+      "parentId": "7cb9ef962e8443b2901e0895a5b840c6",
+      "slot": 0,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
