@@ -454,6 +454,13 @@
       "x": 20,
       "y": 67.575,
       "rotation": 0
+    },
+    {
+      "id": "64424b5881f14fb6953d7f9ce986fd27",
+      "product": "armchair",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,

@@ -427,6 +427,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795122408246,
+      "amount": -65,
+      "balance": 29,
+      "kind": "purchase",
+      "label": "폭신한 독서 의자 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "armchair",
+      "quantity": 1
     }
   ]
 }
