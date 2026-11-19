@@ -197,6 +197,17 @@
       "label": "휴식 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1795073377492,
+      "amount": -20,
+      "balance": 24,
+      "kind": "purchase",
+      "label": "따뜻한 한 끼 1개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "mealPlate",
+      "quantity": 1
     }
   ]
 }
