@@ -19,7 +19,7 @@ document.querySelector('#title-page').innerHTML=`
   <p class="title-start-note">게스트 기록은 브라우저 데이터를 지우면 잃을 수 있어요. 이메일을 연동하면 다른 기기에서도 이어할 수 있어요.</p>
   <div class="title-email-note"><p>다른 웹브라우저나 다른 기기에서도<br>이어서 하고 싶다면?</p><button type="button" data-email-login>이메일로 이어하기</button></div>
  </section>
- <footer>© LUCENTY LABS. All rights reserved.</footer>`;
+ <footer>© ${new Date().getFullYear()} LUCENTY LABS. All rights reserved.</footer>`;
 
 document.querySelector('[data-email-login]').onclick=()=>openEmailMenu({mode:'login'});
 

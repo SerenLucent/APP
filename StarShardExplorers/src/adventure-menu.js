@@ -54,7 +54,7 @@ window.addEventListener('adventure-wallet-change',()=>void refreshBattleBalance(
 
 mountSaveMenu(root.querySelector('header'));
 
-root.insertAdjacentHTML('beforeend','<footer class="standalone-footer">© LUCENTY LABS. All rights reserved.</footer>');
+root.insertAdjacentHTML('beforeend','<footer class="standalone-footer">© '+new Date().getFullYear()+' LUCENTY LABS. All rights reserved.</footer>');
 
 function renderRebuildTimers(){
  for(const card of root.querySelectorAll('.mode-card')){
