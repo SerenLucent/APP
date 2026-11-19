@@ -35,6 +35,27 @@ test('laser hits bodies on its firing line even inside the core rectangle',()=>{
 
 test('laser consumes ten percent per second at five ticks per second',()=>{const ts=createDefenseTurrets(),t=ts[1];for(let i=0;i<5;i++){assert.ok(fireTurret(t));stepTurrets(ts,t,.2);}assert.equal(t.energy,90);});
 
-test('five heart grenades each deal triple basic damage; five laser supplies fund twenty basic attacks',()=>{const basic={damage:15,critical:false};assert.equal(turretStrike('heart',basic).damage,45);assert.equal(TURRET_RULES.heart.capacity,5);assert.equal(TURRET_RULES.heart.cost,20);const perTick=turretStrike('laser',basic).damage;assert.equal(perTick,12);assert.equal(perTick*5,15*4);assert.equal(50/TURRET_RULES.laser.cost*perTick,15*20);assert.equal(turretStrike('heart',{damage:90,critical:true}).critical,true);assert.equal(turretStrike('heart',{damage:90,critical:true}).damage,270);});
+test('five heart grenades each deal triple basic damage; five laser supplies fund twenty-five basic attacks',()=>{const basic={damage:15,critical:false};assert.equal(turretStrike('heart',basic).damage,45);assert.equal(TURRET_RULES.heart.capacity,5);assert.equal(TURRET_RULES.heart.cost,20);const perTick=turretStrike('laser',basic).damage;assert.equal(perTick,15);assert.equal(perTick*5,15*5);assert.equal(50/TURRET_RULES.laser.cost*perTick,15*25);assert.equal(turretStrike('heart',{damage:90,critical:true}).critical,true);assert.equal(turretStrike('heart',{damage:90,critical:true}).damage,270);});
 
 test('small mobile stick motions immediately steer both cannons without sprite-angle dead zones',()=>{for(const t of createDefenseTurrets()){const before=t.angle;aimTurret(t,.15,0,1/60);assert.ok(t.angle>before,t.kind);const right=t.angle;aimTurret(t,-.3,0,1/60);assert.ok(t.angle<right,t.kind);}});
+
+import {ENEMY_RULES} from '../src/adventure-enemies.js';
+test('core attackers use the same movement speed as character pursuit',()=>{const r=stepDefense(createDefense(),[],2);assert.ok(r.fresh.length);assert.ok(r.fresh.every(e=>e.speed===ENEMY_RULES.speed));});
+
+test('aggro cap counts ten unique monsters per wave independently even when waves overlap',()=>{
+ const d=createDefense(),p={x:1300,y:1000},make=(wave,i)=>({id:'defense-'+wave+'-'+i,wave,hp:100,defenseTarget:'house',x:1300,y:1000});
+ const first=Array.from({length:11},(_,i)=>make(1,i)),second=Array.from({length:11},(_,i)=>make(2,i));
+ assert.equal(aggroDefenseEnemy(first[0],p,()=>.9,d),false);assert.equal(d.aggroByWave[1],undefined);
+ for(let i=0;i<10;i++)assert.equal(aggroDefenseEnemy(first[i],p,()=>0,d),true);
+ assert.equal(d.aggroByWave[1],10);let rolled=false;assert.equal(aggroDefenseEnemy(first[10],p,()=>{rolled=true;return 0;},d),false);assert.equal(rolled,false);
+ first[0].hp=0;assert.equal(aggroDefenseEnemy(first[10],p,()=>0,d),false);
+ for(let i=0;i<10;i++)assert.equal(aggroDefenseEnemy(second[i],p,()=>0,d),true);
+ assert.equal(d.aggroByWave[2],10);assert.equal(aggroDefenseEnemy(second[10],p,()=>0,d),false);assert.equal(d.aggroByWave[1],10);
+});
+test('repeated hits and losing aggro do not count the same monster twice or reopen a full wave quota',()=>{
+ const d=createDefense(),p={x:1300,y:1000},e={id:'defense-1-0',hp:100,defenseTarget:'house',x:1300,y:1000};
+ assert.equal(aggroDefenseEnemy(e,p,()=>0,d),true);assert.equal(aggroDefenseEnemy(e,p,()=>0,d),false);assert.equal(d.aggroByWave[1],1);
+ releaseDefenseAggro(e,{x:1300,y:1250});assert.equal(aggroDefenseEnemy(e,p,()=>0,d),true);assert.equal(d.aggroByWave[1],1);
+ d.aggroByWave[1]=10;releaseDefenseAggro(e,{x:1300,y:1250});assert.equal(aggroDefenseEnemy(e,p,()=>0,d),false);assert.equal(e.defenseTarget,'house');
+ assert.deepEqual(createDefense().aggroByWave,{});
+});

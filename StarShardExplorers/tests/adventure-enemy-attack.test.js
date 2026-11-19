@@ -8,10 +8,10 @@ test('enemy damage uses six equally sized 5 to 10 bands and five percent double 
  assert.equal(roll(0,.049).damage,10);assert.equal(roll(0,.05).damage,5);assert.equal(roll(.999,.01,1.2).damage,24);
  let total=0,criticals=0;for(let n=0;n<100;n++){const h=roll(.5,(n+.5)/100);total+=h.damage;if(h.critical)criticals++;}assert.equal(criticals,5);assert.equal(total,840);
 });
-test('defense house takes independently rolled hits, with fixed house damage even at a high map level',()=>{
- const d=createDefense();assert.equal(d.house.max,2000);assert.equal(OUTPOST_MAX_HP,5000);d.wave=10;d.damageScale=5.6;
+test('defense house takes independently rolled hits, using the same map damage multiplier as player hits',()=>{
+ const d=createDefense();assert.equal(d.house.max,1000);assert.equal(OUTPOST_MAX_HP,5000);d.wave=10;d.damageScale=5.6;
  const enemies=[1,2].map((id)=>({id,hp:100,x:d.house.x,y:d.house.y-d.house.halfDepth-28,radius:22,speed:100,cooldown:0,windup:.01}));
- let i=0;const rolls=[0,.5,.999,.01];const r=stepDefense(d,enemies,.02,()=>rolls[i++]);assert.deepEqual(r.hits.map(h=>h.damage),[4,14]);assert.equal(d.house.hp,1982);
+ let i=0;const rolls=[0,.5,.999,.01];const r=stepDefense(d,enemies,.02,()=>rolls[i++]);assert.deepEqual(r.hits.map(h=>h.damage),[22,78]);assert.equal(d.house.hp,900);
 });
 
 test('offense and defense range is four through seven with unchanged five percent criticals',()=>{

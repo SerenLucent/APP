@@ -1,3 +1,4 @@
+import {localDemoEnabled,createDemoWallet} from './adventure-demo-wallet.js';
 import {recoverAdventurePending} from './adventure-pending.js';
 import {sendSaveRequest} from './save-transport.js';
 import {EXPLORATION_FIELD_VERSION} from '../shared/adventure-field.js';
@@ -23,6 +24,7 @@ async function ensurePlayer(){
 export async function exportPlayer(){await ensurePlayer();const state=await saveRequest('save');return {format:'star-shard-explorers-save',provider:'gas-private-drive',version:1,savedAt:new Date().toISOString(),recoveryCode:localStorage.getItem(TOKEN_KEY),snapshot:state};}
 export async function restorePlayer(token){token=String(token).trim();if(!/^[a-f0-9]{64}$/.test(token))throw Error('복구코드를 확인해 주세요.');await saveRequest('save',{token});localStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(PENDING_KEY);localStorage.removeItem(TOKEN_KEY+':creating');boot=null;}
 export function createAdventureWallet(){
+ if(localDemoEnabled(location.hostname,location.search))return createDemoWallet();
  let home={version:0,hearts:0,adventure:initialAdventure()},busy=false;
  async function refresh(){await ensurePlayer();home=await saveRequest('save');return home;}
  async function mutate(type,body={}){
