@@ -26,3 +26,5 @@ export function readRewardAvailable(event,role,rewards){
 }
 
 export function registrationRewardAvailable(home,state,date){return !home?.calendarRewards?.registration?.[date]&&!state.events.some(event=>event.date===date);}
+
+export function dateReadRewardAvailable(events,date,role,rewards){return events.some(event=>event.date===date&&readRewardAvailable(event,role,rewards));}

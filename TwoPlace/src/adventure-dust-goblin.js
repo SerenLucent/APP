@@ -30,6 +30,6 @@ export function loadDustGoblin(){
 export function drawDustGoblin(ctx,enemy){
  const hit=enemy.flash>0||enemy.hitJolt>0,s=sheets[hit?'hit':'idle'];if(!s)return;
  const f=s.frames[(hit?enemy.hitFacing:enemy.facing)??0];
- const height=70,width=height*f.sw/f.sh;
+ const height=enemy.training?105:70,width=height*f.sw/f.sh;
  ctx.drawImage(s.image,f.sx,f.sy,f.sw,f.sh,-width/2,5-height,width,height);
 }

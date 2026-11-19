@@ -1,9 +1,10 @@
+import {fortressDamageStage} from './adventure-fortress-damage.js';
 import {OFFENSE_BASE,REBUILD_SECONDS} from './adventure-offense.js';
 import {drawEnvironmentProp} from './adventure-environment.js';
 let atlas,loading,ridge,cannon;
 const ruins={};
-async function loadRuin(type){
- const image=new Image();image.src=import.meta.env.BASE_URL+'adventure/environment/fortress-'+type+'-destroyed-v2.png';await image.decode();
+async function loadRuin(type,file='fortress-'+type+'-destroyed-v2.png'){
+ const image=new Image();image.src=import.meta.env.BASE_URL+'adventure/environment/'+file;await image.decode();
  const c=document.createElement('canvas');c.width=image.width;c.height=image.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);const pixels=ctx.getImageData(0,0,c.width,c.height).data;let left=c.width,right=0,top=c.height,bottom=0;
  for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(pixels[(y*c.width+x)*4+3]>180){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}
  ruins[type]={image,frame:{x:left,y:top,w:right-left+1,h:bottom-top+1}};
@@ -11,7 +12,7 @@ async function loadRuin(type){
 export function loadFortressArt(){return loading ||= (async()=>{
  const image=new Image();image.src=import.meta.env.BASE_URL+'adventure/environment/fortress-parts-v1.png';
  const cannonImage=new Image();cannonImage.src=import.meta.env.BASE_URL+'adventure/environment/fortress-cannon-8dir-v1.png';
- try{await Promise.all([image.decode(),cannonImage.decode(),loadRuin('gate'),loadRuin('tower')]);}catch{loading=null;throw Error('요새 그림을 불러오지 못했어요. 다시 시작해 주세요.');}
+ try{await Promise.all([image.decode(),cannonImage.decode(),loadRuin('gate'),loadRuin('tower'),loadRuin('house'),loadRuin('houseStage2','fortress-house-damaged-stage2-v1.png'),loadRuin('houseStage3','fortress-house-damaged-stage3-v1.png')]);}catch{loading=null;throw Error('요새 그림을 불러오지 못했어요. 다시 시작해 주세요.');}
  const c=document.createElement('canvas');c.width=image.width;c.height=image.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);const data=ctx.getImageData(0,0,c.width,c.height).data;
  const bounds=[0,.4,.72,1];const frames=bounds.slice(0,3).map((v,i)=>{let l=c.width,r=0,t=c.height,b=0;for(let y=0;y<c.height;y++)for(let x=Math.ceil(v*c.width);x<Math.floor(bounds[i+1]*c.width);x++)if(data[(y*c.width+x)*4+3]>180){l=Math.min(l,x);r=Math.max(r,x);t=Math.min(t,y);b=Math.max(b,y);}return {x:l,y:t,w:r-l+1,h:b-t+1};});atlas={image,frames};
  const cc=document.createElement('canvas');cc.width=cannonImage.width;cc.height=cannonImage.height;const cx=cc.getContext('2d',{willReadFrequently:true});cx.drawImage(cannonImage,0,0);const pixels=cx.getImageData(0,0,cc.width,cc.height).data;const cw=cc.width/4,ch=cc.height/2;const cannonFrames=Array.from({length:8},(_,i)=>{let l=cc.width,r=0,t=cc.height,b=0;const ox=Math.round(i%4*cw),oy=Math.round(Math.floor(i/4)*ch);for(let y=oy;y<Math.min(cc.height,oy+ch);y++)for(let x=ox;x<Math.min(cc.width,ox+cw);x++)if(pixels[(y*cc.width+x)*4+3]>180){l=Math.min(l,x);r=Math.max(r,x);t=Math.min(t,y);b=Math.max(b,y);}return {x:l,y:t,w:r-l+1,h:b-t+1};});cannon={image:cannonImage,frames:cannonFrames};
@@ -34,7 +35,7 @@ export function drawFortressRidge(ctx){
   const y=OFFENSE_BASE.y-58;for(let x=-80;x<2700;x+=105)drawEnvironmentProp(c,'rock',{x,y:y+Math.sin(x*.03)*10},{width:150,height:140,anchor:25});
  }ctx.drawImage(ridge,0,0);
 }
-export function drawFortressBody(ctx,progress){const {x,y}=OFFENSE_BASE;if(progress.complete){ctx.fillStyle='#a38b91';for(let i=0;i<8;i++)ctx.fillRect(x-70+i*20,y-10+(i%2)*8,18,12);return;}sprite(ctx,'house',x,y,170);}
+export function drawFortressBody(ctx,progress){const {x,y}=OFFENSE_BASE,stage=fortressDamageStage(progress);if(stage>1){const ruin=ruins[stage===2?'houseStage2':stage===3?'houseStage3':'house'];if(ruin){const f=ruin.frame,width=170,height=width*f.h/f.w;ctx.drawImage(ruin.image,f.x,f.y,f.w,f.h,x-width/2,y+15-height,width,height);}return;}sprite(ctx,'house',x,y,170);}
 export function drawFortressPart(ctx,o){if(o.type==='house')return;const width=o.type==='gate'?112:83;
  if(o.hp<=0){const ruin=ruins[o.type];let height=50;if(ruin){const f=ruin.frame,size=fortressSpriteSize(o.type,f,width,frame(o.type,0));height=size.height*(o.type==='tower'?.92:1);ctx.drawImage(ruin.image,f.x,f.y,f.w,f.h,o.x-size.width/2,o.y+15-height,size.width,height);}drawRebuildClock(ctx,o.x,o.y-height-7,o.rebuild||0);return;}
  const height=sprite(ctx,o.type,o.x,o.y,width,o.facing)||100;
