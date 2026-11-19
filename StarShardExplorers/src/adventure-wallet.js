@@ -1,3 +1,4 @@
+import {clearPlayerSession} from './account-session.js';
 import {localDemoEnabled,createDemoWallet} from './adventure-demo-wallet.js';
 import {recoverAdventurePending} from './adventure-pending.js';
 import {sendSaveRequest} from './save-transport.js';
@@ -21,8 +22,7 @@ async function ensurePlayer(){
  if(!boot)boot=(async()=>{let token=localStorage.getItem(TOKEN_KEY);if(!token){token=newToken();localStorage.setItem(TOKEN_KEY,token);localStorage.setItem(TOKEN_KEY+':creating','1');}if(localStorage.getItem(TOKEN_KEY+':creating')){await saveRequest('player',{method:'POST',token});localStorage.removeItem(TOKEN_KEY+':creating');}})().catch(e=>{boot=null;throw e;});
  return boot;
 }
-export async function exportPlayer(){await ensurePlayer();const state=await saveRequest('save');return {format:'star-shard-explorers-save',provider:'gas-private-drive',version:1,savedAt:new Date().toISOString(),recoveryCode:localStorage.getItem(TOKEN_KEY),snapshot:state};}
-export async function restorePlayer(token){token=String(token).trim();if(!/^[a-f0-9]{64}$/.test(token))throw Error('복구코드를 확인해 주세요.');await saveRequest('save',{token});localStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(PENDING_KEY);localStorage.removeItem(TOKEN_KEY+':creating');boot=null;}
+async function restorePlayer(token){token=String(token).trim();if(!/^[a-f0-9]{64}$/.test(token))throw Error('로그인 정보를 확인해 주세요.');await saveRequest('save',{token});localStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(PENDING_KEY);localStorage.removeItem(TOKEN_KEY+':creating');boot=null;}
 export function createAdventureWallet(){
  if(localDemoEnabled(location.hostname,location.search))return createDemoWallet();
  let home={version:0,hearts:0,adventure:initialAdventure()},busy=false;
@@ -30,7 +30,7 @@ export function createAdventureWallet(){
  async function mutate(type,body={}){
   if(busy)throw Error('다른 저장을 처리하고 있어요.');busy=true;
   const execute=async()=>{
-   await ensurePlayer();let pending;try{pending=JSON.parse(localStorage.getItem(PENDING_KEY)||'null');}catch{throw Error('이전 저장 요청을 읽을 수 없어요. 저장 관리에서 복구해 주세요.');}
+   await ensurePlayer();let pending;try{pending=JSON.parse(localStorage.getItem(PENDING_KEY)||'null');}catch{throw Error('이전 저장 요청을 읽을 수 없어요. 새로고침한 뒤 다시 시도해 주세요.');}
    if(pending&&(pending.type!==type||JSON.stringify(pending.body)!==JSON.stringify(body)))throw Error('직전 저장 결과를 먼저 확인해 주세요. 같은 버튼으로 다시 시도해 주세요.');
    pending ||= {type,body,actionId:crypto.randomUUID()};localStorage.setItem(PENDING_KEY,JSON.stringify(pending));
    for(let retry=0;retry<3;retry++){await refresh();try{home=await saveRequest('action',{method:'POST',body:{type,...body,actionId:pending.actionId,version:home.version}});localStorage.removeItem(PENDING_KEY);return home;}catch(e){if(e.status&&e.status!==409)localStorage.removeItem(PENDING_KEY);if(retry===2||e.status&&e.status!==409)throw e;}}
@@ -55,4 +55,11 @@ export async function verifyEmailCode(email,purpose,challengeId,code){
  if(purpose==='login'&&(!pending||pending.challengeId!==challengeId)){pending={challengeId,deviceToken:newToken()};localStorage.setItem(key,JSON.stringify(pending));}
  const result=await saveRequest('email/verify',{method:'POST',token:purpose==='link'?localStorage.getItem(TOKEN_KEY):null,body:{email,purpose,challengeId,code,...(purpose==='login'?{deviceToken:pending.deviceToken}:{})}});
  if(purpose==='login'){await restorePlayer(pending.deviceToken);localStorage.removeItem(key);}return result;
+}
+
+export function hasPlayerSession(){return !!localStorage.getItem(TOKEN_KEY);}
+export async function logoutPlayer(){
+ await tail;
+ clearPlayerSession(localStorage,PENDING_KEY);
+ boot=null;tail=Promise.resolve();
 }

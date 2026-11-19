@@ -1,3 +1,4 @@
+import {hasPlayerSession,emailAccountStatus} from './adventure-wallet.js';
 import {openEmailMenu} from './email-menu.js';
 import {installAppTouchPolicy} from './app-touch.js';
 import './title-page.css';
@@ -15,9 +16,11 @@ document.querySelector('#title-page').innerHTML=`
    <img class="title-kuki" src="${base}pets/kuki-standing-v2.png" alt="쿠키" fetchpriority="high">
   </div>
   <a class="title-start" href="${base}adventure-menu.html">게스트로 시작하기 <span aria-hidden="true">→</span></a>
-  <p class="title-start-note">가입 없이 바로 모험을 시작해요.</p>
+  <p class="title-start-note">게스트 기록은 브라우저 데이터를 지우면 잃을 수 있어요. 이메일을 연동하면 다른 기기에서도 이어할 수 있어요.</p>
   <div class="title-email-note"><p>다른 웹브라우저나 다른 기기에서도<br>이어서 하고 싶다면?</p><button type="button" data-email-login>이메일로 이어하기</button></div>
  </section>
  <footer>© LUCENTY LABS. All rights reserved.</footer>`;
 
 document.querySelector('[data-email-login]').onclick=()=>openEmailMenu({mode:'login'});
+
+if(hasPlayerSession())emailAccountStatus().then(result=>{if(result.linked){document.querySelector('.title-start').innerHTML='이어서 시작하기 <span aria-hidden="true">→</span>';const b=document.querySelector('[data-email-login]');b.textContent='이메일 연동됨';b.disabled=true;}}).catch(()=>{});
