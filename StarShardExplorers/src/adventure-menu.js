@@ -1,3 +1,4 @@
+import {createMapEntryGate,adventureLoadReason} from './adventure-entry-gate.js';
 import {mountTutorialPreference} from './adventure-tutorial.js';
 import {confirmAdventureExit,installAdventureEntries} from './adventure-navigation.js';
 import {mountSaveMenu} from './save-menu.js';
@@ -20,15 +21,15 @@ const balance=document.createElement('p');
 balance.className='mode-shard-balance';
 balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0';
 const toolbar=document.createElement('div');toolbar.className='mode-resource-toolbar';toolbar.append(balance);mountTutorialPreference(toolbar,{compact:true});root.querySelector('.mode-intro').after(toolbar);
-let balanceRefresh=0;
+const entryGate=createMapEntryGate();let balanceRefresh=0;
+const retryMaps=document.createElement('button');retryMaps.className='map-refresh-retry';retryMaps.textContent='맵 정보 다시 불러오기';retryMaps.hidden=true;toolbar.after(retryMaps);retryMaps.onclick=()=>void refreshBattleBalance();
 const refreshBattleBalance=async()=>{
- const sequence=++balanceRefresh;balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
- try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');}
- catch(error){if(sequence===balanceRefresh)balance.textContent=error.message;}
- finally{if(sequence===balanceRefresh)root.querySelector('.mode-list').removeAttribute('aria-busy');}
+ const sequence=++balanceRefresh,ticket=entryGate.begin();retryMaps.hidden=true;renderRebuildTimers();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
+ try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');entryGate.finish(ticket,true);balance.removeAttribute('role');balance.style.whiteSpace='';}
+ catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');retryMaps.hidden=false;}}
+ finally{if(sequence===balanceRefresh){root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderRebuildTimers();}}
 };
-mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{void refreshBattleBalance();window.dispatchEvent(new Event('adventure-wallet-change'));}});
-void refreshBattleBalance();
+mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{window.dispatchEvent(new Event('adventure-wallet-change'));}});
 
 root.querySelector('.mode-list').insertAdjacentHTML('beforeend','<a class="mode-card mine" href="'+base+'adventure.html?mode=mine'+(demo?'&demo=1':'')+'"><span class="mode-number">04 · MINE</span><h2>별조각 광산</h2><p>동굴을 오가며 원석을 부수고 흩어진 별조각을 모아요.</p><small>3분 제한 · 무작위 원석 · 별조각만 획득</small><b>광산 들어가기 →</b></a>');
 
@@ -58,10 +59,15 @@ root.insertAdjacentHTML('beforeend','<footer class="standalone-footer">© '+new 
 
 function renderRebuildTimers(){
  for(const card of root.querySelectorAll('.mode-card')){
-  const mode=['explore','offense','defense','mine'].find(id=>card.classList.contains(id)),remaining=Math.max(0,(battleWallet.profile.cooldowns?.[mode]||0)-Date.now()),blocked=remaining>0;
+  const mode=['explore','offense','defense','mine'].find(id=>card.classList.contains(id)),remaining=Math.max(0,(battleWallet.profile.cooldowns?.[mode]||0)-Date.now()),blocked=remaining>0||entryGate.blocked;
   let panel=card.querySelector('.map-rebuild');if(!panel){panel=document.createElement('div');panel.className='map-rebuild';panel.innerHTML='<div><strong></strong><time></time></div><progress max="100" value="100"></progress>';card.append(panel);}
-  const seconds=Math.ceil(remaining/1000);panel.querySelector('strong').textContent=blocked?'재건중':'입장 가능';panel.querySelector('time').textContent=blocked?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):'준비 완료';panel.querySelector('progress').value=100*(1-remaining/ADVENTURE_COOLDOWNS[mode]);panel.querySelector('progress').setAttribute('aria-label',blocked?'재건 진행률':'입장 준비 완료');card.classList.toggle('rebuilding',blocked);card.setAttribute('aria-disabled',String(blocked));card.querySelector('[data-enter]').disabled=blocked;
+  const seconds=Math.ceil(remaining/1000);panel.querySelector('strong').textContent=entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):remaining>0?'재건중':'입장 가능';panel.querySelector('time').textContent=entryGate.blocked?'잠시 기다려 주세요':remaining>0?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):'준비 완료';panel.querySelector('progress').value=100*(1-remaining/ADVENTURE_COOLDOWNS[mode]);panel.querySelector('progress').setAttribute('aria-label',blocked?'재건 진행률':'입장 준비 완료');card.classList.toggle('rebuilding',blocked);card.setAttribute('aria-disabled',String(blocked));card.querySelector('[data-enter]').disabled=blocked;
  }
 }
 root.querySelector('.mode-list').addEventListener('click',event=>{const card=event.target.closest('.mode-card');if(card?.getAttribute('aria-disabled')==='true'&&!event.target.closest('[data-level-step]')){event.preventDefault();}});
 setInterval(renderRebuildTimers,1000);
+
+window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderRebuildTimers();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else retryMaps.hidden=false;}});
+root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();}},true);
+
+void refreshBattleBalance();

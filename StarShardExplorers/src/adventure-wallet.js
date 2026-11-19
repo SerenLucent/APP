@@ -5,7 +5,8 @@ import {sendSaveRequest} from './save-transport.js';
 import {EXPLORATION_FIELD_VERSION} from '../shared/adventure-field.js';
 import {adventureState,initialAdventure} from '../shared/adventure-progression.js';
 const TOKEN_KEY='star-shard-explorers:gas-player:v1',PENDING_KEY='star-shard-explorers:gas-pending:v1';
-let boot,tail=Promise.resolve();
+let boot,tail=Promise.resolve(),activeSaves=0;
+function announceSaving(delta,success=false){activeSaves+=delta;window.dispatchEvent(new CustomEvent('adventure-save-state',{detail:{busy:activeSaves>0,success}}));}
 const newToken=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),n=>n.toString(16).padStart(2,'0')).join('');
 let configuredUrl=(import.meta.env.VITE_GAS_URL||'').trim(),configReady;
 async function resolveSaveEndpoint(){
@@ -28,17 +29,17 @@ export function createAdventureWallet(){
  let home={version:0,hearts:0,adventure:initialAdventure()},busy=false;
  async function refresh(){await ensurePlayer();home=await saveRequest('save');return home;}
  async function mutate(type,body={}){
-  if(busy)throw Error('다른 저장을 처리하고 있어요.');busy=true;
+  if(busy)throw Error('다른 저장을 처리하고 있어요.');busy=true;announceSaving(1);
   const execute=async()=>{
    await ensurePlayer();let pending;try{pending=JSON.parse(localStorage.getItem(PENDING_KEY)||'null');}catch{throw Error('이전 저장 요청을 읽을 수 없어요. 새로고침한 뒤 다시 시도해 주세요.');}
    if(pending&&(pending.type!==type||JSON.stringify(pending.body)!==JSON.stringify(body)))throw Error('직전 저장 결과를 먼저 확인해 주세요. 같은 버튼으로 다시 시도해 주세요.');
    pending ||= {type,body,actionId:crypto.randomUUID()};localStorage.setItem(PENDING_KEY,JSON.stringify(pending));
    for(let retry=0;retry<3;retry++){await refresh();try{home=await saveRequest('action',{method:'POST',body:{type,...body,actionId:pending.actionId,version:home.version}});localStorage.removeItem(PENDING_KEY);return home;}catch(e){if(e.status&&e.status!==409)localStorage.removeItem(PENDING_KEY);if(retry===2||e.status&&e.status!==409)throw e;}}
   };
-  const operation=tail.then(execute);tail=operation.catch(()=>{});try{return await operation;}finally{busy=false;}
+  const operation=tail.then(execute);tail=operation.catch(()=>{});let saved=false;try{const result=await operation;saved=true;return result;}finally{busy=false;announceSaving(-1,saved);}
  }
  return {local:false,get profile(){return adventureState(home.adventure);},get hearts(){return home.hearts;},get role(){return 'player';},get busy(){return busy;},get run(){return home.adventure.runs.player;},
-  async init(){await refresh();const pending=recoverAdventurePending(localStorage,PENDING_KEY,home,'player');if(pending)await mutate(pending.type,pending.body);return home;},
+  async init(){await tail;await refresh();const pending=recoverAdventurePending(localStorage,PENDING_KEY,home,'player');if(pending)await mutate(pending.type,pending.body);return home;},
   history:(start,end)=>saveRequest('history?'+new URLSearchParams({start,end})),
   async start(restart=false,mode='explore',level){await mutate('adventureStart',{mode,...(level===undefined?{}:{level}),...(mode==='explore'?{fieldVersion:EXPLORATION_FIELD_VERSION}:{}),...(restart?{restart:true}:{})});return this.run;},
   async finish(runId,cleared,pet='momo',playTimeMs){await mutate('adventureFinish',{runId,cleared,pet,playTimeMs});return this.run.reward;},
