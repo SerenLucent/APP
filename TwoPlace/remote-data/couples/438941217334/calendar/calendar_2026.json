@@ -560,7 +560,8 @@
       "2026-11-13": true,
       "2026-11-22": true,
       "2026-11-24": true,
-      "2026-11-23": true
+      "2026-11-23": true,
+      "2026-11-17": true
     },
     "seen": [
       "owner:2026-10-24:a87c5469eaa8cd2cf6e81b2df43036d5",
@@ -582,7 +583,8 @@
       "owner:2026-11-13:034ad872465c06bb934a354fe4968b22",
       "owner:2026-11-22:b255d5f9681872de4b2ffd6e75fa5042",
       "owner:2026-11-24:1a89fe6b480c4ff389e23403e4aca5db",
-      "owner:2026-11-23:637af44ae3ed76f7a320774a0edbdb2f"
+      "owner:2026-11-23:637af44ae3ed76f7a320774a0edbdb2f",
+      "owner:2026-11-17:a3a4ab4487a3ad81ff59cb4d17311655"
     ],
     "backfilled": true
   }
