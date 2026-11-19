@@ -12,3 +12,5 @@
 #mode-menu>header>a:active,#mode-menu>header>.mode-stats-button:active{transform:translateY(2px)}
 #mode-menu>header>.mode-stats-button.has-points{box-shadow:0 0 0 2px #ffe082,0 3px 8px #0b211b33}
 .mode-shard-balance{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}.mode-shard-balance .mode-shard-icon{width:28px;height:28px;object-fit:contain;flex:none}.mode-shard-balance strong{font-size:inherit}
+
+.map-refresh-retry{margin:0 0 16px;padding:10px 14px;border-radius:10px;background:#f5dfa1;color:#624f30;font:inherit}.mode-shard-balance[role="alert"]{white-space:normal}.mode-list[aria-busy="true"] [data-enter]{opacity:.55;cursor:wait}

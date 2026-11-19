@@ -1,3 +1,4 @@
+import {createMapEntryGate,adventureLoadReason} from './adventure-entry-gate.js';
 import {mountTutorialPreference} from './adventure-tutorial.js';
 import {confirmAdventureExit,installAdventureEntries} from './adventure-navigation.js';
 import {recommendedMapLevel,mapScaling,adventureLevel,minimumMapLevel,mapRewardFactor} from '../shared/adventure-progression.js';
@@ -20,15 +21,15 @@ const balance=document.createElement('p');
 balance.className='mode-shard-balance';
 balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0 0 18px';
 root.querySelector('.mode-intro').after(balance);
-let balanceRefresh=0;
+const entryGate=createMapEntryGate();let balanceRefresh=0;
+const retryMaps=document.createElement('button');retryMaps.className='map-refresh-retry';retryMaps.textContent='맵 정보 다시 불러오기';retryMaps.hidden=true;balance.after(retryMaps);retryMaps.onclick=()=>void refreshBattleBalance();
 const refreshBattleBalance=async()=>{
- const sequence=++balanceRefresh;balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
- try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');}
- catch(error){if(sequence===balanceRefresh)balance.textContent=error.message;}
- finally{if(sequence===balanceRefresh)root.querySelector('.mode-list').removeAttribute('aria-busy');}
+ const sequence=++balanceRefresh,ticket=entryGate.begin();retryMaps.hidden=true;renderEntryButtons();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
+ try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');entryGate.finish(ticket,true);balance.removeAttribute('role');balance.style.whiteSpace='';}
+ catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');retryMaps.hidden=false;}}
+ finally{if(sequence===balanceRefresh){root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderEntryButtons();}}
 };
-mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{void refreshBattleBalance();window.dispatchEvent(new Event('adventure-wallet-change'));}});
-void refreshBattleBalance();
+mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{window.dispatchEvent(new Event('adventure-wallet-change'));}});
 
 root.querySelector('.mode-list').insertAdjacentHTML('beforeend','<a class="mode-card mine" href="'+base+'adventure.html?mode=mine'+(demo?'&demo=1':'')+'"><span class="mode-number">04 · MINE</span><h2>별조각 광산</h2><p>동굴을 오가며 원석을 부수고 흩어진 별조각을 모아요.</p><small>3분 제한 · 무작위 원석 · 별조각만 획득</small><b>광산 들어가기 →</b></a>');
 
@@ -50,3 +51,8 @@ function updateLevelChoices(){
  balance.dataset.recommendedLevel=max;
 }
 window.addEventListener('adventure-wallet-change',()=>void refreshBattleBalance());
+
+function renderEntryButtons(){const list=root.querySelector('.mode-list');list.setAttribute('aria-busy',String(entryGate.blocked));for(const card of list.querySelectorAll('.mode-card')){card.setAttribute('aria-disabled',String(entryGate.blocked));const button=card.querySelector('[data-enter]');if(button){button.disabled=entryGate.blocked;button.dataset.readyLabel ||= button.textContent;button.textContent=entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):button.dataset.readyLabel;}}}
+window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);renderEntryButtons();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else retryMaps.hidden=false;}});
+root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();}},true);
+void refreshBattleBalance();
