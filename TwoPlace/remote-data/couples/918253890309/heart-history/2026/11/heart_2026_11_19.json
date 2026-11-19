@@ -208,6 +208,17 @@
       "character": "kuki",
       "product": "mealPlate",
       "quantity": 1
+    },
+    {
+      "at": 1795073391358,
+      "amount": -20,
+      "balance": 4,
+      "kind": "purchase",
+      "label": "따뜻한 한 끼 1개 구매",
+      "role": "owner",
+      "character": "kuki",
+      "product": "mealPlate",
+      "quantity": 1
     }
   ]
 }
