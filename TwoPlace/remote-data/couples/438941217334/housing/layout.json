@@ -208,7 +208,7 @@
     {
       "id": "d60d3e6742724d2986e73c1caf973382",
       "product": "armchair",
-      "space": "kukiRoom",
+      "space": null,
       "x": 48,
       "y": 67.575,
       "rotation": 0
