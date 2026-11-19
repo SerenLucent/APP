@@ -13,3 +13,10 @@ export function createPractice({root,state,finish}){
  function event(name){if(done)return;const next=nextPracticeStep(step,name);if(next===step)return;if(next==='done'){panel.querySelector('strong').textContent='이제 실전으로 가볼까요?';panel.querySelector('small').textContent='연습 기록과 소모품은 실제 저장에 반영되지 않아요.';done=true;setTutorialSkip(localStorage,true);setTimeout(finish,2000);return;}step=next;if(step==='heart'||step==='star'){const kind=step==='heart'?'heart':'star';state.hearts=state.hearts.filter(h=>h.kind===kind);if(!state.hearts.length)state.hearts.push({x:state.p.x+55,y:state.p.y,life:999,phase:0,age:3,split:true,kind,originX:state.p.x+55,originY:state.p.y});for(const h of state.hearts)h.life=999;}render();}
  render();return {event,tick(){if(done)return;if(step==='move'&&practiceTargetReached(state.p,state.enemies[0]))event('moved');if(step==='charge'&&state.attack)event('charged');if(!state.switching)event(state.active);for(const h of state.hearts)if(h.life>0)h.life=Math.max(h.life,120);},allows(action){if(action==='swap'&&(state.heartMeteor||state.burst))return false;return {basic:'basic',charge:'charge',momoSkill:'ultimate',kukiSkill:'ultimate',toKuki:'swap',toMomo:'swap'}[step]===action;}};
 }
+
+export function playTutorialIntro(stage){
+ const layer=document.createElement('div');layer.className='practice-start-intro';layer.setAttribute('role','status');layer.setAttribute('aria-label','튜토리얼 시작');
+ const letters=document.createElement('div');letters.className='practice-start-letters';letters.setAttribute('aria-hidden','true');let index=0;
+ for(const letter of '튜토리얼 시작'){const span=document.createElement('span');span.textContent=letter;if(letter===' ')span.className='practice-start-space';else span.style.setProperty('--i',index++);letters.append(span);}layer.append(letters);stage.append(layer);
+ return new Promise(resolve=>setTimeout(()=>{layer.remove();resolve();},2150));
+}

@@ -1,4 +1,4 @@
-import {createPractice,tutorialDestination} from './adventure-tutorial.js';
+import {createPractice,tutorialDestination,playTutorialIntro} from './adventure-tutorial.js';
 import {skipTutorial} from './tutorial-preference.js';
 import {createDemoWallet} from './adventure-demo-wallet.js';
 import {defenseTestConfig} from './adventure-defense-test.js';
@@ -272,7 +272,7 @@ function completeOffense(){progressUI.roulette(round.id,['outpost-house']);}
 
 function resize(){const b=stage.getBoundingClientRect();w=b.width;h=b.height;if(mineMode)configureMineHub(w/(w<650?.82:1.04));dpr=Math.min(2,devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
 new ResizeObserver(resize).observe(stage);
-function togglePause(force){if((loading||loadError)&&force!==true)return;paused=typeof force==='boolean'?force:!paused;if(!paused){const menu=document.querySelector('.mine-options');if(menu)menu.open=false;}gameMusic.setPaused(shouldPauseGameMusic({paused,loading,loadError,won:state.won,hidden:document.hidden}));if(paused){if(state.defense)state.defense.firing=false;combatAudio.stop();shake=0;cancelCharge();keys.clear();stick={x:0,y:0};} $('[data-pause]').disabled=loading||loadError;$('[data-pause]').textContent=loading?'로딩 중':loadError?'연결 확인 필요':paused?'▶ 계속하기':'Ⅱ 일시정지';hud();}
+function togglePause(force){if(state.practice?.intro&&force!==true)return;if((loading||loadError)&&force!==true)return;paused=typeof force==='boolean'?force:!paused;if(!paused){const menu=document.querySelector('.mine-options');if(menu)menu.open=false;}gameMusic.setPaused(shouldPauseGameMusic({paused,loading,loadError,won:state.won,hidden:document.hidden}));if(paused){if(state.defense)state.defense.firing=false;combatAudio.stop();shake=0;cancelCharge();keys.clear();stick={x:0,y:0};} $('[data-pause]').disabled=loading||loadError;$('[data-pause]').textContent=loading?'로딩 중':loadError?'연결 확인 필요':paused?'▶ 계속하기':'Ⅱ 일시정지';hud();}
 const movement=['arrowup','arrowdown','arrowleft','arrowright'];
 window.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;const key=e.key.toLowerCase();if(movement.includes(key)||['w','a','s','d','escape'].includes(key))e.preventDefault();if(movement.includes(key))keys.add(key);if(e.repeat)return;if(key==='s')beginCharge('key');if(key==='d'){if(state.defense?.mounted)keys.add('d');basic();}if(key==='a'){if(state.defense?.mounted)leaveDefenseTurret();else gaugeSkill();}if(key==='w')swap();if(key==='escape')togglePause();});
 window.addEventListener('keyup',e=>{keys.delete(e.key.toLowerCase());if(e.key.toLowerCase()==='s')releaseCharge('key');});window.addEventListener('blur',()=>togglePause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)togglePause(true);else if(state.won)gameMusic.setPaused(false);});
@@ -468,5 +468,5 @@ function startPractice(){
  state.objects=[];state.colliders=[];state.enemies=[{id:'practice-target',type:'enemy',training:true,x:state.p.x+145,y:state.p.y,hp:60,max:60,radius:22,mode:'idle',flash:0,windup:0,homeX:state.p.x+145,homeY:state.p.y}];state.hearts=[];state.weaponDrops=[];
  $('.adventure-top h1').textContent='모모와 쿠키 · 조작 연습';
  state.practice=createPractice({root,state,finish:()=>{togglePause(true);location.replace(base+tutorialDestination(location.search));}});
- togglePause(false);
+ state.practice.intro=true;togglePause(true);playTutorialIntro(stage).then(()=>{if(!state.practice)return;state.practice.intro=false;togglePause(document.hidden);});
 }
