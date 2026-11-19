@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {practiceTargetReached,nextPracticeStep} from '../src/tutorial-flow.js';
+test('practice requires actual attack, charge, both ultimates and correct character pickups in order',()=>{let step='move';for(const event of ['moved','basicHit','charged','momoUltimate','kuki','heart','kukiUltimate','momo','star'])step=nextPracticeStep(step,event);assert.equal(step,'done');assert.equal(nextPracticeStep('heart','star'),'heart');assert.equal(nextPracticeStep('charge','basicHit'),'charge');assert.equal(nextPracticeStep('toKuki','momo'),'toKuki');});
+
+test('movement lesson requires approaching and facing the stationary target',()=>{const t={x:145,y:0};assert.equal(practiceTargetReached({x:0,y:0,fx:1,fy:0},t),false);assert.equal(practiceTargetReached({x:80,y:0,fx:-1,fy:0},t),false);assert.equal(practiceTargetReached({x:80,y:0,fx:1,fy:0},t),true);assert.deepEqual(t,{x:145,y:0});});
