@@ -202,6 +202,15 @@
       "label": "일정 확인 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1795050635893,
+      "amount": 1,
+      "balance": 6,
+      "kind": "earn",
+      "label": "일정 확인 보너스",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
