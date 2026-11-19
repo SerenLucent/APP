@@ -11,9 +11,9 @@
     {
       "id": "6cdab61da13449f2b09d5232d1571bbc",
       "product": "table",
-      "space": null,
-      "x": 80,
-      "y": 80.475,
+      "space": "home",
+      "x": 32,
+      "y": 84.775,
       "rotation": 0
     },
     {
