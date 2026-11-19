@@ -157,6 +157,15 @@
       "character": "momo",
       "product": "snack",
       "quantity": 18
+    },
+    {
+      "at": 1795050558215,
+      "amount": 1,
+      "balance": 1,
+      "kind": "earn",
+      "label": "일정 확인 보너스",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
