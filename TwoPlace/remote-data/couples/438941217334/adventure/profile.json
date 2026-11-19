@@ -1,5 +1,5 @@
 {
-  "stardust": 476,
+  "stardust": 591,
   "skillPoints": 0,
   "skills": {
     "momo": {
@@ -42,8 +42,41 @@
       "requestId": "8b21348d-adec-43b3-b9c0-64a5d919ce6a",
       "startedAt": 1795127330458,
       "enemyCount": 0,
-      "finishedAt": null,
-      "reward": null
+      "finishedAt": 1795127522217,
+      "reward": {
+        "id": "mine-stardust",
+        "label": "광산 채굴",
+        "stardust": 115,
+        "hearts": 0
+      },
+      "cleared": [
+        "ore-0-1",
+        "ore-0-2",
+        "ore-0-3",
+        "ore-0-4",
+        "ore-0-5",
+        "ore-0-9",
+        "ore-0-10",
+        "ore-0-11",
+        "ore-1-1",
+        "ore-1-2",
+        "ore-1-3",
+        "ore-1-4",
+        "ore-1-5",
+        "ore-1-6",
+        "ore-1-7",
+        "ore-1-8",
+        "ore-1-9",
+        "ore-1-10",
+        "ore-1-11",
+        "ore-2-1",
+        "ore-2-2",
+        "ore-2-3",
+        "ore-2-4",
+        "ore-2-5",
+        "ore-2-9",
+        "ore-2-10"
+      ]
     },
     "partner": {
       "id": "b9392d38206d4b7c8b8d44169727c8b0",
@@ -89,7 +122,6 @@
     }
   },
   "operations": [
-    "6bf186fd-375e-4095-ac52-d06f3f1b20a2",
     "ae309fd1-738c-42fc-b8bf-d8db083520b1",
     "34320908-2c01-4246-8d57-818dec77122b",
     "87816bfb-102c-49ec-bc86-c79a55327c4b",
@@ -216,10 +248,11 @@
     "9da6dd2b-3c39-4553-b390-64168b7e18e2",
     "2c6b1731-faab-4f05-a6f1-2b7b478b36f6",
     "d6990931-0762-4eb7-b9ac-17dffd7aa4d1",
-    "8b21348d-adec-43b3-b9c0-64a5d919ce6a"
+    "8b21348d-adec-43b3-b9c0-64a5d919ce6a",
+    "30b8fa73-07d2-4f3a-8190-3e4fc2915cb1"
   ],
   "bestDurationMs": 30385,
-  "totalMines": 19,
+  "totalMines": 20,
   "investmentIncludesSkills": true,
   "statInvestment": {
     "momo": 7360,
