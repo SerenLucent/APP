@@ -101,6 +101,9 @@ function mineOreBudget(ore,level=1){
 function prepareMineLevel(mine,level=1){for(const cave of mine.caves)for(const ore of cave.ores){const b=mineOreBudget(ore,level);Object.assign(ore,{baseHp:b.baseHp,hp:b.hp,max:b.hp,deposit:b.deposit,emitted:0,harvest:0});}return mine;}
 function mineOreLimits(seed,level=1){return new Map(createSeededMine(seed).caves.flatMap(c=>c.ores.map(o=>[o.id,mineOreBudget(o,level).deposit])));}
 
+const MINE_REWARD_MULTIPLIER=2.5;
+function mineCollectedReward(count,rewardFactor=1){return Math.floor(count*MINE_REWARD_MULTIPLIER*rewardFactor);}
+
 const ADVENTURE_STATS={strength:{name:'힘',description:'공격력 최소 +1 · 최대 +2'},vitality:{name:'체력',description:'최대 HP +5'},stamina:{name:'기력',description:'최대 SP +5'},dexterity:{name:'재주',description:'최대 피해 확률·스킬 충전량·차지 속도 증가'},luck:{name:'운',description:'치명타 확률 +0.7%'}};
 function initialAdventure(){const stat=()=>Object.fromEntries(Object.keys(ADVENTURE_STATS).map(k=>[k,0]));return {stardust:0,skillPoints:0,skills:{momo:{charge:1,ultimate:1},kuki:{charge:1,ultimate:1}},hpPotions:0,staminaPotions:0,points:0,totalClears:0,history:[],stats:{momo:stat(),kuki:stat()},runs:{}};}
 function adventureState(saved){const fresh=initialAdventure();if(!saved)return fresh;return {...fresh,...saved,investmentIncludesSkills:true,statInvestment:{momo:(saved.statInvestment?.momo??statInvestmentTotal(saved.stats?.momo))+(saved.investmentIncludesSkills?0:skillInvestmentTotal(saved.skills?.momo)),kuki:(saved.statInvestment?.kuki??statInvestmentTotal(saved.stats?.kuki))+(saved.investmentIncludesSkills?0:skillInvestmentTotal(saved.skills?.kuki))},history:[...(saved.history||[])],skills:{momo:{charge:skillBalance(saved.skills?.momo?.charge).level,ultimate:skillBalance(saved.skills?.momo?.ultimate).level},kuki:{charge:skillBalance(saved.skills?.kuki?.charge).level,ultimate:skillBalance(saved.skills?.kuki?.ultimate).level}},stats:{momo:{...fresh.stats.momo,...saved.stats?.momo},kuki:{...fresh.stats.kuki,...saved.stats?.kuki}},runs:{...saved.runs}};}
@@ -287,7 +290,7 @@ function finishMineAdventure(home,data,run,action,now,role){
  for(const [id,count] of Object.entries(proof)){if(!limits.has(id)||!Number.isSafeInteger(count)||count<1||count>limits.get(id))adventureFail('원석별 별조각 수집 기록을 확인해 주세요.');amount+=count;}
  const broken=action.brokenOres;if(!Array.isArray(broken)||new Set(broken).size!==broken.length||broken.some(id=>!limits.has(id)))adventureFail('광산 원석 기록을 확인해 주세요.');
  if(!Number.isSafeInteger(data.stardust+amount))adventureFail('별조각 수량을 확인해 주세요.');
- amount=Math.floor(amount*mapRewardFactor(run.level??1,run.recommendedLevel??1));
+ amount=mineCollectedReward(amount,mapRewardFactor(run.level??1,run.recommendedLevel??1));
  const reward={id:'mine-stardust',label:'광산 채굴',stardust:amount,hearts:0};data.stardust+=amount;data.totalMines=(data.totalMines||0)+1;
  data.history=[...(data.history||[]),{runId:run.id,mineNo:data.totalMines,at:now,startedAt:run.startedAt,durationMs:MINE_SECONDS*1000,role,character:action.pet==='kuki'?'kuki':'momo',mode:'mine',obstacles:broken.length,reward}];
  data.cooldowns={...data.cooldowns,mine:now+ADVENTURE_COOLDOWNS.mine};

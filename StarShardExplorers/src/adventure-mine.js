@@ -1,4 +1,4 @@
-import {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS,prepareMineLevel} from '../shared/adventure-mine-field.js';
+import {mineCollectedReward,MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS,prepareMineLevel} from '../shared/adventure-mine-field.js';
 export {MINE_SECONDS,createMine,createSeededMine,MINE_DAMAGE_PER_SHARD,MINE_BREAK_SHARDS,prepareMineLevel};
 const mineArt={};let mineArtReady;
 export function loadMineArt(){return mineArtReady||=Promise.all(['entrance','ore','mountain','interior'].map(async id=>{const image=new Image();image.src=import.meta.env.BASE_URL+'adventure/mine/'+id+(['entrance','mountain','interior'].includes(id)?'-v2.png':'-v1.png');try{await image.decode();const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;const c=canvas.getContext('2d',{willReadFrequently:true});c.drawImage(image,0,0);const pixels=c.getImageData(0,0,canvas.width,canvas.height).data;let left=canvas.width,top=canvas.height,right=0,bottom=0;for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++)if(pixels[(y*canvas.width+x)*4+3]>30){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}if(right>left)mineArt[id]={image,x:left,y:top,w:right-left+1,h:bottom-top+1};}catch{}}));}
@@ -46,7 +46,7 @@ export function scatterMineShards(mine,ore,damage,random=Math.random){
 }
 export function stepMine(mine,player,dt,onCollect=()=>{}){
  mine.travelLock=Math.max(0,mine.travelLock-dt);if(mine.finished)return null;
- if(mine.room>=0){const cave=mine.caves[mine.room];for(const d of cave.drops){d.age+=dt;if(d.value&&d.age>.35&&Math.hypot(player.x-d.x,player.y-d.y)<48){mine.collectedByOre[d.oreId]=(mine.collectedByOre[d.oreId]||0)+d.value;mine.total=Math.floor(Object.values(mine.collectedByOre).reduce((a,b)=>a+b,0)*(mine.rewardFactor??1));onCollect(d);d.value=0;}}cave.drops=cave.drops.filter(d=>d.value);if(!mine.travelLock&&Math.hypot(player.x-MINE_EXIT.x,player.y-MINE_EXIT.y)<MINE_EXIT.radius)return -1;}
+ if(mine.room>=0){const cave=mine.caves[mine.room];for(const d of cave.drops){d.age+=dt;if(d.value&&d.age>.35&&Math.hypot(player.x-d.x,player.y-d.y)<48){mine.collectedByOre[d.oreId]=(mine.collectedByOre[d.oreId]||0)+d.value;mine.total=mineCollectedReward(Object.values(mine.collectedByOre).reduce((a,b)=>a+b,0),mine.rewardFactor??1);onCollect(d);d.value=0;}}cave.drops=cave.drops.filter(d=>d.value);if(!mine.travelLock&&Math.hypot(player.x-MINE_EXIT.x,player.y-MINE_EXIT.y)<MINE_EXIT.radius)return -1;}
  else if(!mine.travelLock){const i=MINE_PORTALS.findIndex(p=>Math.hypot(player.x-p.x,player.y-p.y)<62);if(i>=0)return i;}
  return null;
 }

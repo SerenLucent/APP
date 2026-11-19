@@ -1,4 +1,4 @@
-import {MINE_SECONDS,MINE_FIELD_VERSION,mineOreLimits} from './adventure-mine-field.js';
+import {MINE_SECONDS,MINE_FIELD_VERSION,mineOreLimits,mineCollectedReward} from './adventure-mine-field.js';
 import {skillBalance} from './adventure-skills.js';
 export const ADVENTURE_STATS={strength:{name:'힘',description:'공격력 최소 +1 · 최대 +2'},vitality:{name:'체력',description:'최대 HP +5'},stamina:{name:'기력',description:'최대 SP +5'},dexterity:{name:'재주',description:'최대 피해 확률·스킬 충전량·차지 속도 증가'},luck:{name:'운',description:'치명타 확률 +0.7%'}};
 export function initialAdventure(){const stat=()=>Object.fromEntries(Object.keys(ADVENTURE_STATS).map(k=>[k,0]));return {stardust:0,skillPoints:0,skills:{momo:{charge:1,ultimate:1},kuki:{charge:1,ultimate:1}},hpPotions:0,staminaPotions:0,points:0,totalClears:0,history:[],stats:{momo:stat(),kuki:stat()},runs:{}};}
@@ -187,7 +187,7 @@ function finishMineAdventure(home,data,run,action,now,role){
  for(const [id,count] of Object.entries(proof)){if(!limits.has(id)||!Number.isSafeInteger(count)||count<1||count>limits.get(id))adventureFail('원석별 별조각 수집 기록을 확인해 주세요.');amount+=count;}
  const broken=action.brokenOres;if(!Array.isArray(broken)||new Set(broken).size!==broken.length||broken.some(id=>!limits.has(id)))adventureFail('광산 원석 기록을 확인해 주세요.');
  if(!Number.isSafeInteger(data.stardust+amount))adventureFail('별조각 수량을 확인해 주세요.');
- amount=Math.floor(amount*mapRewardFactor(run.level??1,run.recommendedLevel??1));
+ amount=mineCollectedReward(amount,mapRewardFactor(run.level??1,run.recommendedLevel??1));
  const reward={id:'mine-stardust',label:'광산 채굴',stardust:amount,hearts:0};data.stardust+=amount;data.totalMines=(data.totalMines||0)+1;
  data.history=[...(data.history||[]),{runId:run.id,mineNo:data.totalMines,at:now,startedAt:run.startedAt,durationMs:MINE_SECONDS*1000,role,character:action.pet==='kuki'?'kuki':'momo',mode:'mine',obstacles:broken.length,reward}];
  data.cooldowns={...data.cooldowns,mine:now+ADVENTURE_COOLDOWNS.mine};

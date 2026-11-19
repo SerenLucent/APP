@@ -34,6 +34,6 @@ test('mine rewards save only once and stay outside the heart roulette',()=>{
   const run=state.adventure.runs.player,[id,amount]=mineOreLimits(run.seed,1).entries().next().value;
   const action={type:'adventureFinish',runId:run.id,pet:'kuki',mineProof:{[id]:amount},brokenOres:[id],playTimeMs:180000,version:state.version,actionId:'mine-finish-operation-001'};
   assert.throws(()=>s.action(a,action,180000),/3분/);
-  const result=s.action(a,action,181000);assert.equal(result.hearts,0);assert.equal(result.adventure.stardust,amount);assert.equal(s.action(a,action,181001).adventure.stardust,amount);assert.equal(s.history(a,'1970-01-01','1970-01-02').entries[0].mode,'mine');
+  const result=s.action(a,action,181000);assert.equal(result.hearts,0);assert.equal(result.adventure.stardust,Math.floor(amount*2.5));assert.equal(s.action(a,action,181001).adventure.stardust,Math.floor(amount*2.5));assert.equal(s.history(a,'1970-01-01','1970-01-02').entries[0].mode,'mine');
  }finally{s.close();}
 });

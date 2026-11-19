@@ -30,3 +30,6 @@ export function mineOreBudget(ore,level=1){
 }
 export function prepareMineLevel(mine,level=1){for(const cave of mine.caves)for(const ore of cave.ores){const b=mineOreBudget(ore,level);Object.assign(ore,{baseHp:b.baseHp,hp:b.hp,max:b.hp,deposit:b.deposit,emitted:0,harvest:0});}return mine;}
 export function mineOreLimits(seed,level=1){return new Map(createSeededMine(seed).caves.flatMap(c=>c.ores.map(o=>[o.id,mineOreBudget(o,level).deposit])));}
+
+export const MINE_REWARD_MULTIPLIER=2.5;
+export function mineCollectedReward(count,rewardFactor=1){return Math.floor(count*MINE_REWARD_MULTIPLIER*rewardFactor);}
