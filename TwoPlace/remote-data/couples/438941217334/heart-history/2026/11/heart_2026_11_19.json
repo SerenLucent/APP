@@ -101,6 +101,15 @@
       "label": "시간 하트",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1795047537920,
+      "amount": 10,
+      "balance": 68,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
