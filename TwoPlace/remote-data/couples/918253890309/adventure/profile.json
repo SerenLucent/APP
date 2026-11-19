@@ -33,46 +33,17 @@
   },
   "runs": {
     "owner": {
-      "id": "e51b30bcae5c48a4bce2c5badd161c9e",
-      "seed": 3843764412,
-      "mode": "offense",
-      "fieldVersion": 1,
+      "id": "61d77066a042400e8359a546e17e2b7f",
+      "seed": 1641508966,
+      "mode": "explore",
+      "fieldVersion": 4,
       "level": 1,
       "recommendedLevel": 1,
-      "requestId": "dc66b43e-bdbe-439e-bc2d-5e7398fdf5cf",
-      "startedAt": 1794928231830,
-      "enemyCount": 0,
-      "finishedAt": 1794928360368,
-      "reward": {
-        "id": "heart5",
-        "label": "하트 5개",
-        "hearts": 5,
-        "index": 6,
-        "segments": [
-          "heart3",
-          "heart4",
-          "heart5",
-          "heart6",
-          "heart3",
-          "heart4",
-          "heart5",
-          "heart6",
-          "heart3",
-          "heart4",
-          "heart5",
-          "heart6"
-        ],
-        "tier": {
-          "id": "A",
-          "label": "A",
-          "stardust": 50
-        },
-        "stardust": 50
-      },
-      "clearNo": 19,
-      "cleared": [
-        "outpost-house"
-      ]
+      "requestId": "9251e2f9-09e1-4bba-b6cc-2285d40ea36c",
+      "startedAt": 1795066019363,
+      "enemyCount": 36,
+      "finishedAt": null,
+      "reward": null
     }
   },
   "operations": [
@@ -139,7 +110,8 @@
     "0b8ee099-5d1c-4b96-9929-465f7555fe75",
     "2453cfd7-9d8f-47c2-8377-049372336151",
     "dc66b43e-bdbe-439e-bc2d-5e7398fdf5cf",
-    "e5e895fa-93cf-4f7f-ae37-a168b0f725df"
+    "e5e895fa-93cf-4f7f-ae37-a168b0f725df",
+    "9251e2f9-09e1-4bba-b6cc-2285d40ea36c"
   ],
   "bestDurationMs": 112971,
   "investmentIncludesSkills": true,
