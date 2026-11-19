@@ -146,6 +146,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795047593950,
+      "amount": -72,
+      "balance": 0,
+      "kind": "purchase",
+      "label": "별사탕 먹이 18개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "snack",
+      "quantity": 18
     }
   ]
 }
