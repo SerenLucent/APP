@@ -219,6 +219,15 @@
       "character": "kuki",
       "product": "mealPlate",
       "quantity": 1
+    },
+    {
+      "at": 1795096627821,
+      "amount": 10,
+      "balance": 14,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
