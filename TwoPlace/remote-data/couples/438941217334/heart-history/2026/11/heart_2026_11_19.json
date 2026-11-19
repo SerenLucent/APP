@@ -438,6 +438,15 @@
       "character": "momo",
       "product": "armchair",
       "quantity": 1
+    },
+    {
+      "at": 1795125866190,
+      "amount": 1,
+      "balance": 30,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
