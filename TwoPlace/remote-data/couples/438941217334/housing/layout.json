@@ -208,10 +208,10 @@
     {
       "id": "d60d3e6742724d2986e73c1caf973382",
       "product": "armchair",
-      "space": null,
-      "x": 48,
-      "y": 67.575,
-      "rotation": 0
+      "space": "upperFloor",
+      "x": 16,
+      "y": 74.025,
+      "rotation": 270
     },
     {
       "id": "29f06b23d3c041fea9dd4e94507d152e",
