@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "61d77066a042400e8359a546e17e2b7f",
+      "clearNo": 20,
+      "at": 1795066141972,
+      "startedAt": 1795066019363,
+      "durationMs": 113249,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 36,
+      "mode": "explore",
+      "obstacles": 52,
+      "trees": 32,
+      "rocks": 20,
+      "defeated": 14,
+      "progress": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart6",
+        "label": "하트 6개",
+        "hearts": 6,
+        "tier": {
+          "id": "A"
+        },
+        "stardust": 50
+      }
+    }
+  ]
+}
