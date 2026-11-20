@@ -609,6 +609,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795141741683,
+      "amount": -45,
+      "balance": 30,
+      "kind": "purchase",
+      "label": "책과 머그 트롤리 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bookCart",
+      "quantity": 1
     }
   ]
 }
