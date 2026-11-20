@@ -315,19 +315,6 @@
       "workType": "shift"
     },
     {
-      "id": "637af44ae3ed76f7a320774a0edbdb2f",
-      "date": "2026-11-23",
-      "title": "근무",
-      "kind": "work",
-      "time": "",
-      "place": "",
-      "details": "성히 회식",
-      "startTime": "",
-      "endTime": "",
-      "authorRole": "partner",
-      "workType": "shift"
-    },
-    {
       "id": "47ead44a224c41e772ae5f64dfe32f60",
       "date": "2026-11-04",
       "title": "성히 운동시작",
@@ -550,6 +537,19 @@
       "time": "",
       "place": "",
       "details": "",
+      "startTime": "14:00",
+      "endTime": "23:00",
+      "authorRole": "partner",
+      "workType": "shift"
+    },
+    {
+      "id": "637af44ae3ed76f7a320774a0edbdb2f",
+      "date": "2026-11-23",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "성히 회식",
       "startTime": "14:00",
       "endTime": "23:00",
       "authorRole": "partner",
