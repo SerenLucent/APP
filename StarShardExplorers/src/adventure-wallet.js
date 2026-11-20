@@ -4,7 +4,7 @@ import {recoverAdventurePending} from './adventure-pending.js';
 import {sendSaveRequest} from './save-transport.js';
 import {EXPLORATION_FIELD_VERSION} from '../shared/adventure-field.js';
 import {adventureState,initialAdventure} from '../shared/adventure-progression.js';
-const TOKEN_KEY='star-shard-explorers:gas-player:v1',PENDING_KEY='star-shard-explorers:gas-pending:v1';
+const TOKEN_KEY='star-shard-explorers:gas-player:lucenty-v1',PENDING_KEY='star-shard-explorers:gas-pending:lucenty-v1';
 let boot,tail=Promise.resolve(),activeSaves=0;
 function announceSaving(delta,success=false){activeSaves+=delta;window.dispatchEvent(new CustomEvent('adventure-save-state',{detail:{busy:activeSaves>0,success}}));}
 const newToken=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),n=>n.toString(16).padStart(2,'0')).join('');
