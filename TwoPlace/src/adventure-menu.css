@@ -13,4 +13,6 @@
 #mode-menu>header>.mode-stats-button.has-points{box-shadow:0 0 0 2px #ffe082,0 3px 8px #0b211b33}
 .mode-shard-balance{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}.mode-shard-balance .mode-shard-icon{width:28px;height:28px;object-fit:contain;flex:none}.mode-shard-balance strong{font-size:inherit}
 
-.map-refresh-retry{margin:0 0 16px;padding:10px 14px;border-radius:10px;background:#f5dfa1;color:#624f30;font:inherit}.mode-shard-balance[role="alert"]{white-space:normal}.mode-list[aria-busy="true"] [data-enter]{opacity:.55;cursor:wait}
+.mode-shard-balance[role="alert"]{white-space:normal}.mode-list[aria-busy="true"] [data-enter]{opacity:.55;cursor:wait}
+
+.mode-resource-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 18px;min-width:0}.mode-resource-toolbar .mode-shard-balance{min-width:0;gap:4px;white-space:nowrap}.mode-resource-toolbar .tutorial-preference-compact{display:flex;align-items:center;flex-shrink:0;gap:6px;margin:0;padding:8px 0;border:0;border-radius:0;background:transparent;font-size:12px;white-space:nowrap}.mode-resource-toolbar .tutorial-preference-compact input{width:16px;height:16px;margin:0}.mode-resource-toolbar .tutorial-preference-compact span{white-space:nowrap}@media(max-width:420px){.mode-resource-toolbar{gap:6px}.mode-resource-toolbar .mode-shard-balance{font-size:12px!important;gap:3px}.mode-resource-toolbar .mode-shard-icon{width:21px;height:21px}.mode-resource-toolbar .tutorial-preference-compact{font-size:11px;gap:4px}}

@@ -13,20 +13,19 @@ const base=import.meta.env.BASE_URL,demo=new URLSearchParams(location.search).ge
 window.twoPlaceBack=()=>{const dialog=document.querySelector('dialog[open]');if(dialog){dialog.close();return true;}confirmAdventureExit({fromMenu:true,leave:()=>location.replace(base+(demo?'demo.html?view=home':'index.html'))});return true;};
 root.innerHTML=`<header><a href="${base+(demo?'demo.html?view=home':'index.html')}">‹ 메인화면으로</a><button type="button" class="mode-stats-button" data-battle-shop>전투상점</button><button type="button" class="mode-stats-button" data-adventure-stats>캐릭터 레벨업</button></header><section class="mode-intro"><div><p>오늘은 어디로 떠날까?</p><h1>둘이 함께, 작은 모험</h1><span>모모의 회오리와 쿠키의 별꼬리로 도전해요.</span></div><div class="mode-pets"><img src="${base}pets/mochi-standing-v2.png" alt="모모"><img src="${base}pets/kuki-standing-v2.png" alt="쿠키"></div></section><div class="mode-list"><a class="mode-card explore" href="${base}adventure.html${demo?'?demo=1':''}"><span class="mode-number">01 · EXPLORE</span><h2>개척</h2><p>나무·바위·뭉치를 쓰러뜨려 개척 게이지를 채워요.</p><small>개척 100% · 나무 1% / 바위 2% / 뭉치 2%</small><b>개척 시작하기 →</b></a><a class="mode-card offense" href="${base}adventure.html?mode=offense${demo?'&demo=1':''}"><span class="mode-number">02 · OFFENSE</span><h2>원정</h2><p>사방에서 몰려오는 집 지킴이를 상대하며 산채 본체를 무너뜨려요.</p><small>산채 본체 파괴 · 룰렛 보상</small><b>원정 시작하기 →</b></a><a class="mode-card defense" href="${base}adventure.html?mode=defense${demo?'&demo=1':''}"><span class="mode-number">03 · DEFENSE</span><h2>방어</h2><p>모모와 쿠키를 교체하며 우리 집으로 몰려오는 방울이를 막아요.</p><small>우리 집 지키기 · ${DEFENSE_WAVES.length}차 공격 · 룰렛 보상</small><b>${demo?'방어 모의 테스트':'방어 시작하기'} →</b></a></div><aside><strong>세 가지 모험, 둘만의 한 바퀴</strong><p>최종 규칙은 두 사람이 각각 개척·원정·방어를 한 번씩 완료하면 다시 열리는 방식이에요. 지금은 세 모험을 원하는 순서로 즐길 수 있어요.</p></aside>`;
 
-mountTutorialPreference(root.querySelector('.mode-intro'));
+
 mountAdventureStatMenu(root.querySelector('[data-adventure-stats]'));
 
 const battleWallet=createAdventureWallet();
 const balance=document.createElement('p');
 balance.className='mode-shard-balance';
-balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0 0 18px';
-root.querySelector('.mode-intro').after(balance);
-const entryGate=createMapEntryGate();let balanceRefresh=0;
-const retryMaps=document.createElement('button');retryMaps.className='map-refresh-retry';retryMaps.textContent='맵 정보 다시 불러오기';retryMaps.hidden=true;balance.after(retryMaps);retryMaps.onclick=()=>void refreshBattleBalance();
+balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0';
+const toolbar=document.createElement('div');toolbar.className='mode-resource-toolbar';toolbar.append(balance);mountTutorialPreference(toolbar,{compact:true});root.querySelector('.mode-intro').after(toolbar);
+const entryGate=createMapEntryGate();let balanceRefresh=0,mapError=null;
 const refreshBattleBalance=async()=>{
- const sequence=++balanceRefresh,ticket=entryGate.begin();retryMaps.hidden=true;renderEntryButtons();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
+ const sequence=++balanceRefresh,ticket=entryGate.begin();mapError=null;renderEntryButtons();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
  try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');entryGate.finish(ticket,true);balance.removeAttribute('role');balance.style.whiteSpace='';}
- catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');retryMaps.hidden=false;}}
+ catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');mapError=error;}}
  finally{if(sequence===balanceRefresh){root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderEntryButtons();}}
 };
 mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{window.dispatchEvent(new Event('adventure-wallet-change'));}});
@@ -52,7 +51,7 @@ function updateLevelChoices(){
 }
 window.addEventListener('adventure-wallet-change',()=>void refreshBattleBalance());
 
-function renderEntryButtons(){const list=root.querySelector('.mode-list');list.setAttribute('aria-busy',String(entryGate.blocked));for(const card of list.querySelectorAll('.mode-card')){card.setAttribute('aria-disabled',String(entryGate.blocked));const button=card.querySelector('[data-enter]');if(button){button.disabled=entryGate.blocked;button.dataset.readyLabel ||= button.textContent;button.textContent=entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):button.dataset.readyLabel;}}}
-window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);renderEntryButtons();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else retryMaps.hidden=false;}});
-root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();}},true);
+function renderEntryButtons(){const list=root.querySelector('.mode-list');list.setAttribute('aria-busy',String(entryGate.blocked));for(const card of list.querySelectorAll('.mode-card')){card.setAttribute('aria-disabled',String(entryGate.blocked&&!mapError));const button=card.querySelector('[data-enter]');if(button){button.disabled=entryGate.blocked&&!mapError;button.dataset.readyLabel ||= button.textContent;button.textContent=mapError?'다시 시도':entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):button.dataset.readyLabel;}}}
+window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);renderEntryButtons();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else{mapError=new Error('저장 결과 확인이 필요해요.');renderEntryButtons();}}});
+root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();if(mapError&&event.target.closest('[data-enter]'))void refreshBattleBalance();}},true);
 void refreshBattleBalance();

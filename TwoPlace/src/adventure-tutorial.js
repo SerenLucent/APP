@@ -1,7 +1,7 @@
 import {skipTutorial,setTutorialSkip} from './tutorial-preference.js';
 import {practiceTargetReached,PRACTICE_STEPS,nextPracticeStep} from './tutorial-flow.js';
 import './adventure-tutorial.css';
-export function mountTutorialPreference(parent){const label=document.createElement('label');label.className='tutorial-preference';label.innerHTML='<input type="checkbox"><span>튜토리얼 건너뛰기<small>체크를 풀면 다음 게임 입장 때 다시 연습해요.</small></span>';const input=label.querySelector('input');input.checked=skipTutorial(localStorage);input.onchange=()=>setTutorialSkip(localStorage,input.checked);parent.append(label);}
+export function mountTutorialPreference(parent,{compact=false}={}){const label=document.createElement('label');label.className='tutorial-preference';label.innerHTML='<input type="checkbox"><span>튜토리얼 건너뛰기<small>체크를 풀면 다음 게임 입장 때 다시 연습해요.</small></span>';if(compact){label.classList.add('tutorial-preference-compact');label.querySelector('small').remove();}const input=label.querySelector('input');input.checked=skipTutorial(localStorage);input.onchange=()=>setTutorialSkip(localStorage,input.checked);parent.append(label);}
 export function tutorialDestination(search){const q=new URLSearchParams(search);q.delete('practice');const mode=q.get('returnMode');q.delete('returnMode');if(mode)q.set('mode',mode);else q.delete('mode');return 'adventure.html?'+q;}
 export function createPractice({root,state,finish,pause=()=>{}}){
  let step='move',done=false;const panel=document.createElement('section');panel.className='practice-guide';panel.setAttribute('aria-label','조작 연습');panel.innerHTML='<div><b data-count></b><button type="button">건너뛰기</button></div><strong role="status" aria-live="polite"></strong><small></small>';root.querySelector('.stage').before(panel);

@@ -21,12 +21,11 @@ const balance=document.createElement('p');
 balance.className='mode-shard-balance';
 balance.style.cssText='color:#ffe2a0;font-size:15px;margin:0';
 const toolbar=document.createElement('div');toolbar.className='mode-resource-toolbar';toolbar.append(balance);mountTutorialPreference(toolbar,{compact:true});root.querySelector('.mode-intro').after(toolbar);
-const entryGate=createMapEntryGate();let balanceRefresh=0;
-const retryMaps=document.createElement('button');retryMaps.className='map-refresh-retry';retryMaps.textContent='맵 정보 다시 불러오기';retryMaps.hidden=true;toolbar.after(retryMaps);retryMaps.onclick=()=>void refreshBattleBalance();
+const entryGate=createMapEntryGate();let balanceRefresh=0,mapError=null;
 const refreshBattleBalance=async()=>{
- const sequence=++balanceRefresh,ticket=entryGate.begin();retryMaps.hidden=true;renderRebuildTimers();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
+ const sequence=++balanceRefresh,ticket=entryGate.begin();mapError=null;renderRebuildTimers();balance.textContent='맵 레벨 조정중...';root.querySelector('.mode-list').setAttribute('aria-busy','true');
  try{await battleWallet.init();if(sequence!==balanceRefresh)return;updateLevelChoices();balance.innerHTML='<img class="mode-shard-icon" src="'+base+'adventure/star-shard-v1.png" alt=""><strong>'+battleWallet.profile.stardust.toLocaleString()+'</strong><span>별조각</span>';balance.setAttribute('aria-label',battleWallet.profile.stardust.toLocaleString()+' 별조각');entryGate.finish(ticket,true);balance.removeAttribute('role');balance.style.whiteSpace='';}
- catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');retryMaps.hidden=false;}}
+ catch(error){if(sequence===balanceRefresh){entryGate.finish(ticket,false);balance.setAttribute('role','alert');balance.style.whiteSpace='normal';balance.textContent=adventureLoadReason(error,'맵 갱신');mapError=error;}}
  finally{if(sequence===balanceRefresh){root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderRebuildTimers();}}
 };
 mountBattleShop(root.querySelector('[data-battle-shop]'),{wallet:battleWallet,onChange:()=>{window.dispatchEvent(new Event('adventure-wallet-change'));}});
@@ -61,13 +60,13 @@ function renderRebuildTimers(){
  for(const card of root.querySelectorAll('.mode-card')){
   const mode=['explore','offense','defense','mine'].find(id=>card.classList.contains(id)),remaining=Math.max(0,(battleWallet.profile.cooldowns?.[mode]||0)-Date.now()),blocked=remaining>0||entryGate.blocked;
   let panel=card.querySelector('.map-rebuild');if(!panel){panel=document.createElement('div');panel.className='map-rebuild';panel.innerHTML='<div><strong></strong><time></time></div><progress max="100" value="100"></progress>';card.append(panel);}
-  const seconds=Math.ceil(remaining/1000);panel.querySelector('strong').textContent=entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):remaining>0?'재건중':'입장 가능';panel.querySelector('time').textContent=entryGate.blocked?'잠시 기다려 주세요':remaining>0?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):'준비 완료';panel.querySelector('progress').value=100*(1-remaining/ADVENTURE_COOLDOWNS[mode]);panel.querySelector('progress').setAttribute('aria-label',blocked?'재건 진행률':'입장 준비 완료');card.classList.toggle('rebuilding',blocked);card.setAttribute('aria-disabled',String(blocked));card.querySelector('[data-enter]').disabled=blocked;
+  const seconds=Math.ceil(remaining/1000);panel.querySelector('strong').textContent=mapError?'연결 확인 필요':entryGate.blocked?(entryGate.saving?'성장 저장중...':'맵 레벨 조정중...'):remaining>0?'재건중':'입장 가능';panel.querySelector('time').textContent=mapError?'아래 버튼으로 다시 시도':entryGate.blocked?'잠시 기다려 주세요':remaining>0?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):'준비 완료';panel.querySelector('progress').value=100*(1-remaining/ADVENTURE_COOLDOWNS[mode]);panel.querySelector('progress').setAttribute('aria-label',blocked?'재건 진행률':'입장 준비 완료');card.classList.toggle('rebuilding',blocked);card.setAttribute('aria-disabled',String(blocked&&!mapError));const enter=card.querySelector('[data-enter]');enter.dataset.readyLabel ||= enter.textContent;enter.disabled=entryGate.blocked?!mapError:remaining>0;enter.textContent=mapError?'다시 시도':enter.dataset.readyLabel;
  }
 }
 root.querySelector('.mode-list').addEventListener('click',event=>{const card=event.target.closest('.mode-card');if(card?.getAttribute('aria-disabled')==='true'&&!event.target.closest('[data-level-step]')){event.preventDefault();}});
 setInterval(renderRebuildTimers,1000);
 
-window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderRebuildTimers();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else retryMaps.hidden=false;}});
-root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();}},true);
+window.addEventListener('adventure-save-state',event=>{entryGate.setSaving(event.detail.busy);root.querySelector('.mode-list').setAttribute('aria-busy',String(entryGate.blocked));renderRebuildTimers();if(!event.detail.busy){if(event.detail.success)void refreshBattleBalance();else{mapError=new Error('저장 결과 확인이 필요해요.');renderRebuildTimers();}}});
+root.querySelector('.mode-list').addEventListener('click',event=>{if(entryGate.blocked&&event.target.closest('[data-enter],[data-level-step]')){event.preventDefault();event.stopImmediatePropagation();if(mapError&&event.target.closest('[data-enter]'))void refreshBattleBalance();}},true);
 
 void refreshBattleBalance();
