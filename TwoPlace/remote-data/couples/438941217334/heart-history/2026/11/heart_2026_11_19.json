@@ -692,6 +692,17 @@
       "label": "일정 등록 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795149663698,
+      "amount": -85,
+      "balance": 10,
+      "kind": "purchase",
+      "label": "턴테이블 수납장 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "recordplayer",
+      "quantity": 1
     }
   ]
 }
