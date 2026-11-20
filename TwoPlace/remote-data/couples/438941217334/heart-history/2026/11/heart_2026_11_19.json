@@ -620,6 +620,15 @@
       "character": "momo",
       "product": "bookCart",
       "quantity": 1
+    },
+    {
+      "at": 1795145571522,
+      "amount": 10,
+      "balance": 40,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
