@@ -4,7 +4,7 @@ export const TURRET_ANGLES=Array.from({length:7},(_,i)=>(-165+i*25)*Math.PI/180)
 export function turretDirection(angle){return Math.max(0,Math.min(6,Math.round((angle*180/Math.PI+165)/25)));}
 export function snapTurretAngle(angle){return TURRET_ANGLES[turretDirection(angle)];}
 export const TURRET_RULES={heart:{cost:20,capacity:5,cooldown:.8,radius:150,multiplier:3},laser:{cost:2,cooldown:.2,radius:22,dpsMultiplier:5},recharge:0,range:540};
-export function createDefenseTurrets(){return ['heart','laser'].map((kind,i)=>({kind,x:1150+i*300,y:1175,hp:1,halfWidth:30,halfDepth:24,collisionY:0,energy:100,cooldown:0,angle:-Math.PI/2,rawAngle:-Math.PI/2,aim:{x:1150+i*300,y:760},beam:0}));}
+export function createDefenseTurrets(){return ['heart','laser'].map((kind,i)=>({kind,x:1150+i*300,y:1175,hp:1,halfWidth:30,halfDepth:24,collisionY:0,energy:100,cooldown:0,angle:-Math.PI/2,rawAngle:-Math.PI/2,aim:{x:1150+i*300,y:900},beam:0}));}
 export function defenseRearBlocked(x,y){return y>DEFENSE_PLATFORM.rear-12;}
 export function defenseSafe(player){return player.y>DEFENSE_PLATFORM.enemyRear;}
 export function nearbyTurret(turrets,p){return turrets.find(t=>Math.abs(p.x-t.x)<46&&p.y>=t.y+34&&p.y<=t.y+100)||null;}
