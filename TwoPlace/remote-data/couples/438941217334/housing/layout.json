@@ -466,9 +466,10 @@
     {
       "id": "56a490492d6548a29e066f730d4f082e",
       "product": "bookCart",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 16,
+      "y": 78.325,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
