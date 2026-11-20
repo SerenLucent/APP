@@ -515,6 +515,32 @@
       "endTime": "",
       "authorRole": "partner",
       "workType": "shift"
+    },
+    {
+      "id": "2b04189a118e8b4f40cc2e2c243e6f8e",
+      "date": "2026-11-19",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "09:00",
+      "endTime": "",
+      "authorRole": "partner",
+      "workType": "shift"
+    },
+    {
+      "id": "ceab1787061e8db2289f4ae05e9c96ed",
+      "date": "2026-11-20",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "09:00",
+      "endTime": "",
+      "authorRole": "partner",
+      "workType": "shift"
     }
   ],
   "rewards": {
@@ -552,7 +578,9 @@
       "2026-11-16": true,
       "2026-11-17": true,
       "2026-11-24": true,
-      "2026-11-18": true
+      "2026-11-18": true,
+      "2026-11-19": true,
+      "2026-11-20": true
     },
     "reads": {
       "2026-10-24": true,
