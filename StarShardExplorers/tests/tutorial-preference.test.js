@@ -1,3 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {skipTutorial,setTutorialSkip} from '../src/tutorial-preference.js';
 test('first entry shows tutorial; completion skips future entries and unchecking enables it again',()=>{const m=new Map(),s={getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v)};assert.equal(skipTutorial(s),false);setTutorialSkip(s,true);assert.equal(skipTutorial(s),true);setTutorialSkip(s,false);assert.equal(skipTutorial(s),false);});
 test('unavailable browser storage still allows the tutorial',()=>{const s={getItem(){throw Error();},setItem(){throw Error();}};assert.equal(skipTutorial(s),false);assert.doesNotThrow(()=>setTutorialSkip(s,true));});
+
+test('legacy test-server skip preference does not skip a first visit on the Lucenty server',()=>{const m=new Map([['star-shard-explorers:tutorial-skip:v1','1']]),s={getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v)};assert.equal(skipTutorial(s),false);setTutorialSkip(s,true);assert.equal(skipTutorial(s),true);});
