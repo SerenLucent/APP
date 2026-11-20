@@ -474,9 +474,10 @@
     {
       "id": "95af9477caed4a1280c64f521d076e7c",
       "product": "recordplayer",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 12,
+      "y": 78.325,
+      "rotation": 270
     }
   ],
   "layoutVersion": 2,
