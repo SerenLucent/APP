@@ -72,6 +72,32 @@
         },
         "stardust": 50
       }
+    },
+    {
+      "runId": "f99a7e83f0764fd1a1f29793ccac7db6",
+      "clearNo": 23,
+      "at": 1795151293234,
+      "startedAt": 1795151170113,
+      "durationMs": 114064,
+      "role": "owner",
+      "character": "kuki",
+      "enemyCount": 42,
+      "mode": "explore",
+      "obstacles": 48,
+      "trees": 29,
+      "rocks": 19,
+      "defeated": 17,
+      "progress": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart3",
+        "label": "하트 3개",
+        "hearts": 3,
+        "tier": {
+          "id": "A"
+        },
+        "stardust": 50
+      }
     }
   ]
 }
