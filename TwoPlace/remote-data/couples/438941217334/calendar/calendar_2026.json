@@ -541,6 +541,19 @@
       "endTime": "",
       "authorRole": "partner",
       "workType": "shift"
+    },
+    {
+      "id": "6d4116feaf231e1b888e579af9e28cc7",
+      "date": "2026-11-21",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "14:00",
+      "endTime": "23:00",
+      "authorRole": "partner",
+      "workType": "shift"
     }
   ],
   "rewards": {
@@ -580,7 +593,8 @@
       "2026-11-24": true,
       "2026-11-18": true,
       "2026-11-19": true,
-      "2026-11-20": true
+      "2026-11-20": true,
+      "2026-11-21": true
     },
     "reads": {
       "2026-10-24": true,
