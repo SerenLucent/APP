@@ -567,6 +567,45 @@
       "endTime": "",
       "authorRole": "partner",
       "workType": "off"
+    },
+    {
+      "id": "3892258e7aecda9468ec251468a6cea0",
+      "date": "2026-11-25",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "09:00",
+      "endTime": "",
+      "authorRole": "partner",
+      "workType": "shift"
+    },
+    {
+      "id": "8eb7144a9302a844c560b9c96d45e7f0",
+      "date": "2026-11-26",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "09:00",
+      "endTime": "",
+      "authorRole": "partner",
+      "workType": "shift"
+    },
+    {
+      "id": "767357a6c34d50960ae9bf937f0a94bb",
+      "date": "2026-11-27",
+      "title": "근무",
+      "kind": "work",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "09:00",
+      "endTime": "",
+      "authorRole": "partner",
+      "workType": "shift"
     }
   ],
   "rewards": {
@@ -608,7 +647,10 @@
       "2026-11-19": true,
       "2026-11-20": true,
       "2026-11-21": true,
-      "2026-11-29": true
+      "2026-11-29": true,
+      "2026-11-25": true,
+      "2026-11-26": true,
+      "2026-11-27": true
     },
     "reads": {
       "2026-10-24": true,
