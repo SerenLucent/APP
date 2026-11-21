@@ -482,9 +482,10 @@
     {
       "id": "c6eca7bedea0432fb60eabdfce7ceb17",
       "product": "bookshelf",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 12,
+      "y": 65.425,
+      "rotation": 270
     },
     {
       "id": "4c7016bf0b0c4c88bbc5855b2b1da668",
