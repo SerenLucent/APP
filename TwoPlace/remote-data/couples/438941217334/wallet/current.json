@@ -1,6 +1,6 @@
 {
-  "version": 1983,
-  "hearts": 20,
+  "version": 1984,
+  "hearts": 21,
   "snacks": 10,
   "lastClaim": 1795276609915,
   "pets": {
@@ -16,7 +16,7 @@
       "hunger": 87,
       "updatedAt": 1795270252641,
       "affinityAt": 1795276636445,
-      "energyAt": 1795233127249,
+      "energyAt": 1795276642338,
       "affinity": 100,
       "energy": 100
     }
@@ -53,9 +53,9 @@
         "lastAt": 1795276636445
       },
       "sleep": {
-        "day": "2026-11-21",
-        "count": 5,
-        "lastAt": 1795233127249
+        "day": "2026-11-22",
+        "count": 1,
+        "lastAt": 1795276642338
       }
     }
   },
