@@ -887,6 +887,15 @@
       "character": "momo",
       "product": "ottoman",
       "quantity": 1
+    },
+    {
+      "at": 1795226593574,
+      "amount": 10,
+      "balance": 10,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
