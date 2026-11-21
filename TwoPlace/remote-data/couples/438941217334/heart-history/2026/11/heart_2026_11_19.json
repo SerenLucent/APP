@@ -865,6 +865,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795221835291,
+      "amount": -65,
+      "balance": 35,
+      "kind": "purchase",
+      "label": "이야기 책장 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "bookshelf",
+      "quantity": 1
     }
   ]
 }

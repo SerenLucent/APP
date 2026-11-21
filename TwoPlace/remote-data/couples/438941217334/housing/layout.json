@@ -478,6 +478,13 @@
       "x": 12,
       "y": 78.325,
       "rotation": 270
+    },
+    {
+      "id": "c6eca7bedea0432fb60eabdfce7ceb17",
+      "product": "bookshelf",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
