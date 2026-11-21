@@ -506,9 +506,10 @@
     {
       "id": "22e82c2366cf49e39d11814cc9cfef9b",
       "product": "coatRack",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 12,
+      "y": 46.075,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
