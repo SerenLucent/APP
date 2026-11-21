@@ -498,9 +498,10 @@
     {
       "id": "b787ee0c8d514ef8a6c8629dceecc775",
       "product": "ottoman",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 24,
+      "y": 74.025,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
