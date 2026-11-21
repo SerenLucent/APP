@@ -1058,6 +1058,17 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795256631813,
+      "amount": -35,
+      "balance": 46,
+      "kind": "purchase",
+      "label": "동글 패브릭 풋스툴 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "ottoman",
+      "quantity": 1
     }
   ]
 }
