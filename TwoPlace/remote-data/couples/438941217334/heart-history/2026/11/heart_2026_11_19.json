@@ -1069,6 +1069,17 @@
       "character": "momo",
       "product": "ottoman",
       "quantity": 1
+    },
+    {
+      "at": 1795256664490,
+      "amount": -45,
+      "balance": 1,
+      "kind": "purchase",
+      "label": "우드 코트 행거 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "coatRack",
+      "quantity": 1
     }
   ]
 }
