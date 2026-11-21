@@ -876,6 +876,17 @@
       "character": "momo",
       "product": "bookshelf",
       "quantity": 1
+    },
+    {
+      "at": 1795221842399,
+      "amount": -35,
+      "balance": 0,
+      "kind": "purchase",
+      "label": "동글 패브릭 풋스툴 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "ottoman",
+      "quantity": 1
     }
   ]
 }
