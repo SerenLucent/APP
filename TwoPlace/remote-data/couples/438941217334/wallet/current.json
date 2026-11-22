@@ -1,8 +1,8 @@
 {
-  "version": 2016,
-  "hearts": 3,
+  "version": 2017,
+  "hearts": 13,
   "snacks": 27,
-  "lastClaim": 1795335558316,
+  "lastClaim": 1795347861634,
   "pets": {
     "mochi": {
       "hunger": 100,

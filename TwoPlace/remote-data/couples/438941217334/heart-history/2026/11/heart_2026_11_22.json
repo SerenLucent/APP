@@ -265,6 +265,15 @@
       "character": "momo",
       "product": "snack",
       "quantity": 23
+    },
+    {
+      "at": 1795347861634,
+      "amount": 10,
+      "balance": 13,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
