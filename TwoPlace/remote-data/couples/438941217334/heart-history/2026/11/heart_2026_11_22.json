@@ -292,6 +292,15 @@
       "label": "시간 하트",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1795386891775,
+      "amount": 1,
+      "balance": 34,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "owner",
+      "character": "kuki"
     }
   ]
 }
