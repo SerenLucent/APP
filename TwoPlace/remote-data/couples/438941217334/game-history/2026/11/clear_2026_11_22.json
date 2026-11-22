@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "clear",
+  "timezone": "Asia/Seoul",
+  "entries": [
+    {
+      "runId": "b4a79aeec794467c82a54108dd75e35b",
+      "clearNo": 132,
+      "at": 1795332073810,
+      "startedAt": 1795331975521,
+      "durationMs": 88629,
+      "role": "owner",
+      "character": "momo",
+      "enemyCount": 72,
+      "mode": "explore",
+      "obstacles": 37,
+      "trees": 26,
+      "rocks": 11,
+      "defeated": 26,
+      "progress": 100,
+      "houses": 0,
+      "reward": {
+        "id": "heart4",
+        "label": "하트 4개",
+        "hearts": 4,
+        "tier": {
+          "id": "S"
+        },
+        "stardust": 60
+      }
+    }
+  ]
+}
