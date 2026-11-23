@@ -514,9 +514,10 @@
     {
       "id": "501ca2b15cae4864a68166c471ae7e27",
       "product": "sofa",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 64,
+      "y": 48.225,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
