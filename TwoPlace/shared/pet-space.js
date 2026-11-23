@@ -14,11 +14,11 @@ export function cellAt(point){const {u,v}=toWorld(point);return {c:Math.min(GRID
 export function cellCenter(c,r){return fromWorld((c+.5)/GRID_SIZE,(r+.5)/GRID_SIZE);}
 export function snap(point){const {c,r}=cellAt(point);return cellCenter(c,r);}
 export function footprint(item){const size=footprints[item.product] || [1,1];return item.rotation%180===90 ? [size[1],size[0]] : size;}
-// Fixed living-room sofa (2 × 4) and kitchen (4 × 1) share the floor grid.
-function builtInOverlap(space,u,v,w,h){
+// The staircase reserves its treads for walking and a rail clearance for furniture.
+function builtInOverlap(space,u,v,w,h,clearance=0){
   if(space!=='home'&&space!=='upperFloor')return false;
   const e=1e-6;
-  return u+w/(GRID_SIZE*2)>17/GRID_SIZE+e && u-w/(GRID_SIZE*2)<19/GRID_SIZE-e && v-h/(GRID_SIZE*2)<5/GRID_SIZE-e;
+  return u+w/(GRID_SIZE*2)>(17-clearance)/GRID_SIZE+e && u-w/(GRID_SIZE*2)<(19+clearance)/GRID_SIZE-e && v-h/(GRID_SIZE*2)<(5+clearance)/GRID_SIZE-e;
 }
 export function placementAllowed(items,item,space,point,rotation=item.rotation || 0){
   if(isWallProduct(item.product)||isFloorProduct(item.product))return false;
@@ -27,7 +27,7 @@ export function placementAllowed(items,item,space,point,rotation=item.rotation |
   const {u,v}=toWorld(point),[w,h]=footprint({...item,rotation});
   const margin=1e-6;
   if(u-w/(GRID_SIZE*2) < -margin || u+w/(GRID_SIZE*2)>1+margin || v-h/(GRID_SIZE*2) < -margin || v+h/(GRID_SIZE*2)>1+margin) return false;
-  if(builtInOverlap(space,u,v,w,h))return false;
+  if(builtInOverlap(space,u,v,w,h,1))return false;
   if(item.product==='rug')return true;
   return !items.some(other=>{
     if(other.id===item.id || other.space!==space || other.product==='rug'||isTabletop(other.product)||isWallProduct(other.product)||isFloorProduct(other.product))return false;
