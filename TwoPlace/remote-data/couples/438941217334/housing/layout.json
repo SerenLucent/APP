@@ -510,6 +510,13 @@
       "x": 12,
       "y": 46.075,
       "rotation": 0
+    },
+    {
+      "id": "501ca2b15cae4864a68166c471ae7e27",
+      "product": "sofa",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
