@@ -390,6 +390,7 @@ function explorerEmailRequest_(request){
  if(entry&&entry.record.linkedEmail){if(entry.record.linkedEmail!==email)explorerFail_(409,'이미 다른 이메일에 연결된 기록이에요.');return {alreadyLinked:true,maskedEmail:explorerMaskEmail_(email)};}
  const folder=explorerEmailFolder_(email,true),account=explorerEmailAccount_(folder),boundHash=entry?explorerDigest_(request.token):null;
  if(entry&&account&&account.playerFolderId!==entry.folder.getId())explorerFail_(409,'이미 다른 기록이 연결된 이메일이에요. 이메일로 이어하기를 이용해 주세요.');
+ if(purpose==='login'&&!account)explorerFail_(404,'이 이메일에 연동된 저장 기록을 찾지 못했어요. 연동한 이메일 주소를 확인해 주세요.');
  const existingFile=explorerFile_(folder,'challenge.json'),existing=existingFile?explorerRead_(existingFile):null;
  if(existing&&existing.requestId===id){if(existing.purpose!==purpose||existing.boundHash!==boundHash)explorerFail_(400,'인증 요청을 확인해 주세요.');if(existing.sent&&existing.expiresAt>now)return {challengeId:id,expiresAt:existing.expiresAt,resendAt:existing.createdAt+60000};explorerFail_(400,'인증번호를 다시 요청해 주세요.');}
  const rateFile=explorerFile_(folder,'rate.json'),rate=rateFile?explorerRead_(rateFile):{last:0,hour:now,count:0};
@@ -401,7 +402,7 @@ function explorerEmailRequest_(request){
  const code=String(Number.parseInt(Utilities.getUuid().replace(/-/g,'').slice(0,8),16)%1000000).padStart(6,'0');
  const challenge={requestId:id,email:email,purpose:purpose,boundHash:boundHash,playerFolderId:entry?entry.folder.getId():account?account.playerFolderId:null,createdAt:now,expiresAt:now+EXPLORER_OTP_LIFETIME,attempts:0,sent:false};challenge.codeHash=explorerEmailCodeHash_(challenge,code);
  const file=explorerWrite_(folder,'challenge.json',challenge,existingFile);rate.last=now;rate.count++;explorerWrite_(folder,'rate.json',rate,rateFile);
- if(shouldSend){usage.count++;props.setProperty('EXPLORER_EMAIL_USAGE',JSON.stringify(usage));try{MailApp.sendEmail({to:email,name:'별조각 탐험대 · LUCENTY LABS',subject:'[별조각 탐험대] '+(purpose==='link'?'이메일 연동':'이어하기')+' 인증번호',body:'인증번호: '+code+'\n\n별조각 탐험대에서 '+(purpose==='link'?'현재 게스트 기록을 이메일에 연결':'기존 기록으로 이어하기')+'하려면 이 번호를 입력해 주세요.\n인증번호는 10분 동안 유효하며, 다른 사람에게 알려주지 마세요.\n본인이 요청하지 않았다면 이 메일을 무시해 주세요.\n\nLUCENTY LABS'});}catch(error){explorerFail_(503,'인증메일을 보내지 못했어요. 잠시 후 다시 시도해 주세요.');}}
+ if(shouldSend){usage.count++;props.setProperty('EXPLORER_EMAIL_USAGE',JSON.stringify(usage));try{MailApp.sendEmail({to:email,name:'별조각 탐험대 · LUCENTY LABS',subject:'[별조각 탐험대] '+(purpose==='link'?'이메일 연동':'이어하기')+' 인증번호',body:'인증번호: '+code+'\n\n별조각 탐험대에서 '+(purpose==='link'?'현재 게스트 기록을 이메일에 연결':'기존 기록으로 이어하기')+'하려면 이 번호를 입력해 주세요.\n인증번호는 10분 동안 유효하며, 다른 사람에게 알려주지 마세요.\n본인이 요청하지 않았다면 이 메일을 무시해 주세요.\n\nLUCENTY LABS'});}catch(error){console.error('EXPLORER_EMAIL_SEND_FAILED',String(error&&error.message||error));explorerFail_(503,'메일 발송에 실패했어요. 관리자에게 메일 발송 권한과 발송 한도 확인을 요청해 주세요.');}}
  challenge.sent=true;explorerWrite_(folder,'challenge.json',challenge,file);return {challengeId:id,expiresAt:challenge.expiresAt,resendAt:now+60000};
 }
 function explorerEmailVerify_(request){
@@ -435,4 +436,18 @@ function explorerEmailRoute_(request){
  if(request.path==='/api/email/request')return explorerEmailRequest_(request);
  if(request.path==='/api/email/verify')return explorerEmailVerify_(request);
  explorerFail_(404,'요청한 기능을 찾을 수 없어요.');
+}
+
+// Run manually only when a previously verified email index needs rebuilding.
+// Restores indexes from verified profile metadata; never resets player saves or changes the secret.
+function repairExplorerEmailIndexes(){
+ const lock=LockService.getScriptLock();if(!lock.tryLock(20000))explorerFail_(503,'다른 저장이 끝난 뒤 다시 실행해 주세요.');
+ try{let repaired=0;const folders=explorerRoot_().getFolders();while(folders.hasNext()){
+  const folder=folders.next();if(!/^[a-f0-9]{64}$/.test(folder.getName()))continue;
+  const file=explorerFile_(folder,'profile.json');if(!file)continue;const record=explorerRead_(file);
+  if(!record.linkedEmail||!record.emailLinkedAt)continue;
+  const email=explorerEmail_(record.linkedEmail),index=explorerEmailFolder_(email,true),account=explorerEmailAccount_(index);
+  if(account&&account.playerFolderId!==folder.getId())explorerFail_(409,'같은 이메일에 서로 다른 저장 기록이 있어요. 자동 복구를 중단했어요.');
+  if(!account){explorerWrite_(index,'account.json',{playerFolderId:folder.getId(),linkedAt:record.emailLinkedAt},explorerFile_(index,'account.json'));repaired++;}
+ }console.log('복구한 이메일 연결: '+repaired+'개');return repaired;}finally{lock.releaseLock();}
 }
