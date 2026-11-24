@@ -20,6 +20,15 @@
       "label": "시간 하트",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795552847956,
+      "amount": 1,
+      "balance": 123,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
