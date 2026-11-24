@@ -309,10 +309,20 @@ function setupStarShardExplorers(){
  return id;
 }
 function explorerRoot_(){const id=PropertiesService.getScriptProperties().getProperty('EXPLORER_ROOT_FOLDER_ID');if(!id)explorerFail_(503,'개인 저장 서버를 준비 중이에요.');return DriveApp.getFolderById(id);}
-function explorerChild_(parent,name,create){const matches=parent.getFoldersByName(name);return matches.hasNext()?matches.next():create?parent.createFolder(name):null;}
-function explorerFile_(parent,name){const matches=parent.getFilesByName(name);return matches.hasNext()?matches.next():null;}
+function explorerChild_(parent,name,create){
+ const cache=CacheService.getScriptCache(),key='folder:'+parent.getId()+':'+name,id=cache.get(key);
+ if(id){try{const folder=DriveApp.getFolderById(id);folder.getName();return folder;}catch(e){cache.remove(key);}}
+ const matches=parent.getFoldersByName(name),folder=matches.hasNext()?matches.next():create?parent.createFolder(name):null;
+ if(folder)cache.put(key,folder.getId(),21600);return folder;
+}
+function explorerFile_(parent,name){
+ const cache=CacheService.getScriptCache(),key='file:'+parent.getId()+':'+name,id=cache.get(key);
+ if(id){try{const file=DriveApp.getFileById(id);file.getName();return file;}catch(e){cache.remove(key);}}
+ const matches=parent.getFilesByName(name),file=matches.hasNext()?matches.next():null;
+ if(file)cache.put(key,file.getId(),21600);return file;
+}
 function explorerRead_(file){return JSON.parse(file.getBlob().getDataAsString('UTF-8'));}
-function explorerWrite_(folder,name,data,file){const text=JSON.stringify(data);return file?(file.setContent(text),file):folder.createFile(name,text,MimeType.PLAIN_TEXT);}
+function explorerWrite_(folder,name,data,file){const text=JSON.stringify(data);if(file)file.setContent(text);else file=folder.createFile(name,text,MimeType.PLAIN_TEXT);CacheService.getScriptCache().put('file:'+folder.getId()+':'+name,file.getId(),21600);return file;}
 function explorerPlayer_(token,create){
  if(typeof token!=='string'||! /^[a-f0-9]{64}$/.test(token))explorerFail_(401,'저장 복구코드를 확인해 주세요.');
  const hash=explorerDigest_(token),cache=CacheService.getScriptCache(),key='player:'+hash;
@@ -320,7 +330,7 @@ function explorerPlayer_(token,create){
  if(!folder){folder=explorerChild_(explorerRoot_(),hash,false)||explorerSessionFolder_(hash);if(!folder&&create){const admission='create:'+Math.floor(Date.now()/60000),count=Number(cache.get(admission)||0);if(count>=30)explorerFail_(429,'새 플레이어 생성이 많아요. 잠시 후 다시 시도해 주세요.');cache.put(admission,String(count+1),120);folder=explorerChild_(explorerRoot_(),hash,true);}if(folder)cache.put(key,folder.getId(),21600);}
  if(!folder)explorerFail_(401,'저장 정보를 찾을 수 없어요. 복구코드를 확인해 주세요.');
  let file=explorerFile_(folder,'profile.json');if(!file){if(!create)explorerFail_(401,'저장 정보를 찾을 수 없어요.');file=explorerWrite_(folder,'profile.json',{schema:1,createdAt:Date.now(),state:{version:0,hearts:0,adventure:initialAdventure()},historySince:null,historyOutbox:[]});}
- const record=explorerRead_(file),entry={folder:folder,file:file,record:record};explorerFlush_(entry);return entry;
+ const record=explorerRead_(file),entry={folder:folder,file:file,record:record};return entry;
 }
 function explorerBucket_(at){const day=Utilities.formatDate(new Date(at),'Asia/Seoul','yyyy-MM-dd').split('-'),start=Number(day[2])-((Number(day[2])-1)%3);return {year:day[0],month:day[1],name:'clear_'+day[0]+'_'+day[1]+'_'+String(start).padStart(2,'0')+'.json'};}
 function explorerHistoryFolder_(player,bucket,create){let folder=explorerChild_(player,'game-history',create);if(!folder)return null;folder=explorerChild_(folder,bucket.year,create);return folder?explorerChild_(folder,bucket.month,create):null;}
@@ -343,8 +353,9 @@ function explorerRoute_(request){
  if(!['/api/player','/api/save','/api/action','/api/history'].includes(path))explorerFail_(404,'요청한 기능을 찾을 수 없어요.');
  if(path==='/api/player'&&method!=='POST'||['/api/save','/api/history'].includes(path)&&method!=='GET'||path==='/api/action'&&method!=='POST')explorerFail_(405,'지원하지 않는 요청이에요.');
  const entry=explorerPlayer_(request.token,path==='/api/player'),state=entry.record.state;
- if(path==='/api/history')return explorerHistory_(entry,request.query||{});
+ if(path==='/api/history'){explorerFlush_(entry);return explorerHistory_(entry,request.query||{});}
  if(path!=='/api/action')return state;
+ explorerFlush_(entry);
  const action=request.body;if(!action||!EXPLORER_ACTIONS.includes(action.type))explorerFail_(400,'지원하지 않는 게임 동작이에요.');
  if(state.adventure.operations&&state.adventure.operations.includes(action.actionId))return state;
  if(action.version!==state.version)explorerFail_(409,'다른 화면의 저장 내용을 확인하고 있어요. 다시 시도해 주세요.');
@@ -356,7 +367,7 @@ function explorerRoute_(request){
 function doGet(){return explorerJson_(200,{game:'StarShardExplorers',storage:'private-drive-json',version:1});}
 function doPost(e){
  const lock=LockService.getScriptLock();let locked=false;
- try{const raw=e&&e.postData&&e.postData.contents;if(!raw||raw.length>262144)explorerFail_(400,'저장 요청을 확인해 주세요.');let request;try{request=JSON.parse(raw);}catch(_){explorerFail_(400,'저장 요청을 확인해 주세요.');}if(!request||typeof request!=='object'||Array.isArray(request))explorerFail_(400,'저장 요청을 확인해 주세요.');if(!lock.tryLock(20000))explorerFail_(503,'다른 저장을 처리하고 있어요. 잠시 후 다시 시도해 주세요.');locked=true;return explorerJson_(200,explorerRoute_(request));}
+ try{const raw=e&&e.postData&&e.postData.contents;if(!raw||raw.length>262144)explorerFail_(400,'저장 요청을 확인해 주세요.');let request;try{request=JSON.parse(raw);}catch(_){explorerFail_(400,'저장 요청을 확인해 주세요.');}if(!request||typeof request!=='object'||Array.isArray(request))explorerFail_(400,'저장 요청을 확인해 주세요.');const readOnly=(request.method||'GET')==='GET'&&['/api/health','/api/save','/api/account'].includes(request.path);if(!readOnly){if(!lock.tryLock(20000))explorerFail_(503,'다른 저장을 처리하고 있어요. 잠시 후 다시 시도해 주세요.');locked=true;}return explorerJson_(200,explorerRoute_(request));}
  catch(error){const status=error.status||500;return explorerJson_(status,null,status===500?'개인 저장에 실패했어요. 잠시 후 다시 시도해 주세요.':error.message);}
  finally{if(locked)lock.releaseLock();}
 }

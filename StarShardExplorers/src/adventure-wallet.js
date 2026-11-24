@@ -26,15 +26,15 @@ async function ensurePlayer(){
 async function restorePlayer(token){token=String(token).trim();if(!/^[a-f0-9]{64}$/.test(token))throw Error('로그인 정보를 확인해 주세요.');await saveRequest('save',{token});localStorage.setItem(TOKEN_KEY,token);localStorage.removeItem(PENDING_KEY);localStorage.removeItem(TOKEN_KEY+':creating');boot=null;}
 export function createAdventureWallet(){
  if(localDemoEnabled(location.hostname,location.search))return createDemoWallet();
- let home={version:0,hearts:0,adventure:initialAdventure()},busy=false;
- async function refresh(){await ensurePlayer();home=await saveRequest('save');return home;}
+ let home={version:0,hearts:0,adventure:initialAdventure()},busy=false,loaded=false;
+ async function refresh(){await ensurePlayer();home=await saveRequest('save');loaded=true;return home;}
  async function mutate(type,body={}){
   if(busy)throw Error('다른 저장을 처리하고 있어요.');busy=true;announceSaving(1);
   const execute=async()=>{
    await ensurePlayer();let pending;try{pending=JSON.parse(localStorage.getItem(PENDING_KEY)||'null');}catch{throw Error('이전 저장 요청을 읽을 수 없어요. 새로고침한 뒤 다시 시도해 주세요.');}
    if(pending&&(pending.type!==type||JSON.stringify(pending.body)!==JSON.stringify(body)))throw Error('직전 저장 결과를 먼저 확인해 주세요. 같은 버튼으로 다시 시도해 주세요.');
    pending ||= {type,body,actionId:crypto.randomUUID()};localStorage.setItem(PENDING_KEY,JSON.stringify(pending));
-   for(let retry=0;retry<3;retry++){await refresh();try{home=await saveRequest('action',{method:'POST',body:{type,...body,actionId:pending.actionId,version:home.version}});localStorage.removeItem(PENDING_KEY);return home;}catch(e){if(e.status&&e.status!==409)localStorage.removeItem(PENDING_KEY);if(retry===2||e.status&&e.status!==409)throw e;}}
+   for(let retry=0;retry<3;retry++){if(!loaded||retry>0)await refresh();try{home=await saveRequest('action',{method:'POST',body:{type,...body,actionId:pending.actionId,version:home.version}});localStorage.removeItem(PENDING_KEY);return home;}catch(e){if(e.status&&e.status!==409)localStorage.removeItem(PENDING_KEY);if(retry===2||e.status&&e.status!==409)throw e;}}
   };
   const operation=tail.then(execute);tail=operation.catch(()=>{});let saved=false;try{const result=await operation;saved=true;return result;}finally{busy=false;announceSaving(-1,saved);}
  }
