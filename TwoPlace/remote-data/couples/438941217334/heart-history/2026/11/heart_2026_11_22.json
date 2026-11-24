@@ -699,6 +699,15 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795489712986,
+      "amount": 1,
+      "balance": 102,
+      "kind": "earn",
+      "label": "애정 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
