@@ -717,6 +717,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795489759400,
+      "amount": -80,
+      "balance": 23,
+      "kind": "purchase",
+      "label": "홈카페 커피장 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "coffeestation",
+      "quantity": 1
     }
   ]
 }

@@ -518,6 +518,13 @@
       "x": 64,
       "y": 48.225,
       "rotation": 0
+    },
+    {
+      "id": "0351b7f73ce24ed5a92db3bbb0c7e82f",
+      "product": "coffeestation",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
