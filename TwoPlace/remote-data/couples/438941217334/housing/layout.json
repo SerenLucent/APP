@@ -538,9 +538,13 @@
     {
       "id": "4f08a6b590c54c24998521bccb02bedf",
       "product": "wallpaperRose",
-      "space": null,
+      "space": "upperFloor",
       "x": 50,
-      "y": 65
+      "y": 65,
+      "wallSide": "left",
+      "wallCol": 2,
+      "wallRow": 0,
+      "rotation": 0
     },
     {
       "id": "39dda27a7b0d41279e538c0832c16fc4",
