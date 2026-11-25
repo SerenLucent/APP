@@ -366,6 +366,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795639266111,
+      "amount": -40,
+      "balance": 46,
+      "kind": "purchase",
+      "label": "로즈 밀크 벽지 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "wallpaperRose",
+      "quantity": 1
     }
   ]
 }

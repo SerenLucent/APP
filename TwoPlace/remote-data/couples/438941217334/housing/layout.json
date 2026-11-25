@@ -534,6 +534,13 @@
       "x": 50,
       "y": 65,
       "rotation": 0
+    },
+    {
+      "id": "4f08a6b590c54c24998521bccb02bedf",
+      "product": "wallpaperRose",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
