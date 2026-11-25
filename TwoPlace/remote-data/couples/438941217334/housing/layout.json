@@ -530,9 +530,10 @@
     {
       "id": "2250fa046eea454296a5049dc3214d5a",
       "product": "floorRosewood",
-      "space": null,
+      "space": "upperFloor",
       "x": 50,
-      "y": 65
+      "y": 65,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
