@@ -388,6 +388,15 @@
       "character": "momo",
       "product": "wallpaperLilac",
       "quantity": 1
+    },
+    {
+      "at": 1795642855121,
+      "amount": 10,
+      "balance": 16,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
