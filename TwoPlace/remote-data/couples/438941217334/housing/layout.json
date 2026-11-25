@@ -545,9 +545,13 @@
     {
       "id": "39dda27a7b0d41279e538c0832c16fc4",
       "product": "wallpaperLilac",
-      "space": null,
+      "space": "upperFloor",
       "x": 50,
-      "y": 65
+      "y": 65,
+      "wallSide": "right",
+      "wallCol": 2,
+      "wallRow": 0,
+      "rotation": 0
     }
   ],
   "layoutVersion": 2,
