@@ -526,6 +526,13 @@
       "x": 52,
       "y": 46.075,
       "rotation": 0
+    },
+    {
+      "id": "2250fa046eea454296a5049dc3214d5a",
+      "product": "floorRosewood",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,

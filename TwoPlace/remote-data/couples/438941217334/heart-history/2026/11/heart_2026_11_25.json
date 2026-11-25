@@ -191,6 +191,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795572424107,
+      "amount": -120,
+      "balance": 48,
+      "kind": "purchase",
+      "label": "내추럴 월넛 마루 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "floorRosewood",
+      "quantity": 1
     }
   ]
 }
