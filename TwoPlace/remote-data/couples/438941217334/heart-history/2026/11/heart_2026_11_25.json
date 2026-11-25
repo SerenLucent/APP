@@ -377,6 +377,17 @@
       "character": "momo",
       "product": "wallpaperRose",
       "quantity": 1
+    },
+    {
+      "at": 1795639272614,
+      "amount": -40,
+      "balance": 6,
+      "kind": "purchase",
+      "label": "라벤더 벽지 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "wallpaperLilac",
+      "quantity": 1
     }
   ]
 }
