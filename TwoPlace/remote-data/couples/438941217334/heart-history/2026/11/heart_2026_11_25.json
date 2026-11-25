@@ -202,6 +202,15 @@
       "character": "momo",
       "product": "floorRosewood",
       "quantity": 1
+    },
+    {
+      "at": 1795574355552,
+      "amount": 10,
+      "balance": 58,
+      "kind": "earn",
+      "label": "시간 하트",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
