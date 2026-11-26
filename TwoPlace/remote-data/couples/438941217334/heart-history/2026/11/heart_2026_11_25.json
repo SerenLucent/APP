@@ -658,6 +658,17 @@
       "label": "휴식 보너스",
       "role": "partner",
       "character": "momo"
+    },
+    {
+      "at": 1795705439246,
+      "amount": -80,
+      "balance": 37,
+      "kind": "purchase",
+      "label": "라탄 거실장 1개 구매",
+      "role": "partner",
+      "character": "momo",
+      "product": "tvstand",
+      "quantity": 1
     }
   ]
 }

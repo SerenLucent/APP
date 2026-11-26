@@ -556,6 +556,13 @@
       "wallCol": 2,
       "wallRow": 0,
       "rotation": 0
+    },
+    {
+      "id": "070765f3bce247e29d40b36a4a402182",
+      "product": "tvstand",
+      "space": null,
+      "x": 50,
+      "y": 65
     }
   ],
   "layoutVersion": 2,
