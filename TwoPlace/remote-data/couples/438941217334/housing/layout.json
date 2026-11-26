@@ -560,9 +560,10 @@
     {
       "id": "070765f3bce247e29d40b36a4a402182",
       "product": "tvstand",
-      "space": null,
-      "x": 50,
-      "y": 65
+      "space": "upperFloor",
+      "x": 64,
+      "y": 54.675,
+      "rotation": 180
     }
   ],
   "layoutVersion": 2,
