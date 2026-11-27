@@ -619,6 +619,18 @@
       "endTime": "23:00",
       "authorRole": "partner",
       "workType": "shift"
+    },
+    {
+      "id": "238d8f1e4e3065b8e26b0c3e55351e26",
+      "date": "2026-11-30",
+      "title": "건강검진",
+      "kind": "general",
+      "time": "",
+      "place": "",
+      "details": "",
+      "startTime": "19:00",
+      "endTime": "",
+      "authorRole": "owner"
     }
   ],
   "rewards": {
@@ -664,7 +676,8 @@
       "2026-11-25": true,
       "2026-11-26": true,
       "2026-11-27": true,
-      "2026-11-28": true
+      "2026-11-28": true,
+      "2026-11-30": true
     },
     "reads": {
       "2026-10-24": true,
