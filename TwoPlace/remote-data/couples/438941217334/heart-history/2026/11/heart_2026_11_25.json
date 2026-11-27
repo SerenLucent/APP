@@ -923,6 +923,15 @@
       "label": "일정 등록 보너스",
       "role": "owner",
       "character": "kuki"
+    },
+    {
+      "at": 1795784714576,
+      "amount": 1,
+      "balance": 50,
+      "kind": "earn",
+      "label": "일정 확인 보너스",
+      "role": "partner",
+      "character": "momo"
     }
   ]
 }
